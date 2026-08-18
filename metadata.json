@@ -1,0 +1,7 @@
+{
+  "name": "Brain Focus",
+  "description": "Đánh giá chỉ số Brain Focus (BFS), khắc phục não bỏng ngô và rèn luyện tập trung với phiên học 90 phút",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
