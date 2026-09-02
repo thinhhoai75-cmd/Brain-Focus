@@ -1,5 +1,10 @@
 package com.example.data.model
 
+data class ArticleSection(
+    val subtitle: String,
+    val text: String
+)
+
 data class PopcornArticle(
     val id: Int,
     val title: String,
@@ -10,79 +15,48 @@ data class PopcornArticle(
     val keyTakeaways: List<String>
 )
 
-data class ArticleSection(
-    val sectionHeader: String,
-    val textContent: String
-)
-
-object ArticleData {
+object PopcornBrainData {
     val articles = listOf(
         PopcornArticle(
             id = 1,
-            title = "Hiện tượng 'não bỏng ngô' (popcorn brain) là gì?",
-            subtitle = "Hiểu rõ lý do tại sao đầu óc bạn liên tục 'nổ' các suy nghĩ phân tán khi cố gắng tập trung.",
+            title = "Khoa học thần kinh về 'Não Bỏng Ngô' (Popcorn Brain)",
+            subtitle = "Tại sao tâm trí bạn liên tục nhảy cóc và không thể ngồi yên đọc sách quá 10 phút?",
             readTimeMinutes = 4,
             category = "Khoa học não bộ",
             contentSections = listOf(
                 ArticleSection(
-                    "1. Nguồn gốc thuật ngữ não bỏng ngô",
-                    "Thuật ngữ 'Popcorn Brain' được đưa ra lần đầu bởi Giáo sư David Levy thuộc Đại học Washington năm 2011. Ông mô tả đây là trạng thái não bộ quen với nhịp sống số nhanh đến mức các suy nghĩ nảy tưng tưng liên tục như những hạt bắp nổ trong nồi áp suất."
+                    "1. Định nghĩa Não Bỏng Ngô là gì?",
+                    "Thuật ngữ 'Popcorn Brain' được đặt ra bởi nhà nghiên cứu David Levy (Đại học Washington) vào năm 2011 để mô tả trạng thái mà não bộ quen thuộc với nhịp độ kích thích siêu nhanh của thế giới số đến mức dòng suy nghĩ liên tục nảy lên lộp độp như ngô trong lò vi sóng."
                 ),
                 ArticleSection(
-                    "2. Tại sao lại xảy ra hiện tượng này?",
-                    "Khi lướt các nền tảng video ngắn (TikTok, Reels, Shorts), thuật toán cung cấp phần thưởng dopamine cực kỳ nhanh chóng mỗi 5-15 giây. Khi chuyển sang các hoạt động nhịp chậm như đọc sách, làm bài tập hay nghe giảng, não bộ ngay lập tức cảm thấy 'thiếu dopamine' và tạo cảm giác bồn chồn."
+                    "2. Cơ chế Dopamine & Vòng lặp kích thích vô tận",
+                    "Mỗi lần bạn vuốt màn hình TikTok hoặc Reels, não nhận được một liều Dopamine bất ngờ (Variable Reward Schedule). Khi tiếp xúc hàng trăm lần mỗi ngày, thụ thể Dopamine D2 bị chai lì (down-regulation). Hậu quả là những hoạt động có tốc độ chậm như đọc sách giáo khoa, suy nghĩ giải toán bỗng trở nên nhàm chán đến mức não không chịu đựng nổi."
                 ),
                 ArticleSection(
-                    "3. Dấu hiệu nhận biết bạn đang bị não bỏng ngô",
-                    "- Không thể ngồi yên đọc 1 trang sách mà không cầm điện thoại.\n- Đang làm việc này lại nhảy sang mở ứng dụng khác không mục đích.\n- Cảm thấy thời gian trôi qua quá chậm khi học tập.\n- Bị sương mù não (Brain Fog) và giảm khả năng ghi nhớ thông tin dài."
+                    "3. Khả năng tái định hình thần kinh (Neuroplasticity)",
+                    "Tin vui là não bộ có tính dẻo dai thần kinh. Chỉ sau 7-14 ngày giảm tiếp xúc với kích thích nhanh và tập trung đơn nhiệm, các khớp thần kinh tại thùy trán trước (Prefrontal Cortex) sẽ tự động phục hồi khả năng tập trung sâu."
                 )
             ),
             keyTakeaways = listOf(
                 "Não bỏng ngô không phải là bệnh bẩm sinh mà là thói quen do môi trường số gây ra.",
-                "Khả năng tập trung hoàn toàn có thể phục hồi nhờ tính linh hoạt thần kinh (Neuroplasticity).",
-                "Giải pháp là rèn luyện các khoảng thời gian học sâu không gián đoạn."
+                "Thủ phạm chính là phần thưởng Dopamine ngẫu nhiên từ video ngắn dưới 15 giây.",
+                "Bạn hoàn toàn có thể khôi phục lại khả năng tập trung bằng phương pháp luyện tập đúng đắn."
             )
         ),
         PopcornArticle(
             id = 2,
-            title = "Bẫy dopamine rác từ video ngắn & mạng xã hội",
-            subtitle = "Giải mã hóa học thần kinh đằng sau cơn nghiện lướt màn hình vô thức.",
+            title = "Chu kỳ tập trung 90 phút & Nhịp sinh học Ultradian",
+            subtitle = "Bí mật tối ưu năng lượng học tập dựa trên nhịp sinh học tự nhiên của cơ thể con người.",
             readTimeMinutes = 5,
-            category = "Cơ chế thần kinh",
+            category = "Phương pháp học",
             contentSections = listOf(
                 ArticleSection(
-                    "1. Dopamine chất lượng cao và dopamine rác",
-                    "Dopamine chất lượng cao được tiết ra khi bạn giải xong một bài toán khó, hoàn thành phiên học 90 phút hay chinh phục mục tiêu lớn. Trong khi đó, 'Dopamine rác' đến từ việc lướt video ngắn ngẫu nhiên không tốn sức."
+                    "1. Nhịp sinh học Ultradian là gì?",
+                    "Giáo sư Nathaniel Kleitman, nhà tiên phong nghiên cứu về giấc ngủ, phát hiện cơ thể con người vận hành theo chu kỳ 90-120 phút cả ngày lẫn đêm. Trong 90 phút, não bộ chuyển từ trạng thái hưng phấn nhẹ -> tập trung tối đa -> suy giảm năng lượng tự nhiên."
                 ),
                 ArticleSection(
-                    "2. Ngưỡng dopamine bị đẩy lên quá cao",
-                    "Khi tiêu thụ Dopamine rác quá mức, thụ thể Dopamine trong não sẽ bị giảm nhạy cảm (Desensitization). Kết quả là những hoạt động bình thường như học bài, làm việc sẽ trở nên cực kỳ nhàm chán và kiệt sức."
-                ),
-                ArticleSection(
-                    "3. Vòng xoáy lặp lại",
-                    "Lướt video ngắn -> Não tiết Dopamine rác -> Mất nhạy cảm -> Cần lướt nhiều hơn -> Giảm chú ý nghiêm trọng."
-                )
-            ),
-            keyTakeaways = listOf(
-                "Dopamine là chất dẫn truyền thần kinh thúc đẩy hành động, không phải chỉ là cảm giác sướng.",
-                "Cắt giảm tiêu thụ nội dung rác giúp khôi phục độ nhạy thụ thể Dopamine.",
-                "Mỗi phiên học tập trung là 1 bước giúp tái tạo Dopamine chất lượng cao."
-            )
-        ),
-        PopcornArticle(
-            id = 3,
-            title = "Phương pháp tái cấu trúc khả năng tập trung (neuroplasticity)",
-            subtitle = "Cách rèn luyện lại não bộ để giữ chú ý liên tục trong 90 phút.",
-            readTimeMinutes = 6,
-            category = "Rèn luyện tập trung",
-            contentSections = listOf(
-                ArticleSection(
-                    "1. Tính linh hoạt thần kinh (neuroplasticity)",
-                    "Bộ não con người giống như cơ bắp. Càng rèn luyện khả năng chống lại sự xao nhãng, các đường truyền thần kinh phụ trách kiểm soát chú ý (Prefrontal Cortex) càng trở nên dày dặn và mạnh mẽ."
-                ),
-                ArticleSection(
-                    "2. Chiến lược phiên học 90 phút",
-                    "Nhịp sinh học Ultradian Rhythms của con người chạy theo chu kỳ 90 phút đỉnh cao tập trung. Khi học tập liên tục trong 90 phút mà không có xao nhãng, bạn đạt trạng thái sâu nhất của trí tuệ."
+                    "2. Ứng dụng 90 phút vào ôn thi & Deep Work",
+                    "Thay vì học 4-5 tiếng liên tục gây kiệt sức, hãy chia ngày học thành các khối (blocks) 90 phút. 10 phút đầu khởi động não, 70 phút giải quyết bài tập khó nhất, và 10 phút cuối đúc kết kiến thức. Sau mỗi 90 phút, bắt buộc nghỉ ngơi 15-20 phút không chạm điện thoại."
                 ),
                 ArticleSection(
                     "3. Quy tắc không thoát app trong Brain Focus",
@@ -90,9 +64,31 @@ object ArticleData {
                 )
             ),
             keyTakeaways = listOf(
-                "Tập trung là một kỹ năng có thể huấn luyện, không phải năng khiếu cố định.",
-                "Tuân thủ 1-3 phiên học mỗi ngày để cảm nhận sự thay đổi rõ rệt sau 7 ngày.",
-                "Loại bỏ hoàn toàn các yếu tố gây xao nhãng trước khi bật bộ đếm thời gian."
+                "Chu kỳ 90 phút là giới hạn vàng của sự chú ý sinh học con người.",
+                "Học sâu 90 phút mang lại hiệu quả cao hơn 4 tiếng học vừa làm vừa lướt mạng.",
+                "Khoảng nghỉ 15 phút giữa các chu kỳ giúp củng cố trí nhớ dài hạn vào vỏ não."
+            )
+        ),
+        PopcornArticle(
+            id = 3,
+            title = "Âm thanh sóng não Gamma & Lofi: Tăng cường tập trung",
+            subtitle = "Cách tần số 40Hz và tiếng ồn trắng giúp đồng bộ hóa các nơ-ron thần kinh.",
+            readTimeMinutes = 3,
+            category = "Sức khỏe não bộ",
+            contentSections = listOf(
+                ArticleSection(
+                    "1. Sóng não Gamma 40Hz là gì?",
+                    "Sóng não Gamma (30Hz - 100Hz, đặc biệt là 40Hz) liên quan chặt chẽ đến sự chú ý tập trung cao độ, xử lý thông tin phức tạp và liên kết trí nhớ. Nghe âm thanh Binaural Beats 40Hz kích thích đồng bộ hóa sóng não ở hai bán cầu."
+                ),
+                ArticleSection(
+                    "2. Lofi & Tiếng ồn hồng / Tiếng mưa rơi",
+                    "Các bản nhạc Lofi có nhịp độ đều đặn 70-80 BPM (tương đương nhịp tim khi nghỉ ngơi) giúp giảm hormone căng thẳng Cortisol, trong khi âm thanh thiên nhiên tạo ra 'màn chắn âm thanh' ngăn chặn tiếng ồn xao nhãng xung quanh."
+                )
+            ),
+            keyTakeaways = listOf(
+                "Âm thanh không lời giúp kích hoạt hệ thần kinh phó giao cảm.",
+                "Nên sử dụng tai nghe khi học để tạo không gian tập trung riêng biệt.",
+                "Kết hợp sóng não 40Hz với các bài học khó giúp tăng tốc độ giải quyết vấn đề."
             )
         ),
         PopcornArticle(

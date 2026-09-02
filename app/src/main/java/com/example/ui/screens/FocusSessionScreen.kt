@@ -1,177 +1,123 @@
 package com.example.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DoNotDisturbOn
+import androidx.compose.material.icons.filled.Headphones
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.NotificationsOff
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.SentimentSatisfied
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.R
-import com.example.ui.components.*
-import com.example.ui.theme.*
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.ui.theme.DeepTealDark
+import com.example.ui.theme.DeepTealLight
+import com.example.ui.theme.DeepTealPrimary
+import com.example.ui.theme.MintContainer
+import com.example.ui.theme.OnMintContainer
+import com.example.ui.theme.OrangeContainer
+import com.example.ui.theme.PenaltyRed
+import com.example.ui.theme.PenaltyRedContainer
+import com.example.ui.theme.SunsetOrangeAccent
 import com.example.ui.viewmodel.FocusViewModel
-import com.example.ui.viewmodel.TimerState
-import com.example.util.LofiSoundMode
-import java.util.Locale
+import com.example.util.LofiSoundType
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FocusSessionScreen(
-    viewModel: FocusViewModel
-) {
-    val userProfile by viewModel.userProfile.collectAsState()
-    val selectedMinutes by viewModel.selectedMinutes.collectAsState()
-    val timerState by viewModel.timerState.collectAsState()
-    val remainingSeconds by viewModel.remainingSeconds.collectAsState()
-    val exitCount by viewModel.exitCount.collectAsState()
-    val wasPaused by viewModel.wasAppPausedDuringSession.collectAsState()
-    val reward by viewModel.lastSessionCompletionReward.collectAsState()
+fun FocusSessionScreen(viewModel: FocusViewModel) {
+    val isSessionActive by viewModel.isSessionActive.collectAsStateWithLifecycle()
+    val isPaused by viewModel.isPaused.collectAsStateWithLifecycle()
+    val secondsRemaining by viewModel.secondsRemaining.collectAsStateWithLifecycle()
+    val plannedMinutes by viewModel.plannedMinutes.collectAsStateWithLifecycle()
+    val subjectName by viewModel.subjectName.collectAsStateWithLifecycle()
+    val selectedSound by viewModel.selectedLofiSound.collectAsStateWithLifecycle()
+    val exitCount by viewModel.exitCount.collectAsStateWithLifecycle()
+    val penaltyMessage by viewModel.lastPenaltyMessage.collectAsStateWithLifecycle()
+    val userProfile by viewModel.userProfile.collectAsStateWithLifecycle()
+    val completionReward by viewModel.lastSessionCompletionReward.collectAsStateWithLifecycle()
+    val isDndActive by viewModel.isDndActive.collectAsStateWithLifecycle()
+    val autoDndOnSession by viewModel.autoDndOnSession.collectAsStateWithLifecycle()
 
-    // Audio & Penalty States
-    val isAudioPlaying by viewModel.isAudioPlaying.collectAsState()
-    val currentSoundMode by viewModel.soundMode.collectAsState()
-    val audioVolume by viewModel.audioVolume.collectAsState()
-    val autoPlayLofi by viewModel.autoPlayLofiOnStart.collectAsState()
-    val lastPenaltyMsg by viewModel.lastPenaltyMessage.collectAsState()
-    val reminderMsg by viewModel.reminderMessage.collectAsState()
+    var showCancelDialog by remember { mutableStateOf(false) }
 
-    var showReminderManagerModal by remember { mutableStateOf(false) }
+    val minutes = secondsRemaining / 60
+    val seconds = secondsRemaining % 60
+    val timeFormatted = String.format("%02d:%02d", minutes, seconds)
 
-    val todayDate = viewModel.getTodayDateString()
-    val isNewDay = userProfile?.lastSessionDate != todayDate
-    val dailyCountToday = if (isNewDay) 0 else (userProfile?.dailySessionsToday ?: 0)
-    val maxDailyReached = dailyCountToday >= 3
+    val totalSeconds = (plannedMinutes * 60).toFloat()
+    val progress = if (totalSeconds > 0) ((totalSeconds - secondsRemaining) / totalSeconds).coerceIn(0f, 1f) else 0f
+    val animatedProgress by animateFloatAsState(targetValue = progress, label = "progress")
 
-    val totalSeconds = selectedMinutes * 60
-    val progress = if (totalSeconds > 0) remainingSeconds / totalSeconds.toFloat() else 0f
-
-    val formattedMinutes = remainingSeconds / 60
-    val formattedSecs = remainingSeconds % 60
-    val timeDisplay = String.format(Locale.getDefault(), "%02d:%02d", formattedMinutes, formattedSecs)
-
-    Box(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Reminder Notification Banner
-            ReminderBannerAlert(
-                message = reminderMsg,
-                onDismiss = { viewModel.dismissReminderMessage() }
-            )
-
-            // Modern Hero Visual Banner
+        // Header
+        item {
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(130.dp)
-                    .testTag("focus_hero_banner"),
-                shape = RoundedCornerShape(22.dp),
-                colors = CardDefaults.cardColors(containerColor = DarkTealSecondary)
-            ) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Image(
-                        painter = painterResource(id = R.drawable.img_focus_hero),
-                        contentDescription = "Focus Hero Artwork",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                Brush.horizontalGradient(
-                                    colors = listOf(
-                                        DarkTealSecondary.copy(alpha = 0.92f),
-                                        DarkTealSecondary.copy(alpha = 0.55f),
-                                        Color.Transparent
-                                    )
-                                )
-                            )
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Surface(
-                            color = MintContainer.copy(alpha = 0.9f),
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text("✨", fontSize = 11.sp)
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = "Rèn luyện khả năng chú ý sâu",
-                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = OnMintContainer
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            text = "Vùng tập trung tuyệt đối",
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = Color.White
-                        )
-                        Text(
-                            text = "Mỗi phút tập trung giúp tái cấu trúc não bộ vững vàng",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MintContainer.copy(alpha = 0.85f)
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            // Header Stats Bar Card
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("user_stats_summary_card"),
+                shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(20.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, SleekBorder)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
                     modifier = Modifier
@@ -182,11 +128,25 @@ fun FocusSessionScreen(
                 ) {
                     Column {
                         Text(
-                            text = userProfile?.name ?: "Học viên Focus",
+                            text = "Phiên học sâu 90 phút",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.primary
                         )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = if (isSessionActive) "Đang khóa luồng tập trung" else "Chọn thời lượng & môn học",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    Card(
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = MintContainer)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Text(
                                 text = "Điểm BFS: ",
                                 style = MaterialTheme.typography.bodySmall,
@@ -194,947 +154,726 @@ fun FocusSessionScreen(
                             )
                             Text(
                                 text = "${userProfile?.fbsScore ?: 500}",
-                                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                                 color = DeepTealPrimary
                             )
                         }
                     }
+                }
+            }
+        }
 
-                    Box(
+        // Penalty Banner if any
+        if (penaltyMessage != null) {
+            item {
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = PenaltyRedContainer),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(14.dp))
-                            .background(MintContainer)
-                            .padding(horizontal = 14.dp, vertical = 8.dp)
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)
+                        ) {
                             Icon(
-                                imageVector = Icons.Default.Star,
+                                imageVector = Icons.Default.Warning,
                                 contentDescription = null,
-                                tint = DeepTealPrimary,
-                                modifier = Modifier.size(18.dp)
+                                tint = PenaltyRed,
+                                modifier = Modifier.size(22.dp)
                             )
-                            Spacer(modifier = Modifier.width(6.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "${userProfile?.rankingPoints ?: 1000} đ",
-                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                text = penaltyMessage ?: "",
+                                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                                color = PenaltyRed
+                            )
+                        }
+                        IconButton(
+                            onClick = { viewModel.clearPenaltyMessage() },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Đóng",
+                                tint = PenaltyRed,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        // Subject input & Preset selector (only when not active)
+        if (!isSessionActive) {
+            item {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Môn học hoặc nhiệm vụ",
+                            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        OutlinedTextField(
+                            value = subjectName,
+                            onValueChange = { viewModel.setSubjectName(it) },
+                            placeholder = { Text("Ví dụ: Toán - Luyện đề số 3") },
+                            singleLine = true,
+                            shape = RoundedCornerShape(12.dp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("subject_input")
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            text = "Thời lượng phiên tập trung",
+                            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            listOf(
+                                Pair(90, "90p (Ultradian)"),
+                                Pair(45, "45p (Trung cấp)"),
+                                Pair(25, "25p (Pomodoro)")
+                            ).forEach { (mins, label) ->
+                                val isSelected = plannedMinutes == mins
+                                Card(
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
+                                    ),
+                                    border = if (!isSelected) CardDefaults.outlinedCardBorder() else null,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clickable { viewModel.setPlannedMinutes(mins) }
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 4.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Text(
+                                            text = "$mins'",
+                                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                            color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface
+                                        )
+                                        Text(
+                                            text = if (mins == 90) "Chu kỳ vàng" else if (mins == 45) "Vừa sức" else "Khởi động",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = if (isSelected) MintContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Circular Timer Display
+        item {
+            Card(
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (isSessionActive) {
+                        Card(
+                            shape = RoundedCornerShape(8.dp),
+                            colors = CardDefaults.cardColors(containerColor = MintContainer)
+                        ) {
+                            Text(
+                                text = subjectName,
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                                 color = OnMintContainer
                             )
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
-                }
-            }
 
-            Spacer(modifier = Modifier.height(14.dp))
-
-            // Streak Status Banner Card
-            val todayStr = viewModel.getTodayDateString()
-            val yesterdayStr = viewModel.getYesterdayDateString()
-            val activeStreak = userProfile?.getActiveStreak(todayStr, yesterdayStr) ?: 0
-            val studiedToday = userProfile?.lastSessionDate == todayStr
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("streak_banner_card"),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (studiedToday) MintContainer.copy(alpha = 0.6f) else MaterialTheme.colorScheme.surface
-                ),
-                shape = RoundedCornerShape(20.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, if (studiedToday) DeepTealPrimary else SleekBorder)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(14.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "🔥", fontSize = 28.sp)
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Column {
-                            Text(
-                                text = "Chuỗi ngày học tập trung: $activeStreak ngày",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = if (studiedToday) DeepTealPrimary else MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = if (studiedToday) "✅ Đã giữ chuỗi thành công hôm nay!" else "⚡ Hôm nay chưa học! Hãy hoàn thành 1 phiên để giữ chuỗi.",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = if (studiedToday) OnMintContainer else PenaltyRed
-                            )
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Interactive Reminders Section Card
-            ReminderSectionCard(
-                viewModel = viewModel,
-                onOpenFullManager = { showReminderManagerModal = true }
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Last Penalty Message Banner (Clickable for full alert)
-            lastPenaltyMsg?.let { msg ->
-                Surface(
-                    color = PenaltyRed.copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(16.dp),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, PenaltyRed),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 12.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Warning,
-                            contentDescription = null,
-                            tint = PenaltyRed,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = msg,
-                            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                            color = PenaltyRed,
-                            modifier = Modifier.weight(1f)
-                        )
-                        IconButton(onClick = { viewModel.dismissPenaltyMessage() }) {
-                            Icon(Icons.Default.Close, contentDescription = "Đóng", tint = PenaltyRed)
-                        }
-                    }
-                }
-            }
-
-            // Daily session quota card
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("daily_limit_card"),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (maxDailyReached) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface
-                ),
-                shape = RoundedCornerShape(16.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, SleekBorder)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.LockClock,
-                            contentDescription = null,
-                            tint = if (maxDailyReached) PenaltyRed else DeepTealPrimary,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Hạn ngạch ngày: $dailyCountToday/3 phiên",
-                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Text(
-                        text = if (maxDailyReached) "Đã đạt tối đa hôm nay" else "Tối đa 90p/phiên",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Duration selector chips (15p, 25p, 45p, 60p, 90p)
-            Text(
-                text = "Chọn thời gian phiên học",
-                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                listOf(15, 25, 45, 60, 90).forEach { mins ->
-                    val isSelected = selectedMinutes == mins
-                    val isEnabled = timerState == TimerState.IDLE && !maxDailyReached
-
-                    FilterChip(
-                        selected = isSelected,
-                        onClick = { viewModel.selectDuration(mins) },
-                        label = {
-                            Text(
-                                text = "${mins}p",
-                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                            )
-                        },
-                        enabled = isEnabled,
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = DeepTealPrimary,
-                            selectedLabelColor = Color.White
-                        ),
-                        modifier = Modifier.testTag("duration_chip_$mins")
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // BIG CIRCULAR TIMER DISPLAY WITH PULSING GLOW
-            val primaryColor = DeepTealPrimary
-            val trackColor = MaterialTheme.colorScheme.surfaceVariant
-
-            val infiniteTransition = rememberInfiniteTransition(label = "pulse_halo")
-            val pulseAlpha by infiniteTransition.animateFloat(
-                initialValue = 0.15f,
-                targetValue = 0.45f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(1400),
-                    repeatMode = RepeatMode.Reverse
-                ),
-                label = "pulse_alpha"
-            )
-            val pulseScale by infiniteTransition.animateFloat(
-                initialValue = 0.95f,
-                targetValue = 1.05f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(1400),
-                    repeatMode = RepeatMode.Reverse
-                ),
-                label = "pulse_scale"
-            )
-
-            Box(
-                modifier = Modifier
-                    .size(260.dp)
-                    .testTag("timer_circle_display"),
-                contentAlignment = Alignment.Center
-            ) {
-                if (timerState == TimerState.RUNNING) {
                     Box(
-                        modifier = Modifier
-                            .size(255.dp * pulseScale)
-                            .clip(CircleShape)
-                            .background(
-                                Brush.radialGradient(
-                                    colors = listOf(
-                                        AccentTealGlow.copy(alpha = pulseAlpha),
-                                        MintContainer.copy(alpha = pulseAlpha * 0.35f),
-                                        Color.Transparent
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.size(240.dp)
+                    ) {
+                        // Background track
+                        CircularProgressIndicator(
+                            progress = { 1f },
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colorScheme.surfaceVariant,
+                            strokeWidth = 14.dp
+                        )
+
+                        // Animated progress track
+                        CircularProgressIndicator(
+                            progress = { animatedProgress },
+                            modifier = Modifier.fillMaxSize(),
+                            color = if (isPaused) SunsetOrangeAccent else MaterialTheme.colorScheme.primary,
+                            strokeWidth = 14.dp
+                        )
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = timeFormatted,
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontSize = 48.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    letterSpacing = 1.sp
+                                ),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = if (!isSessionActive) "Sẵn sàng" else if (isPaused) "Tạm dừng" else "Đang tập trung sâu",
+                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                                color = if (isPaused) SunsetOrangeAccent else DeepTealPrimary
+                            )
+
+                            if (isSessionActive && exitCount > 0) {
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Default.Warning,
+                                        contentDescription = null,
+                                        tint = PenaltyRed,
+                                        modifier = Modifier.size(14.dp)
                                     )
-                                )
-                            )
-                    )
-                }
-
-                Canvas(modifier = Modifier.size(230.dp)) {
-                    drawCircle(
-                        color = trackColor,
-                        style = Stroke(width = 16.dp.toPx(), cap = StrokeCap.Round)
-                    )
-                    drawArc(
-                        brush = Brush.sweepGradient(
-                            listOf(
-                                DeepTealLight,
-                                DeepTealPrimary,
-                                AccentTealGlow,
-                                DeepTealPrimary
-                            )
-                        ),
-                        startAngle = -90f,
-                        sweepAngle = progress * 360f,
-                        useCenter = false,
-                        style = Stroke(width = 16.dp.toPx(), cap = StrokeCap.Round)
-                    )
-                }
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = timeDisplay,
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Black,
-                            fontSize = 46.sp,
-                            letterSpacing = 2.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    val statusText = when (timerState) {
-                        TimerState.IDLE -> "Sẵn sàng học"
-                        TimerState.RUNNING -> "Đang tập trung..."
-                        TimerState.PAUSED -> "Đang tạm dừng"
-                        TimerState.COMPLETED -> "Hoàn thành!"
-                    }
-                    Surface(
-                        color = when (timerState) {
-                            TimerState.RUNNING -> MintContainer
-                            TimerState.PAUSED -> MaterialTheme.colorScheme.surfaceVariant
-                            TimerState.COMPLETED -> MintContainer
-                            else -> MaterialTheme.colorScheme.surfaceVariant
-                        },
-                        shape = RoundedCornerShape(12.dp)
-                    ) {
-                        Text(
-                            text = statusText,
-                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                            color = if (timerState == TimerState.RUNNING) DeepTealPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                        )
-                    }
-
-                    if (exitCount > 0) {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "Xao nhãng: $exitCount lần",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = PenaltyRed
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // TIMER CONTROLS
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                if (timerState == TimerState.RUNNING || timerState == TimerState.PAUSED) {
-                    IconButton(
-                        onClick = { viewModel.resetSession() },
-                        modifier = Modifier
-                            .size(52.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .testTag("reset_timer_button")
-                    ) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Reset", tint = MaterialTheme.colorScheme.onSurface)
-                    }
-
-                    Spacer(modifier = Modifier.width(20.dp))
-                }
-
-                Button(
-                    onClick = {
-                        when (timerState) {
-                            TimerState.IDLE -> viewModel.startSession()
-                            TimerState.RUNNING -> viewModel.pauseSession()
-                            TimerState.PAUSED -> viewModel.resumeSession()
-                            TimerState.COMPLETED -> viewModel.resetSession()
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text(
+                                        text = "$exitCount lần xao nhãng",
+                                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                        color = PenaltyRed
+                                    )
+                                }
+                            }
                         }
-                    },
-                    enabled = !maxDailyReached,
-                    modifier = Modifier
-                        .height(56.dp)
-                        .width(180.dp)
-                        .testTag("main_timer_action_button"),
-                    shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = DeepTealPrimary)
-                ) {
-                    Icon(
-                        imageVector = when (timerState) {
-                            TimerState.RUNNING -> Icons.Default.Pause
-                            else -> Icons.Default.PlayArrow
-                        },
-                        contentDescription = null,
-                        modifier = Modifier.size(28.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = when (timerState) {
-                            TimerState.IDLE -> "Bắt đầu"
-                            TimerState.RUNNING -> "Tạm dừng"
-                            TimerState.PAUSED -> "Tiếp tục"
-                            TimerState.COMPLETED -> "Làm mới"
-                        },
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                    )
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Controls
+                    if (!isSessionActive) {
+                        Button(
+                            onClick = { viewModel.startSession() },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(52.dp)
+                                .testTag("start_session_button"),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                        ) {
+                            Icon(Icons.Default.PlayArrow, contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Bắt đầu phiên học ($plannedMinutes phút)",
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                            )
+                        }
+                    } else {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Button(
+                                onClick = {
+                                    if (isPaused) viewModel.resumeSession() else viewModel.pauseSession()
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(48.dp)
+                                    .testTag("pause_resume_button"),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = if (isPaused) MaterialTheme.colorScheme.primary else SunsetOrangeAccent
+                                )
+                            ) {
+                                Icon(
+                                    imageVector = if (isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
+                                    contentDescription = null
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(if (isPaused) "Tiếp tục" else "Tạm nghỉ")
+                            }
+
+                            Button(
+                                onClick = { viewModel.completeSession() },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(48.dp)
+                                    .testTag("finish_early_button"),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = DeepTealDark)
+                            ) {
+                                Icon(Icons.Default.Stop, contentDescription = null)
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Hoàn thành")
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        TextButton(
+                            onClick = { showCancelDialog = true },
+                            modifier = Modifier.testTag("cancel_session_button")
+                        ) {
+                            Text(
+                                text = "Hủy bỏ phiên học này",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // -----------------------------------------------------------
-            // LOFI CHILL AUDIO PLAYER CARD
-            // -----------------------------------------------------------
+        // Ambient Audio Selector
+        item {
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("lofi_audio_card"),
+                shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(24.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, SleekBorder)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Surface(
-                                color = MintContainer,
-                                shape = CircleShape,
-                                modifier = Modifier.size(40.dp)
-                            ) {
-                                Box(contentAlignment = Alignment.Center) {
-                                    Icon(
-                                        imageVector = Icons.Default.MusicNote,
-                                        contentDescription = null,
-                                        tint = DarkTealSecondary,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Column {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(
-                                        text = "Nhạc lofi chill tập trung",
-                                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
-                                    if (isAudioPlaying) {
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        MusicEqualizerAnimation()
-                                    }
-                                }
-                                Text(
-                                    text = currentSoundMode.title,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = DeepTealPrimary
-                                )
-                            }
-                        }
-
-                        IconButton(
-                            onClick = { viewModel.toggleAudioPlaying() },
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(CircleShape)
-                                .background(if (isAudioPlaying) DeepTealPrimary else MintContainer)
-                        ) {
                             Icon(
-                                imageVector = if (isAudioPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                                contentDescription = "Phát/dừng nhạc",
-                                tint = if (isAudioPlaying) Color.White else DarkTealSecondary
+                                imageVector = Icons.Default.Headphones,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Âm thanh sóng não & Lofi",
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                    // Sound Modes Scroll
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        LofiSoundMode.entries.forEach { mode ->
-                            val isSelected = mode == currentSoundMode
-                            FilterChip(
-                                selected = isSelected,
-                                onClick = { viewModel.selectSoundMode(mode) },
-                                label = {
+                        items(LofiSoundType.values()) { sound ->
+                            val isSelected = selectedSound == sound
+                            Card(
+                                shape = RoundedCornerShape(12.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = if (isSelected) MintContainer else MaterialTheme.colorScheme.surface
+                                ),
+                                border = if (isSelected) CardDefaults.outlinedCardBorder().copy(brush = androidx.compose.ui.graphics.SolidColor(DeepTealPrimary)) else CardDefaults.outlinedCardBorder(),
+                                modifier = Modifier.clickable {
+                                    viewModel.setLofiSound(sound)
+                                }
+                            ) {
+                                Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
                                     Text(
-                                        text = mode.title.split(" ").take(2).joinToString(" "),
-                                        fontSize = 11.sp
+                                        text = sound.displayName,
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                        ),
+                                        color = if (isSelected) DeepTealPrimary else MaterialTheme.colorScheme.onSurface
                                     )
-                                },
-                                colors = FilterChipDefaults.filterChipColors(
-                                    selectedContainerColor = MintContainer,
-                                    selectedLabelColor = OnMintContainer
+                                    Text(
+                                        text = sound.description,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Phone Notifications & Do Not Disturb (DND Focus Shield)
+        item {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(
+                                imageVector = if (isDndActive) Icons.Default.NotificationsOff else Icons.Default.NotificationsActive,
+                                contentDescription = null,
+                                tint = if (isDndActive) PenaltyRed else DeepTealPrimary,
+                                modifier = Modifier.size(22.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column {
+                                Text(
+                                    text = "Tắt thông báo điện thoại (DND)",
+                                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
+                                Text(
+                                    text = if (isDndActive) "🔕 Đang chặn toàn bộ chuông & thông báo" else "🔔 Thông báo bình thường",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = if (isDndActive) PenaltyRed else MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
+                        Switch(
+                            checked = isDndActive,
+                            onCheckedChange = { enable ->
+                                viewModel.toggleDndManual(enable)
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = Color.White,
+                                checkedTrackColor = DeepTealPrimary
+                            ),
+                            modifier = Modifier.testTag("switch_dnd_manual")
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = if (isDndActive) PenaltyRedContainer else MintContainer,
+                                shape = RoundedCornerShape(10.dp)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 8.dp)
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Tự động tắt chuông khi bắt đầu học",
+                                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                                color = if (isDndActive) PenaltyRed else DeepTealDark
+                            )
+                            Text(
+                                text = "Bật DND khi vào Flow State và tự khôi phục sau khi xong",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
+
+                        Switch(
+                            checked = autoDndOnSession,
+                            onCheckedChange = { viewModel.setAutoDndOnSession(it) },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = Color.White,
+                                checkedTrackColor = DeepTealPrimary
+                            )
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.VolumeUp,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(18.dp)
+                        Text(
+                            text = "💡 Chặn triệt để rung & tin nhắn làm vỡ dòng chú ý",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f)
                         )
-                        Slider(
-                            value = audioVolume,
-                            onValueChange = { viewModel.setAudioVolume(it) },
-                            valueRange = 0f..1f,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(horizontal = 8.dp),
-                            colors = SliderDefaults.colors(
-                                thumbColor = DeepTealPrimary,
-                                activeTrackColor = DeepTealPrimary
-                            )
+
+                        AssistChip(
+                            onClick = { viewModel.openDndSettings() },
+                            label = {
+                                Text(
+                                    text = "Cài đặt DND",
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Settings,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(14.dp)
+                                )
+                            }
                         )
                     }
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // -----------------------------------------------------------
-            // FOCUS REMINDERS CARD
-            // -----------------------------------------------------------
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("focus_reminders_card"),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(24.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, SleekBorder)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+        // Popcorn Brain Distraction Detection Sandbox
+        if (isSessionActive) {
+            item {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Surface(
-                                color = MintContainer,
-                                shape = CircleShape,
-                                modifier = Modifier.size(40.dp)
-                            ) {
-                                Box(contentAlignment = Alignment.Center) {
-                                    Icon(
-                                        imageVector = Icons.Default.NotificationsActive,
-                                        contentDescription = null,
-                                        tint = DarkTealSecondary,
-                                        modifier = Modifier.size(20.dp)
+                            Icon(
+                                imageVector = Icons.Default.Block,
+                                contentDescription = null,
+                                tint = SunsetOrangeAccent,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Kỷ luật Não Bỏng Ngô (Chống xao nhãng)",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Thoát ứng dụng hoặc mở mạng xã hội lúc đang học sẽ bị trừ 15 đ xếp hạng và 10 BFS!",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            listOf("TikTok / Reels", "Facebook", "Game").forEach { appName ->
+                                Button(
+                                    onClick = { viewModel.triggerDistractionPenalty(appName) },
+                                    colors = ButtonDefaults.buttonColors(containerColor = PenaltyRedContainer),
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text(
+                                        text = "Mở $appName",
+                                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                        color = PenaltyRed
                                     )
                                 }
                             }
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Column {
-                                Text(
-                                    text = "Lời nhắc & lịch tập trung",
-                                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = "Tùy chỉnh thời gian & tần suất nhắc học/nghỉ ngơi",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-
-                        Button(
-                            onClick = { showReminderManagerModal = true },
-                            colors = ButtonDefaults.buttonColors(containerColor = DeepTealPrimary),
-                            shape = RoundedCornerShape(12.dp),
-                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
-                        ) {
-                            Text("Cài đặt", style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
                         }
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-            // -----------------------------------------------------------
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("distraction_simulation_card"),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(24.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, SleekBorder)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Smartphone,
-                            contentDescription = null,
-                            tint = PenaltyRed,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Mô phỏng xao nhãng mạng xã hội / game",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Thoát ứng dụng hoặc mở mạng xã hội lúc đang học sẽ bị trừ 15 đ xếp hạng và 10 BFS!",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        listOf("TikTok", "Instagram", "Facebook", "Game Online", "YouTube").forEach { appName ->
-                            OutlinedButton(
-                                onClick = {
-                                    viewModel.triggerDistractionPenalty(appName)
-                                },
-                                shape = RoundedCornerShape(12.dp),
-                                border = androidx.compose.foundation.BorderStroke(1.dp, PenaltyRed.copy(alpha = 0.5f)),
-                                colors = ButtonDefaults.outlinedButtonColors(contentColor = PenaltyRed),
-                                modifier = Modifier.weight(1f),
-                                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
-                            ) {
-                                Text(
-                                    text = appName,
-                                    fontSize = 10.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 1
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Completion Dialog
-        reward?.let { res ->
-            SessionCompletionEvaluationDialog(
-                reward = res,
-                selectedMinutes = selectedMinutes,
-                onDismiss = { viewModel.dismissCompletionDialog() },
-                onSubmitFeedback = { emotion, reflection ->
-                    viewModel.submitSessionFeedback(emotion, reflection)
-                }
-            )
-        }
-        if (showReminderManagerModal) {
-            ReminderManagerModal(
-                viewModel = viewModel,
-                onDismiss = { showReminderManagerModal = false }
-            )
         }
     }
-}
 
-data class EmotionOption(val emoji: String, val label: String)
-
-val sessionEmotionOptions = listOf(
-    EmotionOption("🤩", "Tuyệt vời"),
-    EmotionOption("😊", "Hài lòng"),
-    EmotionOption("😌", "Thư thái"),
-    EmotionOption("😐", "Bình thường"),
-    EmotionOption("😫", "Mệt mỏi")
-)
-
-@Composable
-fun SessionCompletionEvaluationDialog(
-    reward: com.example.data.repository.SessionCompletionResult,
-    selectedMinutes: Int,
-    onDismiss: () -> Unit,
-    onSubmitFeedback: (emotion: String?, reflection: String?) -> Unit
-) {
-    var selectedEmotion by remember { mutableStateOf<String?>("🤩 Tuyệt vời") }
-    var reflectionText by remember { mutableStateOf("") }
-    val hasReflection = reflectionText.trim().isNotEmpty()
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "🎉 Hoàn thành phiên học!",
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    textAlign = TextAlign.Center,
-                    color = DeepTealPrimary
-                )
-                Text(
-                    text = "Bạn đã giữ vững sự tập trung trong $selectedMinutes phút",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            }
-        },
-        text = {
-            val scrollState = rememberScrollState()
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(scrollState)
-            ) {
-                // Reward summary cards
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MintContainer),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "+${reward.pointsEarned + if (hasReflection) 10 else 0}",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = DeepTealPrimary
-                            )
-                            Text("Điểm xếp hạng", style = MaterialTheme.typography.labelSmall, color = OnMintContainer)
-                        }
-                    }
-
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "+${reward.fbsBoost + if (hasReflection) 5 else 0}",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = DeepTealLight
-                            )
-                            Text("Chỉ số BFS", style = MaterialTheme.typography.labelSmall)
-                        }
-                    }
-
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MintContainer),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text("🔥 ${reward.currentStreak}", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold), color = DeepTealPrimary)
-                            Text("Chuỗi ngày", style = MaterialTheme.typography.labelSmall, color = OnMintContainer)
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Emotion Rating Section
-                Text(
-                    text = "Cảm xúc sau phiên học:",
-                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    sessionEmotionOptions.forEach { option ->
-                        val optionValue = "${option.emoji} ${option.label}"
-                        val isSelected = selectedEmotion == optionValue
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .weight(1f)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(
-                                    if (isSelected) MintContainer else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                                )
-                                .border(
-                                    width = if (isSelected) 1.5.dp else 0.5.dp,
-                                    color = if (isSelected) DeepTealPrimary else Color.Transparent,
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                                .clickable {
-                                    selectedEmotion = if (isSelected) null else optionValue
-                                }
-                                .padding(vertical = 8.dp, horizontal = 2.dp)
-                        ) {
-                            Text(text = option.emoji, fontSize = 22.sp)
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = option.label,
-                                style = MaterialTheme.typography.labelSmall,
-                                fontSize = 9.sp,
-                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                                color = if (isSelected) DeepTealPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 1
-                            )
-                        }
-                        if (option != sessionEmotionOptions.last()) {
-                            Spacer(modifier = Modifier.width(4.dp))
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Reflection Note Section (Optional)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Đúc kết sự tiến bộ",
-                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Surface(
-                        color = MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(6.dp)
-                    ) {
-                        Text(
-                            text = "Tùy chọn",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Surface(
-                    color = MintContainer.copy(alpha = 0.7f),
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text("🎁", fontSize = 14.sp)
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "Ghi chú tiến bộ để nhận thêm +10 điểm & +5 BFS",
-                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
-                            color = OnMintContainer
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = reflectionText,
-                    onValueChange = { reflectionText = it },
-                    placeholder = {
-                        Text(
-                            text = "Hôm nay bạn đã hoàn thành hoặc tiến bộ điều gì?",
-                            style = MaterialTheme.typography.bodySmall
-                        )
+    // Cancel Confirm Dialog
+    if (showCancelDialog) {
+        AlertDialog(
+            onDismissRequest = { showCancelDialog = false },
+            title = { Text("Hủy bỏ phiên học?", fontWeight = FontWeight.Bold) },
+            text = { Text("Bạn có chắc chắn muốn hủy phiên học hiện tại? Thời gian học chưa đủ sẽ không được ghi nhận điểm thưởng.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showCancelDialog = false
+                        viewModel.cancelSession()
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("reflection_note_input"),
-                    shape = RoundedCornerShape(12.dp),
-                    minLines = 2,
-                    maxLines = 4
-                )
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = {
-                    onSubmitFeedback(
-                        selectedEmotion,
-                        if (hasReflection) reflectionText.trim() else null
-                    )
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = DeepTealPrimary),
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.testTag("dismiss_completion_dialog_button")
-            ) {
-                if (hasReflection) {
-                    Text("Lưu đúc kết & nhận thưởng (+10 đ)")
-                } else {
-                    Text("Nhận thưởng & tiếp tục")
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Hủy phiên")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showCancelDialog = false }) {
+                    Text("Tiếp tục học")
                 }
             }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = onDismiss,
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Text("Bỏ qua", color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        }
-    )
-}
-
-@Composable
-fun MusicEqualizerAnimation() {
-    val infiniteTransition = rememberInfiniteTransition(label = "equalizer")
-    val heights = listOf(
-        infiniteTransition.animateFloat(
-            initialValue = 4f,
-            targetValue = 14f,
-            animationSpec = infiniteRepeatable(tween(450), RepeatMode.Reverse),
-            label = "bar1"
-        ),
-        infiniteTransition.animateFloat(
-            initialValue = 12f,
-            targetValue = 5f,
-            animationSpec = infiniteRepeatable(tween(380), RepeatMode.Reverse),
-            label = "bar2"
-        ),
-        infiniteTransition.animateFloat(
-            initialValue = 6f,
-            targetValue = 16f,
-            animationSpec = infiniteRepeatable(tween(520), RepeatMode.Reverse),
-            label = "bar3"
-        ),
-        infiniteTransition.animateFloat(
-            initialValue = 14f,
-            targetValue = 6f,
-            animationSpec = infiniteRepeatable(tween(410), RepeatMode.Reverse),
-            label = "bar4"
         )
-    )
+    }
 
-    Row(
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
-        modifier = Modifier.height(16.dp)
-    ) {
-        heights.forEach { animHeight ->
-            Box(
-                modifier = Modifier
-                    .width(3.dp)
-                    .height(animHeight.value.dp)
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(DeepTealPrimary)
-            )
-        }
+    // Completion Reward & Post-session Reflection Modal
+    if (completionReward != null) {
+        val reward = completionReward!!
+        var selectedEmotion by remember { mutableStateOf("Tập trung xuất sắc") }
+        var reflectionNote by remember { mutableStateOf("") }
+        val emotions = listOf("Tập trung xuất sắc", "Hài lòng", "Hơi mệt", "Có xao nhãng nhẹ", "Kiên cường")
+
+        AlertDialog(
+            onDismissRequest = { viewModel.dismissSessionCompletion() },
+            title = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                    Text("🎉 HOÀN THÀNH PHIÊN HỌC!", fontWeight = FontWeight.Bold, color = DeepTealPrimary)
+                }
+            },
+            text = {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item {
+                        Text(
+                            text = "Bạn đã hoàn thành $plannedMinutes phút học sâu.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Card(
+                                shape = RoundedCornerShape(12.dp),
+                                colors = CardDefaults.cardColors(containerColor = MintContainer),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(12.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = "+${reward.pointsEarned}",
+                                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                        color = DeepTealPrimary
+                                    )
+                                    Text("Điểm xếp hạng", style = MaterialTheme.typography.labelSmall)
+                                }
+                            }
+
+                            Card(
+                                shape = RoundedCornerShape(12.dp),
+                                colors = CardDefaults.cardColors(containerColor = OrangeContainer),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(12.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    val hasReflection = reflectionNote.isNotBlank()
+                                    Text(
+                                        text = "+${reward.fbsBoost + if (hasReflection) 5 else 0}",
+                                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                        color = DeepTealLight
+                                    )
+                                    Text("Chỉ số BFS", style = MaterialTheme.typography.labelSmall)
+                                }
+                            }
+                        }
+                    }
+
+                    item {
+                        Text(
+                            text = "Cảm xúc sau phiên học:",
+                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            items(emotions) { emo ->
+                                val isSelected = selectedEmotion == emo
+                                Card(
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = if (isSelected) DeepTealPrimary else MaterialTheme.colorScheme.surfaceVariant
+                                    ),
+                                    modifier = Modifier.clickable { selectedEmotion = emo }
+                                ) {
+                                    Text(
+                                        text = emo,
+                                        style = MaterialTheme.typography.labelSmall.copy(
+                                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                        ),
+                                        color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    item {
+                        OutlinedTextField(
+                            value = reflectionNote,
+                            onValueChange = { reflectionNote = it },
+                            label = { Text("Đúc kết / bài học ngắn (Nhận thêm +10đ & +5 BFS)") },
+                            placeholder = { Text("Hôm nay mình giải được 5 câu Toán khó...") },
+                            modifier = Modifier.fillMaxWidth(),
+                            maxLines = 3
+                        )
+                    }
+
+                    item {
+                        Card(
+                            shape = RoundedCornerShape(10.dp),
+                            colors = CardDefaults.cardColors(containerColor = MintContainer),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text("🎁", fontSize = 14.sp)
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "Ghi chú tiến bộ để nhận thêm +10 điểm & +5 BFS",
+                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
+                                    color = OnMintContainer
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.submitSessionReflection(reward.sessionId, selectedEmotion, reflectionNote)
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text("Nhận thưởng & Đóng", fontWeight = FontWeight.Bold)
+                }
+            }
+        )
     }
 }
-

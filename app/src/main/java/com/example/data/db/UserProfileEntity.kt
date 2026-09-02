@@ -6,28 +6,16 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "user_profile")
 data class UserProfileEntity(
     @PrimaryKey val id: Int = 1,
-    val name: String,
-    val email: String,
-    val avatarIcon: String = "brain", // "brain", "owl", "cat", "monk", "astronaut", "fox"
-    val isAssessmentCompleted: Boolean = false,
-    val fbsScore: Int = 500, // Focus Brain Score (0 - 1000)
-    val rankingPoints: Int = 1000, // Starting default ranking points
-    val totalFocusMinutes: Int = 0,
-    val completedSessionsCount: Int = 0,
-    val dailySessionsToday: Int = 0,
-    val lastSessionDate: String = "", // Format: YYYY-MM-DD
-    val studyStreak: Int = 0, // Current active daily streak
-    val lastStreakDate: String = "", // Format: YYYY-MM-DD
-    val dailyReminderEnabled: Boolean = true, // Daily study reminder toggle
-    val dailyReminderTime: String = "20:00", // Daily reminder time string
-    val githubUrl: String = "", // GitHub repository or profile link
-    val createdAt: Long = System.currentTimeMillis()
-) {
-    fun getActiveStreak(today: String, yesterday: String): Int {
-        return when {
-            lastStreakDate == today || lastStreakDate == yesterday -> studyStreak
-            else -> 0
-        }
-    }
-}
-
+    val username: String = "Bạn học tập",
+    val schoolOrGrade: String = "Lớp 12",
+    val targetGoal: String = "Ôn thi Đại học & Chống xao nhãng",
+    val avatarRes: String = "avatar_default",
+    val fbsScore: Int = 500, // Brain Focus Score (BFS: 100 - 1000)
+    val totalFocusMinutes: Long = 0,
+    val totalSessionsCompleted: Int = 0,
+    val streakDays: Int = 1,
+    val lastStudyDateTimestamp: Long = 0,
+    val currentPoints: Int = 100,
+    val rankTitle: String = "Tập sự Tập trung",
+    val isAssessmentCompleted: Boolean = false
+)

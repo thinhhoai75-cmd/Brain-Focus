@@ -1,133 +1,130 @@
 package com.example.util
 
+import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
-import kotlin.concurrent.thread
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlin.math.sin
+import kotlin.random.Random
 
-enum class LofiSoundMode(val title: String, val description: String, val iconResName: String) {
-    LOFI_CHILL("🎵 Nhạc lo-fi chill beats", "Giai điệu lofi 432Hz thư giãn", "music_note"),
-    RAIN_FOCUS("🌧️ Tiếng mưa tĩnh lặng", "Tiếng mưa nhẹ cách âm xao nhãng", "water_drop"),
-    COFFEE_SHOP("☕ Không gian quán cà phê", "Âm thanh ấm áp giúp tập trung", "coffee"),
-    BINAURAL_ALPHA("🧘 Sóng não alpha 10Hz", "Sóng não kích thích khả năng ghi nhớ", "graphic_eq")
+enum class LofiSoundType(val displayName: String, val description: String) {
+    NONE("Tắt âm thanh", "Yên tĩnh tuyệt đối"),
+    GAMMA_40HZ("Sóng não Gamma 40Hz", "Binaural beats 40Hz kích hoạt vỏ não trước"),
+    WHITE_NOISE("Tiếng ồn trắng (White Noise)", "Tạo màn chắn âm thanh chống phân tâm"),
+    RAIN_SOUNDS("Mưa rơi êm dịu (Raindrops)", "Âm thanh thư giãn nhịp sinh học"),
+    LOFI_CHILL_BEATS("Lofi Chill Synth Loop", "Giai điệu chậm rãi thư thái 70 BPM")
 }
 
-class LofiAudioPlayer {
+class LofiAudioPlayer(private val context: Context) {
     private var audioTrack: AudioTrack? = null
-    private var isPlaying = false
-    private var playThread: Thread? = null
-    private var currentVolume = 0.5f
-    private var currentMode = LofiSoundMode.LOFI_CHILL
+    private var playJob: Job? = null
+    private val scope = CoroutineScope(Dispatchers.Default)
 
-    fun startSound(mode: LofiSoundMode) {
-        stopSound()
-        currentMode = mode
-        isPlaying = true
+    var currentSoundType: LofiSoundType = LofiSoundType.NONE
+        private set
 
-        val sampleRate = 44100
-        val bufferSize = AudioTrack.getMinBufferSize(
-            sampleRate,
-            AudioFormat.CHANNEL_OUT_MONO,
-            AudioFormat.ENCODING_PCM_16BIT
-        ) * 2
+    fun play(soundType: LofiSoundType) {
+        if (currentSoundType == soundType && isPlaying()) return
+        stop()
+        currentSoundType = soundType
+        if (soundType == LofiSoundType.NONE) return
 
-        audioTrack = AudioTrack.Builder()
-            .setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+        playJob = scope.launch {
+            try {
+                val sampleRate = 22050
+                val minBufferSize = AudioTrack.getMinBufferSize(
+                    sampleRate,
+                    AudioFormat.CHANNEL_OUT_MONO,
+                    AudioFormat.ENCODING_PCM_16BIT
+                )
+                val bufferSize = (minBufferSize * 2).coerceAtLeast(sampleRate / 2)
+
+                audioTrack = AudioTrack.Builder()
+                    .setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build()
+                    )
+                    .setAudioFormat(
+                        AudioFormat.Builder()
+                            .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                            .setSampleRate(sampleRate)
+                            .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+                            .build()
+                    )
+                    .setBufferSizeInBytes(bufferSize)
+                    .setTransferMode(AudioTrack.MODE_STREAM)
                     .build()
-            )
-            .setAudioFormat(
-                AudioFormat.Builder()
-                    .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                    .setSampleRate(sampleRate)
-                    .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
-                    .build()
-            )
-            .setBufferSizeInBytes(bufferSize)
-            .setTransferMode(AudioTrack.MODE_STREAM)
-            .build()
 
-        audioTrack?.setVolume(currentVolume)
-        audioTrack?.play()
+                audioTrack?.play()
 
-        playThread = thread(start = true) {
-            val samples = ShortArray(1024)
-            var sampleIndex = 0L
+                val buffer = ShortArray(1024)
+                var sampleIndex = 0L
 
-            // Pentatonic frequencies for Lofi Chill
-            val chordFrequencies = doubleArrayOf(220.0, 261.63, 293.66, 329.63, 392.00, 440.0) // A3, C4, D4, E4, G4, A4
-
-            while (isPlaying) {
-                for (i in samples.indices) {
-                    val t = sampleIndex / sampleRate.toDouble()
-                    var sampleValue = 0.0
-
-                    when (currentMode) {
-                        LofiSoundMode.LOFI_CHILL -> {
-                            // Warm Lo-Fi melody with gentle chord modulation
-                            val chordStep = ((sampleIndex / (sampleRate * 2)) % chordFrequencies.size).toInt()
-                            val baseFreq = chordFrequencies[chordStep]
-                            val subFreq = baseFreq / 2.0
-                            val env = (sin(2 * Math.PI * 0.5 * t) + 1.0) / 2.0 // slow breathe envelope
-
-                            val sine1 = sin(2 * Math.PI * baseFreq * t)
-                            val sine2 = sin(2 * Math.PI * subFreq * t) * 0.4
-                            val lofiVinylNoise = (Math.random() - 0.5) * 0.04 // gentle vinyl crackle
-
-                            sampleValue = (sine1 * 0.4 + sine2 + lofiVinylNoise) * (0.3 + 0.2 * env)
+                while (isActive && currentSoundType == soundType) {
+                    for (i in buffer.indices) {
+                        val t = (sampleIndex + i).toDouble() / sampleRate
+                        val sampleValue: Double = when (soundType) {
+                            LofiSoundType.GAMMA_40HZ -> {
+                                // 40Hz modulation on a carrier wave (200Hz)
+                                val carrier = sin(2.0 * Math.PI * 216.0 * t)
+                                val beat = (1.0 + sin(2.0 * Math.PI * 40.0 * t)) / 2.0
+                                carrier * beat * 0.4
+                            }
+                            LofiSoundType.WHITE_NOISE -> {
+                                // Filtered soft white noise
+                                (Random.nextDouble(-1.0, 1.0) * 0.18)
+                            }
+                            LofiSoundType.RAIN_SOUNDS -> {
+                                // Raindrop texture (soft noise + sporadic drops)
+                                val baseNoise = Random.nextDouble(-0.15, 0.15)
+                                val dropMod = if (Random.nextInt(1000) < 5) sin(2.0 * Math.PI * 600.0 * t) * 0.25 else 0.0
+                                (baseNoise + dropMod) * 0.8
+                            }
+                            LofiSoundType.LOFI_CHILL_BEATS -> {
+                                // Relaxing ambient chord synthesizer loop (Pentatonic chord progression)
+                                val chordFreq1 = 220.0 // A3
+                                val chordFreq2 = 277.18 // C#4
+                                val chordFreq3 = 329.63 // E4
+                                val lfo = (1.0 + sin(2.0 * Math.PI * 0.5 * t)) / 2.0 // 0.5Hz gentle breathe
+                                val synth = (sin(2.0 * Math.PI * chordFreq1 * t) +
+                                        0.8 * sin(2.0 * Math.PI * chordFreq2 * t) +
+                                        0.6 * sin(2.0 * Math.PI * chordFreq3 * t)) / 3.0
+                                synth * lfo * 0.35
+                            }
+                            LofiSoundType.NONE -> 0.0
                         }
-
-                        LofiSoundMode.RAIN_FOCUS -> {
-                            // Pink noise algorithm filtered for gentle rain
-                            val white = Math.random() * 2.0 - 1.0
-                            val rainDroplets = if (Math.random() > 0.998) (Math.random() * 0.5) else 0.0
-                            sampleValue = (white * 0.25 + rainDroplets)
-                        }
-
-                        LofiSoundMode.COFFEE_SHOP -> {
-                            // Low warmth rumble + soft murmur
-                            val rumble = sin(2 * Math.PI * 60.0 * t) * 0.15
-                            val murmur = (Math.random() * 2.0 - 1.0) * 0.12
-                            sampleValue = rumble + murmur
-                        }
-
-                        LofiSoundMode.BINAURAL_ALPHA -> {
-                            // 432 Hz carrier + 10 Hz Alpha beat
-                            val carrier = sin(2 * Math.PI * 432.0 * t) * 0.3
-                            val alphaMod = sin(2 * Math.PI * 10.0 * t) * 0.2
-                            sampleValue = carrier + alphaMod
-                        }
+                        buffer[i] = (sampleValue * Short.MAX_VALUE).toInt().coerceIn(Short.MIN_VALUE.toInt(), Short.MAX_VALUE.toInt()).toShort()
                     }
-
-                    // Clip to short range (-32768 to 32767)
-                    val shortVal = (sampleValue * 12000.0 * currentVolume).toInt().coerceIn(-32000, 32000)
-                    samples[i] = shortVal.toShort()
-                    sampleIndex++
+                    audioTrack?.write(buffer, 0, buffer.size)
+                    sampleIndex += buffer.size
                 }
-
-                audioTrack?.write(samples, 0, samples.size)
+            } catch (_: Exception) {
+                // Audio track safely closed
             }
         }
     }
 
-    fun setVolume(volume: Float) {
-        currentVolume = volume.coerceIn(0f, 1f)
-        audioTrack?.setVolume(currentVolume)
-    }
-
-    fun stopSound() {
-        isPlaying = false
+    fun stop() {
+        playJob?.cancel()
+        playJob = null
         try {
+            audioTrack?.pause()
+            audioTrack?.flush()
             audioTrack?.stop()
             audioTrack?.release()
         } catch (_: Exception) {}
         audioTrack = null
-        playThread = null
+        currentSoundType = LofiSoundType.NONE
     }
 
-    fun isPlaying(): Boolean = isPlaying
-    fun getCurrentMode(): LofiSoundMode = currentMode
+    fun isPlaying(): Boolean {
+        return audioTrack != null && currentSoundType != LofiSoundType.NONE
+    }
 }

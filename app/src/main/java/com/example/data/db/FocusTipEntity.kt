@@ -9,8 +9,5 @@ data class FocusTipEntity(
     val title: String,
     val category: String, // "Phương pháp học", "Môi trường", "Cai nghiện số", "Sức khỏe não bộ"
     val description: String,
-    val isFavorite: Boolean = false,
-    val isApplied: Boolean = false,
-    val isCustom: Boolean = false,
-    val timestamp: Long = System.currentTimeMillis()
+    val isBookmarked: Boolean = false
 )

@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Brain Focus 🧠⚡ - Khắc Phục Não Bỏng Ngô</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            cyber: ['"Space Grotesk"', 'sans-serif'],
+          },
+          colors: {
+            navy: {
+              950: '#060a17',
+              900: '#0b132b',
+              850: '#0f1c3f',
+              800: '#1c2541',
+              700: '#3a506b',
+            },
+            electric: {
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            cyber: {
+              neon: '#00f2fe',
+              sky: '#38bdf8',
+              ice: '#e0f2fe',
+              cyan: '#06b6d4',
+              glow: '#4facfe',
+            },
+            fire: {
+              orange: '#ff5722',
+              amber: '#f59e0b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      background: linear-gradient(145deg, #f8fafc 0%, #f0f9ff 40%, #ecfeff 75%, #f0fdf4 100%);
+      color: #0f172a;
+      min-height: 100vh;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #93c5fd;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(241, 245, 249, 0.6);
+    }
+    .glow-blue {
+      box-shadow: 0 4px 20px -2px rgba(37, 99, 235, 0.25);
+    }
+    .glow-electric {
+      box-shadow: 0 8px 25px -4px rgba(37, 99, 235, 0.35);
+    }
+    .glow-neon {
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    }
+    .glass-card:hover {
+      border-color: rgba(56, 189, 248, 0.6);
+      box-shadow: 0 10px 25px -3px rgba(37, 99, 235, 0.12);
+    }
+    .glass-card-light {
+      background: rgba(248, 250, 252, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+    }
+    @keyframes pulse-slow {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.02); opacity: 0.9; }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 4s ease-in-out infinite;
+    }
+    @keyframes bar-dance {
+      0%, 100% { height: 4px; }
+      50% { height: 18px; }
+    }
+    .equalizer-bar-1 { animation: bar-dance 0.7s ease-in-out infinite; }
+    .equalizer-bar-2 { animation: bar-dance 0.5s ease-in-out infinite 0.2s; }
+    .equalizer-bar-3 { animation: bar-dance 0.9s ease-in-out infinite 0.4s; }
+    .equalizer-bar-4 { animation: bar-dance 0.6s ease-in-out infinite 0.1s; }
+  </style>
+</head>
+<body class="h-full text-slate-800 antialiased overflow-hidden flex flex-col selection:bg-cyan-200 selection:text-blue-950">
+
+  <!-- ================= TOP APP BAR (Luminous Gradient Header) ================= -->
+  <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 px-4 py-2.5 shadow-lg flex items-center justify-between shrink-0 border-b border-blue-400/30 z-20">
+    <div class="flex items-center space-x-3">
+      <!-- Cyber Logo -->
+      <div class="relative">
+        <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-xl shadow-lg glow-blue font-black text-white">
+          🧠
+        </div>
+        <span class="absolute -bottom-1 -right-1 flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-300 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400"></span>
+        </span>
+      </div>
+
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-black text-base sm:text-lg tracking-tight leading-tight text-white font-cyber flex items-center gap-1.5 drop-shadow-sm">
+            BRAIN FOCUS
+          </h1>
+          <a href="https://brainfocus.id.vn" target="_blank" class="hidden sm:inline-flex items-center gap-1 text-[10px] bg-white/15 border border-white/30 text-white px-2 py-0.5 rounded-full font-mono hover:bg-white hover:text-blue-700 transition-all shadow-sm">
+            <span>🌐</span>
+            <span>brainfocus.id.vn</span>
+          </a>
+        </div>
+        <p class="text-[11px] text-blue-100 font-medium flex items-center gap-1.5">
+          <span class="text-amber-300 font-bold">🔥 Lock In Mode</span>
+          <span>•</span>
+          <span class="text-cyan-100">Diệt Não Bỏng Ngô 🍿🚫</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Right Header Actions (Audio & BFS Badge & Rank Points) -->
+    <div class="flex items-center space-x-1.5 sm:space-x-2.5">
+      
+      <!-- Equalizer Visualizer & Sound Synth Button -->
+      <button id="quick-sound-btn" onclick="toggleAudio()" class="flex items-center gap-2 bg-white/15 hover:bg-white/25 active:scale-95 transition-all text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/30 text-white shadow-sm">
+        <!-- Animated Equalizer Bars -->
+        <div id="equalizer-bars" class="flex items-end gap-0.5 h-4 opacity-75">
+          <span class="w-1 bg-cyan-200 rounded-full h-1"></span>
+          <span class="w-1 bg-white rounded-full h-2"></span>
+          <span class="w-1 bg-sky-200 rounded-full h-1"></span>
+          <span class="w-1 bg-cyan-100 rounded-full h-3"></span>
+        </div>
+        <span id="sound-status" class="hidden md:inline text-white text-[11px] font-semibold">Sóng 40Hz: Tắt</span>
+      </button>
+
+      <!-- Điểm Xếp Hạng (Rank Points) -->
+      <div onclick="switchTab('profile')" class="cursor-pointer bg-amber-400/90 hover:bg-amber-400 text-slate-900 border border-amber-300 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-bold transition-all shadow-md active:scale-95">
+        <span class="text-amber-950 font-extrabold">🏆 XH:</span>
+        <span id="header-rank-points" class="text-slate-950 text-xs sm:text-sm font-cyber font-black">850đ</span>
+      </div>
+
+      <!-- BFS Score Pill (Interactive) -->
+      <div onclick="switchTab('profile')" class="cursor-pointer bg-white text-blue-700 hover:bg-blue-50 border border-white/60 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-bold transition-all shadow-md active:scale-95">
+        <span class="text-blue-600 font-black">⚡ BFS:</span>
+        <span id="header-bfs-score" class="text-blue-900 text-xs sm:text-sm font-cyber font-black">740</span>
+      </div>
+
+      <!-- Total Combined Score for Leaderboard -->
+      <div onclick="switchTab('leaderboard')" class="cursor-pointer bg-gradient-to-r from-emerald-400 to-cyan-300 text-slate-950 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-black transition-all shadow-md active:scale-95">
+        <span>👑 Tổng:</span>
+        <span id="header-total-score" class="font-cyber font-black text-xs sm:text-sm">1590đ</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= VIBRANT SUB-BANNER ================= -->
+  <div class="bg-gradient-to-r from-sky-100 via-blue-50 to-emerald-50 px-4 py-1.5 text-xs flex items-center justify-between border-b border-sky-200/80 shrink-0">
+    <div class="flex items-center gap-2 text-[11px] overflow-x-auto whitespace-nowrap custom-scrollbar">
+      <span class="bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 rounded-md font-bold shadow-xs">🛡️ 0% Brain Rot</span>
+      <span class="bg-purple-100 text-purple-700 border border-purple-300 px-2 py-0.5 rounded-md font-bold shadow-xs">🧪 Dopamine Reset</span>
+      <span class="hidden md:inline bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-md font-bold shadow-xs">✨ Chu kỳ 90 Phút Ultradian</span>
+    </div>
+    <div class="text-[11px] font-bold text-blue-800 flex items-center gap-1">
+      <span>🔥 Streak:</span>
+      <span id="header-streak-badge" class="text-amber-600 font-black">5 Ngày Cháy Hết Mình</span>
+    </div>
+  </div>
+
+  <!-- ================= MAIN WORKSPACE AREA ================= -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- DESKTOP SIDEBAR (Crisp Modern White) -->
+    <aside class="hidden lg:flex w-64 bg-white/90 backdrop-blur-md flex-col justify-between p-4 border-r border-slate-200/80 shrink-0 shadow-sm">
+      <div class="space-y-1.5">
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 px-3 mb-2 font-cyber">CHẾ ĐỘ TẬP TRUNG</div>
+        
+        <button onclick="switchTab('timer')" id="sidebar-btn-timer" class="sidebar-item w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md glow-electric">
+          <span class="text-base">⏱️</span>
+          <span>Phiên Học Sâu (90p)</span>
+        </button>
+
+        <button onclick="switchTab('gym')" id="sidebar-btn-gym" class="sidebar-item w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all hover:bg-slate-100 text-slate-700">
+          <span class="text-base">🎮</span>
+          <span>Brain Gym (3 Game)</span>
+        </button>
+
+        <button onclick="switchTab('library')" id="sidebar-btn-library" class="sidebar-item w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all hover:bg-slate-100 text-slate-700">
+          <span class="text-base">🧬</span>
+          <span>Khoa Học Thần Kinh</span>
+        </button>
+
+        <button onclick="switchTab('tips')" id="sidebar-btn-tips" class="sidebar-item w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all hover:bg-slate-100 text-slate-700">
+          <span class="text-base">💡</span>
+          <span>Bí Kíp Trị Xao Nhãng</span>
+        </button>
+
+        <button onclick="switchTab('leaderboard')" id="sidebar-btn-leaderboard" class="sidebar-item w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all hover:bg-slate-100 text-slate-700">
+          <span class="text-base">🏆</span>
+          <span>Bảng Vinh Danh Top</span>
+        </button>
+
+        <button onclick="switchTab('profile')" id="sidebar-btn-profile" class="sidebar-item w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all hover:bg-slate-100 text-slate-700">
+          <span class="text-base">📊</span>
+          <span>Hồ Sơ & Level BFS</span>
+        </button>
+      </div>
+
+      <!-- Quick Audio Synth Box -->
+      <div class="glass-card-light p-3.5 rounded-2xl border border-sky-200/80 shadow-xs">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-blue-800 flex items-center gap-1">
+            <span>🎧</span> Sóng Não Kích Não
+          </span>
+          <span id="audio-indicator-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+        </div>
+        <select id="sound-type-select" onchange="changeSoundType(this.value)" class="w-full bg-white border border-slate-300 text-xs text-slate-800 rounded-xl p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none mb-2 font-medium shadow-xs">
+          <option value="gamma">Gamma 40Hz (Cực Tập Trung)</option>
+          <option value="lofi">Lofi Synth Chill Sâu</option>
+          <option value="rain">Tiếng Mưa Êm Dịu</option>
+          <option value="white">White Noise (Chống Tiếng Ồn)</option>
+        </select>
+        <button onclick="toggleAudio()" id="sidebar-sound-btn" class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 text-white font-black text-xs py-2.5 rounded-xl transition-all shadow-sm">
+          BẬT ÂM THANH
+        </button>
+      </div>
+    </aside>
+
+    <!-- DYNAMIC MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-5 md:p-6 bg-gradient-to-b from-sky-50/50 via-slate-50 to-slate-100/60">
+
+      <!-- ================= TAB 1: FOCUS SESSION (LOCK IN) ================= -->
+      <section id="tab-timer" class="tab-content max-w-3xl mx-auto space-y-4">
+        
+        <!-- Mode Tabs Pills -->
+        <div class="flex justify-center">
+          <div class="inline-flex p-1 bg-white border border-slate-200 shadow-md rounded-2xl">
+            <button onclick="setTimerMode('ultradian')" id="mode-btn-ultradian" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md">
+              🌊 Ultradian 90p
+            </button>
+            <button onclick="setTimerMode('pomodoro')" id="mode-btn-pomodoro" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-blue-600">
+              🍅 Pomodoro 25p
+            </button>
+            <button onclick="setTimerMode('break')" id="mode-btn-break" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-blue-600">
+              ☕ Sạc Pin 15p
+            </button>
+          </div>
+        </div>
+
+        <!-- MAIN TIMER CARD -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden flex flex-col items-center justify-center border-sky-100">
+          
+          <!-- Background Glow Elements -->
+          <div class="absolute -top-20 -right-20 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-cyan-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Anti-Distraction Alert -->
+          <div id="distraction-alert" class="hidden mb-4 w-full bg-gradient-to-r from-rose-50 to-orange-50 border border-rose-300 text-rose-800 px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between shadow-md">
+            <div class="flex items-center gap-2">
+              <span class="text-base">🚨</span>
+              <span>CẢNH BÁO: Bạn vừa thoát app! Hãy tập trung lại để bảo vệ chuỗi điểm.</span>
+            </div>
+            <button onclick="dismissDistractionAlert()" class="bg-rose-600 text-white px-2.5 py-1 rounded-lg hover:bg-rose-700 transition-all font-bold">Lock In Tiếp</button>
+          </div>
+
+          <!-- Subject / Goal input field -->
+          <div class="w-full max-w-md mb-3 text-center">
+            <div class="relative">
+              <input type="text" id="session-subject-input" placeholder="🎯 Đặt mục tiêu: Giải đề ĐH, Luyện IELTS, Code Web..." class="w-full text-center font-bold text-sm sm:text-base text-slate-800 placeholder-slate-400 bg-slate-50 border border-slate-300 rounded-2xl px-4 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all shadow-inner">
+            </div>
+          </div>
+
+          <!-- Circular Luminous SVG Timer Progress -->
+          <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center my-3">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#0284c7" />
+                  <stop offset="50%" stop-color="#2563eb" />
+                  <stop offset="100%" stop-color="#4f46e5" />
+                </linearGradient>
+              </defs>
+              <!-- Background Ring -->
+              <circle cx="50" cy="50" r="42" stroke="currentColor" stroke-width="6" class="text-slate-100" fill="transparent"></circle>
+              <!-- Progress Ring -->
+              <circle id="timer-progress-ring" cx="50" cy="50" r="42" stroke="url(#blueGradient)" stroke-width="6" stroke-linecap="round" class="transition-all duration-1000 ease-linear drop-shadow-sm" fill="transparent" stroke-dasharray="263.89" stroke-dashoffset="0"></circle>
+            </svg>
+
+            <!-- Center Text -->
+            <div class="absolute flex flex-col items-center justify-center text-center">
+              <span id="timer-display" class="font-black text-4xl sm:text-5xl text-slate-900 tracking-tighter font-cyber">90:00</span>
+              <span id="timer-phase-label" class="text-[11px] font-extrabold text-blue-700 bg-blue-50 border border-blue-200 px-3 py-0.5 rounded-full mt-1.5 shadow-xs">
+                Khởi động vỏ não (0-15p)
+              </span>
+              <div class="flex items-center gap-1.5 mt-2">
+                <span class="text-[11px] text-slate-500 font-medium" id="timer-distraction-count">Xao nhãng: 0 lần</span>
+                <span class="text-[10px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300 font-bold">Lock-In Mode</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls Action Row -->
+          <div class="flex items-center gap-3 sm:gap-4 mt-4">
+            <button onclick="resetTimer()" class="w-12 h-12 rounded-2xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-600 flex items-center justify-center text-lg active:scale-95 transition-all shadow-md" title="Đặt lại">
+              🔄
+            </button>
+            <button onclick="toggleTimer()" id="main-timer-action-btn" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider">
+              <span id="play-pause-icon">▶️</span>
+              <span id="play-pause-text">BẮT ĐẦU LOCK IN</span>
+            </button>
+            <button onclick="openReflectionModal()" class="w-12 h-12 rounded-2xl bg-sky-50 hover:bg-sky-100 border border-sky-300 text-blue-700 flex items-center justify-center text-lg active:scale-95 transition-all shadow-md" title="Đúc kết phiên học">
+              📝
+            </button>
+          </div>
+
+          <!-- Neuro Tip Box -->
+          <div class="mt-6 p-4 rounded-2xl glass-card-light w-full max-w-md text-center border-sky-200/80 shadow-xs">
+            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+              🧬 <strong class="text-blue-800">Cơ chế khoa học:</strong> Vỏ não trước trán cần 15 phút để vượt qua cơn thèm Dopamine lướt web. Đừng bỏ cuộc trong 15 phút đầu nhé!
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Phone Notification Shield / Do Not Disturb (DND) Card -->
+        <div id="dnd-shield-card" class="glass-card p-4 sm:p-5 rounded-3xl border border-sky-200/90 shadow-md transition-all">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div id="dnd-icon-display" class="w-10 h-10 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-500 text-white flex items-center justify-center text-xl shadow-md">
+                🔕
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-black text-slate-900 font-cyber">TẮT THÔNG BÁO ĐIỆN THOẠI</h3>
+                  <span id="dnd-status-badge" class="text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded-full">🔔 Bình thường</span>
+                </div>
+                <p id="dnd-status-text" class="text-xs text-slate-600 mt-0.5">
+                  Tự động chặn thông báo, chuông và tin nhắn làm vỡ dòng tập trung khi học.
+                </p>
+              </div>
+            </div>
+
+            <!-- Switch Toggle -->
+            <label class="relative inline-flex items-center cursor-pointer shrink-0">
+              <input type="checkbox" id="dnd-toggle-switch" onchange="toggleDnd(this.checked)" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-rose-500 peer-checked:to-amber-500 shadow-inner"></div>
+            </label>
+          </div>
+
+          <!-- Secondary Options Row -->
+          <div class="mt-3.5 pt-3 border-t border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="auto-dnd-checkbox" onchange="toggleAutoDnd(this.checked)" checked class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+              <span class="font-bold text-slate-700">Tự động bật khi bấm bắt đầu phiên học</span>
+            </label>
+            <button onclick="openSystemDndSettings()" class="inline-flex items-center gap-1 text-[11px] font-bold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl border border-blue-200 transition-all self-start sm:self-auto">
+              <span>⚙️ Cài đặt DND hệ thống</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Sound Card on Mobile -->
+        <div class="lg:hidden glass-card p-4 rounded-2xl flex items-center justify-between border-sky-100 shadow-md">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-lg border border-blue-200">
+              🎧
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900">Sóng não Gamma 40Hz</div>
+              <div class="text-[11px] text-slate-500">Đồng bộ hoá nơ-ron tập trung cao độ</div>
+            </div>
+          </div>
+          <button onclick="toggleAudio()" id="mobile-sound-toggle-btn" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-black shadow-md">
+            Bật sóng
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 2: BRAIN GYM (3 MINI GAMES) ================= -->
+      <section id="tab-gym" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+        
+        <!-- Header Banner -->
+        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 rounded-3xl border border-blue-300 shadow-lg text-white">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-2xl shadow-inner text-white">
+              🎮
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-xl font-black text-white font-cyber flex items-center gap-2">
+                BRAIN FOCUS GYM
+                <span class="text-[10px] bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md font-bold uppercase">Cộng Điểm BFS</span>
+              </h2>
+              <p class="text-xs text-blue-100 mt-0.5">3 bài tập tâm lý thần kinh kích hoạt vỏ não trước trán (Prefrontal Cortex)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Game Selection Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <!-- Game 1: Stroop Test -->
+          <div onclick="startStroopGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                🎨
+              </div>
+              <h3 class="font-extrabold text-sm text-slate-900">Stroop Siêu Cấp</h3>
+              <p class="text-[11px] text-slate-600 mt-1 leading-normal">
+                Ức chế xung động cực độ. Đảo quy tắc liên tục (Màu sắc vs Nghĩa từ) dưới áp lực 2.5 giây/câu!
+              </p>
+            </div>
+            <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
+              <span class="text-slate-500">12 Lượt • 2.5s/câu</span>
+              <span class="text-blue-700 font-black">+40 BFS →</span>
+            </div>
+          </div>
+
+          <!-- Game 2: Memory Matrix -->
+          <div onclick="startMemoryGridGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-sky-100 border border-sky-200 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                🧩
+              </div>
+              <h3 class="font-extrabold text-sm text-slate-900">Ma Trận Ô Nhớ & Bẫy</h3>
+              <p class="text-[11px] text-slate-600 mt-1 leading-normal">
+                Mở rộng từ 3x3 lên 5x5 (25 ô), ghi nhớ đến 9 điểm nơ-ron và né tránh các ô Bẫy Bom 💣!
+              </p>
+            </div>
+            <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
+              <span class="text-slate-500">6 Cấp độ • Có Ô Bẫy</span>
+              <span class="text-blue-700 font-black">+50 BFS →</span>
+            </div>
+          </div>
+
+          <!-- Game 3: Rapid Math -->
+          <div onclick="startRapidMathGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                ⚡
+              </div>
+              <h3 class="font-extrabold text-sm text-slate-900">Tính Nhẩm Đa Biểu Thức</h3>
+              <p class="text-[11px] text-slate-600 mt-1 leading-normal">
+                Toán tổ hợp (Nhân, Chia, Ngoặc đơn). Đúng +2s, Sai phạt -3s! Thử thách phản xạ não đỉnh cao.
+              </p>
+            </div>
+            <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
+              <span class="text-slate-500">20s • Combo x2 x3</span>
+              <span class="text-blue-700 font-black">+40 BFS →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Game Container -->
+        <div id="active-game-container" class="hidden glass-card p-6 rounded-3xl border-blue-300 shadow-2xl relative">
+          <div id="game-dynamic-area"></div>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 3: SCIENCE LIBRARY ================= -->
+      <section id="tab-library" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+        
+        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 rounded-3xl border border-blue-300 shadow-lg text-white">
+          <h2 class="text-lg sm:text-xl font-black text-white font-cyber flex items-center gap-2">
+            <span>🧬</span> THƯ VIỆN KHOA HỌC NÃO BỘ & CAI NGHIỆN SỐ
+          </h2>
+          <p class="text-xs text-blue-100 mt-1">
+            Hiểu rõ cơ chế sinh học phân tử, thụ thể Dopamine D2 và kiến trúc giảm ma sát (Friction Architecture).
+          </p>
+        </div>
+
+        <!-- Articles Container -->
+        <div class="space-y-3" id="article-list-container">
+          <!-- Populated by JS -->
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 4: STUDY TIPS ================= -->
+      <section id="tab-tips" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+        
+        <div class="glass-card p-5 rounded-3xl border-slate-200 shadow-md space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 class="text-base sm:text-lg font-black text-slate-900 font-cyber flex items-center gap-2">
+                <span>💡</span> BÍ KÍP TRỊ XAO NHÃNG HIỆU QUẢ
+              </h2>
+              <p class="text-xs text-slate-600">Chiến thuật thực chiến giúp bật chế độ Lock-In ngay trong 60 giây.</p>
+            </div>
+            <div class="flex gap-1.5 overflow-x-auto py-1">
+              <button onclick="filterTips('ALL')" class="tip-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm" data-category="ALL">Tất cả</button>
+              <button onclick="filterTips('ENV')" class="tip-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200" data-category="ENV">Không gian</button>
+              <button onclick="filterTips('TECH')" class="tip-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200" data-category="TECH">Công nghệ</button>
+              <button onclick="filterTips('STRAT')" class="tip-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200" data-category="STRAT">Chiến lược</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips Grid -->
+        <div id="tips-grid-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <!-- Populated by JS -->
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 5: LEADERBOARD ================= -->
+      <section id="tab-leaderboard" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+        
+        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 rounded-3xl border border-blue-300 shadow-lg text-center text-white">
+          <span class="text-3xl">🏆</span>
+          <h2 class="text-lg font-black text-white font-cyber mt-1">BẢNG VINH DANH CHIẾN THẦN HỌC SÂU</h2>
+          <p class="text-xs text-amber-300 font-bold mt-0.5">
+            ⚡ Tổng Điểm = Điểm Xếp Hạng (Rèn luyện) + Điểm BFS (Não bộ)
+          </p>
+        </div>
+
+        <!-- Rule Explainer Card -->
+        <div class="glass-card-light px-4 py-3 rounded-2xl border border-blue-200 text-xs text-slate-700 flex items-center gap-2.5 shadow-xs">
+          <span class="text-lg shrink-0">💡</span>
+          <div>
+            <strong class="text-slate-900 font-bold">Cơ chế xếp hạng công bằng:</strong> Điểm Xếp Hạng (tích lũy qua phiên học, streak, game) và Điểm BFS (chẩn đoán não bộ) là <strong>2 thang điểm riêng biệt</strong>. Cả 2 được <strong>cộng gộp lại</strong> để xác định thứ hạng vinh danh.
+          </div>
+        </div>
+
+        <!-- Podium Top 3 -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-3 items-end pt-4 pb-2" id="leaderboard-podium-container">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="glass-card rounded-2xl overflow-hidden shadow-md border-slate-200" id="leaderboard-table">
+          <!-- Populated by JS -->
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 6: PROFILE & STATS ================= -->
+      <section id="tab-profile" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+        
+        <!-- User Info Card with Level Badge -->
+        <div class="glass-card p-5 rounded-3xl border-slate-200 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center space-x-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center text-3xl font-black shadow-md font-cyber">
+              <span id="user-avatar-initial">T</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 id="user-display-name" class="text-lg font-black text-slate-900 font-cyber">Trịnh Hoài Tâm</h2>
+                <span class="text-[10px] bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 rounded-full font-bold">Level 14</span>
+              </div>
+              <p id="user-display-school" class="text-xs text-slate-600">Mục tiêu: Đạt 900+ BFS & Tối ưu hóa vỏ não</p>
+              <div class="inline-flex items-center gap-1.5 mt-1 bg-sky-50 border border-sky-200 text-blue-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                <span>🌟 Danh hiệu: Vỏ Não Kiên Định (Deep Focus)</span>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="openAssessmentModal(true)" class="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md">
+            📝 Đánh Giá Lại BFS (10 câu)
+          </button>
+        </div>
+
+        <!-- 2x2 Key Metrics Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-xs font-bold text-slate-600">Chỉ số BFS</div>
+            <div id="stat-bfs-score" class="text-2xl font-black text-blue-600 mt-1 font-cyber">740</div>
+            <div class="text-[10px] text-emerald-600 font-bold mt-0.5">Khảo sát & Gym</div>
+          </div>
+          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-xs font-bold text-slate-600">Điểm Xếp Hạng</div>
+            <div id="stat-rank-points" class="text-2xl font-black text-amber-600 mt-1 font-cyber">850 đ</div>
+            <div class="text-[10px] text-amber-700 font-medium mt-0.5">Phiên học & Kỷ luật</div>
+          </div>
+          <div class="glass-card p-4 rounded-2xl text-center border-blue-200 shadow-xs bg-gradient-to-b from-blue-50/70 to-white">
+            <div class="text-xs font-bold text-blue-800">Tổng Điểm XH</div>
+            <div id="stat-total-score" class="text-2xl font-black text-indigo-700 mt-1 font-cyber">1590 đ</div>
+            <div class="text-[10px] text-blue-600 font-bold mt-0.5">XH + BFS gộp lại</div>
+          </div>
+          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-xs font-bold text-slate-600">Chuỗi / Giờ Lock-In</div>
+            <div id="stat-streak-days" class="text-2xl font-black text-orange-600 mt-1 font-cyber">5 🔥</div>
+            <div id="stat-total-hours" class="text-[10px] text-slate-500 font-medium mt-0.5">18.5h tổng học</div>
+          </div>
+        </div>
+
+        <!-- Reminders List -->
+        <div class="glass-card p-5 rounded-3xl border-slate-200 shadow-md space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-black text-sm text-slate-900 font-cyber flex items-center gap-2">
+              <span>⏰</span> LỊCH NHẮC NHỞ HỌC TẬP KỶ LUẬT
+            </h3>
+            <button onclick="addNewReminderPrompt()" class="text-xs font-extrabold text-blue-600 hover:text-blue-800 bg-blue-50 border border-blue-300 px-3 py-1 rounded-xl transition-all shadow-xs">
+              + Thêm giờ
+            </button>
+          </div>
+          <div id="reminders-list" class="space-y-2">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Session History -->
+        <div class="glass-card p-5 rounded-3xl border-slate-200 shadow-md space-y-3">
+          <h3 class="font-black text-sm text-slate-900 font-cyber flex items-center gap-2">
+            <span>📖</span> LỊCH SỬ PHIÊN HỌC & ĐÚC KẾT
+          </h3>
+          <div id="session-history-list" class="space-y-2.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= BOTTOM NAV FOR MOBILE ================= -->
+  <nav class="lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shrink-0 shadow-lg z-20">
+    <button onclick="switchTab('timer')" id="mob-nav-timer" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-blue-600 font-black">
+      <span class="text-lg">⏱️</span>
+      <span class="text-[10px]">Phiên học</span>
+    </button>
+    <button onclick="switchTab('gym')" id="mob-nav-gym" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+      <span class="text-lg">🎮</span>
+      <span class="text-[10px]">Gym não</span>
+    </button>
+    <button onclick="switchTab('library')" id="mob-nav-library" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+      <span class="text-lg">🧬</span>
+      <span class="text-[10px]">Thư viện</span>
+    </button>
+    <button onclick="switchTab('tips')" id="mob-nav-tips" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+      <span class="text-lg">💡</span>
+      <span class="text-[10px]">Mẹo hay</span>
+    </button>
+    <button onclick="switchTab('leaderboard')" id="mob-nav-leaderboard" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+      <span class="text-lg">🏆</span>
+      <span class="text-[10px]">Xếp hạng</span>
+    </button>
+    <button onclick="switchTab('profile')" id="mob-nav-profile" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+      <span class="text-lg">📊</span>
+      <span class="text-[10px]">Hồ sơ</span>
+    </button>
+  </nav>
+
+  <!-- ================= MODAL: 10 CÂU ĐÁNH GIÁ BFS ================= -->
+  <div id="assessment-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="glass-card w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+      
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 shrink-0 flex items-center justify-between text-white">
+        <div>
+          <h3 class="font-black text-base sm:text-lg text-white font-cyber flex items-center gap-2">
+            <span>🧠</span> BỘ CHẨN ĐOÁN CHỈ SỐ BFS & NÃO BỎNG NGÔ
+          </h3>
+          <p class="text-xs text-blue-100 mt-0.5">10 câu hỏi trắc nghiệm tâm lý - thần kinh chuẩn hóa</p>
+        </div>
+        <button onclick="closeAssessmentModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm border border-white/40">✕</button>
+      </div>
+
+      <!-- Assessment Body -->
+      <div class="p-5 overflow-y-auto custom-scrollbar space-y-5 bg-slate-50" id="assessment-content">
+        <!-- User Info Inputs -->
+        <div id="assessment-user-inputs" class="space-y-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+          <h4 class="text-xs font-black text-blue-700 uppercase tracking-wider font-cyber">Thông tin học viên</h4>
+          <input type="text" id="assess-input-name" placeholder="Họ và tên của bạn" value="Trịnh Hoài Tâm" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" id="assess-input-school" placeholder="Trường / Cơ quan / Lĩnh vực" value="Đại học / Chuyên gia trẻ" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- 10 Questions Container -->
+        <div class="space-y-4" id="questions-list-container">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Result Box -->
+        <div id="assessment-result-box" class="hidden space-y-3 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-300 p-5 rounded-2xl shadow-sm">
+          <div class="text-center">
+            <span class="text-3xl">🎯</span>
+            <h4 class="text-base font-black text-slate-900 mt-1 font-cyber">KẾT QUẢ CHỈ SỐ BFS CỦA BẠN</h4>
+            <div id="result-bfs-number" class="text-4xl font-black text-blue-600 my-2 font-cyber">740 / 1000</div>
+            <div id="result-bfs-category" class="inline-block bg-blue-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-sm">Ổn Định - Vỏ Não Khá Kiên Định</div>
+          </div>
+          <p id="result-bfs-desc" class="text-xs text-slate-700 leading-relaxed text-center"></p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-white border-t border-slate-200 p-4 shrink-0 flex items-center justify-between">
+        <button onclick="closeAssessmentModal()" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900">Đóng</button>
+        <button onclick="calculateAndSaveAssessment()" id="assess-submit-btn" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md transition-all">
+          HOÀN THÀNH & TÍNH ĐIỂM BFS
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL: REFLECTION ================= -->
+  <div id="reflection-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden p-6 space-y-4 bg-white">
+      <div class="text-center">
+        <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl mx-auto mb-2 border border-blue-200">
+          ✨
+        </div>
+        <h3 class="font-black text-base text-slate-900 font-cyber">ĐÚC KẾT & CỦNG CỐ SYNAP</h3>
+        <p class="text-xs text-slate-600 mt-0.5">Viết lại 1 điều bạn đã học để chuyển vào hồi hải mã dài hạn (+25 BFS)</p>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Cảm xúc sau buổi học:</label>
+          <div class="flex gap-2">
+            <button onclick="selectEmotion('Tập trung cao 🚀')" class="emotion-btn flex-1 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:border-blue-500 bg-slate-50">🚀 Rất tập trung</button>
+            <button onclick="selectEmotion('Bình tĩnh 🌊')" class="emotion-btn flex-1 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:border-blue-500 bg-slate-50">🌊 Bình tĩnh</button>
+            <button onclick="selectEmotion('Hơi mệt 🥱')" class="emotion-btn flex-1 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:border-blue-500 bg-slate-50">🥱 Hơi mệt</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Ghi chú kiến thức / Bài học đúc kết:</label>
+          <textarea id="reflection-note-input" rows="3" placeholder="Hôm nay tôi đã giải xong 3 đề và nắm chắc công thức..." class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl p-3 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button onclick="closeReflectionModal()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100">Bỏ qua</button>
+        <button onclick="saveSessionReflection()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md">Lưu & Nhận +25 BFS</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APP LOGIC & AUDIO SYNTHESIZER -->
+  <script>
+    // ================= STATE =================
+    const APP_STATE = {
+      rankPoints: 850, // Điểm xếp hạng rèn luyện (phiên học, streak, game)
+      bfsScore: 740,   // Chỉ số đánh giá não bộ BFS (khảo sát, gym)
+      totalHours: 18.5,
+      streakDays: 5,
+      gymCompletedCount: 12,
+      userName: "Trịnh Hoài Tâm",
+      userSchool: "Chuyên gia trẻ",
+      currentTab: 'timer',
+      
+      // Timer
+      timerMode: 'ultradian',
+      timerDuration: 90 * 60,
+      timerRemaining: 90 * 60,
+      isTimerRunning: false,
+      timerTargetEndTime: null,
+      timerInterval: null,
+      distractionsCount: 0,
+      
+      // Do Not Disturb (DND) / Phone Notification Mute Shield
+      isDndActive: false,
+      autoDndOnSession: true,
+      
+      // Web Audio Synth
+      audioContext: null,
+      soundType: 'gamma',
+      isPlayingAudio: false,
+      audioNodes: [],
+      
+      selectedEmotion: 'Tập trung cao 🚀',
+      
+      reminders: [
+        { id: 1, title: 'Học sâu buổi sáng (Lock In)', time: '08:30', active: true },
+        { id: 2, title: 'Gym não giải toả (3 Game)', time: '14:00', active: true },
+        { id: 3, title: 'Chu kỳ Ultradian tối (90p)', time: '20:00', active: true }
+      ],
+      
+      history: [
+        { id: 1, subject: 'Toán cao cấp & Xác suất', minutes: 90, date: 'Hôm nay, 09:30', emotion: 'Tập trung cao 🚀', note: 'Giải xong 4 bài ma trận phức tạp.' },
+        { id: 2, subject: 'Đọc tài liệu Khoa học Não', minutes: 45, date: 'Hôm qua, 20:15', emotion: 'Bình tĩnh 🌊', note: 'Hiểu rõ chu kỳ 90 phút và thụ thể dopamine.' },
+        { id: 3, subject: 'Luyện đề tiếng Anh C1', minutes: 90, date: '2 ngày trước', emotion: 'Tập trung cao 🚀', note: 'Hoàn thành 2 bài Reading không chạm vào điện thoại.' }
+      ]
+    };
+
+    const ASSESSMENT_QUESTIONS = [
+      { id: 1, text: "Tôi thường vô thức mở mạng xã hội hoặc xem tin nhắn sau mỗi 5–10 phút ngồi vào bàn học." },
+      { id: 2, text: "Khi học bài gặp chỗ khó hoặc bài tập dài, tôi cảm thấy bồn chồn muốn chuyển sang lướt điện thoại ngay." },
+      { id: 3, text: "Tôi thường vừa học bài vừa nghe nhạc có lời, xem video phụ hoặc nhắn tin cùng lúc." },
+      { id: 4, text: "Tôi cảm thấy rất khó khăn để đọc trọn vẹn một bài viết chuyên sâu dài hơn 5 trang sách mà không ngắt quãng." },
+      { id: 5, text: "Tôi xem nhiều video ngắn (TikTok, Reels, Shorts) hàng ngày và thấy các video dài trên 10 phút rất nhàm chán." },
+      { id: 6, text: "Tôi thường bắt đầu nhiều kế hoạch học tập cùng lúc nhưng hầu như rất ít khi duy trì hoàn thành trọn vẹn." },
+      { id: 7, text: "Tôi cảm thấy lo lắng hoặc có cảm giác bỏ lỡ (FOMO) nếu không kiểm tra thông báo điện thoại liên tục." },
+      { id: 8, text: "Khả năng ghi nhớ thông tin vừa đọc của tôi bị suy giảm, dễ quên các chi tiết học sau 1–2 ngày." },
+      { id: 9, text: "Tôi dễ bị phân tâm bởi tiếng động nhỏ xung quanh hoặc suy nghĩ nhảy cóc từ chủ đề này sang chủ đề khác." },
+      { id: 10, text: "Sau mỗi buổi học kéo dài 60 phút, tôi cảm thấy kiệt sức tinh thần nhưng khối lượng công việc hoàn thành rất ít." }
+    ];
+
+    const ARTICLES = [
+      {
+        id: 1,
+        title: "Hội chứng Não Bỏng Ngô (Popcorn Brain) Là Gì?",
+        author: "Tiến sĩ David Levy & Nhóm Nghiên Cứu Thần Kinh",
+        tag: "KHOA HỌC THẦN KINH",
+        summary: "Não bỏng ngô là hiện tượng các dòng suy nghĩ bị nhảy cóc liên tục với tốc độ chóng mặt do não bộ đã bị thích nghi với các kích thích siêu tốc từ mạng xã hội.",
+        content: "Hiện tượng Não Bỏng Ngô (Popcorn Brain) xuất phát từ việc vỏ não trước trán (Prefrontal Cortex) bị quá tải bởi các chuỗi phần thưởng Dopamine siêu nhỏ (Micro-Dopamine Hits) từ thông báo, video ngắn 15 giây và tin tức lướt nhanh. Khi não bộ quen với tần suất kích thích cao, nó sẽ mất dần khả năng xử lý các nhiệm vụ có độ trễ phần thưởng như đọc sách, giải toán và tư duy chiến lược. Để khắc phục, người học cần áp dụng kiến trúc giảm ma sát (Friction Architecture) và tái lập mạng lưới chú ý điều hành thông qua các chu kỳ học sâu 90 phút."
+      },
+      {
+        id: 2,
+        title: "Chu Kỳ Sinh Học Ultradian 90 Phút & Tối Ưu Nơ-ron",
+        author: "Nghiên cứu Nhịp Sinh Học Con Người",
+        tag: "NHỊP SINH HỌC",
+        summary: "Não người hoạt động theo các chu kỳ sóng não 90 phút hưng phấn và 15-20 phút phục hồi năng lượng sinh học.",
+        content: "Nhiều người lầm tưởng con người có thể tập trung vô hạn, nhưng các nghiên cứu điện não đồ (EEG) chứng minh rằng vỏ não con người hoạt động theo nhịp Ultradian Rhythm 90 phút. Trong 15 phút đầu, não cần thời gian làm nóng và đồng bộ hóa sóng não. Từ phút 15 đến phút 75 là 'Vùng Dòng Chảy' (Flow State) nơi tốc độ xử lý thông tin đạt đỉnh. Sau 90 phút, tích tụ Adenosine tăng cao, bắt buộc bạn phải nghỉ ngơi 15 phút để nạp lại chất dẫn truyền thần kinh."
+      },
+      {
+        id: 3,
+        title: "Dopamine Detox & Vỏ Não Trước Trán (Prefrontal Cortex)",
+        author: "Chuyên đề Thần Kinh Học Ứng Dụng",
+        tag: "SINH LÝ HỌC NÃO",
+        summary: "Cách thức phục hồi độ nhạy của thụ thể D2 Dopamine để tìm lại niềm say mê trong các môn học phức tạp.",
+        content: "Khi bạn liên tục tiếp xúc với các nội dung giải trí dễ dãi, số lượng thụ thể Dopamine D2 trên màng nơ-ron sẽ tự động giảm xuống (Down-regulation) để bảo vệ tế bào khỏi bị kích thích quá mức. Hậu quả là bạn cảm thấy việc học trở nên vô cùng khô khan và buồn ngủ. Một đợt 'Dopamine Reset' bằng cách cách ly điện thoại 2 giờ trước khi học sâu sẽ giúp các thụ thể tái kích hoạt, giúp bạn cảm thấy hứng thú trở lại với việc giải quyết các bài toán hóc búa."
+      }
+    ];
+
+    const TIPS_DATA = [
+      { id: 1, category: 'ENV', title: 'Quy tắc 20 Giây (Friction Architecture)', text: 'Đặt điện thoại ở phòng khác hoặc ngăn kéo có khóa. Tăng thời gian tiếp cận thiết bị lên >20 giây sẽ ngăn chặn 80% phản xạ vô thức cầm máy.', tag: 'Không gian' },
+      { id: 2, category: 'TECH', title: 'Màn hình Thang Xám (Grayscale Hack)', text: 'Chuyển chế độ màn hình điện thoại sang đen trắng. Loại bỏ màu sắc rực rỡ làm giảm 40% sức hút gây nghiện dopamine từ icon ứng dụng.', tag: 'Công nghệ' },
+      { id: 3, category: 'STRAT', title: 'Quy tắc 5 Phút Khởi Động (Zeigarnik)', text: 'Tự nhủ chỉ cần ngồi vào bàn làm đúng 5 phút. Vỏ não trước trán sẽ kích hoạt hiệu ứng Zeigarnik giúp bạn tự nhiên tiếp tục học sâu.', tag: 'Chiến lược' },
+      { id: 4, category: 'ENV', title: 'Bàn Học Đơn Sắc (Zero-Clutter Zone)', text: 'Chỉ để duy nhất 1 cuốn sách/tài liệu đang làm trên bàn. Thị giác bớt xao nhãng giúp giảm tải nhận thức (Cognitive Load).', tag: 'Không gian' },
+      { id: 5, category: 'STRAT', title: 'Đúc Kết Synap Sau Buổi Học', text: 'Viết ra 1 điều tâm đắc nhất sau khi đồng hồ reo. Hành động này giúp chuyển trí nhớ ngắn hạn vào hồi hải mã (Hippocampus).', tag: 'Chiến lược' },
+      { id: 6, category: 'TECH', title: 'Sóng Não Gamma 40Hz & Binaural', text: 'Nghe âm thanh sóng não tần số 40Hz khi giải các bài toán tư duy để tăng cường kết nối đồng bộ giữa các vùng nơ-ron.', tag: 'Công nghệ' }
+    ];
+
+    const COMMUNITY_USERS = [
+      { id: 1, name: 'Nguyễn Hoàng Long', school: 'Lớp 12 Chuyên Toán', rankPoints: 1650, bfs: 985, streak: '24 ngày' },
+      { id: 2, name: 'Trần Minh Anh', school: 'ĐH Ngoại Thương', rankPoints: 1520, bfs: 965, streak: '21 ngày' },
+      { id: 3, name: 'Lê Thuỳ Linh', school: 'IELTS 8.0 Master', rankPoints: 1410, bfs: 940, streak: '18 ngày' },
+      { id: 4, name: 'Phạm Đăng Khoa', school: 'ĐH Bách Khoa', rankPoints: 1280, bfs: 920, streak: '14 ngày' },
+      { id: 5, name: 'Vũ Minh Trang', school: 'THPT Chuyên Hà Nội', rankPoints: 1150, bfs: 895, streak: '11 ngày' },
+      { id: 6, name: 'Đỗ Tuấn Kiệt', school: 'ĐH Y Dược', rankPoints: 1020, bfs: 880, streak: '15 ngày' },
+      { id: 8, name: 'Nguyễn Thị Mai', school: 'ĐH Kinh Tế', rankPoints: 700, bfs: 710, streak: '4 ngày' }
+    ];
+
+    function getFullLeaderboard() {
+      const userEntry = {
+        id: 999,
+        name: `${APP_STATE.userName} (Bạn)`,
+        school: APP_STATE.userSchool,
+        rankPoints: APP_STATE.rankPoints,
+        bfs: APP_STATE.bfsScore,
+        streak: `${APP_STATE.streakDays} ngày`,
+        isUser: true
+      };
+
+      const all = [...COMMUNITY_USERS, userEntry].map(u => ({
+        ...u,
+        totalScore: u.rankPoints + u.bfs
+      }));
+
+      all.sort((a, b) => b.totalScore - a.totalScore);
+      return all.map((u, idx) => ({ ...u, rank: idx + 1 }));
+    }
+
+    // ================= INIT =================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderArticles();
+      renderTips('ALL');
+      renderLeaderboard();
+      renderReminders();
+      renderHistory();
+      renderQuestions();
+      updateStatsUI();
+      
+      // Check native Android bridge for initial DND status if present
+      if (window.AndroidBridge && typeof window.AndroidBridge.isDndActive === 'function') {
+        try {
+          APP_STATE.isDndActive = window.AndroidBridge.isDndActive();
+        } catch (_) {}
+      }
+      updateDndUI();
+
+      // Listen for window blur (anti-distraction detector)
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && APP_STATE.isTimerRunning) {
+          APP_STATE.distractionsCount++;
+          document.getElementById('timer-distraction-count').innerText = `Xao nhãng: ${APP_STATE.distractionsCount} lần`;
+          document.getElementById('distraction-alert').classList.remove('hidden');
+        }
+      });
+    });
+
+    // ================= NAVIGATION =================
+    function switchTab(tabId) {
+      APP_STATE.currentTab = tabId;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      const activeContent = document.getElementById(`tab-${tabId}`);
+      if (activeContent) activeContent.classList.remove('hidden');
+
+      // Desktop
+      document.querySelectorAll('.sidebar-item').forEach(btn => {
+        btn.classList.remove('bg-gradient-to-r', 'from-electric-600', 'to-blue-700', 'text-white', 'shadow-lg', 'glow-electric');
+        btn.classList.add('text-blue-200/90', 'hover:bg-navy-850');
+      });
+      const currentSidebarBtn = document.getElementById(`sidebar-btn-${tabId}`);
+      if (currentSidebarBtn) {
+        currentSidebarBtn.classList.remove('text-blue-200/90', 'hover:bg-navy-850');
+        currentSidebarBtn.classList.add('bg-gradient-to-r', 'from-electric-600', 'to-blue-700', 'text-white', 'shadow-lg', 'glow-electric');
+      }
+
+      // Mobile
+      document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+        btn.classList.remove('text-cyber-neon', 'font-black');
+        btn.classList.add('text-blue-300/70', 'font-semibold');
+      });
+      const currentMobBtn = document.getElementById(`mob-nav-${tabId}`);
+      if (currentMobBtn) {
+        currentMobBtn.classList.remove('text-blue-300/70', 'font-semibold');
+        currentMobBtn.classList.add('text-cyber-neon', 'font-black');
+      }
+    }
+
+    // ================= TIMER =================
+    function updateTimerButtonsUI(isRunning) {
+      const playPauseIcon = document.getElementById('play-pause-icon');
+      const playPauseText = document.getElementById('play-pause-text');
+      const mainBtn = document.getElementById('main-timer-action-btn');
+      
+      if (!mainBtn) return;
+      if (isRunning) {
+        if (playPauseIcon) playPauseIcon.innerText = '⏸️';
+        if (playPauseText) playPauseText.innerText = 'TẠM DỪNG';
+        mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
+      } else {
+        if (playPauseIcon) playPauseIcon.innerText = '▶️';
+        if (playPauseText) playPauseText.innerText = (APP_STATE.timerRemaining < APP_STATE.timerDuration) ? 'TIẾP TỤC LOCK IN' : 'BẮT ĐẦU LOCK IN';
+        mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
+      }
+    }
+
+    function setTimerMode(mode) {
+      if (APP_STATE.isTimerRunning) {
+        if (!confirm('Phiên học đang chạy. Bạn có muốn đổi chế độ?')) return;
+        resetTimer();
+      }
+      APP_STATE.timerMode = mode;
+      
+      ['ultradian', 'pomodoro', 'break'].forEach(m => {
+        const btn = document.getElementById(`mode-btn-${m}`);
+        if (!btn) return;
+        if (m === mode) {
+          btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md';
+        } else {
+          btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
+        }
+      });
+
+      if (mode === 'ultradian') {
+        APP_STATE.timerDuration = 90 * 60;
+        document.getElementById('timer-phase-label').innerText = 'Khởi động vỏ não (0-15p)';
+      } else if (mode === 'pomodoro') {
+        APP_STATE.timerDuration = 25 * 60;
+        document.getElementById('timer-phase-label').innerText = 'Pomodoro Lock-In (25p)';
+      } else {
+        APP_STATE.timerDuration = 15 * 60;
+        document.getElementById('timer-phase-label').innerText = 'Nghỉ ngơi nạp Adenosine';
+      }
+
+      APP_STATE.timerRemaining = APP_STATE.timerDuration;
+      APP_STATE.timerTargetEndTime = null;
+      updateTimerDisplay();
+      updateTimerButtonsUI(false);
+    }
+
+    // ================= PHONE NOTIFICATIONS & DO NOT DISTURB (DND) =================
+    function toggleDnd(forceState) {
+      const target = (typeof forceState === 'boolean') ? forceState : !APP_STATE.isDndActive;
+      APP_STATE.isDndActive = target;
+
+      if (window.AndroidBridge && typeof window.AndroidBridge.toggleDnd === 'function') {
+        try {
+          window.AndroidBridge.toggleDnd(target);
+          if (typeof window.AndroidBridge.showToast === 'function') {
+            window.AndroidBridge.showToast(target ? '🔕 Đã kích hoạt Chế độ Không làm phiền (Tắt chuông & thông báo)' : '🔔 Đã khôi phục thông báo bình thường');
+          }
+        } catch (e) {
+          console.warn('AndroidBridge error:', e);
+        }
+      }
+      updateDndUI();
+    }
+
+    function openSystemDndSettings() {
+      if (window.AndroidBridge && typeof window.AndroidBridge.openDndSettings === 'function') {
+        try {
+          window.AndroidBridge.openDndSettings();
+        } catch (e) {
+          alert('Không thể mở cài đặt: ' + e.message);
+        }
+      } else {
+        alert('💡 Gợi ý: Trên điện thoại của bạn, hãy cấp quyền "Không làm phiền" (DND) cho Brain Focus để app tự động tắt mọi chuông và rung thông báo khi bạn bắt đầu học bài!');
+      }
+    }
+
+    function toggleAutoDnd(enable) {
+      APP_STATE.autoDndOnSession = enable;
+    }
+
+    function updateDndUI() {
+      const isDnd = APP_STATE.isDndActive;
+      const dndToggleBtn = document.getElementById('dnd-toggle-switch');
+      const dndStatusBadge = document.getElementById('dnd-status-badge');
+      const dndStatusText = document.getElementById('dnd-status-text');
+      const dndIcon = document.getElementById('dnd-icon-display');
+      const dndCard = document.getElementById('dnd-shield-card');
+
+      if (dndToggleBtn) {
+        dndToggleBtn.checked = isDnd;
+      }
+      if (dndStatusBadge) {
+        if (isDnd) {
+          dndStatusBadge.innerText = '🔕 Đang Chặn Thông Báo';
+          dndStatusBadge.className = 'text-[10px] font-black text-rose-700 bg-rose-100 border border-rose-300 px-2 py-0.5 rounded-full shadow-xs animate-pulse';
+        } else {
+          dndStatusBadge.innerText = '🔔 Bình thường';
+          dndStatusBadge.className = 'text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded-full shadow-xs';
+        }
+      }
+      if (dndStatusText) {
+        dndStatusText.innerText = isDnd 
+          ? 'Toàn bộ chuông, rung và thông báo mạng xã hội đã bị chặn để bạn đắm chìm vào Flow State.' 
+          : 'Tự động chặn thông báo, chuông và tin nhắn làm vỡ dòng tập trung khi học.';
+      }
+      if (dndIcon) {
+        dndIcon.innerText = isDnd ? '🔕' : '🔔';
+        dndIcon.className = isDnd 
+          ? 'w-10 h-10 rounded-2xl bg-gradient-to-br from-rose-500 to-red-600 text-white flex items-center justify-center text-xl shadow-md animate-pulse'
+          : 'w-10 h-10 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center text-xl shadow-md';
+      }
+      if (dndCard) {
+        if (isDnd) {
+          dndCard.classList.add('border-rose-300', 'bg-rose-50/50');
+          dndCard.classList.remove('border-sky-200/90');
+        } else {
+          dndCard.classList.remove('border-rose-300', 'bg-rose-50/50');
+          dndCard.classList.add('border-sky-200/90');
+        }
+      }
+    }
+
+    function toggleTimer() {
+      if (APP_STATE.isTimerRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    }
+
+    function startTimer() {
+      if (APP_STATE.timerRemaining <= 0) {
+        APP_STATE.timerRemaining = APP_STATE.timerDuration;
+      }
+
+      APP_STATE.isTimerRunning = true;
+      APP_STATE.timerTargetEndTime = Date.now() + (APP_STATE.timerRemaining * 1000);
+
+      // Auto enable DND when starting session if enabled
+      if (APP_STATE.autoDndOnSession && !APP_STATE.isDndActive) {
+        toggleDnd(true);
+      }
+
+      if (APP_STATE.timerInterval) {
+        clearInterval(APP_STATE.timerInterval);
+        APP_STATE.timerInterval = null;
+      }
+
+      updateTimerButtonsUI(true);
+
+      if (!APP_STATE.isPlayingAudio) {
+        try {
+          toggleAudio();
+        } catch (_) {}
+      }
+
+      // Robust high-frequency timestamp delta calculation: guarantees no drift or freezing
+      APP_STATE.timerInterval = setInterval(() => {
+        if (!APP_STATE.isTimerRunning || !APP_STATE.timerTargetEndTime) return;
+
+        const now = Date.now();
+        const diffMs = APP_STATE.timerTargetEndTime - now;
+        const diffSec = Math.max(0, Math.ceil(diffMs / 1000));
+
+        APP_STATE.timerRemaining = diffSec;
+        updateTimerDisplay();
+
+        if (diffSec <= 0) {
+          if (APP_STATE.timerInterval) {
+            clearInterval(APP_STATE.timerInterval);
+            APP_STATE.timerInterval = null;
+          }
+          completeTimer();
+        }
+      }, 250);
+    }
+
+    function pauseTimer() {
+      APP_STATE.isTimerRunning = false;
+      if (APP_STATE.timerInterval) {
+        clearInterval(APP_STATE.timerInterval);
+        APP_STATE.timerInterval = null;
+      }
+      if (APP_STATE.timerTargetEndTime) {
+        const diffMs = APP_STATE.timerTargetEndTime - Date.now();
+        APP_STATE.timerRemaining = Math.max(0, Math.ceil(diffMs / 1000));
+        APP_STATE.timerTargetEndTime = null;
+      }
+      updateTimerButtonsUI(false);
+      updateTimerDisplay();
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      APP_STATE.timerRemaining = APP_STATE.timerDuration;
+      APP_STATE.timerTargetEndTime = null;
+      APP_STATE.distractionsCount = 0;
+      const distEl = document.getElementById('timer-distraction-count');
+      if (distEl) distEl.innerText = 'Xao nhãng: 0 lần';
+      const alertEl = document.getElementById('distraction-alert');
+      if (alertEl) alertEl.classList.add('hidden');
+      
+      // Restore notifications if auto-DND was activated
+      if (APP_STATE.autoDndOnSession && APP_STATE.isDndActive) {
+        toggleDnd(false);
+      }
+
+      updateTimerDisplay();
+      updateTimerButtonsUI(false);
+    }
+
+    function completeTimer() {
+      pauseTimer();
+      APP_STATE.rankPoints += 50;
+      APP_STATE.bfsScore += 15;
+      APP_STATE.totalMinutes += Math.round(APP_STATE.timerDuration / 60);
+      updateStatsUI();
+
+      // Restore notifications after finishing study session
+      if (APP_STATE.autoDndOnSession && APP_STATE.isDndActive) {
+        toggleDnd(false);
+      }
+
+      alert('🎉 Xuất sắc! Bạn đã hoàn thành trọn vẹn chu kỳ học sâu mà không bị ngắt quãng. Hãy ghi lại đúc kết để nhận thêm +25 BFS!');
+      openReflectionModal();
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(APP_STATE.timerRemaining / 60);
+      const seconds = APP_STATE.timerRemaining % 60;
+      const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      const displayEl = document.getElementById('timer-display');
+      if (displayEl) displayEl.innerText = formatted;
+
+      const total = APP_STATE.timerDuration;
+      const progress = Math.min(1, Math.max(0, (total - APP_STATE.timerRemaining) / total));
+      const circumference = 2 * Math.PI * 42; // ~263.89
+      const offset = circumference * (1 - progress);
+      const ringEl = document.getElementById('timer-progress-ring');
+      if (ringEl) ringEl.style.strokeDashoffset = offset;
+
+      if (APP_STATE.timerMode === 'ultradian') {
+        const elapsedMinutes = (total - APP_STATE.timerRemaining) / 60;
+        const labelEl = document.getElementById('timer-phase-label');
+        if (labelEl) {
+          if (elapsedMinutes < 15) {
+            labelEl.innerText = 'Khởi động vỏ não (0-15p)';
+            labelEl.className = 'text-[11px] font-extrabold text-blue-700 bg-blue-50 border border-blue-200 px-3 py-0.5 rounded-full mt-1.5 shadow-xs';
+          } else if (elapsedMinutes < 75) {
+            labelEl.innerText = '🔥 VÙNG DÒNG CHẢY (FLOW STATE)';
+            labelEl.className = 'text-[11px] font-extrabold text-amber-700 bg-amber-50 border border-amber-300 px-3 py-0.5 rounded-full mt-1.5 shadow-xs animate-pulse';
+          } else {
+            labelEl.innerText = 'Hạ nhiệt & Đúc kết (75-90p)';
+            labelEl.className = 'text-[11px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-0.5 rounded-full mt-1.5 shadow-xs';
+          }
+        }
+      }
+    }
+
+    function dismissDistractionAlert() {
+      document.getElementById('distraction-alert').classList.add('hidden');
+    }
+
+    // ================= AUDIO SYNTH ENGINE (Web Audio API) =================
+    function initAudioContext() {
+      if (!APP_STATE.audioContext) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        APP_STATE.audioContext = new AudioCtx();
+      }
+      if (APP_STATE.audioContext.state === 'suspended') {
+        APP_STATE.audioContext.resume();
+      }
+    }
+
+    function toggleAudio() {
+      initAudioContext();
+      if (APP_STATE.isPlayingAudio) {
+        stopAudio();
+      } else {
+        startAudio();
+      }
+    }
+
+    function changeSoundType(type) {
+      APP_STATE.soundType = type;
+      if (APP_STATE.isPlayingAudio) {
+        stopAudio();
+        startAudio();
+      }
+    }
+
+    function startAudio() {
+      initAudioContext();
+      stopAudioNodes();
+      
+      const ctx = APP_STATE.audioContext;
+      const type = APP_STATE.soundType;
+
+      if (type === 'gamma') {
+        // Binaural 40Hz (left 200Hz, right 240Hz simulation)
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(200, ctx.currentTime);
+        
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(240, ctx.currentTime);
+        
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start();
+        osc2.start();
+        APP_STATE.audioNodes.push(osc1, osc2, gain);
+
+      } else if (type === 'lofi') {
+        // Gentle warm chords
+        const chords = [261.63, 329.63, 392.00]; // C Major
+        chords.forEach(freq => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime);
+          gain.gain.setValueAtTime(0.04, ctx.currentTime);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          APP_STATE.audioNodes.push(osc, gain);
+        });
+
+      } else {
+        // Pink / White noise buffer
+        const bufferSize = ctx.sampleRate * 2;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * 0.05;
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        noise.loop = true;
+        
+        const filter = ctx.createBiquadFilter();
+        filter.type = (type === 'rain') ? 'lowpass' : 'bandpass';
+        filter.frequency.setValueAtTime(800, ctx.currentTime);
+        
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        noise.start();
+        APP_STATE.audioNodes.push(noise, filter, gain);
+      }
+
+      APP_STATE.isPlayingAudio = true;
+      updateAudioUI(true);
+    }
+
+    function stopAudio() {
+      stopAudioNodes();
+      APP_STATE.isPlayingAudio = false;
+      updateAudioUI(false);
+    }
+
+    function stopAudioNodes() {
+      APP_STATE.audioNodes.forEach(node => {
+        try {
+          if (node.stop) node.stop();
+          if (node.disconnect) node.disconnect();
+        } catch (_) {}
+      });
+      APP_STATE.audioNodes = [];
+    }
+
+    function updateAudioUI(isPlaying) {
+      const statusText = document.getElementById('sound-status');
+      const sideBtn = document.getElementById('sidebar-sound-btn');
+      const dot = document.getElementById('audio-indicator-dot');
+      const eq = document.getElementById('equalizer-bars');
+
+      if (isPlaying) {
+        if (statusText) statusText.innerText = 'Sóng 40Hz: Đang Bật 🔊';
+        if (sideBtn) sideBtn.innerText = 'TẮT ÂM THANH';
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-cyber-neon animate-ping';
+        if (eq) {
+          eq.classList.remove('opacity-50');
+          eq.children[0].className = 'w-1 bg-cyber-sky rounded-full equalizer-bar-1';
+          eq.children[1].className = 'w-1 bg-cyan-300 rounded-full equalizer-bar-2';
+          eq.children[2].className = 'w-1 bg-blue-400 rounded-full equalizer-bar-3';
+          eq.children[3].className = 'w-1 bg-cyber-neon rounded-full equalizer-bar-4';
+        }
+      } else {
+        if (statusText) statusText.innerText = 'Sóng 40Hz: Tắt';
+        if (sideBtn) sideBtn.innerText = 'BẬT ÂM THANH';
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-slate-600';
+        if (eq) {
+          eq.classList.add('opacity-50');
+          for (let i = 0; i < eq.children.length; i++) {
+            eq.children[i].className = 'w-1 bg-blue-400 rounded-full h-1';
+          }
+        }
+      }
+    }
+
+    // ================= MINI GAMES (HIGH DIFFICULTY BRAIN GYM) =================
+    
+    // ---------------- GAME 1: STROOP SIÊU CẤP (Dual Rules & 2.5s Pressure) ----------------
+    let stroopCurrentRound = 0;
+    let stroopScore = 0;
+    let stroopStreak = 0;
+    let stroopRoundTimer = null;
+    let stroopTimeLeftMs = 2500;
+    const STROOP_PALETTE = [
+      { name: "Đỏ", color: "#dc2626", bg: "bg-red-50 text-red-700 border-red-200" },
+      { name: "Xanh Dương", color: "#2563eb", bg: "bg-blue-50 text-blue-700 border-blue-200" },
+      { name: "Xanh Lá", color: "#059669", bg: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+      { name: "Vàng", color: "#d97706", bg: "bg-amber-50 text-amber-700 border-amber-200" },
+      { name: "Tím", color: "#7c3aed", bg: "bg-purple-50 text-purple-700 border-purple-200" },
+      { name: "Cam", color: "#ea580c", bg: "bg-orange-50 text-orange-700 border-orange-200" },
+      { name: "Hồng", color: "#db2777", bg: "bg-pink-50 text-pink-700 border-pink-200" },
+      { name: "Đen", color: "#0f172a", bg: "bg-slate-100 text-slate-800 border-slate-300" }
+    ];
+
+    function startStroopGame() {
+      stroopCurrentRound = 0;
+      stroopScore = 0;
+      stroopStreak = 0;
+      if (stroopRoundTimer) clearInterval(stroopRoundTimer);
+      const container = document.getElementById('active-game-container');
+      container.classList.remove('hidden');
+      renderNextStroopRound();
+    }
+
+    function renderNextStroopRound() {
+      if (stroopRoundTimer) {
+        clearInterval(stroopRoundTimer);
+        stroopRoundTimer = null;
+      }
+
+      if (stroopCurrentRound >= 12) {
+        finishStroopGame();
+        return;
+      }
+      stroopCurrentRound++;
+
+      // Pick text item and mismatch color item
+      const textItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
+      let colorItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
+      while (colorItem.name === textItem.name) {
+        colorItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
+      }
+
+      // 60% chance: ask for visual COLOR, 40% chance: ask for TEXT meaning
+      const askForColor = Math.random() > 0.4;
+      const targetAnswer = askForColor ? colorItem.name : textItem.name;
+
+      // Select 6 distractor options including the target
+      const pool = STROOP_PALETTE.map(p => p.name);
+      const shuffledOptions = [targetAnswer];
+      const otherOptions = pool.filter(n => n !== targetAnswer).sort(() => 0.5 - Math.random());
+      while (shuffledOptions.length < 6 && otherOptions.length > 0) {
+        shuffledOptions.push(otherOptions.pop());
+      }
+      shuffledOptions.sort(() => 0.5 - Math.random());
+
+      const promptHtml = askForColor 
+        ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 border border-rose-300 shadow-xs">🎯 CHỌN MÀU CỦA CHỮ (Bỏ qua nghĩa từ)</span>`
+        : `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-xs animate-pulse">⚡ CHỌN NGHĨA CỦA TỪ (Bỏ qua màu sắc)</span>`;
+
+      const html = `
+        <div class="space-y-3.5 text-center">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-blue-700">Lượt ${stroopCurrentRound}/12</span>
+            <span class="text-xs font-black text-amber-600">Điểm: ${stroopScore} ${stroopStreak > 1 ? `(🔥x${stroopStreak})` : ''}</span>
+            <button onclick="closeGameContainer()" class="text-slate-500 hover:text-slate-800 text-xs">Đóng ✕</button>
+          </div>
+
+          <!-- Speed countdown bar -->
+          <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+            <div id="stroop-time-bar" class="h-full bg-gradient-to-r from-blue-600 to-rose-500 transition-all duration-100" style="width: 100%;"></div>
+          </div>
+
+          <div class="py-1">${promptHtml}</div>
+
+          <div class="py-5 my-1 bg-white border border-slate-200 rounded-2xl shadow-sm flex items-center justify-center">
+            <span class="text-4xl sm:text-5xl font-black font-cyber tracking-wider select-none animate-bounce" style="color: ${colorItem.color}">
+              ${textItem.name.toUpperCase()}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
+            ${shuffledOptions.map(opt => `
+              <button onclick="checkStroopAnswer('${opt}', '${targetAnswer}')" class="py-3 px-3 rounded-xl bg-white hover:bg-blue-50 text-slate-800 font-extrabold text-xs border border-slate-300 active:scale-95 transition-all shadow-xs hover:border-blue-400">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      document.getElementById('game-dynamic-area').innerHTML = html;
+
+      // 2.5s timer per question
+      stroopTimeLeftMs = 2500;
+      const stepMs = 50;
+      stroopRoundTimer = setInterval(() => {
+        stroopTimeLeftMs -= stepMs;
+        const pct = Math.max(0, (stroopTimeLeftMs / 2500) * 100);
+        const bar = document.getElementById('stroop-time-bar');
+        if (bar) bar.style.width = `${pct}%`;
+
+        if (stroopTimeLeftMs <= 0) {
+          clearInterval(stroopRoundTimer);
+          stroopRoundTimer = null;
+          stroopStreak = 0;
+          renderNextStroopRound();
+        }
+      }, stepMs);
+    }
+
+    function checkStroopAnswer(chosen, correct) {
+      if (stroopRoundTimer) {
+        clearInterval(stroopRoundTimer);
+        stroopRoundTimer = null;
+      }
+      if (chosen === correct) {
+        stroopStreak++;
+        const bonus = (stroopStreak >= 3) ? 15 : 10;
+        stroopScore += bonus;
+      } else {
+        stroopStreak = 0;
+      }
+      renderNextStroopRound();
+    }
+
+    function finishStroopGame() {
+      if (stroopRoundTimer) clearInterval(stroopRoundTimer);
+      APP_STATE.bfsScore += 40;
+      APP_STATE.rankPoints += 40;
+      APP_STATE.gymCompletedCount++;
+      updateStatsUI();
+      document.getElementById('game-dynamic-area').innerHTML = `
+        <div class="text-center space-y-3 py-4">
+          <span class="text-4xl">🏆</span>
+          <h3 class="text-lg font-black text-slate-900 font-cyber">HOÀN THÀNH STROOP SIÊU CẤP!</h3>
+          <p class="text-xs text-slate-600">Bạn đạt <strong>${stroopScore}/150 điểm</strong>. Vỏ não trước trán (Prefrontal Cortex) đã ức chế xung động phản xạ vượt bậc!</p>
+          <div class="text-sm font-black text-blue-600">+40 Điểm BFS & +40 Điểm XH đã cộng!</div>
+          <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md">Tiếp Tục</button>
+        </div>
+      `;
+    }
+
+    // ---------------- GAME 2: MEMORY MATRIX & BẪY BOM (6 Stages up to 5x5) ----------------
+    let gridLevel = 1;
+    let targetCells = [];
+    let trapCells = [];
+    let userSelectedCells = [];
+    let gridRecallTimer = null;
+    let gridRecallSeconds = 8;
+
+    function startMemoryGridGame() {
+      gridLevel = 1;
+      if (gridRecallTimer) clearInterval(gridRecallTimer);
+      const container = document.getElementById('active-game-container');
+      container.classList.remove('hidden');
+      renderMemoryGridRound();
+    }
+
+    function renderMemoryGridRound() {
+      if (gridRecallTimer) clearInterval(gridRecallTimer);
+      targetCells = [];
+      trapCells = [];
+      userSelectedCells = [];
+
+      // Grid configuration per level
+      // Level 1: 3x3 (9 cells), 4 targets, 0 traps, flash 1.4s
+      // Level 2: 4x4 (16 cells), 5 targets, 0 traps, flash 1.2s
+      // Level 3: 4x4 (16 cells), 6 targets, 1 trap, flash 1.1s
+      // Level 4: 5x5 (25 cells), 7 targets, 2 traps, flash 1.0s
+      // Level 5: 5x5 (25 cells), 8 targets, 3 traps, flash 0.9s
+      // Level 6: 5x5 (25 cells), 9 targets, 4 traps, flash 0.8s
+      let gridSize = 3;
+      let numTargets = 4;
+      let numTraps = 0;
+      let flashTimeMs = 1400;
+
+      if (gridLevel === 2) {
+        gridSize = 4; numTargets = 5; numTraps = 0; flashTimeMs = 1200;
+      } else if (gridLevel === 3) {
+        gridSize = 4; numTargets = 6; numTraps = 1; flashTimeMs = 1100;
+      } else if (gridLevel === 4) {
+        gridSize = 5; numTargets = 7; numTraps = 2; flashTimeMs = 1000;
+      } else if (gridLevel === 5) {
+        gridSize = 5; numTargets = 8; numTraps = 3; flashTimeMs = 900;
+      } else if (gridLevel === 6) {
+        gridSize = 5; numTargets = 9; numTraps = 4; flashTimeMs = 800;
+      }
+
+      const totalCells = gridSize * gridSize;
+
+      while (targetCells.length < numTargets) {
+        const r = Math.floor(Math.random() * totalCells);
+        if (!targetCells.includes(r)) targetCells.push(r);
+      }
+
+      while (trapCells.length < numTraps) {
+        const r = Math.floor(Math.random() * totalCells);
+        if (!targetCells.includes(r) && !trapCells.includes(r)) trapCells.push(r);
+      }
+
+      const gridColsClass = gridSize === 3 ? 'grid-cols-3 max-w-[240px]' : (gridSize === 4 ? 'grid-cols-4 max-w-[280px]' : 'grid-cols-5 max-w-[320px]');
+      const cellSizeClass = gridSize === 5 ? 'w-11 h-11 text-xs' : (gridSize === 4 ? 'w-14 h-14 text-sm' : 'w-16 h-16 text-base');
+
+      document.getElementById('game-dynamic-area').innerHTML = `
+        <div class="space-y-3 text-center">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-blue-600">Cấp độ ${gridLevel}/6 (${gridSize}x${gridSize})</span>
+            <span class="text-xs font-black text-rose-600" id="grid-timer-display">Ghi nhớ...</span>
+            <button onclick="closeGameContainer()" class="text-slate-500 hover:text-slate-800 text-xs">Đóng ✕</button>
+          </div>
+          
+          <div class="flex items-center justify-center gap-2">
+            <span class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+              Cần chọn: ${numTargets} ô xanh
+            </span>
+            ${numTraps > 0 ? `<span class="text-[11px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">💣 Né: ${numTraps} ô bẫy</span>` : ''}
+          </div>
+
+          <p class="text-xs text-slate-700 font-semibold" id="memory-grid-instruction">Ghi nhớ nhanh vị trí các ô phát sáng...</p>
+          
+          <div class="grid ${gridColsClass} gap-2 mx-auto py-2" id="grid-box-container">
+            ${Array.from({ length: totalCells }).map((_, idx) => {
+              const isTarget = targetCells.includes(idx);
+              const isTrap = trapCells.includes(idx);
+              let initialStyle = 'bg-slate-100 border border-slate-300';
+              let initialText = '';
+              if (isTarget) {
+                initialStyle = 'bg-blue-600 text-white shadow-md font-bold scale-105';
+                initialText = '●';
+              } else if (isTrap) {
+                initialStyle = 'bg-rose-500 text-white shadow-md font-bold animate-pulse';
+                initialText = '💣';
+              }
+              return `<div id="grid-cell-${idx}" class="${cellSizeClass} rounded-xl ${initialStyle} transition-all flex items-center justify-center">${initialText}</div>`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      setTimeout(() => {
+        const instr = document.getElementById('memory-grid-instruction');
+        if (instr) instr.innerText = '⚡ CHẠM LẠI CÁC Ô XANH (Tuyệt đối tránh ô Bẫy Bom!):';
+        
+        // Start 8s recall timer
+        gridRecallSeconds = 8;
+        const timerDisp = document.getElementById('grid-timer-display');
+        if (timerDisp) timerDisp.innerText = `Còn: ${gridRecallSeconds}s`;
+
+        gridRecallTimer = setInterval(() => {
+          gridRecallSeconds--;
+          const td = document.getElementById('grid-timer-display');
+          if (td) td.innerText = `Còn: ${gridRecallSeconds}s`;
+          if (gridRecallSeconds <= 0) {
+            clearInterval(gridRecallTimer);
+            alert('⏰ Hết 8 giây suy nghĩ! Bạn bị quá thời gian. Hãy thử lại từ cấp 1!');
+            startMemoryGridGame();
+          }
+        }, 1000);
+
+        for (let i = 0; i < totalCells; i++) {
+          const el = document.getElementById(`grid-cell-${i}`);
+          if (el) {
+            el.className = `${cellSizeClass} rounded-xl bg-slate-100 border border-slate-300 cursor-pointer active:scale-95 transition-all flex items-center justify-center hover:bg-slate-200`;
+            el.innerText = '';
+            el.onclick = () => selectGridCell(i, totalCells);
+          }
+        }
+      }, flashTimeMs);
+    }
+
+    function selectGridCell(index, totalCells) {
+      if (userSelectedCells.includes(index)) return;
+      userSelectedCells.push(index);
+      const el = document.getElementById(`grid-cell-${index}`);
+      
+      if (trapCells.includes(index)) {
+        if (gridRecallTimer) clearInterval(gridRecallTimer);
+        el.className = 'rounded-xl bg-rose-600 text-white font-black flex items-center justify-center animate-ping';
+        el.innerText = '💥';
+        setTimeout(() => {
+          alert('💥 BÙM! Bạn đã chạm trúng Ô BẪY BOM! Phản xạ nơ-ron bị reset về cấp 1.');
+          startMemoryGridGame();
+        }, 400);
+        return;
+      }
+
+      if (targetCells.includes(index)) {
+        el.className = 'rounded-xl bg-blue-600 text-white shadow-md flex items-center justify-center font-black';
+        el.innerText = '✓';
+        if (userSelectedCells.length === targetCells.length) {
+          if (gridRecallTimer) clearInterval(gridRecallTimer);
+          if (gridLevel >= 6) {
+            APP_STATE.bfsScore += 50;
+            APP_STATE.rankPoints += 50;
+            APP_STATE.gymCompletedCount++;
+            updateStatsUI();
+            document.getElementById('game-dynamic-area').innerHTML = `
+              <div class="text-center space-y-3 py-4">
+                <span class="text-4xl">👑</span>
+                <h3 class="text-lg font-black text-slate-900 font-cyber">CHIẾN THẦN TRÍ NHỚ VÔ ĐỊCH!</h3>
+                <p class="text-xs text-slate-600">Bạn đã chinh phục trọn vẹn 6 cấp độ ma trận 5x5 và vượt qua toàn bộ bẫy bom nơ-ron.</p>
+                <div class="text-sm font-black text-blue-600">+50 Điểm BFS & +50 Điểm XH đã cộng!</div>
+                <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md">Tiếp Tục</button>
+              </div>
+            `;
+          } else {
+            gridLevel++;
+            setTimeout(renderMemoryGridRound, 600);
+          }
+        }
+      } else {
+        if (gridRecallTimer) clearInterval(gridRecallTimer);
+        el.className = 'rounded-xl bg-rose-500 text-white font-bold flex items-center justify-center';
+        el.innerText = '✕';
+        setTimeout(() => {
+          alert('Sai ô rồi! Vùng nhớ ngắn hạn bị quá tải. Hãy thử lại từ cấp 1.');
+          startMemoryGridGame();
+        }, 400);
+      }
+    }
+
+    // ---------------- GAME 3: TÍNH NHẨM ĐA BIỂU THỨC (Complex Arithmetic & Dynamic Time) ----------------
+    let mathScore = 0;
+    let mathTimeRemaining = 20;
+    let mathInterval = null;
+    let currentMathAnswer = true;
+    let mathStreak = 0;
+
+    function startRapidMathGame() {
+      mathScore = 0;
+      mathStreak = 0;
+      mathTimeRemaining = 20;
+      const container = document.getElementById('active-game-container');
+      container.classList.remove('hidden');
+      if (mathInterval) clearInterval(mathInterval);
+      
+      mathInterval = setInterval(() => {
+        mathTimeRemaining--;
+        const timeEl = document.getElementById('math-time-display');
+        if (timeEl) timeEl.innerText = `${mathTimeRemaining}s`;
+        if (mathTimeRemaining <= 0) {
+          clearInterval(mathInterval);
+          finishRapidMath();
+        }
+      }, 1000);
+
+      renderNextMathProblem();
+    }
+
+    function renderNextMathProblem() {
+      // Generate challenging expressions
+      const templates = [
+        // Type 1: (a * b) - c = res
+        () => {
+          const a = Math.floor(Math.random() * 15) + 6; // 6-20
+          const b = Math.floor(Math.random() * 8) + 3;  // 3-10
+          const c = Math.floor(Math.random() * 40) + 10;
+          const exact = (a * b) - c;
+          const isCorrect = Math.random() > 0.5;
+          const delta = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 4) + 1);
+          const shown = isCorrect ? exact : exact + delta;
+          return { expr: `(${a} × ${b}) - ${c} = ${shown}`, answer: isCorrect };
+        },
+        // Type 2: a - (b * c) = res
+        () => {
+          const b = Math.floor(Math.random() * 8) + 4;
+          const c = Math.floor(Math.random() * 9) + 4;
+          const a = (b * c) + Math.floor(Math.random() * 45) + 15;
+          const exact = a - (b * c);
+          const isCorrect = Math.random() > 0.5;
+          const delta = (Math.random() > 0.5 ? 2 : -2);
+          const shown = isCorrect ? exact : exact + delta;
+          return { expr: `${a} - (${b} × ${c}) = ${shown}`, answer: isCorrect };
+        },
+        // Type 3: (a / b) * c + d = res
+        () => {
+          const b = Math.floor(Math.random() * 6) + 4; // 4-9
+          const quotient = Math.floor(Math.random() * 10) + 4;
+          const a = b * quotient;
+          const c = Math.floor(Math.random() * 7) + 3;
+          const d = Math.floor(Math.random() * 30) + 10;
+          const exact = (a / b) * c + d;
+          const isCorrect = Math.random() > 0.5;
+          const delta = (Math.random() > 0.5 ? 3 : -3);
+          const shown = isCorrect ? exact : exact + delta;
+          return { expr: `(${a} ÷ ${b}) × ${c} + ${d} = ${shown}`, answer: isCorrect };
+        },
+        // Type 4: (a + b) * 3 - c = res
+        () => {
+          const a = Math.floor(Math.random() * 20) + 10;
+          const b = Math.floor(Math.random() * 20) + 10;
+          const mult = Math.floor(Math.random() * 3) + 2;
+          const c = Math.floor(Math.random() * 40) + 15;
+          const exact = (a + b) * mult - c;
+          const isCorrect = Math.random() > 0.5;
+          const delta = (Math.random() > 0.5 ? 4 : -4);
+          const shown = isCorrect ? exact : exact + delta;
+          return { expr: `(${a} + ${b}) × ${mult} - ${c} = ${shown}`, answer: isCorrect };
+        }
+      ];
+
+      const chosenGen = templates[Math.floor(Math.random() * templates.length)];
+      const prob = chosenGen();
+      currentMathAnswer = prob.answer;
+
+      document.getElementById('game-dynamic-area').innerHTML = `
+        <div class="space-y-4 text-center">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-black text-rose-500 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-lg" id="math-time-display">${mathTimeRemaining}s</span>
+              <span class="text-[10px] text-slate-500 font-bold">(Đúng +2s | Sai -3s)</span>
+            </div>
+            <span class="text-xs font-black text-amber-600">Điểm: ${mathScore} ${mathStreak > 1 ? `(🔥x${mathStreak})` : ''}</span>
+            <button onclick="closeGameContainer()" class="text-slate-500 hover:text-slate-800 text-xs">Đóng ✕</button>
+          </div>
+
+          <p class="text-xs text-slate-700 font-semibold">Phép tính phức hợp sau Đúng hay Sai?</p>
+          
+          <div class="py-6 my-2 bg-slate-50 border border-slate-200 rounded-2xl shadow-xs">
+            <span class="text-2xl sm:text-3xl font-black font-cyber text-slate-900 tracking-wide">${prob.expr}</span>
+          </div>
+
+          <div class="flex gap-3 justify-center">
+            <button onclick="submitMathChoice(true)" class="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-base rounded-2xl active:scale-95 transition-all shadow-md">
+              ✓ ĐÚNG (+2s)
+            </button>
+            <button onclick="submitMathChoice(false)" class="flex-1 py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-black text-base rounded-2xl active:scale-95 transition-all shadow-md">
+              ✕ SAI (+2s)
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function submitMathChoice(userChoice) {
+      if (userChoice === currentMathAnswer) {
+        mathStreak++;
+        const pts = mathStreak >= 3 ? 20 : 15;
+        mathScore += pts;
+        mathTimeRemaining = Math.min(45, mathTimeRemaining + 2); // bonus +2s
+      } else {
+        mathStreak = 0;
+        mathTimeRemaining = Math.max(0, mathTimeRemaining - 3); // penalty -3s
+      }
+      
+      const timeEl = document.getElementById('math-time-display');
+      if (timeEl) timeEl.innerText = `${mathTimeRemaining}s`;
+
+      if (mathTimeRemaining <= 0) {
+        if (mathInterval) clearInterval(mathInterval);
+        finishRapidMath();
+      } else {
+        renderNextMathProblem();
+      }
+    }
+
+    function finishRapidMath() {
+      if (mathInterval) clearInterval(mathInterval);
+      APP_STATE.bfsScore += 40;
+      APP_STATE.rankPoints += 40;
+      APP_STATE.gymCompletedCount++;
+      updateStatsUI();
+      document.getElementById('game-dynamic-area').innerHTML = `
+        <div class="text-center space-y-3 py-4">
+          <span class="text-4xl">⚡</span>
+          <h3 class="text-lg font-black text-slate-900 font-cyber">KẾT THÚC TÍNH NHẨM PHẢN XẠ!</h3>
+          <p class="text-xs text-slate-600">Bạn ghi được <strong>${mathScore} điểm</strong> phản xạ tính nhẩm tổ hợp.</p>
+          <div class="text-sm font-black text-blue-600">+40 Điểm BFS & +40 Điểm XH đã cộng!</div>
+          <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md">Tiếp Tục</button>
+        </div>
+      `;
+    }
+
+    function closeGameContainer() {
+      if (stroopRoundTimer) clearInterval(stroopRoundTimer);
+      if (gridRecallTimer) clearInterval(gridRecallTimer);
+      if (mathInterval) clearInterval(mathInterval);
+      document.getElementById('active-game-container').classList.add('hidden');
+    }
+
+    // ================= RENDERING LISTS =================
+    function renderArticles() {
+      const container = document.getElementById('article-list-container');
+      container.innerHTML = ARTICLES.map(art => `
+        <div class="glass-card p-5 rounded-2xl space-y-2 border-slate-200 hover:border-blue-300 transition-all shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">${art.tag}</span>
+            <span class="text-[11px] text-slate-500 font-medium">${art.author}</span>
+          </div>
+          <h3 class="text-sm sm:text-base font-black text-slate-900 font-cyber">${art.title}</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">${art.content}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderTips(category) {
+      const container = document.getElementById('tips-grid-container');
+      const filtered = category === 'ALL' ? TIPS_DATA : TIPS_DATA.filter(t => t.category === category);
+
+      document.querySelectorAll('.tip-filter-btn').forEach(b => {
+        if (b.dataset.category === category) {
+          b.className = 'tip-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm';
+        } else {
+          b.className = 'tip-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200';
+        }
+      });
+
+      container.innerHTML = filtered.map(tip => `
+        <div class="glass-card p-4 rounded-2xl flex flex-col justify-between space-y-3 border-slate-200 shadow-xs">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">${tip.tag}</span>
+              <span class="text-xs">⚡</span>
+            </div>
+            <h4 class="font-black text-sm text-slate-900 font-cyber">${tip.title}</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">${tip.text}</p>
+          </div>
+          <div class="text-[11px] text-blue-600 font-bold flex items-center justify-end gap-1">
+            <span>Áp dụng ngay</span>
+            <span>✓</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterTips(cat) {
+      renderTips(cat);
+    }
+
+    function renderLeaderboard() {
+      const allUsers = getFullLeaderboard();
+      const podiumContainer = document.getElementById('leaderboard-podium-container');
+      const table = document.getElementById('leaderboard-table');
+
+      const top3 = allUsers.slice(0, 3);
+      const remaining = allUsers.slice(3);
+
+      if (podiumContainer && top3.length >= 3) {
+        const first = top3[0];
+        const second = top3[1];
+        const third = top3[2];
+
+        podiumContainer.innerHTML = `
+          <!-- 2nd Place -->
+          <div class="glass-card p-3 rounded-2xl flex flex-col items-center text-center border-slate-200 shadow-sm ${second.isUser ? 'border-2 border-blue-500 bg-blue-50/50' : ''}">
+            <div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-slate-400 flex items-center justify-center text-base font-extrabold mb-1">
+              🥈
+            </div>
+            <span class="text-xs font-bold ${second.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${second.name}</span>
+            <span class="text-[11px] text-amber-600 font-black font-cyber">${second.totalScore}đ</span>
+            <span class="text-[9px] text-slate-500 font-mono">${second.rankPoints} XH + ${second.bfs} BFS</span>
+            <div class="h-16 w-full bg-slate-200 rounded-t-xl mt-2 flex items-center justify-center text-slate-700 font-extrabold text-sm">#2</div>
+          </div>
+
+          <!-- 1st Place -->
+          <div class="glass-card p-3.5 rounded-2xl border-2 border-amber-400 shadow-md flex flex-col items-center text-center relative -top-3 bg-gradient-to-b from-amber-50 to-white ${first.isUser ? 'ring-2 ring-blue-500' : ''}">
+            <div class="w-12 h-12 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center text-xl font-extrabold mb-1 shadow-sm">
+              👑
+            </div>
+            <span class="text-xs font-black ${first.isUser ? 'text-blue-600' : 'text-amber-800'} truncate w-full">${first.name}</span>
+            <span class="text-xs text-amber-600 font-black font-cyber">${first.totalScore}đ</span>
+            <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.bfs} BFS</span>
+            <div class="h-24 w-full bg-amber-200 border border-amber-300 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-base font-cyber">#1</div>
+          </div>
+
+          <!-- 3rd Place -->
+          <div class="glass-card p-3 rounded-2xl flex flex-col items-center text-center border-slate-200 shadow-sm ${third.isUser ? 'border-2 border-blue-500 bg-blue-50/50' : ''}">
+            <div class="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center text-base font-extrabold mb-1">
+              🥉
+            </div>
+            <span class="text-xs font-bold ${third.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${third.name}</span>
+            <span class="text-[11px] text-amber-600 font-black font-cyber">${third.totalScore}đ</span>
+            <span class="text-[9px] text-slate-500 font-mono">${third.rankPoints} XH + ${third.bfs} BFS</span>
+            <div class="h-12 w-full bg-orange-200 rounded-t-xl mt-2 flex items-center justify-center text-orange-800 font-extrabold text-sm">#3</div>
+          </div>
+        `;
+      }
+
+      if (table) {
+        table.innerHTML = remaining.map(user => `
+          <div class="flex items-center justify-between p-3.5 border-b border-slate-200 ${user.isUser ? 'bg-blue-50/60 border-l-4 border-l-blue-600' : 'hover:bg-slate-50'} transition-all">
+            <div class="flex items-center space-x-3">
+              <span class="font-cyber font-black text-xs w-6 text-slate-500">#${user.rank}</span>
+              <div>
+                <div class="font-bold text-xs ${user.isUser ? 'text-blue-600 font-black' : 'text-slate-800'}">${user.name}</div>
+                <div class="text-[10px] text-slate-500">${user.school} • ${user.streak}</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="font-cyber font-black text-xs text-blue-700">Tổng: ${user.totalScore}đ</div>
+              <div class="text-[10px] text-amber-600 font-medium font-mono">${user.rankPoints}đ XH + ${user.bfs} BFS</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderReminders() {
+      const container = document.getElementById('reminders-list');
+      container.innerHTML = APP_STATE.reminders.map(rem => `
+        <div class="glass-card-light p-3 rounded-2xl flex items-center justify-between border-slate-200 shadow-xs">
+          <div class="flex items-center space-x-3">
+            <span class="text-base font-cyber font-black text-blue-600 bg-blue-50 px-2.5 py-1 rounded-xl border border-blue-200">${rem.time}</span>
+            <span class="text-xs font-bold text-slate-800">${rem.title}</span>
+          </div>
+          <button onclick="toggleReminder(${rem.id})" class="text-xs font-bold px-2.5 py-1 rounded-lg ${rem.active ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600'}">
+            ${rem.active ? 'Bật' : 'Tắt'}
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function toggleReminder(id) {
+      const r = APP_STATE.reminders.find(x => x.id === id);
+      if (r) r.active = !r.active;
+      renderReminders();
+    }
+
+    function addNewReminderPrompt() {
+      const title = prompt('Nhập tên lời nhắc học tập:', 'Ca học sâu buổi chiều');
+      const time = prompt('Nhập giờ nhắc (vd: 15:30):', '15:30');
+      if (title && time) {
+        APP_STATE.reminders.push({ id: Date.now(), title, time, active: true });
+        renderReminders();
+      }
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('session-history-list');
+      container.innerHTML = APP_STATE.history.map(item => `
+        <div class="glass-card-light p-3.5 rounded-2xl space-y-1 border-slate-200 shadow-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-slate-900 font-cyber">${item.subject}</span>
+            <span class="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-bold">${item.minutes} phút</span>
+          </div>
+          <div class="text-[11px] text-slate-600">${item.note}</div>
+          <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1">
+            <span>${item.date}</span>
+            <span>${item.emotion}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateStatsUI() {
+      const totalScore = APP_STATE.rankPoints + APP_STATE.bfsScore;
+
+      const headerRankEl = document.getElementById('header-rank-points');
+      if (headerRankEl) headerRankEl.innerText = `${APP_STATE.rankPoints}đ`;
+
+      const headerBfsEl = document.getElementById('header-bfs-score');
+      if (headerBfsEl) headerBfsEl.innerText = APP_STATE.bfsScore;
+
+      const headerTotalEl = document.getElementById('header-total-score');
+      if (headerTotalEl) headerTotalEl.innerText = `${totalScore}đ`;
+
+      const statBfsEl = document.getElementById('stat-bfs-score');
+      if (statBfsEl) statBfsEl.innerText = APP_STATE.bfsScore;
+
+      const statRankEl = document.getElementById('stat-rank-points');
+      if (statRankEl) statRankEl.innerText = `${APP_STATE.rankPoints} đ`;
+
+      const statTotalEl = document.getElementById('stat-total-score');
+      if (statTotalEl) statTotalEl.innerText = `${totalScore} đ`;
+
+      const statHoursEl = document.getElementById('stat-total-hours');
+      if (statHoursEl) statHoursEl.innerText = `${APP_STATE.totalHours}h tổng học`;
+
+      const statStreakEl = document.getElementById('stat-streak-days');
+      if (statStreakEl) statStreakEl.innerText = `${APP_STATE.streakDays} 🔥`;
+
+      const statGymEl = document.getElementById('stat-gym-count');
+      if (statGymEl) statGymEl.innerText = APP_STATE.gymCompletedCount;
+
+      renderLeaderboard();
+    }
+
+    // ================= 10-QUESTION ASSESSMENT MODAL =================
+    function openAssessmentModal(isRetake = false) {
+      document.getElementById('assessment-modal').classList.remove('hidden');
+      document.getElementById('assessment-result-box').classList.add('hidden');
+      document.getElementById('assess-submit-btn').classList.remove('hidden');
+    }
+
+    function closeAssessmentModal() {
+      document.getElementById('assessment-modal').classList.add('hidden');
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-list-container');
+      container.innerHTML = ASSESSMENT_QUESTIONS.map((q, idx) => `
+        <div class="bg-white p-4 rounded-2xl space-y-2 border border-slate-200 shadow-xs">
+          <p class="text-xs font-bold text-slate-800">
+            <span class="text-blue-600 font-cyber font-black">#${q.id}</span> ${q.text}
+          </p>
+          <div class="grid grid-cols-4 gap-2 pt-1">
+            <label class="flex flex-col items-center p-2 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer hover:border-blue-400">
+              <input type="radio" name="question_${q.id}" value="3" class="accent-blue-600" checked>
+              <span class="text-[10px] font-bold text-slate-700 mt-1">Thường xuyên</span>
+            </label>
+            <label class="flex flex-col items-center p-2 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer hover:border-blue-400">
+              <input type="radio" name="question_${q.id}" value="2" class="accent-blue-600">
+              <span class="text-[10px] font-bold text-slate-700 mt-1">Thỉnh thoảng</span>
+            </label>
+            <label class="flex flex-col items-center p-2 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer hover:border-blue-400">
+              <input type="radio" name="question_${q.id}" value="1" class="accent-blue-600">
+              <span class="text-[10px] font-bold text-slate-700 mt-1">Hiếm khi</span>
+            </label>
+            <label class="flex flex-col items-center p-2 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer hover:border-blue-400">
+              <input type="radio" name="question_${q.id}" value="0" class="accent-blue-600">
+              <span class="text-[10px] font-bold text-slate-700 mt-1">Không bao giờ</span>
+            </label>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function calculateAndSaveAssessment() {
+      let totalRaw = 0;
+      for (let i = 1; i <= 10; i++) {
+        const radios = document.getElementsByName(`question_${i}`);
+        for (const r of radios) {
+          if (r.checked) {
+            totalRaw += parseInt(r.value, 10);
+            break;
+          }
+        }
+      }
+
+      // Max raw is 30. Calculate BFS from 0 to 1000.
+      const calculatedBFS = Math.max(200, Math.round(1000 - (totalRaw / 30) * 600));
+      APP_STATE.bfsScore = calculatedBFS;
+      
+      const name = document.getElementById('assess-input-name').value || "Trịnh Hoài Tâm";
+      const school = document.getElementById('assess-input-school').value || "Chuyên gia trẻ";
+      APP_STATE.userName = name;
+      APP_STATE.userSchool = school;
+      document.getElementById('user-display-name').innerText = name;
+      document.getElementById('user-display-school').innerText = school;
+      document.getElementById('user-avatar-initial').innerText = name.charAt(0).toUpperCase();
+
+      updateStatsUI();
+
+      const resBox = document.getElementById('assessment-result-box');
+      resBox.classList.remove('hidden');
+      document.getElementById('result-bfs-number').innerText = `${calculatedBFS} / 1000`;
+      
+      let category = "Khá Tốt - Vỏ Não Kiên Định";
+      let desc = "Vỏ não của bạn có khả năng duy trì tập trung tương đối ổn định. Tiếp tục duy trì các chu kỳ 90 phút và sóng 40Hz để bứt phá lên 950+ BFS!";
+      if (calculatedBFS >= 850) {
+        category = "Xuất Sắc - Siêu Nơ-ron Tập Trung";
+        desc = "Khả năng ức chế dopamine và chống xao nhãng của bạn ở cấp độ cao nhất! Hãy chia sẻ bí kíp lên bảng xếp hạng.";
+      } else if (calculatedBFS < 600) {
+        category = "Cần Tái Phục Hồi - Hội Chứng Não Bỏng Ngô Cao";
+        desc = "Vỏ não trước trán đang bị quá tải bởi các chuỗi phần thưởng tức thì (video ngắn, thông báo). Hãy áp dụng ngay quy tắc 20 giây và nghe sóng Gamma 40Hz khi học!";
+      }
+
+      document.getElementById('result-bfs-category').innerText = category;
+      document.getElementById('result-bfs-desc').innerText = desc;
+      document.getElementById('assess-submit-btn').classList.add('hidden');
+    }
+
+    // ================= REFLECTION MODAL =================
+    function openReflectionModal() {
+      document.getElementById('reflection-modal').classList.remove('hidden');
+    }
+
+    function closeReflectionModal() {
+      document.getElementById('reflection-modal').classList.add('hidden');
+    }
+
+    function selectEmotion(em) {
+      APP_STATE.selectedEmotion = em;
+      document.querySelectorAll('.emotion-btn').forEach(btn => {
+        if (btn.innerText.includes(em.slice(0, 3))) {
+          btn.className = 'emotion-btn flex-1 py-2 rounded-xl bg-blue-600 text-white border border-blue-600 text-xs font-black shadow-sm';
+        } else {
+          btn.className = 'emotion-btn flex-1 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:border-blue-500 bg-slate-50';
+        }
+      });
+    }
+
+    function saveSessionReflection() {
+      const note = document.getElementById('reflection-note-input').value || "Hoàn thành chu kỳ học sâu tập trung cao độ.";
+      const subject = document.getElementById('session-subject-input').value || "Phiên học sâu";
+      const minutes = Math.round(APP_STATE.timerDuration / 60);
+
+      APP_STATE.history.unshift({
+        id: Date.now(),
+        subject: subject,
+        minutes: minutes,
+        date: "Vừa xong",
+        emotion: APP_STATE.selectedEmotion,
+        note: note
+      });
+
+      APP_STATE.bfsScore += 25;
+      APP_STATE.rankPoints += 50;
+      APP_STATE.totalHours = parseFloat((APP_STATE.totalHours + minutes / 60).toFixed(1));
+      updateStatsUI();
+      renderHistory();
+      closeReflectionModal();
+      alert('🌟 Đã ghi nhận đúc kết: +50 Điểm Xếp Hạng & +25 Điểm BFS vào hồ sơ của bạn!');
+    }
+  </script>
+</body>
+</html>

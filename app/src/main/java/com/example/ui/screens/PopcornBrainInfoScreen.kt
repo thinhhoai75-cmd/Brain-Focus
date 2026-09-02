@@ -1,298 +1,250 @@
 package com.example.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.Psychology
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.R
 import com.example.data.model.PopcornArticle
-import com.example.ui.theme.*
-import com.example.ui.viewmodel.FocusViewModel
+import com.example.data.model.PopcornBrainData
+import com.example.ui.theme.DeepTealPrimary
+import com.example.ui.theme.MintContainer
+import com.example.ui.theme.OnMintContainer
 
 @Composable
-fun PopcornBrainInfoScreen(
-    viewModel: FocusViewModel
-) {
-    val articles = viewModel.articlesList
+fun PopcornBrainInfoScreen() {
+    var selectedCategory by remember { mutableStateOf("Tất cả") }
     var selectedArticle by remember { mutableStateOf<PopcornArticle?>(null) }
 
-    Column(
+    val categories = listOf("Tất cả", "Khoa học não bộ", "Phương pháp học", "Môi trường", "Cai nghiện số", "Sức khỏe não bộ")
+    val filteredArticles = if (selectedCategory == "Tất cả") {
+        PopcornBrainData.articles
+    } else {
+        PopcornBrainData.articles.filter { it.category == selectedCategory }
+    }
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        // Hero Image Banner
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-                .testTag("popcorn_brain_hero_banner"),
-            shape = RoundedCornerShape(22.dp),
-            colors = CardDefaults.cardColors(containerColor = DarkTealSecondary)
-        ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Image(
-                    painter = painterResource(id = R.drawable.img_popcorn_brain),
-                    contentDescription = "Popcorn Brain Banner",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
+        // Header
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.horizontalGradient(
-                                colors = listOf(
-                                    DarkTealSecondary.copy(alpha = 0.94f),
-                                    DarkTealSecondary.copy(alpha = 0.6f),
-                                    Color.Transparent
-                                )
-                            )
-                        )
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(18.dp),
-                    verticalArrangement = Arrangement.Center
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(MintContainer),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Surface(
-                        color = MintContainer.copy(alpha = 0.9f),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text("🍿", fontSize = 11.sp)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "Hiện tượng não bỏng ngô (Popcorn Brain)",
-                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                color = OnMintContainer
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Icon(
+                        imageVector = Icons.Default.MenuBook,
+                        contentDescription = null,
+                        tint = DeepTealPrimary,
+                        modifier = Modifier.size(26.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
                     Text(
-                        text = "Khoa học về sự chú ý",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        color = Color.White
+                        text = "Thư Viện Khoa Học Não Bộ",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Hiểu rõ cơ chế dopamine & cách đảo ngược sự xao nhãng",
+                        text = "Hiểu rõ cơ chế thần kinh & Cách phục hồi tập trung sâu",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MintContainer.copy(alpha = 0.85f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Bài viết & kiến thức thần kinh học",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Surface(
-                color = MintContainer.copy(alpha = 0.6f),
-                shape = RoundedCornerShape(8.dp)
+        // Category Filter Chips
+        item {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "${articles.size} chủ đề",
-                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                    color = DeepTealPrimary,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .testTag("articles_list"),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(articles) { article ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { selectedArticle = article }
-                        .testTag("article_item_${article.id}"),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    shape = RoundedCornerShape(20.dp),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, SleekBorder)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Surface(
-                                color = MintContainer.copy(alpha = 0.6f),
-                                shape = RoundedCornerShape(8.dp)
-                            ) {
-                                Text(
-                                    text = article.category,
-                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = DeepTealPrimary,
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
-                                )
-                            }
-
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.MenuBook,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.size(14.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = "${article.readTimeMinutes} phút đọc",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
+                items(categories) { cat ->
+                    val isSelected = selectedCategory == cat
+                    Card(
+                        shape = RoundedCornerShape(20.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (isSelected) DeepTealPrimary else MaterialTheme.colorScheme.surface
+                        ),
+                        border = if (!isSelected) CardDefaults.outlinedCardBorder() else null,
+                        modifier = Modifier.clickable { selectedCategory = cat }
+                    ) {
                         Text(
-                            text = article.title,
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onSurface
+                            text = cat,
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            ),
+                            color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
                         )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            text = article.subtitle,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 2
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Đọc chi tiết",
-                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                color = DeepTealPrimary
-                            )
-                            Icon(
-                                imageVector = Icons.Default.ChevronRight,
-                                contentDescription = null,
-                                tint = DeepTealPrimary,
-                                modifier = Modifier.size(16.dp)
-                            )
-                        }
                     }
                 }
             }
+        }
+
+        // Articles List
+        items(filteredArticles) { article ->
+            ArticleCardItem(
+                article = article,
+                onClick = { selectedArticle = article }
+            )
         }
     }
 
-    // Article Detail Modal Dialog
-    selectedArticle?.let { article ->
+    // Article Reader Modal
+    if (selectedArticle != null) {
+        val art = selectedArticle!!
         AlertDialog(
             onDismissRequest = { selectedArticle = null },
-            shape = RoundedCornerShape(24.dp),
             title = {
-                Text(
-                    text = article.title,
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Card(
+                        shape = RoundedCornerShape(8.dp),
+                        colors = CardDefaults.cardColors(containerColor = MintContainer)
+                    ) {
+                        Text(
+                            text = art.category,
+                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                            color = OnMintContainer,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        )
+                    }
+                    IconButton(onClick = { selectedArticle = null }) {
+                        Icon(Icons.Default.Close, contentDescription = "Đóng")
+                    }
+                }
             },
             text = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
-                    article.contentSections.forEach { section ->
+                    item {
                         Text(
-                            text = section.sectionHeader,
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = DeepTealPrimary,
-                            modifier = Modifier.padding(top = 12.dp, bottom = 4.dp)
-                        )
-                        Text(
-                            text = section.textContent,
-                            style = MaterialTheme.typography.bodySmall,
+                            text = art.title,
+                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                             color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = art.subtitle,
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                            color = DeepTealPrimary
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MintContainer.copy(alpha = 0.5f)),
-                        shape = RoundedCornerShape(16.dp),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, SleekBorder)
-                    ) {
-                        Column(modifier = Modifier.padding(14.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.AutoAwesome,
-                                    contentDescription = null,
-                                    tint = DeepTealPrimary,
-                                    modifier = Modifier.size(18.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
+                    items(art.contentSections) { section ->
+                        Card(
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(12.dp)) {
                                 Text(
-                                    text = "Điểm mấu chốt:",
-                                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-                                    color = DeepTealPrimary
+                                    text = section.subtitle,
+                                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Text(
+                                    text = section.text,
+                                    style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
-                            Spacer(modifier = Modifier.height(6.dp))
-                            article.keyTakeaways.forEach { takeaway ->
+                        }
+                    }
+
+                    item {
+                        Card(
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = MintContainer),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(12.dp)) {
                                 Text(
-                                    text = "• $takeaway",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.padding(vertical = 2.dp)
+                                    text = "💡 Điểm cốt lõi cần nhớ",
+                                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = OnMintContainer
                                 )
+                                Spacer(modifier = Modifier.height(6.dp))
+                                art.keyTakeaways.forEach { takeaway ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 3.dp),
+                                        verticalAlignment = Alignment.Top
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = null,
+                                            tint = DeepTealPrimary,
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text(
+                                            text = takeaway,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = OnMintContainer
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -301,14 +253,99 @@ fun PopcornBrainInfoScreen(
             confirmButton = {
                 Button(
                     onClick = { selectedArticle = null },
-                    colors = ButtonDefaults.buttonColors(containerColor = DeepTealPrimary),
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.testTag("close_article_dialog_button")
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Đã hiểu & đóng")
+                    Text("Đã hiểu bài học")
                 }
             }
         )
     }
 }
 
+@Composable
+fun ArticleCardItem(
+    article: PopcornArticle,
+    onClick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Card(
+                    shape = RoundedCornerShape(6.dp),
+                    colors = CardDefaults.cardColors(containerColor = MintContainer)
+                ) {
+                    Text(
+                        text = article.category,
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                        color = OnMintContainer,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                    )
+                }
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.AccessTime,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "${article.readTimeMinutes} phút đọc",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = article.title,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = article.subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Đọc bài viết",
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                    color = DeepTealPrimary
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    contentDescription = null,
+                    tint = DeepTealPrimary,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
+    }
+}

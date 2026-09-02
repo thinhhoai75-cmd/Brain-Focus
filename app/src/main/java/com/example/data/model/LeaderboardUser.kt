@@ -2,44 +2,65 @@ package com.example.data.model
 
 data class LeaderboardUser(
     val rank: Int,
-    val name: String,
-    val points: Int,
-    val fbsScore: Int,
+    val username: String,
+    val schoolOrGrade: String,
+    val fbsScore: Int, // Điểm BFS (Brain Focus Score)
+    val totalHoursStudied: Double,
+    val streakDays: Int,
     val completedSessions: Int,
-    val avatarColorHex: String,
+    val rankPoints: Int, // Điểm xếp hạng rèn luyện
+    val rankTitle: String,
     val isCurrentUser: Boolean = false
-)
+) {
+    // Tổng điểm để lên bảng xếp hạng = Điểm xếp hạng + Điểm BFS
+    val totalScore: Int
+        get() = rankPoints + fbsScore
+
+    val points: Int
+        get() = totalScore
+}
 
 object SimulatedLeaderboard {
-    val initialPeers = listOf(
-        LeaderboardUser(0, "Minh Anh (Zenith)", 1850, 920, 38, "#8B5CF6"),
-        LeaderboardUser(0, "Tuấn Kiệt Focus", 1680, 880, 32, "#3B82F6"),
-        LeaderboardUser(0, "Bảo Ngọc Scholar", 1520, 850, 27, "#EC4899"),
-        LeaderboardUser(0, "Đức Huy Math", 1410, 810, 24, "#10B981"),
-        LeaderboardUser(0, "Hoàng Nam DeepWork", 1320, 780, 21, "#F59E0B"),
-        LeaderboardUser(0, "Gia Hân Med", 1250, 760, 18, "#06B6D4"),
-        LeaderboardUser(0, "Trần Văn Khánh", 1180, 720, 15, "#6366F1"),
-        LeaderboardUser(0, "Thùy Linh Poly", 1120, 690, 12, "#F43F5E"),
-        LeaderboardUser(0, "Phạm Quang Minh", 1060, 650, 9, "#84CC16"),
-        LeaderboardUser(0, "Nguyễn Thị Phương", 1010, 620, 6, "#D97706"),
-        LeaderboardUser(0, "Thành Trung Learner", 980, 580, 4, "#64748B"),
-        LeaderboardUser(0, "Lê Hoàng Yến", 920, 540, 2, "#0EA5E9")
+    private val baseCommunity = listOf(
+        LeaderboardUser(1, "Hoàng Nam (Chuyên Toán)", "Lớp 12A1", 940, 142.5, 34, 95, 1910, "Bậc Thầy Tập Trung"),
+        LeaderboardUser(2, "Minh Thư (IELTS 8.0)", "ĐH Ngoại Thương", 910, 128.0, 29, 85, 1650, "Bậc Thầy Tập Trung"),
+        LeaderboardUser(3, "Đức Anh (Thủ khoa)", "Lớp 12 Chuyên", 885, 115.5, 24, 77, 1425, "Chiến Binh Sâu Sắc"),
+        LeaderboardUser(4, "Khánh Linh", "Lớp 11", 840, 98.0, 19, 65, 1110, "Chiến Binh Sâu Sắc"),
+        LeaderboardUser(5, "Bảo Long", "ĐH Bách Khoa", 815, 92.5, 15, 61, 1015, "Chiến Binh Sâu Sắc"),
+        LeaderboardUser(6, "Phương Vy", "Lớp 12", 790, 84.0, 14, 56, 890, "Người Tiên Phong"),
+        LeaderboardUser(7, "Tuấn Kiệt", "Lớp 10", 760, 75.5, 12, 50, 740, "Người Tiên Phong"),
+        LeaderboardUser(8, "Thanh Hà", "ĐH Kinh Tế", 720, 68.0, 10, 45, 630, "Người Tiên Phong"),
+        LeaderboardUser(9, "Gia Huy", "Lớp 12", 690, 58.5, 8, 39, 480, "Tập Sự Kiên Trì"),
+        LeaderboardUser(10, "Ngọc Mai", "Lớp 11", 650, 49.0, 7, 33, 340, "Tập Sự Kiên Trì")
     )
 
-    fun buildMergedLeaderboard(currentUserName: String, userPoints: Int, userFbs: Int, userSessions: Int): List<LeaderboardUser> {
-        val currentUser = LeaderboardUser(
+    fun buildMergedLeaderboard(
+        currentUserName: String,
+        currentUserPoints: Int,
+        currentUserFbs: Int,
+        currentUserSessions: Int
+    ): List<LeaderboardUser> {
+        val userItem = LeaderboardUser(
             rank = 0,
-            name = if (currentUserName.isNotBlank()) "$currentUserName (Bạn)" else "Bạn",
-            points = userPoints,
-            fbsScore = userFbs,
-            completedSessions = userSessions,
-            avatarColorHex = "#6366F1",
+            username = "$currentUserName (Bạn)",
+            schoolOrGrade = "Đang rèn luyện",
+            fbsScore = currentUserFbs,
+            totalHoursStudied = (currentUserSessions * 90.0) / 60.0,
+            streakDays = if (currentUserSessions > 0) (currentUserSessions / 2) + 1 else 1,
+            completedSessions = currentUserSessions,
+            rankPoints = currentUserPoints,
+            rankTitle = when {
+                (currentUserPoints + currentUserFbs) >= 2000 -> "Bậc Thầy Tập Trung"
+                (currentUserPoints + currentUserFbs) >= 1200 -> "Chiến Binh Sâu Sắc"
+                (currentUserPoints + currentUserFbs) >= 500 -> "Người Tiên Phong"
+                else -> "Tập Sự Kiên Trì"
+            },
             isCurrentUser = true
         )
 
-        val combined = (initialPeers + currentUser).sortedByDescending { it.points }
-        return combined.mapIndexed { index, user ->
-            user.copy(rank = index + 1)
+        val combined = (baseCommunity + userItem).sortedByDescending { it.totalScore }
+        return combined.mapIndexed { index, item ->
+            item.copy(rank = index + 1)
         }
     }
 }

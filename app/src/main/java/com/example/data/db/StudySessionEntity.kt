@@ -5,17 +5,17 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "study_sessions")
 data class StudySessionEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val targetMinutes: Int, // e.g., 15, 25, 45, 60, 90
-    val actualSecondsCompleted: Int,
-    val wereExitsDetected: Boolean,
-    val exitCount: Int,
-    val pointsEarned: Int,
-    val fbsBoostEarned: Int,
-    val dateString: String, // YYYY-MM-DD
-    val timestamp: Long = System.currentTimeMillis(),
-    val emotion: String? = null, // e.g., "🤩 Tuyệt vời", "😊 Hài lòng", "😌 Thư thái", "😐 Bình thường", "😫 Mệt mỏi"
-    val reflectionNote: String? = null, // Ghi chú sự tiến bộ của bản thân
-    val reflectionBonusPoints: Int = 0,
-    val reflectionBonusFbs: Int = 0
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val subjectName: String,
+    val plannedDurationMinutes: Int,
+    val actualDurationMinutes: Int,
+    val startTimestamp: Long,
+    val endTimestamp: Long,
+    val isCompletedWithoutExit: Boolean,
+    val exitAttemptCount: Int = 0,
+    val backgroundMusicUsed: String = "Không nhạc",
+    val pointsEarned: Int = 0,
+    val fbsScoreImpact: Int = 0,
+    val postSessionEmotion: String = "Tập trung tốt",
+    val note: String = ""
 )

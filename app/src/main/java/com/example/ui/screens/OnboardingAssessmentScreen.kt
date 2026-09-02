@@ -2,10 +2,8 @@ package com.example.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.Image
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,17 +16,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Psychology
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.RadioButtonUnchecked
+import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.TrackChanges
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -38,313 +35,330 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.R
 import com.example.data.model.AssessmentData
-import com.example.ui.theme.*
-import com.example.ui.viewmodel.FocusViewModel
+import com.example.data.model.BfsDiagnosis
+import com.example.ui.theme.DeepTealPrimary
+import com.example.ui.theme.MintContainer
+import com.example.ui.theme.OnMintContainer
+import com.example.ui.theme.PenaltyRed
+import com.example.ui.theme.PenaltyRedContainer
+import com.example.ui.theme.SunsetOrangeAccent
 
 @Composable
 fun OnboardingAssessmentScreen(
-    viewModel: FocusViewModel,
-    onAssessmentCompleted: () -> Unit
+    onComplete: (name: String, school: String, goal: String, answers: List<Int>) -> Unit,
+    existingDiagnosis: BfsDiagnosis? = null,
+    isRetaking: Boolean = false,
+    onContinueToApp: () -> Unit = {}
 ) {
-    val name by viewModel.onboardingName.collectAsState()
-    val email by viewModel.onboardingEmail.collectAsState()
-    val isRetaking by viewModel.isRetakingAssessment.collectAsState()
-    
-    var step by remember { mutableIntStateOf(if (isRetaking || (name.isNotBlank() && email.isNotBlank())) 1 else 0) } // 0: User Info, 1: 7-Question Quiz, 2: Score Diagnosis
-    var currentQuestionIdx by remember { mutableIntStateOf(0) }
-
-    val answers by viewModel.assessmentAnswers.collectAsState()
-    val diagnosis by viewModel.assessmentDiagnosis.collectAsState()
-    val score by viewModel.assessmentScore.collectAsState()
+    var step by remember { mutableIntStateOf(if (isRetaking) 1 else 0) } // 0: User Info, 1: 10 Questions, 2: Diagnosis Result
+    var name by remember { mutableStateOf("") }
+    var school by remember { mutableStateOf("") }
+    var goal by remember { mutableStateOf("") }
 
     val totalQuestions = AssessmentData.questions.size
+    var currentQuestionIdx by remember { mutableIntStateOf(0) }
+    val selectedAnswers = remember { mutableStateListOf<Int>().apply { repeat(totalQuestions) { add(-1) } } }
+
+    var localDiagnosis by remember { mutableStateOf(existingDiagnosis) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // App Logo & Header
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Box(
+        when (step) {
+            0 -> {
+                // Step 0: User Registration / Profile Intro
+                LazyColumn(
                     modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
-                    contentAlignment = Alignment.Center
+                        .fillMaxSize()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Psychology,
-                        contentDescription = "Brain Focus",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(32.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                Column {
-                    Text(
-                        text = "Brain Focus",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 1.5.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                    Text(
-                        text = "Khắc phục não bỏng ngô & giữ tập trung",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            when (step) {
-                0 -> {
-                    // STEP 0: USER REGISTRATION
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .testTag("onboarding_info_card"),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                        shape = RoundedCornerShape(20.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(24.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                    item {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(
-                                text = "Chào mừng bạn đến với Brain Focus",
-                                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "Vui lòng nhập thông tin để tạo hồ sơ và thực hiện bài đánh giá chỉ số Brain Focus Score (BFS).",
-                                style = MaterialTheme.typography.bodyMedium,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-
-                            Spacer(modifier = Modifier.height(24.dp))
-
-                            OutlinedTextField(
-                                value = name,
-                                onValueChange = { viewModel.setOnboardingName(it) },
-                                label = { Text("Họ và tên") },
-                                leadingIcon = {
-                                    Icon(Icons.Default.Person, contentDescription = null)
-                                },
-                                singleLine = true,
+                            Box(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .testTag("name_input"),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = MaterialTheme.colorScheme.primary
+                                    .size(56.dp)
+                                    .clip(CircleShape)
+                                    .background(MintContainer),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Psychology,
+                                    contentDescription = "Brain Focus",
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(32.dp)
                                 )
-                            )
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            OutlinedTextField(
-                                value = email,
-                                onValueChange = { viewModel.setOnboardingEmail(it) },
-                                label = { Text("Địa chỉ email") },
-                                leadingIcon = {
-                                    Icon(Icons.Default.Email, contentDescription = null)
-                                },
-                                singleLine = true,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .testTag("email_input"),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = MaterialTheme.colorScheme.primary
+                            }
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Column {
+                                Text(
+                                    text = "Brain Focus",
+                                    style = MaterialTheme.typography.titleLarge.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        letterSpacing = 1.5.sp
+                                    ),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
-                            )
+                                Text(
+                                    text = "Khắc phục Não Bỏng Ngô",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
 
-                            Spacer(modifier = Modifier.height(28.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
 
-                            Button(
-                                onClick = {
-                                    if (name.isNotBlank() && email.isNotBlank()) {
-                                        step = 1
-                                    }
-                                },
-                                enabled = name.isNotBlank() && email.contains("@"),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(52.dp)
-                                    .testTag("start_quiz_button"),
-                                shape = RoundedCornerShape(12.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                        Card(
+                            shape = RoundedCornerShape(20.dp),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(20.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = "Bắt đầu đánh giá não bỏng ngô",
-                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                                    text = "Chào mừng bạn đến với Brain Focus",
+                                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "Vui lòng nhập thông tin để tạo hồ sơ và thực hiện bài đánh giá chỉ số Brain Focus Score (BFS).",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+
+                                Spacer(modifier = Modifier.height(20.dp))
+
+                                OutlinedTextField(
+                                    value = name,
+                                    onValueChange = { name = it },
+                                    label = { Text("Tên của bạn hoặc Biệt danh") },
+                                    placeholder = { Text("Ví dụ: Minh Tuấn") },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.School, contentDescription = null, tint = DeepTealPrimary)
+                                    },
+                                    singleLine = true,
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                    ),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .testTag("name_input")
+                                )
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                OutlinedTextField(
+                                    value = school,
+                                    onValueChange = { school = it },
+                                    label = { Text("Trường học / Lớp / Nơi công tác") },
+                                    placeholder = { Text("Ví dụ: Lớp 12A1 / ĐH Bách Khoa") },
+                                    singleLine = true,
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                    ),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .testTag("school_input")
+                                )
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                OutlinedTextField(
+                                    value = goal,
+                                    onValueChange = { goal = it },
+                                    label = { Text("Mục tiêu rèn luyện") },
+                                    placeholder = { Text("Ví dụ: Ôn thi Đại học, học 90p không điện thoại") },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.TrackChanges, contentDescription = null, tint = SunsetOrangeAccent)
+                                    },
+                                    singleLine = true,
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                    ),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .testTag("goal_input")
+                                )
+
+                                Spacer(modifier = Modifier.height(24.dp))
+
+                                Button(
+                                    onClick = { step = 1 },
+                                    enabled = name.isNotBlank(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(52.dp)
+                                        .testTag("start_assessment_button"),
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                                ) {
+                                    Text(
+                                        text = "Bắt đầu làm bài đánh giá BFS 🧠",
+                                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                                    )
+                                }
                             }
                         }
                     }
                 }
+            }
 
-                1 -> {
-                    // STEP 1: 7 QUESTION QUIZ
-                    val question = AssessmentData.questions[currentQuestionIdx]
-                    val selectedOption = answers[currentQuestionIdx]
+            1 -> {
+                // Step 1: 10-Question Diagnostic Quiz
+                val q = AssessmentData.questions[currentQuestionIdx]
+                val currentSelectedOption = selectedAnswers[currentQuestionIdx]
 
-                    // Progress Bar
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Câu hỏi ${currentQuestionIdx + 1}/$totalQuestions",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            Text(
-                                text = "${((currentQuestionIdx + 1) * 100) / totalQuestions}%",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        LinearProgressIndicator(
-                            progress = { (currentQuestionIdx + 1) / totalQuestions.toFloat() },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp)
-                                .clip(RoundedCornerShape(4.dp)),
-                            color = MaterialTheme.colorScheme.primary,
-                            trackColor = MaterialTheme.colorScheme.surfaceVariant
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(20.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Đánh giá Não Bỏng Ngô",
+                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "Câu ${currentQuestionIdx + 1}/$totalQuestions",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    LinearProgressIndicator(
+                        progress = { (currentQuestionIdx + 1) / totalQuestions.toFloat() },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp)),
+                        color = MaterialTheme.colorScheme.primary,
+                        trackColor = MintContainer
+                    )
 
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .testTag("quiz_question_card"),
+                        shape = RoundedCornerShape(18.dp),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                        shape = RoundedCornerShape(20.dp)
+                        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Column(modifier = Modifier.padding(20.dp)) {
+                        Column(modifier = Modifier.padding(18.dp)) {
+                            Card(
+                                shape = RoundedCornerShape(8.dp),
+                                colors = CardDefaults.cardColors(containerColor = MintContainer)
+                            ) {
+                                Text(
+                                    text = q.category,
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = OnMintContainer
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
                             Text(
-                                text = question.title,
-                                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                                text = q.question,
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    lineHeight = 24.sp
+                                ),
                                 color = MaterialTheme.colorScheme.onSurface
                             )
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Text(
-                                text = question.subtitle,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                        }
+                    }
 
-                            Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                            question.options.forEachIndexed { optIdx, option ->
-                                val isSelected = selectedOption == optIdx
-                                Box(
+                    LazyColumn(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        itemsIndexed(q.options) { index, option ->
+                            val isSelected = currentSelectedOption == index
+                            Card(
+                                shape = RoundedCornerShape(14.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = if (isSelected) MintContainer else MaterialTheme.colorScheme.surface
+                                ),
+                                border = if (isSelected) CardDefaults.outlinedCardBorder().copy(brush = androidx.compose.ui.graphics.SolidColor(DeepTealPrimary)) else null,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        selectedAnswers[currentQuestionIdx] = index
+                                    }
+                            ) {
+                                Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(vertical = 6.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(
-                                            if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-                                            else MaterialTheme.colorScheme.surfaceVariant
-                                        )
-                                        .border(
-                                            width = if (isSelected) 2.dp else 1.dp,
-                                            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                            shape = RoundedCornerShape(12.dp)
-                                        )
-                                        .clickable {
-                                            viewModel.selectAnswer(currentQuestionIdx, optIdx)
-                                        }
-                                        .padding(16.dp)
+                                        .padding(16.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(24.dp)
-                                                .clip(CircleShape)
-                                                .background(
-                                                    if (isSelected) MaterialTheme.colorScheme.primary
-                                                    else Color.Transparent
-                                                )
-                                                .border(
-                                                    width = 2.dp,
-                                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                                    shape = CircleShape
-                                                ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            if (isSelected) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Check,
-                                                    contentDescription = null,
-                                                    tint = Color.White,
-                                                    modifier = Modifier.size(16.dp)
-                                                )
-                                            }
-                                        }
-                                        Spacer(modifier = Modifier.width(12.dp))
-                                        Text(
-                                            text = option.optionText,
-                                            style = MaterialTheme.typography.bodyMedium.copy(
-                                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                                            ),
-                                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                                        )
-                                    }
+                                    Icon(
+                                        imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                        contentDescription = null,
+                                        tint = if (isSelected) DeepTealPrimary else MaterialTheme.colorScheme.outline,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Text(
+                                        text = option.text,
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+                                        ),
+                                        color = if (isSelected) OnMintContainer else MaterialTheme.colorScheme.onSurface
+                                    )
                                 }
                             }
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -352,11 +366,11 @@ fun OnboardingAssessmentScreen(
                     ) {
                         if (currentQuestionIdx > 0) {
                             Button(
-                                onClick = { currentQuestionIdx-- },
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                                onClick = { currentQuestionIdx -= 1 },
+                                colors = ButtonDefaults.outlinedButtonColors(),
                                 shape = RoundedCornerShape(12.dp)
                             ) {
-                                Text("Quay lại", color = MaterialTheme.colorScheme.onSurface)
+                                Text("Quay lại")
                             }
                         } else {
                             Spacer(modifier = Modifier.width(1.dp))
@@ -365,14 +379,21 @@ fun OnboardingAssessmentScreen(
                         Button(
                             onClick = {
                                 if (currentQuestionIdx < totalQuestions - 1) {
-                                    currentQuestionIdx++
+                                    currentQuestionIdx += 1
                                 } else {
-                                    viewModel.calculateAndSubmitAssessment()
+                                    // Submit
+                                    val score = AssessmentData.calculateFbsScore(selectedAnswers.toList())
+                                    localDiagnosis = AssessmentData.getFbsDiagnosis(score)
+                                    onComplete(
+                                        name.ifBlank { "Bạn học tập" },
+                                        school.ifBlank { "Lớp 12" },
+                                        goal.ifBlank { "Ôn thi Đại học" },
+                                        selectedAnswers.toList()
+                                    )
                                     step = 2
                                 }
                             },
-                            enabled = selectedOption != null,
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                            enabled = currentSelectedOption >= 0,
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
@@ -382,215 +403,165 @@ fun OnboardingAssessmentScreen(
                         }
                     }
                 }
+            }
 
-                2 -> {
-                    // STEP 2: DIAGNOSIS, PERSONAL RESULTS & ACTIONABLE RECOMMENDATIONS
-                    diagnosis?.let { diag ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .testTag("diagnosis_result_card"),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                            shape = RoundedCornerShape(24.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(20.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
+            2 -> {
+                // Step 2: Diagnostic Results Screen
+                val diag = localDiagnosis ?: AssessmentData.getFbsDiagnosis(500)
+                AnimatedVisibility(
+                    visible = true,
+                    enter = fadeIn() + slideInVertically()
+                ) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        item {
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                text = "KẾT QUẢ ĐÁNH GIÁ CHỈ SỐ NÃO BỘ",
+                                style = MaterialTheme.typography.labelMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    letterSpacing = 1.5.sp
+                                ),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = diag.levelTitle,
+                                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        item {
+                            Card(
+                                shape = RoundedCornerShape(24.dp),
+                                colors = CardDefaults.cardColors(containerColor = MintContainer),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text(
-                                    text = "Kết quả cá nhân",
-                                    style = MaterialTheme.typography.headlineSmall.copy(
-                                        fontWeight = FontWeight.ExtraBold
-                                    ),
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    textAlign = TextAlign.Center
-                                )
-
-                                Spacer(modifier = Modifier.height(16.dp))
-
-                                // Score Circle Badge
-                                Box(
-                                    modifier = Modifier
-                                        .size(130.dp)
-                                        .clip(CircleShape)
-                                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f))
-                                        .border(3.dp, MaterialTheme.colorScheme.primary, CircleShape),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Text(
-                                            text = "${score ?: 500}",
-                                            style = MaterialTheme.typography.headlineLarge.copy(
-                                                fontWeight = FontWeight.ExtraBold,
-                                                fontSize = 34.sp
-                                            ),
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                        Text(
-                                            text = "Điểm BFS / 1000đ",
-                                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(16.dp))
-
-                                // Diagnosis Level Badge
-                                val levelColor = when (diag.levelNumber) {
-                                    1 -> Color(0xFF10B981) // Emerald Green
-                                    2 -> Color(0xFFF59E0B) // Amber Yellow
-                                    else -> Color(0xFFEF4444) // Red
-                                }
-
-                                Surface(
-                                    shape = RoundedCornerShape(16.dp),
-                                    color = levelColor.copy(alpha = 0.14f),
-                                    border = androidx.compose.foundation.BorderStroke(1.5.dp, levelColor),
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.Center
-                                    ) {
-                                        Text(
-                                            text = "${diag.levelEmoji}  ${diag.levelName}",
-                                            style = MaterialTheme.typography.titleMedium.copy(
-                                                fontWeight = FontWeight.Bold
-                                            ),
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            textAlign = TextAlign.Center
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(16.dp))
-
-                                // SECTION 1: NHẬN XÉT
-                                Card(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)),
-                                    shape = RoundedCornerShape(16.dp)
-                                ) {
-                                    Column(modifier = Modifier.padding(16.dp)) {
-                                        Text(
-                                            text = "Nhận xét",
-                                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                        Text(
-                                            text = diag.review,
-                                            style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(14.dp))
-
-                                // SECTION 2: BRAIN FOCUS ĐỀ XUẤT
-                                Card(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)),
-                                    shape = RoundedCornerShape(16.dp)
-                                ) {
-                                    Column(modifier = Modifier.padding(16.dp)) {
-                                        Text(
-                                            text = "Brain Focus đề xuất",
-                                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                        Spacer(modifier = Modifier.height(10.dp))
-                                        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                                            diag.suggestions.forEach { suggestion ->
-                                                Row(
-                                                    verticalAlignment = Alignment.CenterVertically,
-                                                    modifier = Modifier.fillMaxWidth()
-                                                ) {
-                                                    // Green check square
-                                                    Surface(
-                                                        shape = RoundedCornerShape(6.dp),
-                                                        color = Color(0xFF10B981),
-                                                        modifier = Modifier.size(22.dp)
-                                                    ) {
-                                                        Box(contentAlignment = Alignment.Center) {
-                                                            Icon(
-                                                                imageVector = Icons.Default.Check,
-                                                                contentDescription = null,
-                                                                tint = Color.White,
-                                                                modifier = Modifier.size(16.dp)
-                                                            )
-                                                        }
-                                                    }
-                                                    Spacer(modifier = Modifier.width(10.dp))
-                                                    Text(
-                                                        text = suggestion,
-                                                        style = MaterialTheme.typography.bodyMedium.copy(
-                                                            fontWeight = FontWeight.Medium
-                                                        ),
-                                                        color = MaterialTheme.colorScheme.onSurface
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(14.dp))
-
-                                // SECTION 3: THÔNG ĐIỆP
-                                Card(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    colors = CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)
-                                    ),
-                                    shape = RoundedCornerShape(16.dp),
-                                    border = androidx.compose.foundation.BorderStroke(
-                                        1.dp,
-                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                                    )
-                                ) {
-                                    Column(modifier = Modifier.padding(16.dp)) {
-                                        Text(
-                                            text = "Thông điệp",
-                                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                        Spacer(modifier = Modifier.height(6.dp))
-                                        Text(
-                                            text = "\"${diag.message}\"",
-                                            style = MaterialTheme.typography.bodyMedium.copy(
-                                                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
-                                                lineHeight = 22.sp
-                                            ),
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(24.dp))
-
-                                // CONTINUE BUTTON TO MAIN HOME SCREEN
-                                Button(
-                                    onClick = {
-                                        viewModel.completeAssessmentAndSave()
-                                        onAssessmentCompleted()
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(54.dp)
-                                        .testTag("enter_app_button"),
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                    shape = RoundedCornerShape(16.dp)
+                                Column(
+                                    modifier = Modifier.padding(24.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Text(
-                                        text = "Đã đọc xong • Tiếp tục vào trang chủ",
-                                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                                        text = "${diag.score}",
+                                        style = MaterialTheme.typography.headlineLarge.copy(
+                                            fontSize = 54.sp,
+                                            fontWeight = FontWeight.ExtraBold
+                                        ),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    Text(
+                                        text = "Điểm BFS / 1000đ",
+                                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Card(
+                                        shape = RoundedCornerShape(8.dp),
+                                        colors = CardDefaults.cardColors(
+                                            containerColor = if (diag.score >= 700) MaterialTheme.colorScheme.primary else if (diag.score >= 450) SunsetOrangeAccent else PenaltyRed
+                                        )
+                                    ) {
+                                        Text(
+                                            text = "Mức độ: ${diag.severityTag}",
+                                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                            color = Color.White
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        item {
+                            Card(
+                                shape = RoundedCornerShape(18.dp),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(modifier = Modifier.padding(18.dp)) {
+                                    Text(
+                                        text = "Chẩn đoán chi tiết",
+                                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = diag.summary,
+                                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Text(
+                                        text = diag.review,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
+                        }
+
+                        item {
+                            Card(
+                                shape = RoundedCornerShape(18.dp),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(modifier = Modifier.padding(18.dp)) {
+                                    Text(
+                                        text = "Lộ trình rèn luyện đề xuất",
+                                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    diag.recommendations.forEachIndexed { i, rec ->
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(vertical = 4.dp),
+                                            verticalAlignment = Alignment.Top
+                                        ) {
+                                            Text(
+                                                text = "${i + 1}. ",
+                                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                                                color = MaterialTheme.colorScheme.primary
+                                            )
+                                            Text(
+                                                text = rec,
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                color = MaterialTheme.colorScheme.onSurface
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        item {
+                            Button(
+                                onClick = onContinueToApp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(54.dp)
+                                    .testTag("enter_app_button"),
+                                shape = RoundedCornerShape(14.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                            ) {
+                                Text(
+                                    text = "Vào ứng dụng & Bắt đầu học 🚀",
+                                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(20.dp))
                         }
                     }
                 }

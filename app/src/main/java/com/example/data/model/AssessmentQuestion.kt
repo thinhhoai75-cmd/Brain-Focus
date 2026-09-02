@@ -1,228 +1,189 @@
 package com.example.data.model
 
-data class QuestionOption(
-    val optionText: String,
-    val scoreWeight: Int // Score contribution to FBS (Total max = 1000)
+data class AssessmentOption(
+    val text: String,
+    val scoreValue: Int // 10 (high popcorn brain) to 100 (high focus resilience)
 )
 
 data class AssessmentQuestion(
     val id: Int,
-    val title: String,
-    val subtitle: String,
-    val options: List<QuestionOption>
+    val question: String,
+    val category: String, // "Thói quen lướt mạng", "Độ tập trung 90p", "Xao nhãng", "Kiểm soát xung động"
+    val options: List<AssessmentOption>
 )
 
-data class FbsDiagnosis(
-    val levelName: String,
-    val levelNumber: Int,
-    val levelEmoji: String,
-    val badgeColorHex: String,
-    val review: String, // Nhận xét
-    val suggestions: List<String>, // Brain Focus đề xuất
-    val message: String, // Thông điệp
-    val damagePercentage: Int = 15,
-    val damageTitle: String = "Tổn hại rất thấp",
-    val damageDetail: String = "",
-    val summary: String = "",
-    val adviceList: List<String> = emptyList()
+data class BfsDiagnosis(
+    val score: Int,
+    val levelTitle: String,
+    val severityTag: String, // "Nhẹ", "Trung bình", "Báo động"
+    val summary: String,
+    val review: String,
+    val recommendations: List<String>
 )
 
 object AssessmentData {
     val questions = listOf(
         AssessmentQuestion(
             id = 1,
-            title = "1. Thời gian sử dụng điện thoại trung bình mỗi ngày của bạn là bao lâu?",
-            subtitle = "Bao gồm lướt mạng xã hội, giải trí và xem video ngắn.",
+            question = "Khi bắt đầu ngồi vào bàn học hoặc làm bài tập, bạn thường mở điện thoại sau bao lâu?",
+            category = "Kiểm soát xung động",
             options = listOf(
-                QuestionOption("A. Dưới 2 giờ/ngày", 100),
-                QuestionOption("B. Từ 2–4 giờ/ngày", 75),
-                QuestionOption("C. Từ 4–6 giờ/ngày", 40),
-                QuestionOption("D. Trên 6 giờ/ngày", 10)
+                AssessmentOption("Ngay lập tức hoặc dưới 5 phút", 10),
+                AssessmentOption("Khoảng 10 - 15 phút", 40),
+                AssessmentOption("Khoảng 30 - 45 phút", 75),
+                AssessmentOption("Giữ vững trên 60 - 90 phút mà không chạm vào điện thoại", 100)
             )
         ),
         AssessmentQuestion(
             id = 2,
-            title = "2. Bạn xem video ngắn (TikTok, Reels, Shorts...) với tần suất như thế nào?",
-            subtitle = "Mức độ và thời lượng tiêu thụ nội dung định dạng ngắn mỗi ngày.",
+            question = "Bạn có thói quen vừa học vừa nghe nhạc có lời hoặc liên tục đổi bài hát không?",
+            category = "Độ tập trung",
             options = listOf(
-                QuestionOption("A. Rất hiếm khi/Không sử dụng", 100),
-                QuestionOption("B. Thỉnh thoảng (dưới 30 phút/ngày)", 75),
-                QuestionOption("C. Thường xuyên (khoảng 1–2 giờ/ngày)", 40),
-                QuestionOption("D. Nhiều lần trong ngày, thường xem liên tục", 10)
+                AssessmentOption("Thường xuyên, nếu không có tiếng nhạc/clip thì không ngồi yên được", 15),
+                AssessmentOption("Thỉnh thoảng đổi bài hoặc lướt chọn playlist", 45),
+                AssessmentOption("Chỉ nghe nhạc không lời/lofi/tiếng ồn trắng cố định", 85),
+                AssessmentOption("Học trong không gian yên tĩnh tuyệt đối hoặc không bị phụ thuộc", 100)
             )
         ),
         AssessmentQuestion(
             id = 3,
-            title = "3. Khi đọc sách hoặc học bài, bạn thường có thể tập trung liên tục trong bao lâu trước khi muốn chuyển sang việc khác?",
-            subtitle = "Khả năng duy trì chú ý vào tài liệu học thuật hoặc văn bản dài.",
+            question = "Khi gặp một bài toán khó hoặc đoạn văn dài, cảm giác đầu tiên của bạn là gì?",
+            category = "Sức bền nhận thức",
             options = listOf(
-                QuestionOption("A. Trên 45 phút", 100),
-                QuestionOption("B. Khoảng 20–45 phút", 75),
-                QuestionOption("C. Khoảng 10–20 phút", 40),
-                QuestionOption("D. Dưới 10 phút", 10)
+                AssessmentOption("Cực kỳ bồn chồn, muốn bỏ qua hoặc mở app khác ngay lập tức", 10),
+                AssessmentOption("Đọc lướt nhanh, dễ mất kiên nhẫn sau 2-3 phút", 35),
+                AssessmentOption("Cố gắng đọc lại 1-2 lần để tìm hướng giải", 70),
+                AssessmentOption("Bình tĩnh phân tích từng bước, duy trì chú ý cho đến khi giải xong", 100)
             )
         ),
         AssessmentQuestion(
             id = 4,
-            title = "4. Khi không kiểm tra điện thoại trong khoảng 30–60 phút, bạn cảm thấy thế nào?",
-            subtitle = "Trạng thái tâm lý khi tách khỏi các thông báo và thiết bị số.",
+            question = "Thời gian bạn lướt các video ngắn (TikTok, Reels, Shorts) mỗi ngày là bao nhiêu?",
+            category = "Thói quen số",
             options = listOf(
-                QuestionOption("A. Hoàn toàn bình thường và thoải mái", 100),
-                QuestionOption("B. Hơi tò mò nhưng vẫn kiểm soát được", 75),
-                QuestionOption("C. Thường xuyên muốn kiểm tra", 40),
-                QuestionOption("D. Rất bồn chồn hoặc lo lắng nếu không kiểm tra", 10)
+                AssessmentOption("Trên 3 - 4 tiếng mỗi ngày", 10),
+                AssessmentOption("Từ 1.5 - 3 tiếng", 40),
+                AssessmentOption("Dưới 1 tiếng mỗi ngày", 75),
+                AssessmentOption("Rất hiếm khi hoặc dưới 20 phút mỗi ngày", 100)
             )
         ),
         AssessmentQuestion(
             id = 5,
-            title = "5. Khi học tập, bạn thường làm gì?",
-            subtitle = "Mức độ tập trung đơn nhiệm hoặc thói quen đa nhiệm khi học.",
+            question = "Bạn có thường cảm thấy 'rung chuông ảo' (nghĩ điện thoại có thông báo dù không có) không?",
+            category = "Xung động vô thức",
             options = listOf(
-                QuestionOption("A. Chỉ tập trung vào một nhiệm vụ", 100),
-                QuestionOption("B. Thỉnh thoảng kiểm tra tin nhắn", 75),
-                QuestionOption("C. Thường mở nhiều ứng dụng/tab cùng lúc", 40),
-                QuestionOption("D. Vừa học vừa xem video/mạng xã hội", 10)
+                AssessmentOption("Liên tục trong ngày, luôn vô thức mở màn hình kiểm tra", 15),
+                AssessmentOption("Thỉnh thoảng, đặc biệt khi cảm thấy chán bài học", 40),
+                AssessmentOption("Hiếm khi", 80),
+                AssessmentOption("Hoàn toàn không", 100)
             )
         ),
         AssessmentQuestion(
             id = 6,
-            title = "6. Khi học một bài giảng hoặc đọc tài liệu dài trên 30 phút, bạn thường:",
-            subtitle = "Khả năng tiếp thu, phân tích sâu và xử lý thông tin phức tạp.",
+            question = "Khả năng duy trì đọc một cuốn sách giáo khoa/tài liệu giấy liên tục 30 phút của bạn thế nào?",
+            category = "Độ sâu chú ý",
             options = listOf(
-                QuestionOption("A. Hiểu sâu và dễ ghi nhớ", 100),
-                QuestionOption("B. Cần nỗ lực nhưng vẫn theo dõi được", 75),
-                QuestionOption("C. Dễ mất tập trung hoặc bỏ dở", 40),
-                QuestionOption("D. Rất khó duy trì chú ý, thường muốn chuyển sang nội dung khác", 10)
+                AssessmentOption("Gần như không thể, mắt đọc nhưng đầu nghĩ việc khác", 15),
+                AssessmentOption("Đọc được 10-15 phút là muốn với tay lấy điện thoại", 45),
+                AssessmentOption("Đọc tốt khoảng 25-30 phút với độ hiểu bài khá", 80),
+                AssessmentOption("Đọc say mê 45-60 phút mà không hề bị phân tâm", 100)
             )
         ),
         AssessmentQuestion(
             id = 7,
-            title = "7. Bạn thường sử dụng điện thoại như thế nào trước khi ngủ hoặc ngay sau khi thức dậy?",
-            subtitle = "Thói quen sử dụng thiết bị trong các khoảng thời gian nhạy cảm của não bộ.",
+            question = "Khi có thông báo tin nhắn mới khi đang học, phản xạ của bạn là gì?",
+            category = "Kiểm soát kích thích",
             options = listOf(
-                QuestionOption("A. Hiếm khi, thường để điện thoại sang một bên", 100),
-                QuestionOption("B. Thỉnh thoảng xem giờ hoặc báo thức", 75),
-                QuestionOption("C. Thường xem điện thoại 30–60 phút trước khi ngủ", 40),
-                QuestionOption("D. Thường xuyên dùng điện thoại ngay trước khi ngủ và ngay sau khi thức dậy", 10)
+                AssessmentOption("Mở xem và trả lời ngay lập tức, sau đó bị cuốn vào lướt mạng xã hội", 10),
+                AssessmentOption("Mở xem tin nhắn rồi cố gắng quay lại học tiếp", 40),
+                AssessmentOption("Liếc nhìn preview, nếu không khẩn cấp sẽ đợi hết phiên học", 75),
+                AssessmentOption("Tắt toàn bộ thông báo hoặc để điện thoại ở chế độ Không làm phiền", 100)
             )
         ),
         AssessmentQuestion(
             id = 8,
-            title = "8. Khi có một khoảng thời gian rảnh rất ngắn, bạn thường:",
-            subtitle = "Phản xạ vô thức trong các khoảng nghỉ ngắn (Micro-moments).",
+            question = "Sau một phiên học dài 60-90 phút, bạn cảm thấy thế nào?",
+            category = "Năng lượng não bộ",
             options = listOf(
-                QuestionOption("A. Không cần dùng điện thoại", 100),
-                QuestionOption("B. Thỉnh thoảng mới kiểm tra", 75),
-                QuestionOption("C. Thường lấy điện thoại ra xem", 40),
-                QuestionOption("D. Gần như ngay lập tức mở điện thoại", 10)
+                AssessmentOption("Rất hiếm khi học được 60 phút, thường bỏ dở giữa chừng", 15),
+                AssessmentOption("Căng thẳng, mệt mỏi và thèm kích thích từ điện thoại", 45),
+                AssessmentOption("Khá thoải mái nếu có quãng nghỉ ngắn giữa chừng", 80),
+                AssessmentOption("Cảm giác sảng khoái và tự hào vì đạt trạng thái tập trung sâu", 100)
             )
         ),
         AssessmentQuestion(
             id = 9,
-            title = "9. Khi đang học mà điện thoại xuất hiện thông báo, bạn thường:",
-            subtitle = "Phản ứng trước các kích thích bất ngờ và khả năng kiểm soát xung động.",
+            question = "Bạn có thực hiện đa nhiệm (vừa học vừa nhắn tin, xem video phụ) không?",
+            category = "Tập trung đơn nhiệm",
             options = listOf(
-                QuestionOption("A. Bỏ qua và tiếp tục học", 100),
-                QuestionOption("B. Nhìn nhanh nhưng chưa mở", 75),
-                QuestionOption("C. Dừng học để kiểm tra", 40),
-                QuestionOption("D. Kiểm tra và thường tiếp tục sử dụng điện thoại sau đó", 10)
+                AssessmentOption("Thường xuyên làm nhiều việc một lúc", 10),
+                AssessmentOption("Thỉnh thoảng mở tab phụ để trò chuyện", 40),
+                AssessmentOption("Chủ yếu chỉ tập trung vào tài liệu môn học", 80),
+                AssessmentOption("Luôn thực hiện đơn nhiệm tuyệt đối (Monotasking)", 100)
             )
         ),
         AssessmentQuestion(
             id = 10,
-            title = "10. Sau khi vừa xem điện thoại hoặc video ngắn, bạn cảm thấy thế nào khi quay lại bài học?",
-            subtitle = "Độ trễ và quán tính tư duy khi chuyển đổi ngữ cảnh từ giải trí sang học tập.",
+            question = "Buổi tối trước khi đi ngủ, bạn thường sử dụng điện thoại đến khi nào?",
+            category = "Nhịp sinh học",
             options = listOf(
-                QuestionOption("A. Có thể tập trung lại ngay", 100),
-                QuestionOption("B. Cần một chút thời gian để tập trung", 75),
-                QuestionOption("C. Khá khó quay lại bài học", 40),
-                QuestionOption("D. Thường muốn tiếp tục xem điện thoại thay vì học", 10)
+                AssessmentOption("Dùng đến tận lúc ngủ thiếp đi, để điện thoại ngay đầu giường", 10),
+                AssessmentOption("Dùng đến trước khi ngủ 10-15 phút", 40),
+                AssessmentOption("Cất điện thoại trước khi ngủ 30-45 phút", 75),
+                AssessmentOption("Ngừng dùng thiết bị điện tử trước khi ngủ 60 phút và để ngoài tầm với", 100)
             )
         )
     )
 
-    fun calculateFbsScore(selectedOptionIndexes: List<Int>): Int {
-        var totalWeight = 0
-        questions.forEachIndexed { qIdx, question ->
-            val optIdx = selectedOptionIndexes.getOrNull(qIdx) ?: 0
-            val weight = question.options.getOrNull(optIdx)?.scoreWeight ?: 50
-            totalWeight += weight
+    fun calculateFbsScore(selectedOptionIndices: List<Int>): Int {
+        if (selectedOptionIndices.size != questions.size) return 500
+        var total = 0
+        for (i in questions.indices) {
+            val optionIdx = selectedOptionIndices[i]
+            val score = questions[i].options.getOrNull(optionIdx)?.scoreValue ?: 50
+            total += score
         }
-        // Formula: 10 questions, each 10 to 100 => Total ranges from 100 to 1000
-        return totalWeight.coerceIn(100, 1000)
+        return total.coerceIn(100, 1000)
     }
 
-    fun getFbsDiagnosis(score: Int): FbsDiagnosis {
+    fun getFbsDiagnosis(score: Int): BfsDiagnosis {
         return when {
-            score >= 700 -> {
-                val suggestions = listOf(
-                    "Phiên học tập trung 30 phút",
-                    "Duy trì chuỗi ngày học mỗi ngày",
-                    "Theo dõi tiến độ rèn luyện hằng tuần",
-                    "Thử thách đọc sách hoặc học tập 30 phút không gián đoạn"
+            score >= 750 -> BfsDiagnosis(
+                score = score,
+                levelTitle = "Não bộ Kháng Xao Nhãng (Deep Focus Master)",
+                severityTag = "Tối ưu",
+                summary = "Khả năng tập trung của bạn ở mức rất xuất sắc, ít bị ảnh hưởng bởi hội chứng Não Bỏng Ngô.",
+                review = "Bạn sở hữu vùng vỏ não trước trán (Prefrontal Cortex) vững vàng, có khả năng trì hoãn khoái cảm dopamine và duy trì sự chú ý bền bỉ trong các chu kỳ học tập 90 phút.",
+                recommendations = listOf(
+                    "Duy trì các phiên học Ultradian 90 phút hằng ngày.",
+                    "Thử thách bản thân với các bài học đòi hỏi tư duy trừu tượng cao.",
+                    "Khởi động phiên học bằng các bài tập rèn luyện trí nhớ nâng cao."
                 )
-                FbsDiagnosis(
-                    levelName = "Level 1 – Khả năng tập trung ổn định",
-                    levelNumber = 1,
-                    levelEmoji = "🟢",
-                    badgeColorHex = "#10B981",
-                    review = "Bạn đang duy trì khá tốt khả năng tập trung và có thói quen sử dụng thiết bị số tương đối hợp lý.",
-                    suggestions = suggestions,
-                    message = "Hãy duy trì những thói quen tốt để khả năng tập trung ngày càng bền vững.",
-                    damagePercentage = 15,
-                    damageTitle = "Tổn hại rất thấp (15%) • Khỏe mạnh & ổn định",
-                    damageDetail = "Tế bào thần kinh thùy trán của bạn giữ được sự liên kết vững chắc, ít bị ảnh hưởng bởi dopamine ngắn và video clip ngắn.",
-                    summary = "Bạn đang duy trì khá tốt khả năng tập trung và có thói quen sử dụng thiết bị số tương đối hợp lý.",
-                    adviceList = suggestions
+            )
+            score >= 450 -> BfsDiagnosis(
+                score = score,
+                levelTitle = "Não bộ Nhạy Cảm Kích Thích (Moderate Popcorn Brain)",
+                severityTag = "Trung bình",
+                summary = "Bạn có một số biểu hiện cho thấy sự chú ý dễ bị gián đoạn bởi các kích thích từ môi trường số.",
+                review = "Bộ não của bạn đã bắt đầu hình thành phản xạ tìm kiếm phần thưởng dopamine ngắn hạn khi gặp bài toán khó hoặc nội dung dài. Tuy nhiên, khả năng phục hồi là rất cao nếu áp dụng kỷ luật môi trường.",
+                recommendations = listOf(
+                    "Áp dụng nguyên tắc 'Điện thoại ngoài tầm nhìn' (đặt xa bàn học ít nhất 3m).",
+                    "Chia nhỏ thời gian học thành các hiệp Pomodoro 25/5 hoặc 45/15.",
+                    "Giới hạn thời gian lướt video ngắn xuống dưới 30 phút mỗi ngày."
                 )
-            }
-            score >= 400 -> {
-                val suggestions = listOf(
-                    "Phiên học tập trung 25 phút",
-                    "Thả lỏng não bộ 2 phút trước mỗi phiên học",
-                    "Chế độ tắt thông báo khi học",
-                    "Thử thách 7 ngày tập trung",
-                    "Ghi nhật ký tập trung sau mỗi buổi học"
+            )
+            else -> BfsDiagnosis(
+                score = score,
+                levelTitle = "Hội Chứng Não Bỏng Ngô Mức Cao (Acute Popcorn Brain)",
+                severityTag = "Báo động",
+                summary = "Mức độ phân tán chú ý cao. Cần thực hiện lộ trình thanh lọc kỹ thuật số (Dopamine Reset) ngay.",
+                review = "Tâm trí bạn liên tục 'nhảy cóc' như những hạt ngô nổ trong chảo nóng. Việc tiếp xúc quá nhiều với clip ngắn dưới 15 giây đã làm suy giảm ngưỡng kiên nhẫn của hệ thần kinh, gây khó khăn lớn khi ôn thi.",
+                recommendations = listOf(
+                    "Thực hiện 'Cai nghiện số 3 ngày': Tắt hoàn toàn thông báo mạng xã hội.",
+                    "Bắt đầu với phiên học ngắn 15-20 phút và bật nhạc sóng não 40Hz hoặc White Noise.",
+                    "Không dùng điện thoại trong 60 phút đầu sau khi thức dậy và trước khi đi ngủ."
                 )
-                FbsDiagnosis(
-                    levelName = "Level 2 – Dễ bị phân tâm",
-                    levelNumber = 2,
-                    levelEmoji = "🟡",
-                    badgeColorHex = "#F59E0B",
-                    review = "Bạn có một số biểu hiện cho thấy sự chú ý dễ bị gián đoạn bởi các kích thích từ môi trường số.",
-                    suggestions = suggestions,
-                    message = "Chỉ cần thay đổi một vài thói quen nhỏ mỗi ngày, khả năng tập trung của bạn sẽ được cải thiện rõ rệt.",
-                    damagePercentage = 45,
-                    damageTitle = "Tổn hại trung bình (45%) • Dễ bị phân tâm",
-                    damageDetail = "Khả năng chú ý còn tốt nhưng có dấu hiệu suy giảm nhẹ do thói quen kiểm tra thông báo và lướt mạng xã hội ngắt quãng.",
-                    summary = "Bạn có một số biểu hiện cho thấy sự chú ý dễ bị gián đoạn bởi các kích thích từ môi trường số.",
-                    adviceList = suggestions
-                )
-            }
-            else -> {
-                val suggestions = listOf(
-                    "Tham gia lộ trình 21 ngày phục hồi não bộ",
-                    "Phiên học tập trung 15–20 phút rồi tăng dần thời lượng",
-                    "Nhật ký sử dụng điện thoại",
-                    "Bài tập hít thở và thư giãn trước giờ học",
-                    "Theo dõi tiến độ rèn luyện hằng tuần",
-                    "Nhắc nhở giảm thời gian sử dụng mạng xã hội trong khung giờ học"
-                )
-                FbsDiagnosis(
-                    levelName = "Level 3 – Cần rèn luyện thêm",
-                    levelNumber = 3,
-                    levelEmoji = "🔴",
-                    badgeColorHex = "#EF4444",
-                    review = "Bạn đang có khá nhiều biểu hiện cho thấy khả năng tập trung bị ảnh hưởng bởi việc sử dụng thiết bị số.",
-                    suggestions = suggestions,
-                    message = "Đừng lo nếu bạn đang ở Level 3. Khả năng tập trung hoàn toàn có thể được cải thiện nếu kiên trì rèn luyện từng bước.",
-                    damagePercentage = 80,
-                    damageTitle = "Tổn hại cao (80%) • Cần rèn luyện thêm",
-                    damageDetail = "Khả năng tập trung liên tục bị phân mảnh. Não bộ dễ bị cuốn theo các kích thích ngắn và đa nhiệm.",
-                    summary = "Bạn đang có khá nhiều biểu hiện cho thấy khả năng tập trung bị ảnh hưởng bởi việc sử dụng thiết bị số.",
-                    adviceList = suggestions
-                )
-            }
+            )
         }
     }
 }
