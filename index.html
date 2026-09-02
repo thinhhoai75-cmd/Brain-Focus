@@ -203,6 +203,30 @@
     </div>
   </div>
 
+  <!-- ================= MOBILE NAVIGATION TABS (STICKY TOP HORIZONTAL BAR) ================= -->
+  <div class="lg:hidden bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-2 py-1.5 shrink-0 z-20 shadow-xs">
+    <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar py-0.5" id="mobile-top-tabs-bar">
+      <button onclick="switchTab('timer')" id="top-tab-timer" class="top-nav-tab flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm">
+        <span>⏱️</span> <span>Tập Trung (90p)</span>
+      </button>
+      <button onclick="switchTab('gym')" id="top-tab-gym" class="top-nav-tab flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all text-slate-700 hover:bg-slate-100">
+        <span>🎮</span> <span>Gym Não (3 Game)</span>
+      </button>
+      <button onclick="switchTab('library')" id="top-tab-library" class="top-nav-tab flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all text-slate-700 hover:bg-slate-100">
+        <span>🧬</span> <span>Khoa Học Thần Kinh</span>
+      </button>
+      <button onclick="switchTab('tips')" id="top-tab-tips" class="top-nav-tab flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all text-slate-700 hover:bg-slate-100">
+        <span>💡</span> <span>Bí Kíp Trị Xao Nhãng</span>
+      </button>
+      <button onclick="switchTab('leaderboard')" id="top-tab-leaderboard" class="top-nav-tab flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all text-slate-700 hover:bg-slate-100">
+        <span>🏆</span> <span>Bảng Xếp Hạng</span>
+      </button>
+      <button onclick="switchTab('profile')" id="top-tab-profile" class="top-nav-tab flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all text-slate-700 hover:bg-slate-100">
+        <span>📊</span> <span>Hồ Sơ & Level BFS</span>
+      </button>
+    </div>
+  </div>
+
   <!-- ================= MAIN WORKSPACE AREA ================= -->
   <div class="flex-1 flex overflow-hidden relative">
 
@@ -263,7 +287,7 @@
     </aside>
 
     <!-- DYNAMIC MAIN CONTENT -->
-    <main class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-5 md:p-6 bg-gradient-to-b from-sky-50/50 via-slate-50 to-slate-100/60">
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-5 md:p-6 pb-28 lg:pb-6 bg-gradient-to-b from-sky-50/50 via-slate-50 to-slate-100/60">
 
       <!-- ================= TAB 1: FOCUS SESSION (LOCK IN) ================= -->
       <section id="tab-timer" class="tab-content max-w-3xl mx-auto space-y-4">
@@ -709,30 +733,30 @@
   </div>
 
   <!-- ================= BOTTOM NAV FOR MOBILE ================= -->
-  <nav class="lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shrink-0 shadow-lg z-20">
-    <button onclick="switchTab('timer')" id="mob-nav-timer" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-blue-600 font-black">
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-200/90 px-1 py-1.5 flex items-center justify-around z-40 shadow-2xl pb-[max(0.4rem,env(safe-area-inset-bottom))]">
+    <button onclick="switchTab('timer')" id="mob-nav-timer" class="mob-nav-btn flex flex-col items-center py-1 px-2.5 rounded-xl transition-all text-blue-600 font-bold bg-blue-50/80">
       <span class="text-lg">⏱️</span>
-      <span class="text-[10px]">Phiên học</span>
+      <span class="text-[10px] mt-0.5">Phiên học</span>
     </button>
-    <button onclick="switchTab('gym')" id="mob-nav-gym" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+    <button onclick="switchTab('gym')" id="mob-nav-gym" class="mob-nav-btn flex flex-col items-center py-1 px-2.5 rounded-xl transition-all text-slate-500 font-semibold hover:text-blue-600">
       <span class="text-lg">🎮</span>
-      <span class="text-[10px]">Gym não</span>
+      <span class="text-[10px] mt-0.5">Gym não</span>
     </button>
-    <button onclick="switchTab('library')" id="mob-nav-library" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+    <button onclick="switchTab('library')" id="mob-nav-library" class="mob-nav-btn flex flex-col items-center py-1 px-2.5 rounded-xl transition-all text-slate-500 font-semibold hover:text-blue-600">
       <span class="text-lg">🧬</span>
-      <span class="text-[10px]">Thư viện</span>
+      <span class="text-[10px] mt-0.5">Khoa học</span>
     </button>
-    <button onclick="switchTab('tips')" id="mob-nav-tips" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+    <button onclick="switchTab('tips')" id="mob-nav-tips" class="mob-nav-btn flex flex-col items-center py-1 px-2.5 rounded-xl transition-all text-slate-500 font-semibold hover:text-blue-600">
       <span class="text-lg">💡</span>
-      <span class="text-[10px]">Mẹo hay</span>
+      <span class="text-[10px] mt-0.5">Bí kíp</span>
     </button>
-    <button onclick="switchTab('leaderboard')" id="mob-nav-leaderboard" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+    <button onclick="switchTab('leaderboard')" id="mob-nav-leaderboard" class="mob-nav-btn flex flex-col items-center py-1 px-2.5 rounded-xl transition-all text-slate-500 font-semibold hover:text-blue-600">
       <span class="text-lg">🏆</span>
-      <span class="text-[10px]">Xếp hạng</span>
+      <span class="text-[10px] mt-0.5">Xếp hạng</span>
     </button>
-    <button onclick="switchTab('profile')" id="mob-nav-profile" class="mob-nav-btn flex flex-col items-center py-1 px-2 text-slate-500 font-semibold">
+    <button onclick="switchTab('profile')" id="mob-nav-profile" class="mob-nav-btn flex flex-col items-center py-1 px-2.5 rounded-xl transition-all text-slate-500 font-semibold hover:text-blue-600">
       <span class="text-lg">📊</span>
-      <span class="text-[10px]">Hồ sơ</span>
+      <span class="text-[10px] mt-0.5">Hồ sơ</span>
     </button>
   </nav>
 
@@ -1337,26 +1361,42 @@
       const activeContent = document.getElementById(`tab-${tabId}`);
       if (activeContent) activeContent.classList.remove('hidden');
 
-      // Desktop
+      // Cuộn nội dung lên đầu khi đổi tab để không bị lưu vị trí cuộn cũ
+      const mainEl = document.querySelector('main');
+      if (mainEl) mainEl.scrollTop = 0;
+
+      // Desktop Sidebar sync
       document.querySelectorAll('.sidebar-item').forEach(btn => {
-        btn.classList.remove('bg-gradient-to-r', 'from-electric-600', 'to-blue-700', 'text-white', 'shadow-lg', 'glow-electric');
-        btn.classList.add('text-blue-200/90', 'hover:bg-navy-850');
+        btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-md', 'glow-electric');
+        btn.classList.add('text-slate-700', 'hover:bg-slate-100');
       });
       const currentSidebarBtn = document.getElementById(`sidebar-btn-${tabId}`);
       if (currentSidebarBtn) {
-        currentSidebarBtn.classList.remove('text-blue-200/90', 'hover:bg-navy-850');
-        currentSidebarBtn.classList.add('bg-gradient-to-r', 'from-electric-600', 'to-blue-700', 'text-white', 'shadow-lg', 'glow-electric');
+        currentSidebarBtn.classList.remove('text-slate-700', 'hover:bg-slate-100');
+        currentSidebarBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-md', 'glow-electric');
       }
 
-      // Mobile
+      // Mobile Sticky Top Tabs Scroller sync
+      document.querySelectorAll('.top-nav-tab').forEach(btn => {
+        btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-sm', 'font-bold');
+        btn.classList.add('text-slate-700', 'hover:bg-slate-100', 'font-semibold');
+      });
+      const currentTopBtn = document.getElementById(`top-tab-${tabId}`);
+      if (currentTopBtn) {
+        currentTopBtn.classList.remove('text-slate-700', 'hover:bg-slate-100', 'font-semibold');
+        currentTopBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-sm', 'font-bold');
+        currentTopBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      // Mobile Bottom Nav sync
       document.querySelectorAll('.mob-nav-btn').forEach(btn => {
-        btn.classList.remove('text-cyber-neon', 'font-black');
-        btn.classList.add('text-blue-300/70', 'font-semibold');
+        btn.classList.remove('text-blue-600', 'font-bold', 'bg-blue-50/80');
+        btn.classList.add('text-slate-500', 'font-semibold');
       });
       const currentMobBtn = document.getElementById(`mob-nav-${tabId}`);
       if (currentMobBtn) {
-        currentMobBtn.classList.remove('text-blue-300/70', 'font-semibold');
-        currentMobBtn.classList.add('text-cyber-neon', 'font-black');
+        currentMobBtn.classList.remove('text-slate-500', 'font-semibold');
+        currentMobBtn.classList.add('text-blue-600', 'font-bold', 'bg-blue-50/80');
       }
     }
 
