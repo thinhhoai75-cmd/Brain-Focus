@@ -178,6 +178,15 @@
         <span>👑 Tổng:</span>
         <span id="header-total-score" class="font-cyber font-black text-xs sm:text-sm">1590đ</span>
       </div>
+
+      <!-- User Profile & Avatar Quick Button -->
+      <button onclick="switchTab('profile')" class="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 border border-white/40 px-2 py-1 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95">
+        <div id="header-avatar-circle" class="w-6 h-6 rounded-full overflow-hidden bg-gradient-to-tr from-amber-400 to-pink-500 flex items-center justify-center text-[11px] font-black text-white shadow-xs">
+          <span id="header-avatar-initial">T</span>
+          <img id="header-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
+        </div>
+        <span id="header-account-name" class="hidden sm:inline text-xs font-bold max-w-[80px] truncate">Bạn</span>
+      </button>
     </div>
   </header>
 
@@ -533,19 +542,34 @@
       <!-- ================= TAB 5: LEADERBOARD ================= -->
       <section id="tab-leaderboard" class="tab-content hidden max-w-3xl mx-auto space-y-4">
         
-        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 rounded-3xl border border-blue-300 shadow-lg text-center text-white">
-          <span class="text-3xl">🏆</span>
-          <h2 class="text-lg font-black text-white font-cyber mt-1">BẢNG VINH DANH CHIẾN THẦN HỌC SÂU</h2>
-          <p class="text-xs text-amber-300 font-bold mt-0.5">
-            ⚡ Tổng Điểm = Điểm Xếp Hạng (Rèn luyện) + Điểm BFS (Não bộ)
-          </p>
+        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 rounded-3xl border border-blue-300 shadow-lg text-center text-white relative overflow-hidden">
+          <div class="relative z-10">
+            <span class="text-3xl">🏆</span>
+            <h2 class="text-lg font-black text-white font-cyber mt-1">BẢNG XẾP HẠNG NGƯỜI DÙNG THỰC TẾ</h2>
+            <p class="text-xs text-amber-300 font-bold mt-0.5">
+              ⚡ Xếp hạng theo: Điểm XH (mặc định 1000đ khi tạo mới) + Số phiên học sâu + Điểm BFS
+            </p>
+          </div>
         </div>
 
         <!-- Rule Explainer Card -->
-        <div class="glass-card-light px-4 py-3 rounded-2xl border border-blue-200 text-xs text-slate-700 flex items-center gap-2.5 shadow-xs">
-          <span class="text-lg shrink-0">💡</span>
-          <div>
-            <strong class="text-slate-900 font-bold">Cơ chế xếp hạng công bằng:</strong> Điểm Xếp Hạng (tích lũy qua phiên học, streak, game) và Điểm BFS (chẩn đoán não bộ) là <strong>2 thang điểm riêng biệt</strong>. Cả 2 được <strong>cộng gộp lại</strong> để xác định thứ hạng vinh danh.
+        <div class="glass-card-light px-4 py-3 rounded-2xl border border-blue-200 text-xs text-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 shadow-xs">
+          <div class="flex items-center gap-2.5">
+            <span class="text-lg shrink-0">💡</span>
+            <div>
+              <strong class="text-slate-900 font-bold">Quy chuẩn tính điểm xếp hạng mới:</strong>
+              <div class="text-[11px] text-slate-600 mt-0.5 font-mono">
+                Tổng Điểm = Điểm Xếp Hạng (Khởi tạo 1000đ) + (Số Phiên Học × 10) + Điểm BFS (0–1000)
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="openRegisterModal()" class="shrink-0 text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-1.5 rounded-xl hover:opacity-90 shadow-xs">
+              + Tạo tài khoản mới
+            </button>
+            <button onclick="resetAccountAndData()" class="shrink-0 text-[11px] font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all" title="Xoá tất cả tài khoản thử nghiệm">
+              🗑️ Xoá TK Thử Nghiệm
+            </button>
           </div>
         </div>
 
@@ -564,27 +588,70 @@
       <!-- ================= TAB 6: PROFILE & STATS ================= -->
       <section id="tab-profile" class="tab-content hidden max-w-3xl mx-auto space-y-4">
         
-        <!-- User Info Card with Level Badge -->
+        <!-- User Info Card with Level Badge & Custom Avatar -->
         <div class="glass-card p-5 rounded-3xl border-slate-200 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex items-center space-x-4">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center text-3xl font-black shadow-md font-cyber">
-              <span id="user-avatar-initial">T</span>
+            <div class="relative group cursor-pointer" onclick="openAvatarCustomizer()" title="Nhấn để đổi Avatar">
+              <div class="w-16 h-16 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white flex items-center justify-center text-3xl font-black shadow-md font-cyber border-2 border-white">
+                <span id="user-avatar-initial">T</span>
+                <img id="user-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
+              </div>
+              <div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] border-2 border-white shadow-xs">
+                ✏️
+              </div>
             </div>
             <div>
-              <div class="flex items-center gap-2">
-                <h2 id="user-display-name" class="text-lg font-black text-slate-900 font-cyber">Trịnh Hoài Tâm</h2>
-                <span class="text-[10px] bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 rounded-full font-bold">Level 14</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h2 id="user-display-name" class="text-lg font-black text-slate-900 font-cyber">Tên Bạn</h2>
+                <span id="user-display-level" class="text-[10px] bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 rounded-full font-bold">Level 1</span>
+                <span id="user-auth-badge" class="text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                  <span>✉️</span> <span id="user-display-email">demo@gmail.com</span>
+                </span>
               </div>
-              <p id="user-display-school" class="text-xs text-slate-600">Mục tiêu: Đạt 900+ BFS & Tối ưu hóa vỏ não</p>
-              <div class="inline-flex items-center gap-1.5 mt-1 bg-sky-50 border border-sky-200 text-blue-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-                <span>🌟 Danh hiệu: Vỏ Não Kiên Định (Deep Focus)</span>
+              <p id="user-display-school" class="text-xs text-slate-600 mt-0.5">Mục tiêu: Tối ưu hóa vỏ não & 900+ BFS</p>
+              <div class="inline-flex items-center gap-1.5 mt-1.5 bg-sky-50 border border-sky-200 text-blue-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                <span id="user-display-title">🌟 Danh hiệu: Học Viên Mới (New Brain)</span>
               </div>
             </div>
           </div>
 
-          <button onclick="openAssessmentModal(true)" class="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md">
-            📝 Đánh Giá Lại BFS (10 câu)
-          </button>
+          <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <button onclick="openEditProfileModal()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
+              <span>⚙️</span> Đổi Tên / Avatar
+            </button>
+            <button onclick="openAssessmentModal(true)" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
+              <span>📝</span> Test Lại BFS (10 câu)
+            </button>
+          </div>
+        </div>
+
+        <!-- Account Switcher & Gmail Auth Bar -->
+        <div class="glass-card-light p-4 rounded-2xl border border-sky-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3 bg-gradient-to-r from-blue-50/80 to-indigo-50/50">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-base shadow-xs">
+              <svg class="w-4 h-4" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900">Quản Lý Tài Khoản Gmail</div>
+              <div class="text-[11px] text-slate-600">Đăng nhập tài khoản Gmail để đồng bộ điểm và đua Top bảng xếp hạng.</div>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+            <button onclick="openRegisterModal()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1">
+              <span>+</span> Tạo Mới
+            </button>
+            <button onclick="handleGoogleLogin()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black rounded-xl shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
+              <span>🔐</span> Đăng Nhập
+            </button>
+            <button onclick="resetAccountAndData()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Xoá toàn bộ tài khoản thử nghiệm & đặt lại">
+              <span>🗑️</span> Xoá Hết TK Thử Nghiệm
+            </button>
+          </div>
         </div>
 
         <!-- 2x2 Key Metrics Grid -->
@@ -592,22 +659,22 @@
           <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
             <div class="text-xs font-bold text-slate-600">Chỉ số BFS</div>
             <div id="stat-bfs-score" class="text-2xl font-black text-blue-600 mt-1 font-cyber">740</div>
-            <div class="text-[10px] text-emerald-600 font-bold mt-0.5">Khảo sát & Gym</div>
+            <div class="text-[10px] text-emerald-600 font-bold mt-0.5">Khảo sát 10 câu & Gym</div>
           </div>
           <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
             <div class="text-xs font-bold text-slate-600">Điểm Xếp Hạng</div>
-            <div id="stat-rank-points" class="text-2xl font-black text-amber-600 mt-1 font-cyber">850 đ</div>
-            <div class="text-[10px] text-amber-700 font-medium mt-0.5">Phiên học & Kỷ luật</div>
+            <div id="stat-rank-points" class="text-2xl font-black text-amber-600 mt-1 font-cyber">1000 đ</div>
+            <div class="text-[10px] text-amber-700 font-medium mt-0.5">Gốc 1000đ + Học tập</div>
           </div>
           <div class="glass-card p-4 rounded-2xl text-center border-blue-200 shadow-xs bg-gradient-to-b from-blue-50/70 to-white">
             <div class="text-xs font-bold text-blue-800">Tổng Điểm XH</div>
-            <div id="stat-total-score" class="text-2xl font-black text-indigo-700 mt-1 font-cyber">1590 đ</div>
-            <div class="text-[10px] text-blue-600 font-bold mt-0.5">XH + BFS gộp lại</div>
+            <div id="stat-total-score" class="text-2xl font-black text-indigo-700 mt-1 font-cyber">1740 đ</div>
+            <div class="text-[10px] text-blue-600 font-bold mt-0.5">XH + Phiên học + BFS</div>
           </div>
           <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
-            <div class="text-xs font-bold text-slate-600">Chuỗi / Giờ Lock-In</div>
-            <div id="stat-streak-days" class="text-2xl font-black text-orange-600 mt-1 font-cyber">5 🔥</div>
-            <div id="stat-total-hours" class="text-[10px] text-slate-500 font-medium mt-0.5">18.5h tổng học</div>
+            <div class="text-xs font-bold text-slate-600">Số Phiên / Chuỗi</div>
+            <div id="stat-streak-days" class="text-2xl font-black text-orange-600 mt-1 font-cyber">0 🔥</div>
+            <div id="stat-sessions-count" class="text-[10px] text-slate-500 font-bold mt-0.5">0 phiên học sâu</div>
           </div>
         </div>
 
@@ -677,20 +744,29 @@
       <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 shrink-0 flex items-center justify-between text-white">
         <div>
           <h3 class="font-black text-base sm:text-lg text-white font-cyber flex items-center gap-2">
-            <span>🧠</span> BỘ CHẨN ĐOÁN CHỈ SỐ BFS & NÃO BỎNG NGÔ
+            <span>🧠</span> <span id="assessment-modal-title">BỘ CHẨN ĐOÁN CHỈ SỐ BFS & NÃO BỎNG NGÔ</span>
           </h3>
-          <p class="text-xs text-blue-100 mt-0.5">10 câu hỏi trắc nghiệm tâm lý - thần kinh chuẩn hóa</p>
+          <p id="assessment-modal-subtitle" class="text-xs text-blue-100 mt-0.5">10 câu hỏi trắc nghiệm tâm lý - thần kinh chuẩn hóa</p>
         </div>
-        <button onclick="closeAssessmentModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm border border-white/40">✕</button>
+        <button id="assessment-modal-close-btn" onclick="closeAssessmentModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm border border-white/40">✕</button>
       </div>
 
       <!-- Assessment Body -->
       <div class="p-5 overflow-y-auto custom-scrollbar space-y-5 bg-slate-50" id="assessment-content">
+        <!-- Onboarding Notice Banner (if active) -->
+        <div id="assessment-onboarding-banner" class="hidden bg-gradient-to-r from-blue-100 to-indigo-100 border border-blue-300 p-3.5 rounded-2xl text-xs text-blue-900 flex items-center gap-3">
+          <span class="text-2xl shrink-0">🎯</span>
+          <div>
+            <strong class="font-bold text-slate-900">Bước 2/2: Đánh Giá BFS Khởi Đầu</strong>
+            <p class="text-[11px] text-blue-800 mt-0.5">Hãy trả lời trung thực 10 câu hỏi để hệ thống đo lường độ tập trung và xếp hạng chuẩn xác cho bạn!</p>
+          </div>
+        </div>
+
         <!-- User Info Inputs -->
         <div id="assessment-user-inputs" class="space-y-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
           <h4 class="text-xs font-black text-blue-700 uppercase tracking-wider font-cyber">Thông tin học viên</h4>
-          <input type="text" id="assess-input-name" placeholder="Họ và tên của bạn" value="Trịnh Hoài Tâm" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-          <input type="text" id="assess-input-school" placeholder="Trường / Cơ quan / Lĩnh vực" value="Đại học / Chuyên gia trẻ" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" id="assess-input-name" placeholder="Họ và tên của bạn" value="" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" id="assess-input-school" placeholder="Trường / Cơ quan / Lĩnh vực" value="" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
 
         <!-- 10 Questions Container -->
@@ -701,18 +777,23 @@
         <!-- Result Box -->
         <div id="assessment-result-box" class="hidden space-y-3 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-300 p-5 rounded-2xl shadow-sm">
           <div class="text-center">
-            <span class="text-3xl">🎯</span>
-            <h4 class="text-base font-black text-slate-900 mt-1 font-cyber">KẾT QUẢ CHỈ SỐ BFS CỦA BẠN</h4>
+            <span class="text-3xl">🎉</span>
+            <h4 class="text-base font-black text-slate-900 mt-1 font-cyber">KẾT QUẢ CHỈ SỐ BFS NÃO BỘ CỦA BẠN</h4>
             <div id="result-bfs-number" class="text-4xl font-black text-blue-600 my-2 font-cyber">740 / 1000</div>
             <div id="result-bfs-category" class="inline-block bg-blue-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-sm">Ổn Định - Vỏ Não Khá Kiên Định</div>
           </div>
           <p id="result-bfs-desc" class="text-xs text-slate-700 leading-relaxed text-center"></p>
+          <div class="pt-2 text-center">
+            <button onclick="finishOnboardingAndEnterApp()" class="w-full py-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:opacity-95 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all font-cyber">
+              🚀 VÀO WEB & BẮT ĐẦU ĐUA TOP (1000đ XH + BFS)
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- Modal Footer -->
-      <div class="bg-white border-t border-slate-200 p-4 shrink-0 flex items-center justify-between">
-        <button onclick="closeAssessmentModal()" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900">Đóng</button>
+      <div class="bg-white border-t border-slate-200 p-4 shrink-0 flex items-center justify-between" id="assessment-footer">
+        <button id="assessment-skip-btn" onclick="closeAssessmentModal()" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900">Đóng</button>
         <button onclick="calculateAndSaveAssessment()" id="assess-submit-btn" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md transition-all">
           HOÀN THÀNH & TÍNH ĐIỂM BFS
         </button>
@@ -755,17 +836,130 @@
     </div>
   </div>
 
+  <!-- ================= MODAL: TẠO TÀI KHOẢN GMAIL MỚI ================= -->
+  <div id="register-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden p-6 space-y-4 bg-white">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-bold">
+            👤
+          </div>
+          <div>
+            <h3 id="register-modal-title" class="font-black text-base text-slate-900 font-cyber">TẠO TÀI KHOẢN HỌC VIÊN</h3>
+            <p id="register-modal-subtitle" class="text-xs text-slate-500">Bước 1/2: Nhận 1000 điểm xếp hạng gốc</p>
+          </div>
+        </div>
+        <button id="register-modal-close-btn" onclick="closeRegisterModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 p-3 rounded-2xl text-xs text-blue-950">
+        ✨ <strong>Chào mừng bạn đến với Brain Focus!</strong> Hãy tạo tài khoản với Gmail để bắt đầu với <strong>1000 Điểm Xếp Hạng</strong> và làm bài test BFS 10 câu ngay sau đây.
+      </div>
+
+      <form onsubmit="handleRegisterSubmit(event)" class="space-y-3">
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Địa chỉ Gmail của bạn:</label>
+          <input type="email" id="reg-input-email" required placeholder="vidu@gmail.com" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Họ và Tên hiển thị:</label>
+          <input type="text" id="reg-input-name" required placeholder="Họ và tên của bạn" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Trường học / Mục tiêu:</label>
+          <input type="text" id="reg-input-school" placeholder="VD: ĐH Bách Khoa, Chuyên Toán, IELTS 8.0..." class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Chọn Avatar đại diện:</label>
+          <div class="flex items-center gap-3">
+            <div id="reg-avatar-preview" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center text-xl font-black shrink-0 shadow-sm border border-slate-200 overflow-hidden">
+              <span id="reg-avatar-initial">T</span>
+              <img id="reg-avatar-img" class="w-full h-full object-cover hidden" alt="Preview" />
+            </div>
+            <div class="flex-1 space-y-1.5">
+              <input type="file" id="reg-avatar-file" accept="image/*" onchange="handleAvatarFileUpload(event, 'reg')" class="text-[11px] text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+              <div class="text-[10px] text-slate-400">Tải ảnh từ máy tính/điện thoại hoặc dùng chữ cái đầu</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex items-center gap-2">
+          <button id="reg-cancel-btn" type="button" onclick="closeRegisterModal()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100">Huỷ</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95 flex items-center justify-center gap-1.5">
+            <span>Tiếp Tục Test BFS</span> <span>➔</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CHỈNH SỬA HỒ SƠ & AVATAR ================= -->
+  <div id="edit-profile-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden p-6 space-y-4 bg-white">
+      <div class="flex items-center justify-between">
+        <h3 class="font-black text-base text-slate-900 font-cyber flex items-center gap-2">
+          <span>⚙️</span> CHỈNH SỬA TÊN & AVATAR
+        </h3>
+        <button onclick="closeEditProfileModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <form onsubmit="handleEditProfileSubmit(event)" class="space-y-3">
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Ảnh đại diện (Avatar):</label>
+          <div class="flex items-center gap-3">
+            <div id="edit-avatar-preview" class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center text-2xl font-black shrink-0 shadow-md border-2 border-white overflow-hidden">
+              <span id="edit-avatar-initial">T</span>
+              <img id="edit-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar Preview" />
+            </div>
+            <div class="flex-1 space-y-1.5">
+              <input type="file" id="edit-avatar-file" accept="image/*" onchange="handleAvatarFileUpload(event, 'edit')" class="text-[11px] text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+              <div class="flex gap-2">
+                <button type="button" onclick="removeCustomAvatar()" class="text-[10px] text-rose-600 font-bold hover:underline">Xoá ảnh / Dùng chữ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Họ và Tên hiển thị:</label>
+          <input type="text" id="edit-input-name" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Trường học / Lĩnh vực chuyên môn:</label>
+          <input type="text" id="edit-input-school" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Email liên kết:</label>
+          <input type="email" id="edit-input-email" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div class="pt-2 flex items-center gap-2">
+          <button type="button" onclick="closeEditProfileModal()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100">Huỷ</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95">Lưu Thay Đổi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT APP LOGIC & AUDIO SYNTHESIZER -->
   <script>
     // ================= STATE =================
     const APP_STATE = {
-      rankPoints: 850, // Điểm xếp hạng rèn luyện (phiên học, streak, game)
-      bfsScore: 740,   // Chỉ số đánh giá não bộ BFS (khảo sát, gym)
-      totalHours: 18.5,
-      streakDays: 5,
-      gymCompletedCount: 12,
-      userName: "Trịnh Hoài Tâm",
-      userSchool: "Chuyên gia trẻ",
+      userEmail: "",
+      userName: "",
+      userSchool: "",
+      userAvatar: "", // Base64 data or image url
+      rankPoints: 1000, // Điểm xếp hạng rèn luyện khởi tạo 1000đ
+      bfsScore: 0,     // Chỉ số đánh giá não bộ BFS (sau 10 câu hỏi & gym)
+      totalHours: 0,
+      streakDays: 1,
+      sessionsCompletedCount: 0,
+      gymCompletedCount: 0,
       currentTab: 'timer',
       
       // Timer
@@ -795,24 +989,120 @@
         { id: 3, title: 'Chu kỳ Ultradian tối (90p)', time: '20:00', active: true }
       ],
       
-      history: [
-        { id: 1, subject: 'Toán cao cấp & Xác suất', minutes: 90, date: 'Hôm nay, 09:30', emotion: 'Tập trung cao 🚀', note: 'Giải xong 4 bài ma trận phức tạp.' },
-        { id: 2, subject: 'Đọc tài liệu Khoa học Não', minutes: 45, date: 'Hôm qua, 20:15', emotion: 'Bình tĩnh 🌊', note: 'Hiểu rõ chu kỳ 90 phút và thụ thể dopamine.' },
-        { id: 3, subject: 'Luyện đề tiếng Anh C1', minutes: 90, date: '2 ngày trước', emotion: 'Tập trung cao 🚀', note: 'Hoàn thành 2 bài Reading không chạm vào điện thoại.' }
-      ]
+      history: []
     };
 
     const ASSESSMENT_QUESTIONS = [
-      { id: 1, text: "Tôi thường vô thức mở mạng xã hội hoặc xem tin nhắn sau mỗi 5–10 phút ngồi vào bàn học." },
-      { id: 2, text: "Khi học bài gặp chỗ khó hoặc bài tập dài, tôi cảm thấy bồn chồn muốn chuyển sang lướt điện thoại ngay." },
-      { id: 3, text: "Tôi thường vừa học bài vừa nghe nhạc có lời, xem video phụ hoặc nhắn tin cùng lúc." },
-      { id: 4, text: "Tôi cảm thấy rất khó khăn để đọc trọn vẹn một bài viết chuyên sâu dài hơn 5 trang sách mà không ngắt quãng." },
-      { id: 5, text: "Tôi xem nhiều video ngắn (TikTok, Reels, Shorts) hàng ngày và thấy các video dài trên 10 phút rất nhàm chán." },
-      { id: 6, text: "Tôi thường bắt đầu nhiều kế hoạch học tập cùng lúc nhưng hầu như rất ít khi duy trì hoàn thành trọn vẹn." },
-      { id: 7, text: "Tôi cảm thấy lo lắng hoặc có cảm giác bỏ lỡ (FOMO) nếu không kiểm tra thông báo điện thoại liên tục." },
-      { id: 8, text: "Khả năng ghi nhớ thông tin vừa đọc của tôi bị suy giảm, dễ quên các chi tiết học sau 1–2 ngày." },
-      { id: 9, text: "Tôi dễ bị phân tâm bởi tiếng động nhỏ xung quanh hoặc suy nghĩ nhảy cóc từ chủ đề này sang chủ đề khác." },
-      { id: 10, text: "Sau mỗi buổi học kéo dài 60 phút, tôi cảm thấy kiệt sức tinh thần nhưng khối lượng công việc hoàn thành rất ít." }
+      {
+        id: 1,
+        question: "Khi bắt đầu ngồi vào bàn học hoặc làm bài tập, bạn thường mở điện thoại sau bao lâu?",
+        category: "Kiểm soát xung động",
+        options: [
+          { text: "Ngay lập tức hoặc dưới 5 phút", score: 10 },
+          { text: "Khoảng 10 - 15 phút", score: 40 },
+          { text: "Khoảng 30 - 45 phút", score: 75 },
+          { text: "Giữ vững trên 60 - 90 phút mà không chạm vào điện thoại", score: 100 }
+        ]
+      },
+      {
+        id: 2,
+        question: "Bạn có thói quen vừa học vừa nghe nhạc có lời hoặc liên tục đổi bài hát không?",
+        category: "Độ tập trung",
+        options: [
+          { text: "Thường xuyên, nếu không có tiếng nhạc/clip thì không ngồi yên được", score: 15 },
+          { text: "Thỉnh thoảng đổi bài hoặc lướt chọn playlist", score: 45 },
+          { text: "Chỉ nghe nhạc không lời/lofi/tiếng ồn trắng cố định", score: 85 },
+          { text: "Học trong không gian yên tĩnh tuyệt đối hoặc không bị phụ thuộc", score: 100 }
+        ]
+      },
+      {
+        id: 3,
+        question: "Khi gặp một bài toán khó hoặc đoạn văn dài, cảm giác đầu tiên của bạn là gì?",
+        category: "Sức bền nhận thức",
+        options: [
+          { text: "Cực kỳ bồn chồn, muốn bỏ qua hoặc mở app khác ngay lập tức", score: 10 },
+          { text: "Đọc lướt nhanh, dễ mất kiên nhẫn sau 2-3 phút", score: 35 },
+          { text: "Cố gắng đọc lại 1-2 lần để tìm hướng giải", score: 70 },
+          { text: "Bình tĩnh phân tích từng bước, duy trì chú ý cho đến khi giải xong", score: 100 }
+        ]
+      },
+      {
+        id: 4,
+        question: "Thời gian bạn lướt các video ngắn (TikTok, Reels, Shorts) mỗi ngày là bao nhiêu?",
+        category: "Thói quen số",
+        options: [
+          { text: "Trên 3 - 4 tiếng mỗi ngày", score: 10 },
+          { text: "Từ 1.5 - 3 tiếng", score: 40 },
+          { text: "Dưới 1 tiếng mỗi ngày", score: 75 },
+          { text: "Rất hiếm khi hoặc dưới 20 phút mỗi ngày", score: 100 }
+        ]
+      },
+      {
+        id: 5,
+        question: "Bạn có thường cảm thấy 'rung chuông ảo' (nghĩ điện thoại có thông báo dù không có) không?",
+        category: "Xung động vô thức",
+        options: [
+          { text: "Liên tục trong ngày, luôn vô thức mở màn hình kiểm tra", score: 15 },
+          { text: "Thỉnh thoảng, đặc biệt khi cảm thấy chán bài học", score: 40 },
+          { text: "Hiếm khi", score: 80 },
+          { text: "Hoàn toàn không", score: 100 }
+        ]
+      },
+      {
+        id: 6,
+        question: "Khả năng duy trì đọc một cuốn sách giáo khoa/tài liệu giấy liên tục 30 phút của bạn thế nào?",
+        category: "Độ sâu chú ý",
+        options: [
+          { text: "Gần như không thể, mắt đọc nhưng đầu nghĩ việc khác", score: 15 },
+          { text: "Đọc được 10-15 phút là muốn với tay lấy điện thoại", score: 45 },
+          { text: "Đọc tốt khoảng 25-30 phút với độ hiểu bài khá", score: 80 },
+          { text: "Đọc say mê 45-60 phút mà không hề bị phân tâm", score: 100 }
+        ]
+      },
+      {
+        id: 7,
+        question: "Khi có thông báo tin nhắn mới khi đang học, phản xạ của bạn là gì?",
+        category: "Kiểm soát kích thích",
+        options: [
+          { text: "Mở xem và trả lời ngay lập tức, sau đó bị cuốn vào lướt mạng xã hội", score: 10 },
+          { text: "Mở xem tin nhắn rồi cố gắng quay lại học tiếp", score: 40 },
+          { text: "Liếc nhìn preview, nếu không khẩn cấp sẽ đợi hết phiên học", score: 75 },
+          { text: "Tắt toàn bộ thông báo hoặc để điện thoại ở chế độ Không làm phiền", score: 100 }
+        ]
+      },
+      {
+        id: 8,
+        question: "Sau một phiên học dài 60-90 phút, bạn cảm thấy thế nào?",
+        category: "Năng lượng não bộ",
+        options: [
+          { text: "Rất hiếm khi học được 60 phút, thường bỏ dở giữa chừng", score: 15 },
+          { text: "Căng thẳng, mệt mỏi và thèm kích thích từ điện thoại", score: 45 },
+          { text: "Khá thoải mái nếu có quãng nghỉ ngắn giữa chừng", score: 80 },
+          { text: "Cảm giác sảng khoái và tự hào vì đạt trạng thái tập trung sâu", score: 100 }
+        ]
+      },
+      {
+        id: 9,
+        question: "Bạn có thực hiện đa nhiệm (vừa học vừa nhắn tin, xem video phụ) không?",
+        category: "Tập trung đơn nhiệm",
+        options: [
+          { text: "Thường xuyên làm nhiều việc một lúc", score: 10 },
+          { text: "Thỉnh thoảng mở tab phụ để trò chuyện", score: 40 },
+          { text: "Chủ yếu chỉ tập trung vào tài liệu môn học", score: 80 },
+          { text: "Luôn thực hiện đơn nhiệm tuyệt đối (Monotasking)", score: 100 }
+        ]
+      },
+      {
+        id: 10,
+        question: "Buổi tối trước khi đi ngủ, bạn thường sử dụng điện thoại đến khi nào?",
+        category: "Nhịp sinh học",
+        options: [
+          { text: "Dùng đến tận lúc ngủ thiếp đi, để điện thoại ngay đầu giường", score: 10 },
+          { text: "Dùng đến trước khi ngủ 10-15 phút", score: 40 },
+          { text: "Cất điện thoại trước khi ngủ 30-45 phút", score: 75 },
+          { text: "Ngừng dùng thiết bị điện tử trước khi ngủ 60 phút và để ngoài tầm với", score: 100 }
+        ]
+      }
     ];
 
     const ARTICLES = [
@@ -851,38 +1141,114 @@
       { id: 6, category: 'TECH', title: 'Sóng Não Gamma 40Hz & Binaural', text: 'Nghe âm thanh sóng não tần số 40Hz khi giải các bài toán tư duy để tăng cường kết nối đồng bộ giữa các vùng nơ-ron.', tag: 'Công nghệ' }
     ];
 
-    const COMMUNITY_USERS = [
-      { id: 1, name: 'Nguyễn Hoàng Long', school: 'Lớp 12 Chuyên Toán', rankPoints: 1650, bfs: 985, streak: '24 ngày' },
-      { id: 2, name: 'Trần Minh Anh', school: 'ĐH Ngoại Thương', rankPoints: 1520, bfs: 965, streak: '21 ngày' },
-      { id: 3, name: 'Lê Thuỳ Linh', school: 'IELTS 8.0 Master', rankPoints: 1410, bfs: 940, streak: '18 ngày' },
-      { id: 4, name: 'Phạm Đăng Khoa', school: 'ĐH Bách Khoa', rankPoints: 1280, bfs: 920, streak: '14 ngày' },
-      { id: 5, name: 'Vũ Minh Trang', school: 'THPT Chuyên Hà Nội', rankPoints: 1150, bfs: 895, streak: '11 ngày' },
-      { id: 6, name: 'Đỗ Tuấn Kiệt', school: 'ĐH Y Dược', rankPoints: 1020, bfs: 880, streak: '15 ngày' },
-      { id: 8, name: 'Nguyễn Thị Mai', school: 'ĐH Kinh Tế', rankPoints: 700, bfs: 710, streak: '4 ngày' }
-    ];
+    // Bảng xếp hạng người dùng thực tế (Không chứa bot ảo và tự động xoá tài khoản thử nghiệm)
+    let REGISTERED_USERS_DB = [];
+
+    // Tự động xoá sạch các tài khoản và phiên thử nghiệm trước đó trên thiết bị
+    function cleanTestAccountsOnStartup() {
+      const WIPE_VERSION_KEY = 'bf_clean_test_v5';
+      if (!localStorage.getItem(WIPE_VERSION_KEY)) {
+        try {
+          localStorage.removeItem('bf_registered_users');
+          localStorage.removeItem('bf_user_profile');
+          localStorage.removeItem('bf_onboarded_completed');
+          localStorage.removeItem('bf_active_session');
+          localStorage.removeItem('bf_active_session_backup');
+        } catch (e) {}
+        REGISTERED_USERS_DB = [];
+        try {
+          localStorage.setItem(WIPE_VERSION_KEY, 'true');
+        } catch (e) {}
+      }
+    }
+
+    function loadUsersDatabase() {
+      try {
+        const saved = localStorage.getItem('bf_registered_users');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          REGISTERED_USERS_DB = Array.isArray(parsed)
+            ? parsed.filter(u => u && u.email && u.name && u.email !== 'tam.brainfocus@gmail.com' && u.name !== 'Trịnh Hoài Tâm')
+            : [];
+        } else {
+          REGISTERED_USERS_DB = [];
+        }
+      } catch (e) {
+        REGISTERED_USERS_DB = [];
+      }
+    }
+
+    function saveUsersDatabase() {
+      try {
+        localStorage.setItem('bf_registered_users', JSON.stringify(REGISTERED_USERS_DB));
+      } catch (e) {}
+    }
 
     function getFullLeaderboard() {
-      const userEntry = {
-        id: 999,
-        name: `${APP_STATE.userName} (Bạn)`,
-        school: APP_STATE.userSchool,
-        rankPoints: APP_STATE.rankPoints,
-        bfs: APP_STATE.bfsScore,
-        streak: `${APP_STATE.streakDays} ngày`,
-        isUser: true
-      };
+      // Chỉ đồng bộ user hiện tại nếu có email và tên thật sự
+      if (APP_STATE.userEmail && APP_STATE.userName) {
+        const userEntry = {
+          id: APP_STATE.userEmail,
+          email: APP_STATE.userEmail,
+          name: APP_STATE.userName,
+          school: APP_STATE.userSchool || 'Người học tích cực',
+          avatar: APP_STATE.userAvatar,
+          rankPoints: APP_STATE.rankPoints,
+          sessionsCount: APP_STATE.sessionsCompletedCount || APP_STATE.history.length || 0,
+          bfs: APP_STATE.bfsScore,
+          streak: `${APP_STATE.streakDays} ngày`
+        };
 
-      const all = [...COMMUNITY_USERS, userEntry].map(u => ({
-        ...u,
-        totalScore: u.rankPoints + u.bfs
-      }));
+        const existingIdx = REGISTERED_USERS_DB.findIndex(u => u.email === APP_STATE.userEmail);
+        if (existingIdx >= 0) {
+          REGISTERED_USERS_DB[existingIdx] = userEntry;
+        } else {
+          REGISTERED_USERS_DB.push(userEntry);
+        }
+        saveUsersDatabase();
+      }
 
+      // Lọc các user hợp lệ (loại bỏ mọi tài khoản rỗng hoặc tài khoản test cũ)
+      const validUsers = REGISTERED_USERS_DB.filter(u => 
+        u && u.email && u.name && 
+        u.email !== 'tam.brainfocus@gmail.com' && 
+        u.name !== 'Trịnh Hoài Tâm'
+      );
+
+      // Tập hợp tất cả tài khoản thực
+      const all = validUsers.map(u => {
+        const isCurrent = (APP_STATE.userEmail && u.email === APP_STATE.userEmail);
+        const rankPts = isCurrent ? APP_STATE.rankPoints : (u.rankPoints || 1000);
+        const sessCount = isCurrent ? (APP_STATE.sessionsCompletedCount || APP_STATE.history.length || 0) : (u.sessionsCount || 0);
+        const bfsVal = isCurrent ? APP_STATE.bfsScore : (u.bfs || 0);
+        
+        // Công thức tính điểm: Điểm xếp hạng (khởi tạo 1000) + (Số phiên học * 10) + Điểm BFS
+        const total = rankPts + (sessCount * 10) + bfsVal;
+        
+        return {
+          ...u,
+          name: isCurrent ? `${APP_STATE.userName} (Bạn)` : u.name,
+          school: isCurrent ? (APP_STATE.userSchool || 'Người học tích cực') : (u.school || 'Người học tích cực'),
+          avatar: isCurrent ? APP_STATE.userAvatar : u.avatar,
+          rankPoints: rankPts,
+          sessionsCount: sessCount,
+          bfs: bfsVal,
+          totalScore: total,
+          isUser: isCurrent
+        };
+      });
+
+      // Sắp xếp theo tổng điểm giảm dần
       all.sort((a, b) => b.totalScore - a.totalScore);
       return all.map((u, idx) => ({ ...u, rank: idx + 1 }));
     }
 
     // ================= INIT =================
     window.addEventListener('DOMContentLoaded', () => {
+      cleanTestAccountsOnStartup();
+      loadAppStateFromLocal();
+      loadUsersDatabase();
+      syncProfileDOM();
       renderArticles();
       renderTips('ALL');
       renderLeaderboard();
@@ -898,6 +1264,14 @@
         } catch (_) {}
       }
       updateDndUI();
+
+      // Check for first-time onboarding flow: prompt account creation immediately, then 10-question BFS test
+      const hasOnboarded = localStorage.getItem('bf_onboarded_completed');
+      if (!hasOnboarded) {
+        setTimeout(() => {
+          openRegisterModal(true);
+        }, 350);
+      }
 
       // Restore active session if user refreshed or browser restored tab
       restoreSessionBackup();
@@ -2052,66 +2426,113 @@
       const podiumContainer = document.getElementById('leaderboard-podium-container');
       const table = document.getElementById('leaderboard-table');
 
+      if (!allUsers || allUsers.length === 0) {
+        if (podiumContainer) podiumContainer.innerHTML = '';
+        if (table) {
+          table.innerHTML = `
+            <div class="p-8 text-center text-slate-500 space-y-2">
+              <span class="text-4xl">🏆</span>
+              <p class="text-sm font-bold text-slate-700">Chưa có dữ liệu bảng xếp hạng</p>
+              <p class="text-xs text-slate-500">Hãy tạo tài khoản Gmail hoặc hoàn thành 1 phiên học sâu để ghi danh vào Top 1!</p>
+              <button onclick="openRegisterModal()" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold shadow-md">Tạo Tài Khoản (+1000đ)</button>
+            </div>
+          `;
+        }
+        return;
+      }
+
       const top3 = allUsers.slice(0, 3);
       const remaining = allUsers.slice(3);
 
-      if (podiumContainer && top3.length >= 3) {
-        const first = top3[0];
-        const second = top3[1];
-        const third = top3[2];
-
-        podiumContainer.innerHTML = `
-          <!-- 2nd Place -->
-          <div class="glass-card p-3 rounded-2xl flex flex-col items-center text-center border-slate-200 shadow-sm ${second.isUser ? 'border-2 border-blue-500 bg-blue-50/50' : ''}">
-            <div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-slate-400 flex items-center justify-center text-base font-extrabold mb-1">
-              🥈
+      if (podiumContainer) {
+        if (top3.length === 0) {
+          podiumContainer.innerHTML = '';
+        } else if (top3.length === 1) {
+          const first = top3[0];
+          podiumContainer.innerHTML = `
+            <div></div>
+            <!-- 1st Place Only -->
+            <div class="glass-card p-3.5 rounded-2xl border-2 border-amber-400 shadow-md flex flex-col items-center text-center relative bg-gradient-to-b from-amber-50 to-white ring-2 ring-blue-500">
+              <div class="w-12 h-12 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center text-xl font-extrabold mb-1 shadow-sm overflow-hidden">
+                ${first.avatar ? `<img src="${first.avatar}" class="w-full h-full object-cover" />` : '👑'}
+              </div>
+              <span class="text-xs font-black text-blue-600 truncate w-full">${first.name}</span>
+              <span class="text-xs text-amber-600 font-black font-cyber">${first.totalScore}đ</span>
+              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.sessionsCount} phiên + ${first.bfs} BFS</span>
+              <div class="h-20 w-full bg-amber-200 border border-amber-300 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-base font-cyber">#1</div>
             </div>
-            <span class="text-xs font-bold ${second.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${second.name}</span>
-            <span class="text-[11px] text-amber-600 font-black font-cyber">${second.totalScore}đ</span>
-            <span class="text-[9px] text-slate-500 font-mono">${second.rankPoints} XH + ${second.bfs} BFS</span>
-            <div class="h-16 w-full bg-slate-200 rounded-t-xl mt-2 flex items-center justify-center text-slate-700 font-extrabold text-sm">#2</div>
-          </div>
+            <div></div>
+          `;
+        } else {
+          // Render available top 2 or 3
+          const first = top3[0];
+          const second = top3[1];
+          const third = top3[2] || null;
 
-          <!-- 1st Place -->
-          <div class="glass-card p-3.5 rounded-2xl border-2 border-amber-400 shadow-md flex flex-col items-center text-center relative -top-3 bg-gradient-to-b from-amber-50 to-white ${first.isUser ? 'ring-2 ring-blue-500' : ''}">
-            <div class="w-12 h-12 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center text-xl font-extrabold mb-1 shadow-sm">
-              👑
+          podiumContainer.innerHTML = `
+            <!-- 2nd Place -->
+            <div class="glass-card p-3 rounded-2xl flex flex-col items-center text-center border-slate-200 shadow-sm ${second && second.isUser ? 'border-2 border-blue-500 bg-blue-50/50' : ''}">
+              <div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-slate-400 flex items-center justify-center text-base font-extrabold mb-1 overflow-hidden">
+                ${second && second.avatar ? `<img src="${second.avatar}" class="w-full h-full object-cover" />` : '🥈'}
+              </div>
+              <span class="text-xs font-bold ${second && second.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${second ? second.name : 'Đang chờ...'}</span>
+              <span class="text-[11px] text-amber-600 font-black font-cyber">${second ? second.totalScore + 'đ' : '-'}</span>
+              <span class="text-[9px] text-slate-500 font-mono">${second ? `${second.rankPoints} XH + ${second.sessionsCount}p + ${second.bfs} BFS` : ''}</span>
+              <div class="h-16 w-full bg-slate-200 rounded-t-xl mt-2 flex items-center justify-center text-slate-700 font-extrabold text-sm">#2</div>
             </div>
-            <span class="text-xs font-black ${first.isUser ? 'text-blue-600' : 'text-amber-800'} truncate w-full">${first.name}</span>
-            <span class="text-xs text-amber-600 font-black font-cyber">${first.totalScore}đ</span>
-            <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.bfs} BFS</span>
-            <div class="h-24 w-full bg-amber-200 border border-amber-300 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-base font-cyber">#1</div>
-          </div>
 
-          <!-- 3rd Place -->
-          <div class="glass-card p-3 rounded-2xl flex flex-col items-center text-center border-slate-200 shadow-sm ${third.isUser ? 'border-2 border-blue-500 bg-blue-50/50' : ''}">
-            <div class="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center text-base font-extrabold mb-1">
-              🥉
+            <!-- 1st Place -->
+            <div class="glass-card p-3.5 rounded-2xl border-2 border-amber-400 shadow-md flex flex-col items-center text-center relative -top-3 bg-gradient-to-b from-amber-50 to-white ${first.isUser ? 'ring-2 ring-blue-500' : ''}">
+              <div class="w-12 h-12 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center text-xl font-extrabold mb-1 shadow-sm overflow-hidden">
+                ${first.avatar ? `<img src="${first.avatar}" class="w-full h-full object-cover" />` : '👑'}
+              </div>
+              <span class="text-xs font-black ${first.isUser ? 'text-blue-600' : 'text-amber-800'} truncate w-full">${first.name}</span>
+              <span class="text-xs text-amber-600 font-black font-cyber">${first.totalScore}đ</span>
+              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.sessionsCount} phiên + ${first.bfs} BFS</span>
+              <div class="h-24 w-full bg-amber-200 border border-amber-300 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-base font-cyber">#1</div>
             </div>
-            <span class="text-xs font-bold ${third.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${third.name}</span>
-            <span class="text-[11px] text-amber-600 font-black font-cyber">${third.totalScore}đ</span>
-            <span class="text-[9px] text-slate-500 font-mono">${third.rankPoints} XH + ${third.bfs} BFS</span>
-            <div class="h-12 w-full bg-orange-200 rounded-t-xl mt-2 flex items-center justify-center text-orange-800 font-extrabold text-sm">#3</div>
-          </div>
-        `;
+
+            <!-- 3rd Place -->
+            <div class="glass-card p-3 rounded-2xl flex flex-col items-center text-center border-slate-200 shadow-sm ${third && third.isUser ? 'border-2 border-blue-500 bg-blue-50/50' : ''}">
+              <div class="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center text-base font-extrabold mb-1 overflow-hidden">
+                ${third && third.avatar ? `<img src="${third.avatar}" class="w-full h-full object-cover" />` : '🥉'}
+              </div>
+              <span class="text-xs font-bold ${third && third.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${third ? third.name : 'Đang chờ...'}</span>
+              <span class="text-[11px] text-amber-600 font-black font-cyber">${third ? third.totalScore + 'đ' : '-'}</span>
+              <span class="text-[9px] text-slate-500 font-mono">${third ? `${third.rankPoints} XH + ${third.sessionsCount}p + ${third.bfs} BFS` : ''}</span>
+              <div class="h-12 w-full bg-orange-200 rounded-t-xl mt-2 flex items-center justify-center text-orange-800 font-extrabold text-sm">#3</div>
+            </div>
+          `;
+        }
       }
 
       if (table) {
-        table.innerHTML = remaining.map(user => `
-          <div class="flex items-center justify-between p-3.5 border-b border-slate-200 ${user.isUser ? 'bg-blue-50/60 border-l-4 border-l-blue-600' : 'hover:bg-slate-50'} transition-all">
-            <div class="flex items-center space-x-3">
-              <span class="font-cyber font-black text-xs w-6 text-slate-500">#${user.rank}</span>
-              <div>
-                <div class="font-bold text-xs ${user.isUser ? 'text-blue-600 font-black' : 'text-slate-800'}">${user.name}</div>
-                <div class="text-[10px] text-slate-500">${user.school} • ${user.streak}</div>
+        if (remaining.length === 0) {
+          table.innerHTML = `
+            <div class="p-4 text-center text-xs text-slate-500">
+              Chưa có thứ hạng tiếp theo. Hãy chia sẻ cho bạn bè tạo tài khoản để cùng đua Top!
+            </div>
+          `;
+        } else {
+          table.innerHTML = remaining.map(user => `
+            <div class="flex items-center justify-between p-3.5 border-b border-slate-200 ${user.isUser ? 'bg-blue-50/60 border-l-4 border-l-blue-600' : 'hover:bg-slate-50'} transition-all">
+              <div class="flex items-center space-x-3">
+                <span class="font-cyber font-black text-xs w-6 text-slate-500">#${user.rank}</span>
+                <div class="w-7 h-7 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center text-xs font-bold text-slate-600 shrink-0">
+                  ${user.avatar ? `<img src="${user.avatar}" class="w-full h-full object-cover" />` : user.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div class="font-bold text-xs ${user.isUser ? 'text-blue-600 font-black' : 'text-slate-800'}">${user.name}</div>
+                  <div class="text-[10px] text-slate-500">${user.school} • ${user.streak || '1 ngày'}</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="font-cyber font-black text-xs text-blue-700">Tổng: ${user.totalScore}đ</div>
+                <div class="text-[10px] text-amber-600 font-medium font-mono">${user.rankPoints} XH + ${user.sessionsCount}p + ${user.bfs} BFS</div>
               </div>
             </div>
-            <div class="text-right">
-              <div class="font-cyber font-black text-xs text-blue-700">Tổng: ${user.totalScore}đ</div>
-              <div class="text-[10px] text-amber-600 font-medium font-mono">${user.rankPoints}đ XH + ${user.bfs} BFS</div>
-            </div>
-          </div>
-        `).join('');
+          `).join('');
+        }
       }
     }
 
@@ -2196,10 +2617,47 @@
     }
 
     // ================= 10-QUESTION ASSESSMENT MODAL =================
-    function openAssessmentModal(isRetake = false) {
-      document.getElementById('assessment-modal').classList.remove('hidden');
-      document.getElementById('assessment-result-box').classList.add('hidden');
-      document.getElementById('assess-submit-btn').classList.remove('hidden');
+    function openAssessmentModal(isRetake = false, isOnboarding = false) {
+      APP_STATE.isOnboardingActive = isOnboarding;
+      const modal = document.getElementById('assessment-modal');
+      const closeBtn = document.getElementById('assessment-modal-close-btn');
+      const skipBtn = document.getElementById('assessment-skip-btn');
+      const banner = document.getElementById('assessment-onboarding-banner');
+      const titleEl = document.getElementById('assessment-modal-title');
+      const subtitleEl = document.getElementById('assessment-modal-subtitle');
+      const userInputs = document.getElementById('assessment-user-inputs');
+      const resBox = document.getElementById('assessment-result-box');
+      const submitBtn = document.getElementById('assess-submit-btn');
+
+      // Sync name & school fields
+      const inputName = document.getElementById('assess-input-name');
+      const inputSchool = document.getElementById('assess-input-school');
+      if (inputName) inputName.value = APP_STATE.userName || '';
+      if (inputSchool) inputSchool.value = APP_STATE.userSchool || '';
+
+      if (isOnboarding) {
+        if (closeBtn) closeBtn.classList.add('hidden');
+        if (skipBtn) skipBtn.classList.add('hidden');
+        if (banner) banner.classList.remove('hidden');
+        if (userInputs) userInputs.classList.add('hidden');
+        if (titleEl) titleEl.innerText = `CHÀO MỪNG ${APP_STATE.userName ? APP_STATE.userName.toUpperCase() : 'BẠN'}`;
+        if (subtitleEl) subtitleEl.innerText = "Bước 2/2: Hoàn thành 10 câu hỏi để xác định chỉ số BFS não bộ";
+      } else {
+        if (closeBtn) closeBtn.classList.remove('hidden');
+        if (skipBtn) skipBtn.classList.remove('hidden');
+        if (banner) banner.classList.add('hidden');
+        if (userInputs) userInputs.classList.remove('hidden');
+        if (titleEl) titleEl.innerText = "BỘ CHẨN ĐOÁN CHỈ SỐ BFS & NÃO BỎNG NGÔ";
+        if (subtitleEl) subtitleEl.innerText = "10 câu hỏi trắc nghiệm tâm lý - thần kinh chuẩn hóa";
+      }
+
+      if (resBox) resBox.classList.add('hidden');
+      if (submitBtn) submitBtn.classList.remove('hidden');
+      renderQuestions();
+      modal.classList.remove('hidden');
+      
+      const contentEl = document.getElementById('assessment-content');
+      if (contentEl) contentEl.scrollTop = 0;
     }
 
     function closeAssessmentModal() {
@@ -2208,76 +2666,91 @@
 
     function renderQuestions() {
       const container = document.getElementById('questions-list-container');
-      container.innerHTML = ASSESSMENT_QUESTIONS.map((q, idx) => `
-        <div class="bg-white p-4 rounded-2xl space-y-2 border border-slate-200 shadow-xs">
-          <p class="text-xs font-bold text-slate-800">
-            <span class="text-blue-600 font-cyber font-black">#${q.id}</span> ${q.text}
+      container.innerHTML = ASSESSMENT_QUESTIONS.map((q, qIdx) => `
+        <div class="bg-white p-4 sm:p-5 rounded-2xl space-y-3 border border-slate-200 shadow-xs">
+          <div class="flex items-center justify-between gap-2">
+            <span class="inline-block bg-blue-100 text-blue-800 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              ${q.category}
+            </span>
+            <span class="text-blue-600 font-cyber font-black text-xs">#${q.id} / 10</span>
+          </div>
+          <p class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+            ${q.question}
           </p>
-          <div class="grid grid-cols-4 gap-2 pt-1">
-            <label class="flex flex-col items-center p-2 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer hover:border-blue-400">
-              <input type="radio" name="question_${q.id}" value="3" class="accent-blue-600" checked>
-              <span class="text-[10px] font-bold text-slate-700 mt-1">Thường xuyên</span>
-            </label>
-            <label class="flex flex-col items-center p-2 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer hover:border-blue-400">
-              <input type="radio" name="question_${q.id}" value="2" class="accent-blue-600">
-              <span class="text-[10px] font-bold text-slate-700 mt-1">Thỉnh thoảng</span>
-            </label>
-            <label class="flex flex-col items-center p-2 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer hover:border-blue-400">
-              <input type="radio" name="question_${q.id}" value="1" class="accent-blue-600">
-              <span class="text-[10px] font-bold text-slate-700 mt-1">Hiếm khi</span>
-            </label>
-            <label class="flex flex-col items-center p-2 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer hover:border-blue-400">
-              <input type="radio" name="question_${q.id}" value="0" class="accent-blue-600">
-              <span class="text-[10px] font-bold text-slate-700 mt-1">Không bao giờ</span>
-            </label>
+          <div class="space-y-2 pt-1">
+            ${q.options.map((opt, optIdx) => `
+              <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50/40 cursor-pointer transition-all">
+                <input type="radio" name="question_${q.id}" value="${opt.score}" class="accent-blue-600 w-4 h-4 shrink-0" ${optIdx === 0 ? 'checked' : ''}>
+                <span class="text-xs text-slate-800 font-medium leading-relaxed">${opt.text}</span>
+              </label>
+            `).join('')}
           </div>
         </div>
       `).join('');
     }
 
     function calculateAndSaveAssessment() {
-      let totalRaw = 0;
+      let totalScore = 0;
       for (let i = 1; i <= 10; i++) {
         const radios = document.getElementsByName(`question_${i}`);
         for (const r of radios) {
           if (r.checked) {
-            totalRaw += parseInt(r.value, 10);
+            totalScore += parseInt(r.value, 10);
             break;
           }
         }
       }
 
-      // Max raw is 30. Calculate BFS from 0 to 1000.
-      const calculatedBFS = Math.max(200, Math.round(1000 - (totalRaw / 30) * 600));
+      // Total score from 10 questions ranges from 100 to 1000
+      const calculatedBFS = Math.min(1000, Math.max(100, totalScore));
       APP_STATE.bfsScore = calculatedBFS;
       
-      const name = document.getElementById('assess-input-name').value || "Trịnh Hoài Tâm";
-      const school = document.getElementById('assess-input-school').value || "Chuyên gia trẻ";
-      APP_STATE.userName = name;
-      APP_STATE.userSchool = school;
-      document.getElementById('user-display-name').innerText = name;
-      document.getElementById('user-display-school').innerText = school;
-      document.getElementById('user-avatar-initial').innerText = name.charAt(0).toUpperCase();
+      if (!APP_STATE.isOnboardingActive) {
+        const name = document.getElementById('assess-input-name').value || APP_STATE.userName;
+        const school = document.getElementById('assess-input-school').value || APP_STATE.userSchool;
+        APP_STATE.userName = name;
+        APP_STATE.userSchool = school;
+      }
 
+      // Mark onboarding as complete and persist
+      try {
+        localStorage.setItem('bf_onboarded_completed', 'true');
+      } catch (e) {}
+
+      saveAppStateToLocal();
+      syncProfileDOM();
       updateStatsUI();
 
       const resBox = document.getElementById('assessment-result-box');
       resBox.classList.remove('hidden');
       document.getElementById('result-bfs-number').innerText = `${calculatedBFS} / 1000`;
       
-      let category = "Khá Tốt - Vỏ Não Kiên Định";
-      let desc = "Vỏ não của bạn có khả năng duy trì tập trung tương đối ổn định. Tiếp tục duy trì các chu kỳ 90 phút và sóng 40Hz để bứt phá lên 950+ BFS!";
-      if (calculatedBFS >= 850) {
-        category = "Xuất Sắc - Siêu Nơ-ron Tập Trung";
-        desc = "Khả năng ức chế dopamine và chống xao nhãng của bạn ở cấp độ cao nhất! Hãy chia sẻ bí kíp lên bảng xếp hạng.";
-      } else if (calculatedBFS < 600) {
-        category = "Cần Tái Phục Hồi - Hội Chứng Não Bỏng Ngô Cao";
-        desc = "Vỏ não trước trán đang bị quá tải bởi các chuỗi phần thưởng tức thì (video ngắn, thông báo). Hãy áp dụng ngay quy tắc 20 giây và nghe sóng Gamma 40Hz khi học!";
+      let category = "Não bộ Nhạy Cảm Kích Thích (Moderate Popcorn Brain)";
+      let desc = "Bạn có một số biểu hiện cho thấy sự chú ý dễ bị gián đoạn bởi các kích thích từ môi trường số. Vỏ não trước trán bắt đầu hình thành phản xạ tìm kiếm dopamine ngắn hạn khi gặp bài khó hoặc đoạn văn dài. Hãy duy trì các chu kỳ học sâu 90 phút và cách ly điện thoại khi học.";
+      
+      if (calculatedBFS >= 750) {
+        category = "Não bộ Kháng Xao Nhãng (Deep Focus Master)";
+        desc = "Khả năng tập trung của bạn ở mức rất xuất sắc, ít bị ảnh hưởng bởi hội chứng Não Bỏng Ngô! Bạn sở hữu vùng vỏ não trước trán vững vàng, có khả năng trì hoãn khoái cảm dopamine và duy trì sự chú ý bền bỉ trong các chu kỳ 90 phút.";
+      } else if (calculatedBFS < 450) {
+        category = "Hội Chứng Não Bỏng Ngô Mức Cao (Acute Popcorn Brain)";
+        desc = "Mức độ phân tán chú ý cao. Tâm trí bạn liên tục 'nhảy cóc' như những hạt ngô nổ trong chảo nóng do tiếp xúc nhiều với video ngắn. Hãy thực hiện ngay lộ trình Dopamine Reset, quy tắc 20 giây và bật sóng Gamma 40Hz khi học!";
       }
 
       document.getElementById('result-bfs-category').innerText = category;
       document.getElementById('result-bfs-desc').innerText = desc;
       document.getElementById('assess-submit-btn').classList.add('hidden');
+
+      // Scroll smoothly down to result
+      const contentEl = document.getElementById('assessment-content');
+      if (contentEl) {
+        contentEl.scrollTo({ top: contentEl.scrollHeight, behavior: 'smooth' });
+      }
+    }
+
+    function finishOnboardingAndEnterApp() {
+      closeAssessmentModal();
+      switchTab('timer');
+      alert(`🎉 Chúc mừng ${APP_STATE.userName}! Hồ sơ của bạn đã sẵn sàng với 1000đ Xếp Hạng + ${APP_STATE.bfsScore}đ BFS. Chúc bạn có những chu kỳ học sâu bứt phá!`);
     }
 
     // ================= REFLECTION MODAL =================
@@ -2316,11 +2789,297 @@
 
       APP_STATE.bfsScore += 25;
       APP_STATE.rankPoints += 50;
+      APP_STATE.sessionsCompletedCount = (APP_STATE.sessionsCompletedCount || 0) + 1;
       APP_STATE.totalHours = parseFloat((APP_STATE.totalHours + minutes / 60).toFixed(1));
+      saveAppStateToLocal();
       updateStatsUI();
       renderHistory();
       closeReflectionModal();
-      alert('🌟 Đã ghi nhận đúc kết: +50 Điểm Xếp Hạng & +25 Điểm BFS vào hồ sơ của bạn!');
+      alert('🌟 Đã ghi nhận đúc kết: +50 Điểm Xếp Hạng, +1 Phiên Học & +25 Điểm BFS vào hồ sơ của bạn!');
+    }
+
+    // ================= ACCOUNT & PROFILE MANAGEMENT =================
+    function saveAppStateToLocal() {
+      try {
+        localStorage.setItem('bf_user_profile', JSON.stringify({
+          userEmail: APP_STATE.userEmail,
+          userName: APP_STATE.userName,
+          userSchool: APP_STATE.userSchool,
+          userAvatar: APP_STATE.userAvatar,
+          rankPoints: APP_STATE.rankPoints,
+          bfsScore: APP_STATE.bfsScore,
+          totalHours: APP_STATE.totalHours,
+          streakDays: APP_STATE.streakDays,
+          sessionsCompletedCount: APP_STATE.sessionsCompletedCount || APP_STATE.history.length,
+          gymCompletedCount: APP_STATE.gymCompletedCount,
+          history: APP_STATE.history
+        }));
+      } catch (e) {}
+    }
+
+    function loadAppStateFromLocal() {
+      try {
+        const saved = localStorage.getItem('bf_user_profile');
+        if (saved) {
+          const data = JSON.parse(saved);
+          // Loại bỏ tài khoản thử nghiệm cũ
+          if (data.userEmail && data.userEmail !== 'tam.brainfocus@gmail.com') APP_STATE.userEmail = data.userEmail;
+          if (data.userName && data.userName !== 'Trịnh Hoài Tâm') APP_STATE.userName = data.userName;
+          if (data.userSchool && data.userSchool !== 'Chuyên gia trẻ') APP_STATE.userSchool = data.userSchool;
+          if (data.userAvatar !== undefined) APP_STATE.userAvatar = data.userAvatar;
+          if (data.rankPoints !== undefined) APP_STATE.rankPoints = data.rankPoints;
+          if (data.bfsScore !== undefined) APP_STATE.bfsScore = data.bfsScore;
+          if (data.totalHours !== undefined) APP_STATE.totalHours = data.totalHours;
+          if (data.streakDays !== undefined) APP_STATE.streakDays = data.streakDays;
+          if (data.sessionsCompletedCount !== undefined) APP_STATE.sessionsCompletedCount = data.sessionsCompletedCount;
+          if (data.gymCompletedCount !== undefined) APP_STATE.gymCompletedCount = data.gymCompletedCount;
+          if (data.history) APP_STATE.history = data.history;
+        }
+      } catch (e) {}
+    }
+
+    function syncProfileDOM() {
+      const initial = (APP_STATE.userName || 'T').charAt(0).toUpperCase();
+      
+      // Update Header Avatar
+      const headerInitialEl = document.getElementById('header-avatar-initial');
+      const headerImgEl = document.getElementById('header-avatar-img');
+      if (headerInitialEl && headerImgEl) {
+        if (APP_STATE.userAvatar) {
+          headerImgEl.src = APP_STATE.userAvatar;
+          headerImgEl.classList.remove('hidden');
+          headerInitialEl.classList.add('hidden');
+        } else {
+          headerInitialEl.innerText = initial;
+          headerInitialEl.classList.remove('hidden');
+          headerImgEl.classList.add('hidden');
+        }
+      }
+
+      // Update Profile Tab Info
+      const profileNameEl = document.getElementById('user-display-name');
+      if (profileNameEl) profileNameEl.innerText = APP_STATE.userName || 'Chưa đăng ký';
+
+      const profileSchoolEl = document.getElementById('user-display-school');
+      if (profileSchoolEl) profileSchoolEl.innerText = APP_STATE.userSchool || 'Người học tập trung';
+
+      const profileEmailEl = document.getElementById('user-display-email');
+      if (profileEmailEl) profileEmailEl.innerText = APP_STATE.userEmail || 'Chưa liên kết Gmail';
+
+      const profileInitialEl = document.getElementById('user-avatar-initial');
+      const profileImgEl = document.getElementById('user-avatar-img');
+      if (profileInitialEl && profileImgEl) {
+        if (APP_STATE.userAvatar) {
+          profileImgEl.src = APP_STATE.userAvatar;
+          profileImgEl.classList.remove('hidden');
+          profileInitialEl.classList.add('hidden');
+        } else {
+          profileInitialEl.innerText = initial;
+          profileInitialEl.classList.remove('hidden');
+          profileImgEl.classList.add('hidden');
+        }
+      }
+    }
+
+    // Modal Triggers
+    function openRegisterModal(isOnboarding = false) {
+      APP_STATE.isOnboardingActive = isOnboarding;
+      const modal = document.getElementById('register-modal');
+      const closeBtn = document.getElementById('register-modal-close-btn');
+      const cancelBtn = document.getElementById('reg-cancel-btn');
+      const titleEl = document.getElementById('register-modal-title');
+      const subtitleEl = document.getElementById('register-modal-subtitle');
+
+      if (isOnboarding) {
+        if (closeBtn) closeBtn.classList.add('hidden');
+        if (cancelBtn) cancelBtn.classList.add('hidden');
+        if (titleEl) titleEl.innerText = "CHÀO MỪNG ĐẾN VỚI BRAIN FOCUS";
+        if (subtitleEl) subtitleEl.innerText = "Bước 1/2: Đăng ký Gmail & Nhận ngay 1000đ Xếp Hạng";
+      } else {
+        if (closeBtn) closeBtn.classList.remove('hidden');
+        if (cancelBtn) cancelBtn.classList.remove('hidden');
+        if (titleEl) titleEl.innerText = "TẠO TÀI KHOẢN HỌC VIÊN";
+        if (subtitleEl) subtitleEl.innerText = "Nhận ngay 1000 điểm xếp hạng gốc";
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeRegisterModal() {
+      document.getElementById('register-modal').classList.add('hidden');
+    }
+
+    function openEditProfileModal() {
+      document.getElementById('edit-input-name').value = APP_STATE.userName || '';
+      document.getElementById('edit-input-school').value = APP_STATE.userSchool || '';
+      document.getElementById('edit-input-email').value = APP_STATE.userEmail || '';
+      
+      const prevImg = document.getElementById('edit-avatar-img');
+      const prevInit = document.getElementById('edit-avatar-initial');
+      if (APP_STATE.userAvatar) {
+        prevImg.src = APP_STATE.userAvatar;
+        prevImg.classList.remove('hidden');
+        prevInit.classList.add('hidden');
+      } else {
+        prevInit.innerText = (APP_STATE.userName || 'T').charAt(0).toUpperCase();
+        prevInit.classList.remove('hidden');
+        prevImg.classList.add('hidden');
+      }
+
+      document.getElementById('edit-profile-modal').classList.remove('hidden');
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById('edit-profile-modal').classList.add('hidden');
+    }
+
+    function openAvatarCustomizer() {
+      openEditProfileModal();
+    }
+
+    // Handle Image file upload via FileReader
+    let tempUploadedAvatarBase64 = null;
+
+    function handleAvatarFileUpload(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        alert('Vui lòng chọn tệp hình ảnh hợp lệ (PNG, JPG, JPEG, WEBP).');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Data = e.target.result;
+        tempUploadedAvatarBase64 = base64Data;
+
+        if (type === 'reg') {
+          const imgEl = document.getElementById('reg-avatar-img');
+          const initEl = document.getElementById('reg-avatar-initial');
+          if (imgEl && initEl) {
+            imgEl.src = base64Data;
+            imgEl.classList.remove('hidden');
+            initEl.classList.add('hidden');
+          }
+        } else if (type === 'edit') {
+          const imgEl = document.getElementById('edit-avatar-img');
+          const initEl = document.getElementById('edit-avatar-initial');
+          if (imgEl && initEl) {
+            imgEl.src = base64Data;
+            imgEl.classList.remove('hidden');
+            initEl.classList.add('hidden');
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeCustomAvatar() {
+      tempUploadedAvatarBase64 = "";
+      const imgEl = document.getElementById('edit-avatar-img');
+      const initEl = document.getElementById('edit-avatar-initial');
+      if (imgEl && initEl) {
+        imgEl.src = "";
+        imgEl.classList.add('hidden');
+        initEl.innerText = (document.getElementById('edit-input-name').value || 'T').charAt(0).toUpperCase();
+        initEl.classList.remove('hidden');
+      }
+    }
+
+    // Submission Handlers
+    function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('reg-input-email').value.trim();
+      const name = document.getElementById('reg-input-name').value.trim();
+      const school = document.getElementById('reg-input-school').value.trim() || 'Người học tập trung';
+      
+      if (!email || !name) {
+        alert('Vui lòng điền đầy đủ Email và Họ tên!');
+        return;
+      }
+
+      APP_STATE.userEmail = email;
+      APP_STATE.userName = name;
+      APP_STATE.userSchool = school;
+      APP_STATE.rankPoints = 1000; // Khởi đầu đúng 1000 điểm xếp hạng
+      APP_STATE.sessionsCompletedCount = 0;
+      if (tempUploadedAvatarBase64 !== null) {
+        APP_STATE.userAvatar = tempUploadedAvatarBase64;
+      }
+
+      saveAppStateToLocal();
+      syncProfileDOM();
+      updateStatsUI();
+      closeRegisterModal();
+      
+      // TỰ ĐỘNG CHUYỂN NGAY SANG BƯỚC 2: BÀI TEST 10 CÂU BFS
+      setTimeout(() => {
+        openAssessmentModal(false, true);
+      }, 250);
+    }
+
+    function handleEditProfileSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('edit-input-name').value.trim();
+      const school = document.getElementById('edit-input-school').value.trim();
+      const email = document.getElementById('edit-input-email').value.trim();
+
+      if (!name) {
+        alert('Vui lòng nhập họ và tên!');
+        return;
+      }
+
+      APP_STATE.userName = name;
+      if (school) APP_STATE.userSchool = school;
+      if (email) APP_STATE.userEmail = email;
+      if (tempUploadedAvatarBase64 !== null) {
+        APP_STATE.userAvatar = tempUploadedAvatarBase64;
+      }
+
+      saveAppStateToLocal();
+      syncProfileDOM();
+      updateStatsUI();
+      closeEditProfileModal();
+
+      alert('✅ Đã cập nhật thành công Họ tên & Avatar của bạn!');
+    }
+
+    function handleGoogleLogin() {
+      openRegisterModal();
+    }
+
+    // Chức năng xoá sạch toàn bộ tài khoản thử nghiệm & đặt lại ứng dụng như mới
+    function resetAccountAndData() {
+      if (confirm('Xác nhận xoá toàn bộ tài khoản thử nghiệm và dữ liệu đã lưu để tạo mới từ đầu?')) {
+        try {
+          localStorage.removeItem('bf_registered_users');
+          localStorage.removeItem('bf_user_profile');
+          localStorage.removeItem('bf_onboarded_completed');
+          localStorage.removeItem('bf_active_session');
+          localStorage.removeItem('bf_active_session_backup');
+        } catch (e) {}
+        REGISTERED_USERS_DB = [];
+        APP_STATE.userEmail = "";
+        APP_STATE.userName = "";
+        APP_STATE.userSchool = "";
+        APP_STATE.userAvatar = "";
+        APP_STATE.rankPoints = 1000;
+        APP_STATE.bfsScore = 0;
+        APP_STATE.totalHours = 0;
+        APP_STATE.streakDays = 1;
+        APP_STATE.sessionsCompletedCount = 0;
+        APP_STATE.gymCompletedCount = 0;
+        APP_STATE.history = [];
+        saveAppStateToLocal();
+        saveUsersDatabase();
+        syncProfileDOM();
+        updateStatsUI();
+        renderLeaderboard();
+        renderHistory();
+        openRegisterModal(true);
+        alert('✨ Đã xoá sạch toàn bộ tài khoản thử nghiệm! Vui lòng tạo tài khoản mới.');
+      }
     }
   </script>
 </body>

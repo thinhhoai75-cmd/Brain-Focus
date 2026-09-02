@@ -8,6 +8,9 @@ import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
+import android.webkit.JsPromptResult
+import android.webkit.JsResult
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -29,6 +32,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Laptop
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.PhoneAndroid
@@ -158,6 +162,23 @@ fun WebReviewScreen(
                     }
 
                     IconButton(
+                        onClick = {
+                            webViewInstance?.evaluateJavascript(
+                                "if (typeof resetAccountAndData === 'function') { resetAccountAndData(); }",
+                                null
+                            )
+                        },
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Xoá tài khoản thử nghiệm",
+                            tint = Color(0xFFFCA5A5),
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+
+                    IconButton(
                         onClick = { webViewInstance?.reload() },
                         modifier = Modifier.size(36.dp)
                     ) {
@@ -220,7 +241,8 @@ fun WebReviewScreen(
                             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
                         }
 
-                        setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                        // In Android emulator/cloud headless environment, SOFTWARE layer avoids Mesa DRM rendernode crashes
+                        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
                         webViewClient = object : WebViewClient() {
                             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -245,9 +267,60 @@ fun WebReviewScreen(
                                     loadUrl("file:///android_asset/web/index.html")
                                 }
                             }
+
+                            override fun onRenderProcessGone(
+                                view: WebView?,
+                                detail: RenderProcessGoneDetail?
+                            ): Boolean {
+                                // Prevent the host application from being terminated by the OS
+                                isLoading = false
+                                view?.let { wv ->
+                                    try {
+                                        wv.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                                        wv.post {
+                                            try {
+                                                wv.loadUrl("file:///android_asset/web/index.html")
+                                            } catch (_: Exception) {}
+                                        }
+                                    } catch (_: Exception) {}
+                                }
+                                return true
+                            }
                         }
 
-                        webChromeClient = WebChromeClient()
+                        webChromeClient = object : WebChromeClient() {
+                            override fun onJsAlert(
+                                view: WebView?,
+                                url: String?,
+                                message: String?,
+                                result: JsResult?
+                            ): Boolean {
+                                message?.let { Toast.makeText(ctx, it, Toast.LENGTH_SHORT).show() }
+                                result?.confirm()
+                                return true
+                            }
+
+                            override fun onJsConfirm(
+                                view: WebView?,
+                                url: String?,
+                                message: String?,
+                                result: JsResult?
+                            ): Boolean {
+                                result?.confirm()
+                                return true
+                            }
+
+                            override fun onJsPrompt(
+                                view: WebView?,
+                                url: String?,
+                                message: String?,
+                                defaultValue: String?,
+                                result: JsPromptResult?
+                            ): Boolean {
+                                result?.confirm(defaultValue ?: "")
+                                return true
+                            }
+                        }
                         addJavascriptInterface(AndroidFocusBridge(ctx), "AndroidBridge")
 
                         // Load asset directly or try online domain
