@@ -195,10 +195,14 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
         _isDndActive.value = com.example.util.NotificationMuteManager.isDndActive()
     }
 
+    private var sessionTargetEndTimeMs: Long = 0L
+
     fun startSession() {
         _isSessionActive.value = true
         _isPaused.value = false
-        _secondsRemaining.value = _plannedMinutes.value * 60
+        val totalSecs = _plannedMinutes.value * 60
+        _secondsRemaining.value = totalSecs
+        sessionTargetEndTimeMs = System.currentTimeMillis() + (totalSecs * 1000L)
         _exitCount.value = 0
         _lastPenaltyMessage.value = null
         audioPlayer.play(_selectedLofiSound.value)
@@ -211,14 +215,17 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
 
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
-            while (_secondsRemaining.value > 0 && _isSessionActive.value) {
-                delay(1000L)
+            while (_isSessionActive.value) {
+                delay(300L)
                 if (!_isPaused.value) {
-                    _secondsRemaining.value = _secondsRemaining.value - 1
+                    val remainingMs = sessionTargetEndTimeMs - System.currentTimeMillis()
+                    val remainingSec = (remainingMs / 1000L).coerceAtLeast(0L).toInt()
+                    _secondsRemaining.value = remainingSec
+                    if (remainingSec <= 0) {
+                        completeSession()
+                        break
+                    }
                 }
-            }
-            if (_secondsRemaining.value <= 0 && _isSessionActive.value) {
-                completeSession()
             }
         }
     }
@@ -230,6 +237,7 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
 
     fun resumeSession() {
         _isPaused.value = false
+        sessionTargetEndTimeMs = System.currentTimeMillis() + (_secondsRemaining.value * 1000L)
         audioPlayer.play(_selectedLofiSound.value)
     }
 
