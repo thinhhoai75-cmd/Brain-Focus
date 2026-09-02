@@ -51,13 +51,19 @@
     }
   </script>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       background: linear-gradient(145deg, #f8fafc 0%, #f0f9ff 40%, #ecfeff 75%, #f0fdf4 100%);
       color: #0f172a;
       min-height: 100vh;
+      max-width: 100vw;
+      width: 100%;
+      overflow-x: hidden !important;
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
@@ -115,77 +121,79 @@
 <body class="h-full text-slate-800 antialiased overflow-hidden flex flex-col selection:bg-cyan-200 selection:text-blue-950">
 
   <!-- ================= TOP APP BAR (Luminous Gradient Header) ================= -->
-  <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 px-4 py-2.5 shadow-lg flex items-center justify-between shrink-0 border-b border-blue-400/30 z-20">
-    <div class="flex items-center space-x-3">
+  <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 px-2.5 sm:px-4 py-2 sm:py-2.5 shadow-lg flex items-center justify-between shrink-0 border-b border-blue-400/30 z-20 w-full max-w-full overflow-hidden">
+    <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
       <!-- Cyber Logo -->
-      <div class="relative">
-        <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-xl shadow-lg glow-blue font-black text-white">
+      <div class="relative shrink-0">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-lg sm:text-xl shadow-lg glow-blue font-black text-white">
           🧠
         </div>
-        <span class="absolute -bottom-1 -right-1 flex h-3 w-3">
+        <span class="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-300 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-emerald-400"></span>
         </span>
       </div>
 
-      <div>
-        <div class="flex items-center gap-2">
-          <h1 class="font-black text-base sm:text-lg tracking-tight leading-tight text-white font-cyber flex items-center gap-1.5 drop-shadow-sm">
+      <div class="shrink-0">
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <h1 class="font-black text-sm sm:text-lg tracking-tight leading-tight text-white font-cyber flex items-center gap-1 drop-shadow-sm">
             BRAIN FOCUS
           </h1>
-          <a href="https://brainfocus.id.vn" target="_blank" class="hidden sm:inline-flex items-center gap-1 text-[10px] bg-white/15 border border-white/30 text-white px-2 py-0.5 rounded-full font-mono hover:bg-white hover:text-blue-700 transition-all shadow-sm">
+          <a href="https://brainfocus.id.vn" target="_blank" class="hidden md:inline-flex items-center gap-1 text-[10px] bg-white/15 border border-white/30 text-white px-2 py-0.5 rounded-full font-mono hover:bg-white hover:text-blue-700 transition-all shadow-sm">
             <span>🌐</span>
             <span>brainfocus.id.vn</span>
           </a>
         </div>
-        <p class="text-[11px] text-blue-100 font-medium flex items-center gap-1.5">
-          <span class="text-amber-300 font-bold">🔥 Lock In Mode</span>
-          <span>•</span>
-          <span class="text-cyan-100">Diệt Não Bỏng Ngô 🍿🚫</span>
+        <p class="text-[10px] sm:text-[11px] text-blue-100 font-medium flex items-center gap-1">
+          <span class="text-amber-300 font-bold">🔥 Lock In</span>
+          <span class="hidden sm:inline">•</span>
+          <span class="hidden sm:inline text-cyan-100">Diệt Não Bỏng Ngô 🍿🚫</span>
         </p>
       </div>
     </div>
 
     <!-- Right Header Actions (Audio & BFS Badge & Rank Points) -->
-    <div class="flex items-center space-x-1.5 sm:space-x-2.5">
+    <div class="flex items-center space-x-1 sm:space-x-2 shrink-0">
       
       <!-- Equalizer Visualizer & Sound Synth Button -->
-      <button id="quick-sound-btn" onclick="toggleAudio()" class="flex items-center gap-2 bg-white/15 hover:bg-white/25 active:scale-95 transition-all text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/30 text-white shadow-sm">
-        <!-- Animated Equalizer Bars -->
-        <div id="equalizer-bars" class="flex items-end gap-0.5 h-4 opacity-75">
-          <span class="w-1 bg-cyan-200 rounded-full h-1"></span>
-          <span class="w-1 bg-white rounded-full h-2"></span>
-          <span class="w-1 bg-sky-200 rounded-full h-1"></span>
-          <span class="w-1 bg-cyan-100 rounded-full h-3"></span>
+      <button id="quick-sound-btn" onclick="toggleAudio()" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 active:scale-95 transition-all text-xs font-bold px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl border border-white/30 text-white shadow-sm" title="Bật/Tắt Sóng Não 40Hz">
+        <div id="equalizer-bars" class="flex items-end gap-0.5 h-3.5 sm:h-4 opacity-75">
+          <span class="w-0.5 sm:w-1 bg-cyan-200 rounded-full h-1"></span>
+          <span class="w-0.5 sm:w-1 bg-white rounded-full h-2"></span>
+          <span class="w-0.5 sm:w-1 bg-sky-200 rounded-full h-1"></span>
+          <span class="w-0.5 sm:w-1 bg-cyan-100 rounded-full h-3"></span>
         </div>
-        <span id="sound-status" class="hidden md:inline text-white text-[11px] font-semibold">Sóng 40Hz: Tắt</span>
+        <span id="sound-status" class="hidden lg:inline text-white text-[11px] font-semibold">Sóng 40Hz: Tắt</span>
       </button>
 
-      <!-- Điểm Xếp Hạng (Rank Points) -->
-      <div onclick="switchTab('profile')" class="cursor-pointer bg-amber-400/90 hover:bg-amber-400 text-slate-900 border border-amber-300 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-bold transition-all shadow-md active:scale-95">
-        <span class="text-amber-950 font-extrabold">🏆 XH:</span>
-        <span id="header-rank-points" class="text-slate-950 text-xs sm:text-sm font-cyber font-black">850đ</span>
+      <!-- Điểm Xếp Hạng Gốc (1000đ khởi tạo) -->
+      <div onclick="switchTab('profile')" class="cursor-pointer bg-amber-400/95 hover:bg-amber-400 text-slate-900 border border-amber-300 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-xl flex items-center space-x-0.5 sm:space-x-1 text-[11px] sm:text-xs font-bold transition-all shadow-md active:scale-95" title="Điểm Xếp Hạng khởi tạo (1000đ)">
+        <span class="text-amber-950 font-extrabold">🏆</span>
+        <span class="hidden sm:inline text-amber-950 font-bold">XH:</span>
+        <span id="header-rank-points" class="text-slate-950 text-xs sm:text-sm font-cyber font-black">1000đ</span>
       </div>
 
       <!-- BFS Score Pill (Interactive) -->
-      <div onclick="switchTab('profile')" class="cursor-pointer bg-white text-blue-700 hover:bg-blue-50 border border-white/60 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-bold transition-all shadow-md active:scale-95">
-        <span class="text-blue-600 font-black">⚡ BFS:</span>
-        <span id="header-bfs-score" class="text-blue-900 text-xs sm:text-sm font-cyber font-black">740</span>
+      <div onclick="switchTab('profile')" class="cursor-pointer bg-white text-blue-700 hover:bg-blue-50 border border-white/60 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-xl flex items-center space-x-0.5 sm:space-x-1 text-[11px] sm:text-xs font-bold transition-all shadow-md active:scale-95" title="Điểm BFS từ bài test 10 câu">
+        <span class="text-blue-600 font-black">⚡</span>
+        <span class="hidden sm:inline text-blue-600 font-bold">BFS:</span>
+        <span id="header-bfs-score" class="text-blue-900 text-xs sm:text-sm font-cyber font-black">1000</span>
       </div>
 
       <!-- Total Combined Score for Leaderboard -->
-      <div onclick="switchTab('leaderboard')" class="cursor-pointer bg-gradient-to-r from-emerald-400 to-cyan-300 text-slate-950 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-black transition-all shadow-md active:scale-95">
-        <span>👑 Tổng:</span>
-        <span id="header-total-score" class="font-cyber font-black text-xs sm:text-sm">1590đ</span>
+      <div onclick="switchTab('leaderboard')" class="cursor-pointer bg-gradient-to-r from-emerald-400 to-cyan-300 text-slate-950 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-xl flex items-center space-x-0.5 sm:space-x-1 text-[11px] sm:text-xs font-black transition-all shadow-md active:scale-95" title="Tổng Điểm BXH = 1000 XH + BFS + (Số phiên × Điểm theo thời gian)">
+        <span>👑</span>
+        <span class="hidden sm:inline">Tổng:</span>
+        <span id="header-total-score" class="font-cyber font-black text-xs sm:text-sm">2000đ</span>
       </div>
 
       <!-- User Profile & Avatar Quick Button -->
-      <button onclick="switchTab('profile')" class="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 border border-white/40 px-2 py-1 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95">
+      <button onclick="switchTab('profile')" class="flex items-center gap-1 bg-white/20 hover:bg-white/30 border border-white/40 p-1 sm:px-2 sm:py-1 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95" title="Hồ Sơ Của Bạn">
         <div id="header-avatar-circle" class="w-6 h-6 rounded-full overflow-hidden bg-gradient-to-tr from-amber-400 to-pink-500 flex items-center justify-center text-[11px] font-black text-white shadow-xs">
           <span id="header-avatar-initial">T</span>
           <img id="header-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
         </div>
-        <span id="header-account-name" class="hidden sm:inline text-xs font-bold max-w-[80px] truncate">Bạn</span>
+        <span id="header-account-name" class="hidden lg:inline text-xs font-bold max-w-[70px] truncate">Bạn</span>
       </button>
     </div>
   </header>
@@ -292,6 +300,82 @@
       <!-- ================= TAB 1: FOCUS SESSION (LOCK IN) ================= -->
       <section id="tab-timer" class="tab-content max-w-3xl mx-auto space-y-4">
         
+        <!-- DAILY SESSIONS TRACKER & LIMIT (Tối đa 3 phiên/ngày) -->
+        <div id="daily-session-tracker-card" class="glass-card rounded-2xl p-3.5 sm:p-4 border border-blue-200/90 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
+              📅
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-black text-slate-900 font-cyber">HẠN MỨC HỌC SÂU HÔM NAY:</span>
+                <span id="daily-sessions-counter-badge" class="font-cyber font-black text-xs text-blue-700 bg-blue-50 border border-blue-300 px-2.5 py-0.5 rounded-full">0/3 Phiên</span>
+              </div>
+              <p id="daily-sessions-subtext" class="text-[11px] text-slate-500 mt-0.5">
+                Khoa học thần kinh khuyến nghị tối đa 3 chu kỳ Ultradian (4.5h)/ngày để tránh quá tải não bộ.
+              </p>
+            </div>
+          </div>
+
+          <!-- 3 Sessions Visual Progress Indicators -->
+          <div class="flex items-center gap-2 self-start sm:self-auto shrink-0" id="daily-sessions-pills">
+            <div id="session-dot-1" class="flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+              <span>①</span> <span>Phiên 1</span>
+            </div>
+            <div id="session-dot-2" class="flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+              <span>②</span> <span>Phiên 2</span>
+            </div>
+            <div id="session-dot-3" class="flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+              <span>③</span> <span>Phiên 3</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MANDATORY 15-MINUTE REST COOLDOWN BANNER -->
+        <div id="mandatory-rest-banner" class="hidden rounded-2xl p-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-lg border border-amber-300/40">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center text-2xl shrink-0 animate-bounce">
+                ☕
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 class="font-cyber font-black text-xs sm:text-sm text-amber-100 uppercase tracking-wider">THỜI GIAN NGHỈ NGƠI HỒI PHỤC (15 PHÚT BẮT BUỘC)</h4>
+                  <span class="text-[9px] font-extrabold bg-white/25 px-2 py-0.5 rounded-full border border-white/30 text-white">REST MODE</span>
+                </div>
+                <p class="text-xs text-amber-50 mt-0.5 font-medium leading-tight">
+                  Sau 90 phút học sâu, vỏ não cần 15 phút hạ nhiệt và giải tỏa Adenosine. Bạn chưa thể bắt đầu phiên học mới.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between sm:justify-end gap-3 bg-white/15 backdrop-blur-md px-4 py-2 rounded-xl border border-white/30 shrink-0">
+              <span class="text-xs font-bold text-amber-100">Thời gian nghỉ:</span>
+              <span id="cooldown-timer-display" class="font-cyber font-black text-xl tracking-wider text-white">15:00</span>
+            </div>
+          </div>
+          <!-- Progress bar -->
+          <div class="w-full bg-black/20 rounded-full h-1.5 mt-3 overflow-hidden">
+            <div id="cooldown-progress-bar" class="bg-white h-full transition-all duration-1000 ease-linear" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- DAILY LIMIT REACHED CELEBRATION / LOCK BANNER -->
+        <div id="daily-limit-banner" class="hidden rounded-2xl p-4 bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 text-white shadow-xl border border-indigo-500/40">
+          <div class="flex items-start gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl shrink-0 shadow-md">
+              👑
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h4 class="font-cyber font-black text-xs sm:text-sm text-amber-300 uppercase tracking-wider">XUẤT SẮC: ĐÃ HOÀN THÀNH 3/3 PHIÊN HÔM NAY (4.5 TIẾNG)</h4>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed font-medium">
+                Bạn đã hoàn thành trọn vẹn hạn mức 3 chu kỳ Ultradian tối đa trong ngày. Vỏ não trước trán cần ngủ đủ giấc để củng cố các liên kết thần kinh từ trí nhớ ngắn hạn sang dài hạn. Hãy nghỉ ngơi trọn vẹn và hẹn gặp lại bạn vào ngày mai!
+              </p>
+            </div>
+          </div>
+        </div>
+
         <!-- Mode Tabs Pills -->
         <div class="flex justify-center">
           <div class="inline-flex p-1 bg-white border border-slate-200 shadow-md rounded-2xl">
@@ -564,35 +648,35 @@
       </section>
 
       <!-- ================= TAB 5: LEADERBOARD ================= -->
-      <section id="tab-leaderboard" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+      <section id="tab-leaderboard" class="tab-content hidden max-w-3xl mx-auto space-y-4 w-full">
         
-        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 rounded-3xl border border-blue-300 shadow-lg text-center text-white relative overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-4 sm:p-5 rounded-3xl border border-blue-300 shadow-lg text-center text-white relative overflow-hidden">
           <div class="relative z-10">
             <span class="text-3xl">🏆</span>
             <h2 class="text-lg font-black text-white font-cyber mt-1">BẢNG XẾP HẠNG NGƯỜI DÙNG THỰC TẾ</h2>
             <p class="text-xs text-amber-300 font-bold mt-0.5">
-              ⚡ Xếp hạng theo: Điểm XH (mặc định 1000đ khi tạo mới) + Số phiên học sâu + Điểm BFS
+              ⚡ Tổng Điểm = 1000 (Điểm XH) + Điểm BFS + (Số phiên học × Điểm theo thời lượng chạy)
             </p>
           </div>
         </div>
 
         <!-- Rule Explainer Card -->
-        <div class="glass-card-light px-4 py-3 rounded-2xl border border-blue-200 text-xs text-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 shadow-xs">
-          <div class="flex items-center gap-2.5">
-            <span class="text-lg shrink-0">💡</span>
+        <div class="glass-card-light px-4 py-3 rounded-2xl border border-blue-200 text-xs text-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+          <div class="flex items-start gap-2.5">
+            <span class="text-xl shrink-0">💡</span>
             <div>
               <strong class="text-slate-900 font-bold">Quy chuẩn tính điểm xếp hạng mới:</strong>
-              <div class="text-[11px] text-slate-600 mt-0.5 font-mono">
-                Tổng Điểm = Điểm Xếp Hạng (Khởi tạo 1000đ) + (Số Phiên Học × 10) + Điểm BFS (0–1000)
+              <div class="text-[11px] text-blue-950 mt-1 font-mono font-bold bg-blue-50/80 px-2.5 py-1.5 rounded-xl border border-blue-200 leading-relaxed">
+                Tổng Điểm = 1000đ (Điểm XH) + Điểm BFS (từ 10 câu test) + [Số phiên × Điểm theo thời gian học: vd 1 phiên 90p = 90đ]
               </div>
             </div>
           </div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <button onclick="openRegisterModal()" class="shrink-0 text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-1.5 rounded-xl hover:opacity-90 shadow-xs">
-              + Tạo tài khoản mới
+          <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+            <button onclick="openRegisterModal()" class="flex-1 sm:flex-initial text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-1.5 rounded-xl hover:opacity-90 shadow-xs">
+              + Tạo tài khoản
             </button>
-            <button onclick="resetAccountAndData()" class="shrink-0 text-[11px] font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all" title="Xoá tất cả tài khoản thử nghiệm">
-              🗑️ Xoá TK Thử Nghiệm
+            <button onclick="resetAccountAndData()" class="flex-1 sm:flex-initial text-[11px] font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all" title="Xoá tất cả tài khoản thử nghiệm">
+              🗑️ Đặt lại
             </button>
           </div>
         </div>
@@ -610,49 +694,49 @@
       </section>
 
       <!-- ================= TAB 6: PROFILE & STATS ================= -->
-      <section id="tab-profile" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+      <section id="tab-profile" class="tab-content hidden max-w-3xl mx-auto space-y-4 w-full">
         
         <!-- User Info Card with Level Badge & Custom Avatar -->
-        <div class="glass-card p-5 rounded-3xl border-slate-200 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center space-x-4">
-            <div class="relative group cursor-pointer" onclick="openAvatarCustomizer()" title="Nhấn để đổi Avatar">
-              <div class="w-16 h-16 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white flex items-center justify-center text-3xl font-black shadow-md font-cyber border-2 border-white">
+        <div class="glass-card p-4 sm:p-5 rounded-3xl border-slate-200 shadow-md flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 w-full">
+          <div class="flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto">
+            <div class="relative group cursor-pointer shrink-0" onclick="openAvatarCustomizer()" title="Nhấn để đổi Avatar">
+              <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white flex items-center justify-center text-2xl sm:text-3xl font-black shadow-md font-cyber border-2 border-white">
                 <span id="user-avatar-initial">T</span>
                 <img id="user-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
               </div>
-              <div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] border-2 border-white shadow-xs">
+              <div class="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] border-2 border-white shadow-xs">
                 ✏️
               </div>
             </div>
-            <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                <h2 id="user-display-name" class="text-lg font-black text-slate-900 font-cyber">Tên Bạn</h2>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h2 id="user-display-name" class="text-base sm:text-lg font-black text-slate-900 font-cyber truncate">Tên Bạn</h2>
                 <span id="user-display-level" class="text-[10px] bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 rounded-full font-bold">Level 1</span>
-                <span id="user-auth-badge" class="text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
-                  <span>✉️</span> <span id="user-display-email">demo@gmail.com</span>
+                <span id="user-auth-badge" class="text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate">
+                  <span>✉️</span> <span id="user-display-email" class="truncate">demo@gmail.com</span>
                 </span>
               </div>
-              <p id="user-display-school" class="text-xs text-slate-600 mt-0.5">Mục tiêu: Tối ưu hóa vỏ não & 900+ BFS</p>
+              <p id="user-display-school" class="text-xs text-slate-600 mt-0.5 truncate">Mục tiêu: Tối ưu hóa vỏ não & 900+ BFS</p>
               <div class="inline-flex items-center gap-1.5 mt-1.5 bg-sky-50 border border-sky-200 text-blue-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
                 <span id="user-display-title">🌟 Danh hiệu: Học Viên Mới (New Brain)</span>
               </div>
             </div>
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <button onclick="openEditProfileModal()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
+          <div class="flex flex-row sm:flex-col gap-2 w-full sm:w-auto shrink-0">
+            <button onclick="openEditProfileModal()" class="flex-1 sm:flex-initial px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
               <span>⚙️</span> Đổi Tên / Avatar
             </button>
-            <button onclick="openAssessmentModal(true)" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
+            <button onclick="openAssessmentModal(true)" class="flex-1 sm:flex-initial px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
               <span>📝</span> Test Lại BFS (10 câu)
             </button>
           </div>
         </div>
 
         <!-- Account Switcher & Gmail Auth Bar -->
-        <div class="glass-card-light p-4 rounded-2xl border border-sky-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3 bg-gradient-to-r from-blue-50/80 to-indigo-50/50">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-base shadow-xs">
+        <div class="glass-card-light p-3.5 sm:p-4 rounded-2xl border border-sky-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3 bg-gradient-to-r from-blue-50/80 to-indigo-50/50 w-full">
+          <div class="flex items-center gap-2.5 w-full sm:w-auto">
+            <div class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-base shadow-xs shrink-0">
               <svg class="w-4 h-4" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -678,27 +762,27 @@
           </div>
         </div>
 
-        <!-- 2x2 Key Metrics Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
-            <div class="text-xs font-bold text-slate-600">Chỉ số BFS</div>
-            <div id="stat-bfs-score" class="text-2xl font-black text-blue-600 mt-1 font-cyber">740</div>
-            <div class="text-[10px] text-emerald-600 font-bold mt-0.5">Khảo sát 10 câu & Gym</div>
+        <!-- 4 Key Metrics Grid with Session Calculation breakdown -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 w-full">
+          <div class="glass-card p-3.5 sm:p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-[11px] sm:text-xs font-bold text-slate-600">⚡ Chỉ số BFS</div>
+            <div id="stat-bfs-score" class="text-xl sm:text-2xl font-black text-blue-600 mt-1 font-cyber">1000</div>
+            <div class="text-[10px] text-emerald-600 font-bold mt-0.5">Khảo sát 10 câu</div>
           </div>
-          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
-            <div class="text-xs font-bold text-slate-600">Điểm Xếp Hạng</div>
-            <div id="stat-rank-points" class="text-2xl font-black text-amber-600 mt-1 font-cyber">1000 đ</div>
-            <div class="text-[10px] text-amber-700 font-medium mt-0.5">Gốc 1000đ + Học tập</div>
+          <div class="glass-card p-3.5 sm:p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-[11px] sm:text-xs font-bold text-slate-600">🏆 Điểm XH Gốc</div>
+            <div id="stat-rank-points" class="text-xl sm:text-2xl font-black text-amber-600 mt-1 font-cyber">1000 đ</div>
+            <div class="text-[10px] text-amber-700 font-medium mt-0.5">Khởi tạo 1000đ</div>
           </div>
-          <div class="glass-card p-4 rounded-2xl text-center border-blue-200 shadow-xs bg-gradient-to-b from-blue-50/70 to-white">
-            <div class="text-xs font-bold text-blue-800">Tổng Điểm XH</div>
-            <div id="stat-total-score" class="text-2xl font-black text-indigo-700 mt-1 font-cyber">1740 đ</div>
-            <div class="text-[10px] text-blue-600 font-bold mt-0.5">XH + Phiên học + BFS</div>
+          <div class="glass-card p-3.5 sm:p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-[11px] sm:text-xs font-bold text-slate-600">⏱️ Điểm Phiên Học</div>
+            <div id="stat-session-points" class="text-xl sm:text-2xl font-black text-emerald-600 mt-1 font-cyber">+0 đ</div>
+            <div id="stat-sessions-count" class="text-[10px] text-emerald-700 font-bold mt-0.5">0 phiên (1p = 1đ)</div>
           </div>
-          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
-            <div class="text-xs font-bold text-slate-600">Số Phiên / Chuỗi</div>
-            <div id="stat-streak-days" class="text-2xl font-black text-orange-600 mt-1 font-cyber">0 🔥</div>
-            <div id="stat-sessions-count" class="text-[10px] text-slate-500 font-bold mt-0.5">0 phiên học sâu</div>
+          <div class="glass-card p-3.5 sm:p-4 rounded-2xl text-center border-blue-200 shadow-xs bg-gradient-to-b from-blue-50/70 to-white">
+            <div class="text-[11px] sm:text-xs font-bold text-blue-800">👑 Tổng Điểm BXH</div>
+            <div id="stat-total-score" class="text-xl sm:text-2xl font-black text-indigo-700 mt-1 font-cyber">2000 đ</div>
+            <div class="text-[10px] text-blue-600 font-bold mt-0.5">1000 XH + BFS + Phiên</div>
           </div>
         </div>
 
@@ -791,6 +875,22 @@
           <h4 class="text-xs font-black text-blue-700 uppercase tracking-wider font-cyber">Thông tin học viên</h4>
           <input type="text" id="assess-input-name" placeholder="Họ và tên của bạn" value="" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
           <input type="text" id="assess-input-school" placeholder="Trường / Cơ quan / Lĩnh vực" value="" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- Randomized Choices Notice Banner -->
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300/80 p-3.5 rounded-2xl text-xs text-amber-950 flex items-start gap-3 shadow-xs">
+          <div class="w-7 h-7 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shrink-0 font-black shadow-xs">
+            🔀
+          </div>
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-2">
+              <strong class="font-bold text-amber-950 font-cyber text-[11px] uppercase tracking-wide">ĐÁP ÁN ĐÃ ĐƯỢC XÁO TRỘN NGẪU NHIÊN</strong>
+              <span class="text-[9px] bg-amber-200 text-amber-900 font-extrabold px-1.5 py-0.5 rounded-md">CHỐNG ĐOÁN MẸO</span>
+            </div>
+            <p class="text-[11px] text-amber-800 leading-relaxed font-medium">
+              Các phương án A, B, C, D của mỗi câu hỏi đã được đảo lộn không theo thứ tự điểm số. Hãy đọc thật kỹ từng lựa chọn và chọn đáp án phản ánh đúng nhất thói quen thực tế của bạn để đo lường độ kiên định của não bộ!
+            </p>
+          </div>
         </div>
 
         <!-- 10 Questions Container -->
@@ -995,6 +1095,11 @@
       timerInterval: null,
       distractionsCount: 0,
       
+      // Cooldown (15p nghỉ ngơi sau phiên 90p) & Giới hạn tối đa 3 phiên/ngày
+      cooldownEndTime: null,
+      restInterval: null,
+      dailyTracker: null,
+      
       // Do Not Disturb (DND) / Phone Notification Mute Shield
       isDndActive: false,
       autoDndOnSession: true,
@@ -1170,7 +1275,7 @@
 
     // Tự động xoá sạch các tài khoản và phiên thử nghiệm trước đó trên thiết bị
     function cleanTestAccountsOnStartup() {
-      const WIPE_VERSION_KEY = 'bf_clean_test_v5';
+      const WIPE_VERSION_KEY = 'bf_clean_test_v6';
       if (!localStorage.getItem(WIPE_VERSION_KEY)) {
         try {
           localStorage.removeItem('bf_registered_users');
@@ -1208,7 +1313,22 @@
       } catch (e) {}
     }
 
+    // Tính tổng điểm từ tất cả các phiên học: mỗi phiên tính điểm tùy theo thời gian chạy (1 phút = 1 điểm, ví dụ 90p = 90đ)
+    function getSessionPointsTotal() {
+      let totalPts = 0;
+      if (Array.isArray(APP_STATE.history) && APP_STATE.history.length > 0) {
+        totalPts = APP_STATE.history.reduce((sum, item) => sum + (Number(item.points) || Number(item.minutes) || 90), 0);
+      } else {
+        const count = Number(APP_STATE.sessionsCompletedCount) || 0;
+        totalPts = count * 90; // Mặc định mỗi phiên học sâu 90 phút = 90 điểm
+      }
+      return totalPts;
+    }
+
     function getFullLeaderboard() {
+      const currentSessionPoints = getSessionPointsTotal();
+      const currentSessionsCount = APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0);
+
       // Chỉ đồng bộ user hiện tại nếu có email và tên thật sự
       if (APP_STATE.userEmail && APP_STATE.userName) {
         const userEntry = {
@@ -1217,8 +1337,9 @@
           name: APP_STATE.userName,
           school: APP_STATE.userSchool || 'Người học tích cực',
           avatar: APP_STATE.userAvatar,
-          rankPoints: APP_STATE.rankPoints,
-          sessionsCount: APP_STATE.sessionsCompletedCount || APP_STATE.history.length || 0,
+          rankPoints: APP_STATE.rankPoints || 1000,
+          sessionsCount: currentSessionsCount,
+          sessionPoints: currentSessionPoints,
           bfs: APP_STATE.bfsScore,
           streak: `${APP_STATE.streakDays} ngày`
         };
@@ -1242,12 +1363,14 @@
       // Tập hợp tất cả tài khoản thực
       const all = validUsers.map(u => {
         const isCurrent = (APP_STATE.userEmail && u.email === APP_STATE.userEmail);
-        const rankPts = isCurrent ? APP_STATE.rankPoints : (u.rankPoints || 1000);
-        const sessCount = isCurrent ? (APP_STATE.sessionsCompletedCount || APP_STATE.history.length || 0) : (u.sessionsCount || 0);
+        const rankPts = isCurrent ? (APP_STATE.rankPoints || 1000) : (u.rankPoints || 1000);
+        const sessCount = isCurrent ? currentSessionsCount : (u.sessionsCount || 0);
+        const sessPts = isCurrent ? currentSessionPoints : (u.sessionPoints !== undefined ? u.sessionPoints : (sessCount * 90));
         const bfsVal = isCurrent ? APP_STATE.bfsScore : (u.bfs || 0);
         
-        // Công thức tính điểm: Điểm xếp hạng (khởi tạo 1000) + (Số phiên học * 10) + Điểm BFS
-        const total = rankPts + (sessCount * 10) + bfsVal;
+        // Công thức tính điểm chuẩn xác:
+        // 1000 (Điểm Xếp Hạng khởi tạo) + Điểm BFS (từ 10 câu test) + Số phiên học × Điểm theo thời gian học (vd 1 phiên 90p = 90đ)
+        const total = rankPts + bfsVal + sessPts;
         
         return {
           ...u,
@@ -1256,6 +1379,7 @@
           avatar: isCurrent ? APP_STATE.userAvatar : u.avatar,
           rankPoints: rankPts,
           sessionsCount: sessCount,
+          sessionPoints: sessPts,
           bfs: bfsVal,
           totalScore: total,
           isUser: isCurrent
@@ -1299,6 +1423,8 @@
 
       // Restore active session if user refreshed or browser restored tab
       restoreSessionBackup();
+      restoreRestCooldown();
+      updateDailySessionUI();
 
       // Listen for window blur / focus (anti-distraction detector & seamless timer sync)
       document.addEventListener('visibilitychange', () => {
@@ -1361,9 +1487,15 @@
       const activeContent = document.getElementById(`tab-${tabId}`);
       if (activeContent) activeContent.classList.remove('hidden');
 
-      // Cuộn nội dung lên đầu khi đổi tab để không bị lưu vị trí cuộn cũ
+      // Cuộn nội dung lên đầu khi đổi tab và triệt tiêu hoàn toàn cuộn ngang
       const mainEl = document.querySelector('main');
-      if (mainEl) mainEl.scrollTop = 0;
+      if (mainEl) {
+        mainEl.scrollTop = 0;
+        mainEl.scrollLeft = 0;
+      }
+      window.scrollTo(0, 0);
+      document.body.scrollLeft = 0;
+      document.documentElement.scrollLeft = 0;
 
       // Desktop Sidebar sync
       document.querySelectorAll('.sidebar-item').forEach(btn => {
@@ -1376,16 +1508,19 @@
         currentSidebarBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-md', 'glow-electric');
       }
 
-      // Mobile Sticky Top Tabs Scroller sync
+      // Mobile Sticky Top Tabs Scroller sync - CHỈ cuộn riêng thanh tabs bar, không cuộn window
       document.querySelectorAll('.top-nav-tab').forEach(btn => {
         btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-sm', 'font-bold');
         btn.classList.add('text-slate-700', 'hover:bg-slate-100', 'font-semibold');
       });
       const currentTopBtn = document.getElementById(`top-tab-${tabId}`);
-      if (currentTopBtn) {
+      const tabsBar = document.getElementById('mobile-top-tabs-bar');
+      if (currentTopBtn && tabsBar) {
         currentTopBtn.classList.remove('text-slate-700', 'hover:bg-slate-100', 'font-semibold');
         currentTopBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-sm', 'font-bold');
-        currentTopBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        
+        const scrollTarget = currentTopBtn.offsetLeft - (tabsBar.clientWidth / 2) + (currentTopBtn.clientWidth / 2);
+        tabsBar.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
       }
 
       // Mobile Bottom Nav sync
@@ -1397,6 +1532,11 @@
       if (currentMobBtn) {
         currentMobBtn.classList.remove('text-slate-500', 'font-semibold');
         currentMobBtn.classList.add('text-blue-600', 'font-bold', 'bg-blue-50/80');
+      }
+
+      if (tabId === 'timer') {
+        updateDailySessionUI();
+        updateTimerButtonsUI(APP_STATE.isTimerRunning);
       }
     }
 
@@ -1502,21 +1642,264 @@
       }
     }
 
+    // ================= REST COOLDOWN (15 PHÚT) & GIỚI HẠN 3 PHIÊN/NGÀY =================
+    const MAX_SESSIONS_PER_DAY = 3;
+    const REST_COOLDOWN_SECONDS = 15 * 60; // 15 phút nghỉ ngơi bắt buộc sau phiên 90p
+
+    function getTodayDateString() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function getTodayCompletedSessionsCount() {
+      const today = getTodayDateString();
+      let count = 0;
+      if (APP_STATE.dailyTracker && APP_STATE.dailyTracker.date === today) {
+        count = Math.max(count, Number(APP_STATE.dailyTracker.count) || 0);
+      }
+      if (Array.isArray(APP_STATE.history)) {
+        const historyCount = APP_STATE.history.filter(item => {
+          const ts = item.timestamp || item.id;
+          if (!ts) return false;
+          const d = new Date(ts);
+          const itemDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+          return itemDate === today;
+        }).length;
+        count = Math.max(count, historyCount);
+      }
+      return count;
+    }
+
+    function recordTodaySession() {
+      const today = getTodayDateString();
+      const current = getTodayCompletedSessionsCount();
+      APP_STATE.dailyTracker = { date: today, count: current + 1 };
+      try {
+        localStorage.setItem('bf_daily_tracker', JSON.stringify(APP_STATE.dailyTracker));
+      } catch (_) {}
+    }
+
+    function isRestCooldownActive() {
+      if (!APP_STATE.cooldownEndTime) return false;
+      return Date.now() < APP_STATE.cooldownEndTime;
+    }
+
+    function getRestCooldownRemaining() {
+      if (!APP_STATE.cooldownEndTime) return 0;
+      return Math.max(0, Math.ceil((APP_STATE.cooldownEndTime - Date.now()) / 1000));
+    }
+
+    function startRestCooldown(seconds = REST_COOLDOWN_SECONDS) {
+      APP_STATE.cooldownEndTime = Date.now() + (seconds * 1000);
+      try {
+        localStorage.setItem('bf_cooldown_until', String(APP_STATE.cooldownEndTime));
+      } catch (_) {}
+      startCooldownTicker();
+      updateDailySessionUI();
+      updateTimerButtonsUI(false);
+    }
+
+    function startCooldownTicker() {
+      if (APP_STATE.restInterval) {
+        clearInterval(APP_STATE.restInterval);
+      }
+      updateCooldownDisplay();
+      APP_STATE.restInterval = setInterval(() => {
+        if (!isRestCooldownActive()) {
+          finishRestCooldown();
+          return;
+        }
+        updateCooldownDisplay();
+        updateTimerButtonsUI(false);
+      }, 1000);
+    }
+
+    function finishRestCooldown() {
+      if (APP_STATE.restInterval) {
+        clearInterval(APP_STATE.restInterval);
+        APP_STATE.restInterval = null;
+      }
+      APP_STATE.cooldownEndTime = null;
+      try {
+        localStorage.removeItem('bf_cooldown_until');
+      } catch (_) {}
+
+      updateDailySessionUI();
+      updateTimerButtonsUI(false);
+
+      // Âm thanh nhẹ báo hết giờ nghỉ ngơi
+      playGentleChime();
+
+      setTimeout(() => {
+        alert('✨ HẾT 15 PHÚT NGHỈ NGƠI HỒI PHỤC!\n\nVỏ não của bạn đã hạ nhiệt và nạp lại Adenosine thành công. Bạn đã sẵn sàng bước vào phiên học sâu tiếp theo!');
+      }, 100);
+    }
+
+    function restoreRestCooldown() {
+      try {
+        const saved = localStorage.getItem('bf_cooldown_until');
+        if (saved) {
+          const target = Number(saved);
+          if (target && target > Date.now()) {
+            APP_STATE.cooldownEndTime = target;
+            startCooldownTicker();
+          } else {
+            localStorage.removeItem('bf_cooldown_until');
+            APP_STATE.cooldownEndTime = null;
+          }
+        }
+      } catch (_) {}
+    }
+
+    function updateCooldownDisplay() {
+      const banner = document.getElementById('mandatory-rest-banner');
+      const timeDisplay = document.getElementById('cooldown-timer-display');
+      const progressBar = document.getElementById('cooldown-progress-bar');
+      if (!banner) return;
+
+      if (!isRestCooldownActive()) {
+        banner.classList.add('hidden');
+        return;
+      }
+
+      banner.classList.remove('hidden');
+      const remSec = getRestCooldownRemaining();
+      const mm = String(Math.floor(remSec / 60)).padStart(2, '0');
+      const ss = String(remSec % 60).padStart(2, '0');
+      if (timeDisplay) timeDisplay.innerText = `${mm}:${ss}`;
+
+      const totalCooldown = REST_COOLDOWN_SECONDS;
+      const pct = Math.max(0, Math.min(100, (remSec / totalCooldown) * 100));
+      if (progressBar) progressBar.style.width = `${pct}%`;
+    }
+
+    function updateDailySessionUI() {
+      const todayCount = getTodayCompletedSessionsCount();
+      const counterBadge = document.getElementById('daily-sessions-counter-badge');
+      const subtext = document.getElementById('daily-sessions-subtext');
+      const limitBanner = document.getElementById('daily-limit-banner');
+
+      if (counterBadge) {
+        counterBadge.innerText = `${todayCount}/${MAX_SESSIONS_PER_DAY} Phiên`;
+        if (todayCount >= MAX_SESSIONS_PER_DAY) {
+          counterBadge.className = 'font-cyber font-black text-xs text-rose-700 bg-rose-50 border border-rose-300 px-2.5 py-0.5 rounded-full';
+        } else if (todayCount > 0) {
+          counterBadge.className = 'font-cyber font-black text-xs text-amber-700 bg-amber-50 border border-amber-300 px-2.5 py-0.5 rounded-full';
+        } else {
+          counterBadge.className = 'font-cyber font-black text-xs text-blue-700 bg-blue-50 border border-blue-300 px-2.5 py-0.5 rounded-full';
+        }
+      }
+
+      if (subtext) {
+        if (todayCount >= MAX_SESSIONS_PER_DAY) {
+          subtext.innerText = 'Đã đạt hạn mức 3 phiên hôm nay. Não bộ cần nghỉ ngơi và ngủ đủ giấc!';
+        } else {
+          subtext.innerText = `Còn lại ${MAX_SESSIONS_PER_DAY - todayCount} phiên học sâu. Khoa học thần kinh khuyến nghị tối đa 3 chu kỳ Ultradian (4.5h)/ngày.`;
+        }
+      }
+
+      // Update 3 session pills
+      for (let i = 1; i <= MAX_SESSIONS_PER_DAY; i++) {
+        const dot = document.getElementById(`session-dot-${i}`);
+        if (dot) {
+          if (todayCount >= i) {
+            dot.className = 'flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs';
+            dot.innerHTML = `<span>✓</span> <span>Phiên ${i}</span>`;
+          } else if (todayCount === i - 1 && APP_STATE.isTimerRunning) {
+            dot.className = 'flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-black bg-blue-100 text-blue-800 border border-blue-300 animate-pulse';
+            dot.innerHTML = `<span>●</span> <span>Phiên ${i}</span>`;
+          } else {
+            dot.className = 'flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200';
+            dot.innerHTML = `<span>○</span> <span>Phiên ${i}</span>`;
+          }
+        }
+      }
+
+      // Show/hide daily limit banner
+      if (limitBanner) {
+        if (todayCount >= MAX_SESSIONS_PER_DAY) {
+          limitBanner.classList.remove('hidden');
+        } else {
+          limitBanner.classList.add('hidden');
+        }
+      }
+
+      updateCooldownDisplay();
+    }
+
+    function playGentleChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+        osc1.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.3); // E5
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(659.25, ctx.currentTime + 0.3);
+        osc2.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.7); // G5
+
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start();
+        osc2.start(ctx.currentTime + 0.3);
+        osc1.stop(ctx.currentTime + 0.3);
+        osc2.stop(ctx.currentTime + 1.2);
+      } catch (_) {}
+    }
+
     function updateTimerButtonsUI(isRunning) {
       const playPauseIcon = document.getElementById('play-pause-icon');
       const playPauseText = document.getElementById('play-pause-text');
       const mainBtn = document.getElementById('main-timer-action-btn');
       
       if (!mainBtn) return;
+
+      const cooldownActive = isRestCooldownActive();
+      const dailyLimitReached = getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY;
+
       if (isRunning) {
         if (playPauseIcon) playPauseIcon.innerText = '⏸️';
         if (playPauseText) playPauseText.innerText = 'TẠM DỪNG';
         mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
-      } else {
-        if (playPauseIcon) playPauseIcon.innerText = '▶️';
-        if (playPauseText) playPauseText.innerText = (APP_STATE.timerRemaining < APP_STATE.timerDuration) ? 'TIẾP TỤC LOCK IN' : 'BẮT ĐẦU LOCK IN';
-        mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
+        return;
       }
+
+      if (cooldownActive) {
+        const remSec = getRestCooldownRemaining();
+        const mm = String(Math.floor(remSec / 60)).padStart(2, '0');
+        const ss = String(remSec % 60).padStart(2, '0');
+        if (playPauseIcon) playPauseIcon.innerText = '☕';
+        if (playPauseText) playPauseText.innerText = `ĐANG NGHỈ NGƠI (${mm}:${ss})`;
+        mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider animate-pulse';
+        return;
+      }
+
+      if (dailyLimitReached && APP_STATE.timerRemaining === APP_STATE.timerDuration) {
+        if (playPauseIcon) playPauseIcon.innerText = '🔒';
+        if (playPauseText) playPauseText.innerText = 'ĐÃ ĐẠT 3 PHIÊN/NGÀY';
+        mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-slate-600 to-slate-700 text-slate-200 font-black text-sm sm:text-base shadow-lg cursor-not-allowed transition-all flex items-center gap-2 font-cyber tracking-wider opacity-90';
+        return;
+      }
+
+      if (playPauseIcon) playPauseIcon.innerText = '▶️';
+      if (playPauseText) {
+        playPauseText.innerText = (APP_STATE.timerRemaining < APP_STATE.timerDuration) ? 'TIẾP TỤC LOCK IN' : 'BẮT ĐẦU LOCK IN';
+      }
+      mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
     }
 
     function setTimerMode(mode) {
@@ -1524,6 +1907,20 @@
         if (!confirm('Phiên học đang chạy. Bạn có muốn đổi chế độ?')) return;
         resetTimer();
       }
+
+      if (isRestCooldownActive() && mode !== 'break') {
+        const remSec = getRestCooldownRemaining();
+        const mm = Math.floor(remSec / 60);
+        const ss = remSec % 60;
+        alert(`☕ Đang trong thời gian nghỉ ngơi 15 phút bắt buộc sau phiên học 90 phút (Còn ${mm}p ${ss}s). Bạn hãy nghỉ ngơi và không thể bắt đầu phiên học mới trong khoảng thời gian này!`);
+        return;
+      }
+
+      if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY && mode !== 'break') {
+        alert(`🛑 Bạn đã hoàn thành tối đa 3 phiên học trong ngày hôm nay (4.5 tiếng). Não bộ cần nghỉ ngơi để phục hồi cho ngày mai!`);
+        return;
+      }
+
       APP_STATE.timerMode = mode;
       
       ['ultradian', 'pomodoro', 'break'].forEach(m => {
@@ -1633,12 +2030,37 @@
     function toggleTimer() {
       if (APP_STATE.isTimerRunning) {
         pauseTimer();
-      } else {
-        startTimer();
+        return;
       }
+
+      // Kiểm tra 1: Thời gian nghỉ ngơi 15 phút sau phiên học 90 phút
+      if (isRestCooldownActive()) {
+        const remSec = getRestCooldownRemaining();
+        const mm = Math.floor(remSec / 60);
+        const ss = remSec % 60;
+        alert(`☕ ĐANG TRONG THỜI GIAN NGHỈ NGƠI BẮT BUỘC!\n\nSau phiên học sâu 90 phút, bạn cần nghỉ ngơi trọn vẹn 15 phút để não bộ hạ nhiệt và phục hồi nồng độ dẫn truyền thần kinh.\n\nThời gian nghỉ còn lại: ${mm} phút ${ss} giây.\nHãy cho mắt nghỉ ngơi, uống nước hoặc vận động nhẹ nhàng nhé!`);
+        return;
+      }
+
+      // Kiểm tra 2: Tối đa 3 phiên học trong ngày
+      if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY && APP_STATE.timerRemaining === APP_STATE.timerDuration) {
+        alert(`🛑 ĐÃ ĐẠT GIỚI HẠN TỐI ĐA 3 PHIÊN HỌC TRONG NGÀY!\n\nBạn đã hoàn thành 3 chu kỳ học sâu hôm nay (4.5 tiếng tập trung cao độ).\n\nKhoa học thần kinh khuyến cáo não bộ cần nghỉ ngơi và ngủ đủ giấc sau 3 chu kỳ Ultradian để không bị kiệt sức và Não Bỏng Ngô.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!`);
+        return;
+      }
+
+      startTimer();
     }
 
     function startTimer(isResumingBackup = false) {
+      if (!isResumingBackup) {
+        if (isRestCooldownActive()) {
+          return;
+        }
+        if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY && APP_STATE.timerRemaining === APP_STATE.timerDuration) {
+          return;
+        }
+      }
+
       if (APP_STATE.timerRemaining <= 0) {
         APP_STATE.timerRemaining = APP_STATE.timerDuration;
       }
@@ -1733,12 +2155,15 @@
       updateStatsUI();
       updateTimerDisplay();
 
+      // Kích hoạt thời gian nghỉ ngơi 15 phút bắt buộc sau phiên học 90 phút
+      startRestCooldown(REST_COOLDOWN_SECONDS);
+
       // Restore notifications after finishing study session
       if (APP_STATE.autoDndOnSession && APP_STATE.isDndActive) {
         toggleDnd(false);
       }
 
-      alert('🎉 Xuất sắc! Bạn đã hoàn thành trọn vẹn chu kỳ học sâu mà không bị ngắt quãng. Hãy ghi lại đúc kết để nhận thêm +25 BFS!');
+      alert('🎉 Xuất sắc! Bạn đã hoàn thành trọn vẹn chu kỳ học sâu 90 phút mà không bị ngắt quãng!\n\n☕ Thời gian nghỉ ngơi 15 phút bắt buộc đã được kích hoạt. Hãy ghi lại đúc kết để nhận thêm +25 BFS!');
       openReflectionModal();
     }
 
@@ -2498,7 +2923,7 @@
               </div>
               <span class="text-xs font-black text-blue-600 truncate w-full">${first.name}</span>
               <span class="text-xs text-amber-600 font-black font-cyber">${first.totalScore}đ</span>
-              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.sessionsCount} phiên + ${first.bfs} BFS</span>
+              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.bfs} BFS + ${first.sessionsCount} phiên (+${first.sessionPoints}đ)</span>
               <div class="h-20 w-full bg-amber-200 border border-amber-300 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-base font-cyber">#1</div>
             </div>
             <div></div>
@@ -2517,7 +2942,7 @@
               </div>
               <span class="text-xs font-bold ${second && second.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${second ? second.name : 'Đang chờ...'}</span>
               <span class="text-[11px] text-amber-600 font-black font-cyber">${second ? second.totalScore + 'đ' : '-'}</span>
-              <span class="text-[9px] text-slate-500 font-mono">${second ? `${second.rankPoints} XH + ${second.sessionsCount}p + ${second.bfs} BFS` : ''}</span>
+              <span class="text-[9px] text-slate-500 font-mono font-bold">${second ? `${second.rankPoints} XH + ${second.bfs} BFS + ${second.sessionsCount} phiên (+${second.sessionPoints}đ)` : ''}</span>
               <div class="h-16 w-full bg-slate-200 rounded-t-xl mt-2 flex items-center justify-center text-slate-700 font-extrabold text-sm">#2</div>
             </div>
 
@@ -2528,7 +2953,7 @@
               </div>
               <span class="text-xs font-black ${first.isUser ? 'text-blue-600' : 'text-amber-800'} truncate w-full">${first.name}</span>
               <span class="text-xs text-amber-600 font-black font-cyber">${first.totalScore}đ</span>
-              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.sessionsCount} phiên + ${first.bfs} BFS</span>
+              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.bfs} BFS + ${first.sessionsCount} phiên (+${first.sessionPoints}đ)</span>
               <div class="h-24 w-full bg-amber-200 border border-amber-300 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-base font-cyber">#1</div>
             </div>
 
@@ -2539,7 +2964,7 @@
               </div>
               <span class="text-xs font-bold ${third && third.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${third ? third.name : 'Đang chờ...'}</span>
               <span class="text-[11px] text-amber-600 font-black font-cyber">${third ? third.totalScore + 'đ' : '-'}</span>
-              <span class="text-[9px] text-slate-500 font-mono">${third ? `${third.rankPoints} XH + ${third.sessionsCount}p + ${third.bfs} BFS` : ''}</span>
+              <span class="text-[9px] text-slate-500 font-mono font-bold">${third ? `${third.rankPoints} XH + ${third.bfs} BFS + ${third.sessionsCount} phiên (+${third.sessionPoints}đ)` : ''}</span>
               <div class="h-12 w-full bg-orange-200 rounded-t-xl mt-2 flex items-center justify-center text-orange-800 font-extrabold text-sm">#3</div>
             </div>
           `;
@@ -2568,7 +2993,7 @@
               </div>
               <div class="text-right">
                 <div class="font-cyber font-black text-xs text-blue-700">Tổng: ${user.totalScore}đ</div>
-                <div class="text-[10px] text-amber-600 font-medium font-mono">${user.rankPoints} XH + ${user.sessionsCount}p + ${user.bfs} BFS</div>
+                <div class="text-[10px] text-amber-600 font-medium font-mono">${user.rankPoints} XH + ${user.bfs} BFS + ${user.sessionsCount} phiên (+${user.sessionPoints}đ)</div>
               </div>
             </div>
           `).join('');
@@ -2624,22 +3049,32 @@
     }
 
     function updateStatsUI() {
-      const totalScore = APP_STATE.rankPoints + APP_STATE.bfsScore;
+      const sessionPts = getSessionPointsTotal();
+      const sessCount = APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0);
+      const rankPts = Number(APP_STATE.rankPoints) || 1000;
+      const bfsPts = Number(APP_STATE.bfsScore) || 0;
+      const totalScore = rankPts + bfsPts + sessionPts;
 
       const headerRankEl = document.getElementById('header-rank-points');
-      if (headerRankEl) headerRankEl.innerText = `${APP_STATE.rankPoints}đ`;
+      if (headerRankEl) headerRankEl.innerText = `${rankPts}đ`;
 
       const headerBfsEl = document.getElementById('header-bfs-score');
-      if (headerBfsEl) headerBfsEl.innerText = APP_STATE.bfsScore;
+      if (headerBfsEl) headerBfsEl.innerText = bfsPts;
 
       const headerTotalEl = document.getElementById('header-total-score');
       if (headerTotalEl) headerTotalEl.innerText = `${totalScore}đ`;
 
       const statBfsEl = document.getElementById('stat-bfs-score');
-      if (statBfsEl) statBfsEl.innerText = APP_STATE.bfsScore;
+      if (statBfsEl) statBfsEl.innerText = bfsPts;
 
       const statRankEl = document.getElementById('stat-rank-points');
-      if (statRankEl) statRankEl.innerText = `${APP_STATE.rankPoints} đ`;
+      if (statRankEl) statRankEl.innerText = `${rankPts} đ`;
+
+      const statSessionPtsEl = document.getElementById('stat-session-points');
+      if (statSessionPtsEl) statSessionPtsEl.innerText = `+${sessionPts} đ`;
+
+      const statSessionsEl = document.getElementById('stat-sessions-count');
+      if (statSessionsEl) statSessionsEl.innerText = `${sessCount} phiên (+${sessionPts}đ)`;
 
       const statTotalEl = document.getElementById('stat-total-score');
       if (statTotalEl) statTotalEl.innerText = `${totalScore} đ`;
@@ -2704,41 +3139,94 @@
       document.getElementById('assessment-modal').classList.add('hidden');
     }
 
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function markQuestionAnswered(qId) {
+      const card = document.getElementById(`question-card-${qId}`);
+      if (card) {
+        card.classList.remove('border-rose-400', 'bg-rose-50/40');
+        card.classList.add('border-emerald-300');
+      }
+    }
+
     function renderQuestions() {
       const container = document.getElementById('questions-list-container');
-      container.innerHTML = ASSESSMENT_QUESTIONS.map((q, qIdx) => `
-        <div class="bg-white p-4 sm:p-5 rounded-2xl space-y-3 border border-slate-200 shadow-xs">
+      const alphabet = ['A', 'B', 'C', 'D'];
+
+      container.innerHTML = ASSESSMENT_QUESTIONS.map((q) => {
+        // Đảo lộn ngẫu nhiên thứ tự các đáp án của từng câu hỏi để không theo trình tự điểm
+        const shuffled = shuffleArray(q.options);
+        return `
+        <div id="question-card-${q.id}" class="bg-white p-4 sm:p-5 rounded-2xl space-y-3 border border-slate-200 shadow-xs transition-all duration-200 hover:border-blue-300">
           <div class="flex items-center justify-between gap-2">
             <span class="inline-block bg-blue-100 text-blue-800 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
               ${q.category}
             </span>
-            <span class="text-blue-600 font-cyber font-black text-xs">#${q.id} / 10</span>
+            <span class="text-blue-600 font-cyber font-black text-xs">CÂU ${q.id} / 10</span>
           </div>
           <p class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
             ${q.question}
           </p>
           <div class="space-y-2 pt-1">
-            ${q.options.map((opt, optIdx) => `
-              <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50/40 cursor-pointer transition-all">
-                <input type="radio" name="question_${q.id}" value="${opt.score}" class="accent-blue-600 w-4 h-4 shrink-0" ${optIdx === 0 ? 'checked' : ''}>
-                <span class="text-xs text-slate-800 font-medium leading-relaxed">${opt.text}</span>
+            ${shuffled.map((opt, optIdx) => `
+              <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 cursor-pointer transition-all active:scale-[0.99] group">
+                <input type="radio" name="question_${q.id}" value="${opt.score}" onchange="markQuestionAnswered(${q.id})" class="accent-blue-600 w-4 h-4 mt-0.5 shrink-0 cursor-pointer">
+                <div class="flex items-start gap-2">
+                  <span class="font-cyber font-black text-xs text-blue-700 bg-blue-50 group-hover:bg-blue-100 border border-blue-200 px-1.5 py-0.5 rounded-md shrink-0">
+                    ${alphabet[optIdx] || (optIdx + 1)}
+                  </span>
+                  <span class="text-xs text-slate-800 font-medium leading-relaxed">${opt.text}</span>
+                </div>
               </label>
             `).join('')}
           </div>
         </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function calculateAndSaveAssessment() {
+      // Kiểm tra xem đã trả lời đầy đủ 10 câu hỏi chưa
+      const missingQuestions = [];
       let totalScore = 0;
+
       for (let i = 1; i <= 10; i++) {
         const radios = document.getElementsByName(`question_${i}`);
+        let answered = false;
         for (const r of radios) {
           if (r.checked) {
             totalScore += parseInt(r.value, 10);
+            answered = true;
             break;
           }
         }
+        if (!answered) {
+          missingQuestions.push(i);
+        }
+      }
+
+      if (missingQuestions.length > 0) {
+        missingQuestions.forEach(id => {
+          const card = document.getElementById(`question-card-${id}`);
+          if (card) {
+            card.classList.add('border-rose-400', 'bg-rose-50/40');
+          }
+        });
+
+        const firstCard = document.getElementById(`question-card-${missingQuestions[0]}`);
+        if (firstCard) {
+          firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        alert(`⚠️ BẠN CHƯA HOÀN THÀNH ĐỦ 10 CÂU HỎI!\n\nBạn còn thiếu câu số: ${missingQuestions.join(', ')}.\n\nVì các đáp án đã được xáo trộn ngẫu nhiên, vui lòng đọc kỹ từng câu và chọn đáp án trước khi nộp bài!`);
+        return;
       }
 
       // Total score from 10 questions ranges from 100 to 1000
@@ -2760,18 +3248,25 @@
       saveAppStateToLocal();
       syncProfileDOM();
       updateStatsUI();
+      renderLeaderboard();
 
       const resBox = document.getElementById('assessment-result-box');
       resBox.classList.remove('hidden');
       document.getElementById('result-bfs-number').innerText = `${calculatedBFS} / 1000`;
       
-      let category = "Não bộ Nhạy Cảm Kích Thích (Moderate Popcorn Brain)";
-      let desc = "Bạn có một số biểu hiện cho thấy sự chú ý dễ bị gián đoạn bởi các kích thích từ môi trường số. Vỏ não trước trán bắt đầu hình thành phản xạ tìm kiếm dopamine ngắn hạn khi gặp bài khó hoặc đoạn văn dài. Hãy duy trì các chu kỳ học sâu 90 phút và cách ly điện thoại khi học.";
+      let category = "Không Có Não Bỏng Ngô (Deep Focus Master)";
+      let desc = "Khả năng tập trung của bạn ở mức rất xuất sắc! Bạn sở hữu vùng vỏ não trước trán vững vàng, có khả năng trì hoãn khoái cảm dopamine và duy trì sự chú ý bền bỉ trong các chu kỳ 90 phút.";
       
-      if (calculatedBFS >= 750) {
+      if (calculatedBFS === 1000) {
+        category = "🏆 ĐỈNH CAO CHÚ Ý: 1000/1000 ĐIỂM HOÀN HẢO!";
+        desc = "Tuyệt đối kiên định! Dù các đáp án đã bị xáo trộn ngẫu nhiên, bạn vẫn vượt qua trọn vẹn 10 câu hỏi với điểm số 1000/1000 tối đa. Vỏ não trước trán của bạn hoàn toàn miễn nhiễm trước hội chứng Não Bỏng Ngô!";
+      } else if (calculatedBFS >= 750) {
         category = "Não bộ Kháng Xao Nhãng (Deep Focus Master)";
         desc = "Khả năng tập trung của bạn ở mức rất xuất sắc, ít bị ảnh hưởng bởi hội chứng Não Bỏng Ngô! Bạn sở hữu vùng vỏ não trước trán vững vàng, có khả năng trì hoãn khoái cảm dopamine và duy trì sự chú ý bền bỉ trong các chu kỳ 90 phút.";
-      } else if (calculatedBFS < 450) {
+      } else if (calculatedBFS >= 450) {
+        category = "Não bộ Nhạy Cảm Kích Thích (Moderate Popcorn Brain)";
+        desc = "Bạn có một số biểu hiện cho thấy sự chú ý dễ bị gián đoạn bởi các kích thích từ môi trường số. Vỏ não trước trán bắt đầu hình thành phản xạ tìm kiếm dopamine ngắn hạn khi gặp bài khó hoặc đoạn văn dài. Hãy duy trì các chu kỳ học sâu 90 phút và cách ly điện thoại khi học.";
+      } else {
         category = "Hội Chứng Não Bỏng Ngô Mức Cao (Acute Popcorn Brain)";
         desc = "Mức độ phân tán chú ý cao. Tâm trí bạn liên tục 'nhảy cóc' như những hạt ngô nổ trong chảo nóng do tiếp xúc nhiều với video ngắn. Hãy thực hiện ngay lộ trình Dopamine Reset, quy tắc 20 giây và bật sóng Gamma 40Hz khi học!";
       }
@@ -2816,26 +3311,46 @@
     function saveSessionReflection() {
       const note = document.getElementById('reflection-note-input').value || "Hoàn thành chu kỳ học sâu tập trung cao độ.";
       const subject = document.getElementById('session-subject-input').value || "Phiên học sâu";
-      const minutes = Math.round(APP_STATE.timerDuration / 60);
+      const minutes = Math.round(APP_STATE.timerDuration / 60) || 90;
+      const pointsEarned = minutes; // Điểm của phiên học tùy theo thời gian chạy: ví dụ 90 phút = 90 điểm
 
+      const now = Date.now();
       APP_STATE.history.unshift({
-        id: Date.now(),
+        id: now,
+        timestamp: now,
         subject: subject,
         minutes: minutes,
+        points: pointsEarned,
         date: "Vừa xong",
         emotion: APP_STATE.selectedEmotion,
         note: note
       });
 
-      APP_STATE.bfsScore += 25;
-      APP_STATE.rankPoints += 50;
       APP_STATE.sessionsCompletedCount = (APP_STATE.sessionsCompletedCount || 0) + 1;
       APP_STATE.totalHours = parseFloat((APP_STATE.totalHours + minutes / 60).toFixed(1));
+
+      // Cập nhật số phiên học trong ngày (tối đa 3 phiên/ngày)
+      recordTodaySession();
+
+      // Kích hoạt thời gian nghỉ ngơi 15 phút nếu chưa kích hoạt
+      if (!isRestCooldownActive()) {
+        startRestCooldown(REST_COOLDOWN_SECONDS);
+      }
+
       saveAppStateToLocal();
       updateStatsUI();
+      updateDailySessionUI();
+      renderLeaderboard();
       renderHistory();
       closeReflectionModal();
-      alert('🌟 Đã ghi nhận đúc kết: +50 Điểm Xếp Hạng, +1 Phiên Học & +25 Điểm BFS vào hồ sơ của bạn!');
+
+      const todayCount = getTodayCompletedSessionsCount();
+      const remainingToday = Math.max(0, MAX_SESSIONS_PER_DAY - todayCount);
+      const limitNotice = remainingToday > 0 
+        ? `📅 Hôm nay bạn đã hoàn thành ${todayCount}/${MAX_SESSIONS_PER_DAY} phiên (Còn ${remainingToday} phiên).` 
+        : `🎉 Bạn đã hoàn thành trọn vẹn 3/3 phiên học sâu tối đa trong ngày hôm nay!`;
+
+      alert(`🎉 Hoàn thành phiên học sâu ${minutes} phút!\n\n+1 Phiên Học (+${pointsEarned} điểm theo thời lượng) đã được cộng trực tiếp vào Tổng Điểm Bảng Xếp Hạng của bạn!\n\n${limitNotice}\n\n☕ Thời gian nghỉ ngơi 15 phút bắt đầu. Bạn hãy thư giãn và không thể bắt đầu phiên học mới trong 15 phút này.`);
     }
 
     // ================= ACCOUNT & PROFILE MANAGEMENT =================
@@ -2854,6 +3369,10 @@
           gymCompletedCount: APP_STATE.gymCompletedCount,
           history: APP_STATE.history
         }));
+
+        if (APP_STATE.dailyTracker) {
+          localStorage.setItem('bf_daily_tracker', JSON.stringify(APP_STATE.dailyTracker));
+        }
       } catch (e) {}
     }
 
@@ -2874,6 +3393,11 @@
           if (data.sessionsCompletedCount !== undefined) APP_STATE.sessionsCompletedCount = data.sessionsCompletedCount;
           if (data.gymCompletedCount !== undefined) APP_STATE.gymCompletedCount = data.gymCompletedCount;
           if (data.history) APP_STATE.history = data.history;
+        }
+
+        const savedTracker = localStorage.getItem('bf_daily_tracker');
+        if (savedTracker) {
+          APP_STATE.dailyTracker = JSON.parse(savedTracker);
         }
       } catch (e) {}
     }
