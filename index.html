@@ -190,10 +190,10 @@
       <!-- User Profile & Avatar Quick Button -->
       <button onclick="switchTab('profile')" class="flex items-center gap-1 bg-white/20 hover:bg-white/30 border border-white/40 p-1 sm:px-2 sm:py-1 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95" title="Hồ Sơ Của Bạn">
         <div id="header-avatar-circle" class="w-6 h-6 rounded-full overflow-hidden bg-gradient-to-tr from-amber-400 to-pink-500 flex items-center justify-center text-[11px] font-black text-white shadow-xs">
-          <span id="header-avatar-initial">T</span>
+          <span id="header-avatar-initial">👤</span>
           <img id="header-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
         </div>
-        <span id="header-account-name" class="hidden lg:inline text-xs font-bold max-w-[70px] truncate">Bạn</span>
+        <span id="header-account-name" class="hidden lg:inline text-xs font-bold max-w-[70px] truncate">Tài khoản</span>
       </button>
     </div>
   </header>
@@ -207,7 +207,7 @@
     </div>
     <div class="text-[11px] font-bold text-blue-800 flex items-center gap-1">
       <span>🔥 Streak:</span>
-      <span id="header-streak-badge" class="text-amber-600 font-black">5 Ngày Cháy Hết Mình</span>
+      <span id="header-streak-badge" class="text-amber-600 font-black">1 Ngày Khởi Đầu</span>
     </div>
   </div>
 
@@ -340,10 +340,10 @@
               </div>
               <div>
                 <div class="flex items-center gap-2">
-                  <h4 class="font-cyber font-black text-xs sm:text-sm text-amber-100 uppercase tracking-wider">THỜI GIAN NGHỈ NGƠI HỒI PHỤC (15 PHÚT BẮT BUỘC)</h4>
+                  <h4 id="cooldown-banner-title" class="font-cyber font-black text-xs sm:text-sm text-amber-100 uppercase tracking-wider">THỜI GIAN NGHỈ NGƠI HỒI PHỤC (15 PHÚT BẮT BUỘC)</h4>
                   <span class="text-[9px] font-extrabold bg-white/25 px-2 py-0.5 rounded-full border border-white/30 text-white">REST MODE</span>
                 </div>
-                <p class="text-xs text-amber-50 mt-0.5 font-medium leading-tight">
+                <p id="cooldown-banner-subtext" class="text-xs text-amber-50 mt-0.5 font-medium leading-tight">
                   Sau 90 phút học sâu, vỏ não cần 15 phút hạ nhiệt và giải tỏa Adenosine. Bạn chưa thể bắt đầu phiên học mới.
                 </p>
               </div>
@@ -385,8 +385,8 @@
             <button onclick="setTimerMode('pomodoro')" id="mode-btn-pomodoro" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-blue-600">
               🍅 Pomodoro 25p
             </button>
-            <button onclick="setTimerMode('break')" id="mode-btn-break" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-blue-600">
-              ☕ Sạc Pin 15p
+            <button onclick="setTimerMode('sprint')" id="mode-btn-sprint" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-blue-600">
+              ⚡ Khởi Động 15p
             </button>
           </div>
         </div>
@@ -764,13 +764,13 @@
             </div>
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                <h2 id="user-display-name" class="text-base sm:text-lg font-black text-slate-900 font-cyber truncate">Tên Bạn</h2>
+                <h2 id="user-display-name" class="text-base sm:text-lg font-black text-slate-900 font-cyber truncate">Chưa đăng ký</h2>
                 <span id="user-display-level" class="text-[10px] bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 rounded-full font-bold">Level 1</span>
-                <span id="user-auth-badge" class="text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate">
-                  <span>✉️</span> <span id="user-display-email" class="truncate">demo@gmail.com</span>
+                <span id="user-auth-badge" onclick="openRegisterModal()" class="text-[10px] bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700 border border-slate-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate cursor-pointer transition-all">
+                  <span>✉️</span> <span id="user-display-email" class="truncate">Chưa liên kết Gmail</span>
                 </span>
               </div>
-              <p id="user-display-school" class="text-xs text-slate-600 mt-0.5 truncate">Mục tiêu: Tối ưu hóa vỏ não & 900+ BFS</p>
+              <p id="user-display-school" class="text-xs text-slate-600 mt-0.5 truncate">Tạo tài khoản để đồng bộ điểm và đua Top</p>
               <div class="inline-flex items-center gap-1.5 mt-1.5 bg-sky-50 border border-sky-200 text-blue-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
                 <span id="user-display-title">🌟 Danh hiệu: Học Viên Mới (New Brain)</span>
               </div>
@@ -1328,9 +1328,9 @@
     // Bảng xếp hạng người dùng thực tế (Không chứa bot ảo và tự động xoá tài khoản thử nghiệm)
     let REGISTERED_USERS_DB = [];
 
-    // Tự động xoá sạch các tài khoản và phiên thử nghiệm trước đó trên thiết bị
+    // Tự động xoá sạch các tài khoản và phiên thử nghiệm trước đó trên thiết bị để web hoàn toàn sạch cho người dùng
     function cleanTestAccountsOnStartup() {
-      const WIPE_VERSION_KEY = 'bf_clean_test_v6';
+      const WIPE_VERSION_KEY = 'bf_clean_release_v8_final';
       if (!localStorage.getItem(WIPE_VERSION_KEY)) {
         try {
           localStorage.removeItem('bf_registered_users');
@@ -1338,8 +1338,24 @@
           localStorage.removeItem('bf_onboarded_completed');
           localStorage.removeItem('bf_active_session');
           localStorage.removeItem('bf_active_session_backup');
+          localStorage.removeItem('bf_daily_tracker');
+          localStorage.removeItem('bf_daily_gym_tracker');
+          localStorage.removeItem('bf_cooldown_until');
+          localStorage.removeItem('bf_cooldown_total_seconds');
+          localStorage.removeItem('bf_restored_user_test_sessions');
         } catch (e) {}
         REGISTERED_USERS_DB = [];
+        APP_STATE.userEmail = "";
+        APP_STATE.userName = "";
+        APP_STATE.userSchool = "";
+        APP_STATE.userAvatar = "";
+        APP_STATE.rankPoints = 1000;
+        APP_STATE.bfsScore = 0;
+        APP_STATE.totalHours = 0;
+        APP_STATE.streakDays = 1;
+        APP_STATE.sessionsCompletedCount = 0;
+        APP_STATE.gymCompletedCount = 0;
+        APP_STATE.history = [];
         try {
           localStorage.setItem(WIPE_VERSION_KEY, 'true');
         } catch (e) {}
@@ -1352,7 +1368,15 @@
         if (saved) {
           const parsed = JSON.parse(saved);
           REGISTERED_USERS_DB = Array.isArray(parsed)
-            ? parsed.filter(u => u && u.email && u.name && u.email !== 'tam.brainfocus@gmail.com' && u.name !== 'Trịnh Hoài Tâm')
+            ? parsed.filter(u => {
+                if (!u || !u.email || !u.name) return false;
+                const email = String(u.email).toLowerCase();
+                const name = String(u.name).toLowerCase();
+                if (email === 'tam.brainfocus@gmail.com' || email === 'demo@gmail.com') return false;
+                if (email.includes('clone') || email.includes('demo') || email.includes('test')) return false;
+                if (name === 'trịnh hoài tâm' || name.includes('clone') || name.includes('tên bạn')) return false;
+                return true;
+              })
             : [];
         } else {
           REGISTERED_USERS_DB = [];
@@ -1408,12 +1432,16 @@
         saveUsersDatabase();
       }
 
-      // Lọc các user hợp lệ (loại bỏ mọi tài khoản rỗng hoặc tài khoản test cũ)
-      const validUsers = REGISTERED_USERS_DB.filter(u => 
-        u && u.email && u.name && 
-        u.email !== 'tam.brainfocus@gmail.com' && 
-        u.name !== 'Trịnh Hoài Tâm'
-      );
+      // Lọc các user hợp lệ (loại bỏ mọi tài khoản rỗng, clone hoặc tài khoản test cũ)
+      const validUsers = REGISTERED_USERS_DB.filter(u => {
+        if (!u || !u.email || !u.name) return false;
+        const email = String(u.email).toLowerCase();
+        const name = String(u.name).toLowerCase();
+        if (email === 'tam.brainfocus@gmail.com' || email === 'demo@gmail.com') return false;
+        if (email.includes('clone') || email.includes('demo') || email.includes('test')) return false;
+        if (name === 'trịnh hoài tâm' || name.includes('clone') || name.includes('tên bạn')) return false;
+        return true;
+      });
 
       // Tập hợp tất cả tài khoản thực
       const all = validUsers.map(u => {
@@ -1593,6 +1621,13 @@
       if (tabId === 'timer') {
         updateDailySessionUI();
         updateTimerButtonsUI(APP_STATE.isTimerRunning);
+      } else if (tabId === 'profile') {
+        updateStatsUI();
+        renderHistory();
+        renderReminders();
+        updateUserInfoUI();
+      } else if (tabId === 'leaderboard') {
+        renderLeaderboard();
       }
 
       if (tabId !== 'gym') {
@@ -1704,9 +1739,34 @@
       }
     }
 
-    // ================= REST COOLDOWN (15 PHÚT) & GIỚI HẠN 3 PHIÊN/NGÀY =================
+    // ================= REST COOLDOWN & GIỚI HẠN 3 PHIÊN/NGÀY =================
     const MAX_SESSIONS_PER_DAY = 3;
-    const REST_COOLDOWN_SECONDS = 15 * 60; // 15 phút nghỉ ngơi bắt buộc sau phiên 90p
+    const REST_COOLDOWN_SECONDS = 15 * 60; // Mặc định phiên 90p nghỉ 15 phút
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Thời gian nghỉ ngơi tỉ lệ khoa học theo độ dài phiên học:
+    // - Phiên học sâu 90p: nghỉ 15 phút (Adenosine clearance)
+    // - Phiên 45-60p: nghỉ 10 phút
+    // - Phiên 15-25p (Khởi động / Pomodoro): nghỉ 5 phút
+    function getCooldownSecondsForSession(sessionMinutes) {
+      const mins = Number(sessionMinutes) || 90;
+      if (mins >= 90) {
+        return 15 * 60; // 90p -> nghỉ 15 phút
+      } else if (mins >= 45) {
+        return 10 * 60; // 45-60p -> nghỉ 10 phút
+      } else {
+        return 5 * 60;  // 15p hoặc 25p -> nghỉ 5 phút
+      }
+    }
 
     function getTodayDateString() {
       const now = new Date();
@@ -1718,30 +1778,35 @@
 
     function getTodayCompletedSessionsCount() {
       const today = getTodayDateString();
-      let count = 0;
-      if (APP_STATE.dailyTracker && APP_STATE.dailyTracker.date === today) {
-        count = Math.max(count, Number(APP_STATE.dailyTracker.count) || 0);
-      }
+      let historyCount = 0;
       if (Array.isArray(APP_STATE.history)) {
-        const historyCount = APP_STATE.history.filter(item => {
+        historyCount = APP_STATE.history.filter(item => {
           const ts = item.timestamp || item.id;
           if (!ts) return false;
           const d = new Date(ts);
           const itemDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
           return itemDate === today;
         }).length;
-        count = Math.max(count, historyCount);
       }
-      return count;
+      let trackerCount = 0;
+      if (APP_STATE.dailyTracker && APP_STATE.dailyTracker.date === today) {
+        trackerCount = Number(APP_STATE.dailyTracker.count) || 0;
+      }
+      return Math.max(historyCount, trackerCount);
     }
 
-    function recordTodaySession() {
+    function syncTodaySessionTracker() {
       const today = getTodayDateString();
-      const current = getTodayCompletedSessionsCount();
-      APP_STATE.dailyTracker = { date: today, count: current + 1 };
+      const count = getTodayCompletedSessionsCount();
+      APP_STATE.dailyTracker = { date: today, count: count };
       try {
         localStorage.setItem('bf_daily_tracker', JSON.stringify(APP_STATE.dailyTracker));
       } catch (_) {}
+      updateDailySessionUI();
+    }
+
+    function recordTodaySession() {
+      syncTodaySessionTracker();
     }
 
     function isRestCooldownActive() {
@@ -1754,10 +1819,14 @@
       return Math.max(0, Math.ceil((APP_STATE.cooldownEndTime - Date.now()) / 1000));
     }
 
-    function startRestCooldown(seconds = REST_COOLDOWN_SECONDS) {
-      APP_STATE.cooldownEndTime = Date.now() + (seconds * 1000);
+    function startRestCooldown(seconds) {
+      const sessionMinutes = Math.round(APP_STATE.timerDuration / 60) || 90;
+      const cooldownSec = seconds || getCooldownSecondsForSession(sessionMinutes);
+      APP_STATE.currentCooldownTotalSeconds = cooldownSec;
+      APP_STATE.cooldownEndTime = Date.now() + (cooldownSec * 1000);
       try {
         localStorage.setItem('bf_cooldown_until', String(APP_STATE.cooldownEndTime));
+        localStorage.setItem('bf_cooldown_total_seconds', String(cooldownSec));
       } catch (_) {}
       startCooldownTicker();
       updateDailySessionUI();
@@ -1785,8 +1854,10 @@
         APP_STATE.restInterval = null;
       }
       APP_STATE.cooldownEndTime = null;
+      const cooldownMin = Math.round((APP_STATE.currentCooldownTotalSeconds || 900) / 60);
       try {
         localStorage.removeItem('bf_cooldown_until');
+        localStorage.removeItem('bf_cooldown_total_seconds');
       } catch (_) {}
 
       updateDailySessionUI();
@@ -1796,13 +1867,17 @@
       playGentleChime();
 
       setTimeout(() => {
-        alert('✨ HẾT 15 PHÚT NGHỈ NGƠI HỒI PHỤC!\n\nVỏ não của bạn đã hạ nhiệt và nạp lại Adenosine thành công. Bạn đã sẵn sàng bước vào phiên học sâu tiếp theo!');
+        alert(`✨ HẾT ${cooldownMin} PHÚT NGHỈ NGƠI HỒI PHỤC!\n\nVỏ não của bạn đã hạ nhiệt và nạp lại Adenosine thành công. Bạn đã sẵn sàng bước vào phiên học tiếp theo!`);
       }, 100);
     }
 
     function restoreRestCooldown() {
       try {
         const saved = localStorage.getItem('bf_cooldown_until');
+        const savedTotal = localStorage.getItem('bf_cooldown_total_seconds');
+        if (savedTotal) {
+          APP_STATE.currentCooldownTotalSeconds = Number(savedTotal) || (15 * 60);
+        }
         if (saved) {
           const target = Number(saved);
           if (target && target > Date.now()) {
@@ -1810,6 +1885,7 @@
             startCooldownTicker();
           } else {
             localStorage.removeItem('bf_cooldown_until');
+            localStorage.removeItem('bf_cooldown_total_seconds');
             APP_STATE.cooldownEndTime = null;
           }
         }
@@ -1820,6 +1896,8 @@
       const banner = document.getElementById('mandatory-rest-banner');
       const timeDisplay = document.getElementById('cooldown-timer-display');
       const progressBar = document.getElementById('cooldown-progress-bar');
+      const titleEl = document.getElementById('cooldown-banner-title');
+      const subtextEl = document.getElementById('cooldown-banner-subtext');
       if (!banner) return;
 
       if (!isRestCooldownActive()) {
@@ -1833,9 +1911,21 @@
       const ss = String(remSec % 60).padStart(2, '0');
       if (timeDisplay) timeDisplay.innerText = `${mm}:${ss}`;
 
-      const totalCooldown = REST_COOLDOWN_SECONDS;
+      const totalCooldown = APP_STATE.currentCooldownTotalSeconds || (15 * 60);
+      const cooldownMin = Math.round(totalCooldown / 60);
       const pct = Math.max(0, Math.min(100, (remSec / totalCooldown) * 100));
       if (progressBar) progressBar.style.width = `${pct}%`;
+
+      if (titleEl) {
+        titleEl.innerText = `THỜI GIAN NGHỈ NGƠI HỒI PHỤC (${cooldownMin} PHÚT BẮT BUỘC)`;
+      }
+      if (subtextEl) {
+        if (cooldownMin >= 15) {
+          subtextEl.innerText = `Sau phiên học sâu 90 phút, vỏ não cần 15 phút hạ nhiệt và giải tỏa Adenosine. Bạn hãy thư giãn và không bắt đầu phiên mới.`;
+        } else {
+          subtextEl.innerText = `Sau phiên tập trung, não bộ cần ${cooldownMin} phút nghỉ ngơi nạp lại năng lượng trước khi bắt đầu phiên tiếp theo.`;
+        }
+      }
     }
 
     function updateDailySessionUI() {
@@ -1970,40 +2060,42 @@
         resetTimer();
       }
 
-      if (isRestCooldownActive() && mode !== 'break') {
+      if (isRestCooldownActive()) {
         const remSec = getRestCooldownRemaining();
         const mm = Math.floor(remSec / 60);
         const ss = remSec % 60;
-        alert(`☕ Đang trong thời gian nghỉ ngơi 15 phút bắt buộc sau phiên học 90 phút (Còn ${mm}p ${ss}s). Bạn hãy nghỉ ngơi và không thể bắt đầu phiên học mới trong khoảng thời gian này!`);
+        const cooldownMin = Math.round((APP_STATE.currentCooldownTotalSeconds || 900) / 60);
+        alert(`☕ Đang trong thời gian nghỉ ngơi ${cooldownMin} phút hồi phục (Còn ${mm}p ${ss}s). Bạn hãy nghỉ ngơi và không thể bắt đầu phiên học mới trong khoảng thời gian này!`);
         return;
       }
 
-      if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY && mode !== 'break') {
+      if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY) {
         alert(`🛑 Bạn đã hoàn thành tối đa 3 phiên học trong ngày hôm nay (4.5 tiếng). Não bộ cần nghỉ ngơi để phục hồi cho ngày mai!`);
         return;
       }
 
-      APP_STATE.timerMode = mode;
+      const normalizedMode = (mode === 'break') ? 'sprint' : mode;
+      APP_STATE.timerMode = normalizedMode;
       
-      ['ultradian', 'pomodoro', 'break'].forEach(m => {
+      ['ultradian', 'pomodoro', 'sprint', 'break'].forEach(m => {
         const btn = document.getElementById(`mode-btn-${m}`);
         if (!btn) return;
-        if (m === mode) {
+        if (m === normalizedMode || (m === 'break' && normalizedMode === 'sprint') || (m === 'sprint' && normalizedMode === 'break')) {
           btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md';
         } else {
           btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
         }
       });
 
-      if (mode === 'ultradian') {
+      if (normalizedMode === 'ultradian') {
         APP_STATE.timerDuration = 90 * 60;
         document.getElementById('timer-phase-label').innerText = 'Khởi động vỏ não (0-15p)';
-      } else if (mode === 'pomodoro') {
+      } else if (normalizedMode === 'pomodoro') {
         APP_STATE.timerDuration = 25 * 60;
         document.getElementById('timer-phase-label').innerText = 'Pomodoro Lock-In (25p)';
       } else {
         APP_STATE.timerDuration = 15 * 60;
-        document.getElementById('timer-phase-label').innerText = 'Nghỉ ngơi nạp Adenosine';
+        document.getElementById('timer-phase-label').innerText = 'Sprint Khởi Động Não (15p)';
       }
 
       APP_STATE.timerRemaining = APP_STATE.timerDuration;
@@ -2095,18 +2187,19 @@
         return;
       }
 
-      // Kiểm tra 1: Thời gian nghỉ ngơi 15 phút sau phiên học 90 phút
+      // Kiểm tra 1: Thời gian nghỉ ngơi hồi phục theo phiên học
       if (isRestCooldownActive()) {
         const remSec = getRestCooldownRemaining();
         const mm = Math.floor(remSec / 60);
         const ss = remSec % 60;
-        alert(`☕ ĐANG TRONG THỜI GIAN NGHỈ NGƠI BẮT BUỘC!\n\nSau phiên học sâu 90 phút, bạn cần nghỉ ngơi trọn vẹn 15 phút để não bộ hạ nhiệt và phục hồi nồng độ dẫn truyền thần kinh.\n\nThời gian nghỉ còn lại: ${mm} phút ${ss} giây.\nHãy cho mắt nghỉ ngơi, uống nước hoặc vận động nhẹ nhàng nhé!`);
+        const cooldownMin = Math.round((APP_STATE.currentCooldownTotalSeconds || 900) / 60);
+        alert(`☕ ĐANG TRONG THỜI GIAN NGHỈ NGƠI HỒI PHỤC!\n\nSau phiên học, bạn cần nghỉ ngơi ${cooldownMin} phút để não bộ hạ nhiệt và phục hồi nồng độ dẫn truyền thần kinh.\n\nThời gian nghỉ còn lại: ${mm} phút ${ss} giây.\nHãy cho mắt nghỉ ngơi, uống nước hoặc vận động nhẹ nhàng nhé!`);
         return;
       }
 
       // Kiểm tra 2: Tối đa 3 phiên học trong ngày
       if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY && APP_STATE.timerRemaining === APP_STATE.timerDuration) {
-        alert(`🛑 ĐÃ ĐẠT GIỚI HẠN TỐI ĐA 3 PHIÊN HỌC TRONG NGÀY!\n\nBạn đã hoàn thành 3 chu kỳ học sâu hôm nay (4.5 tiếng tập trung cao độ).\n\nKhoa học thần kinh khuyến cáo não bộ cần nghỉ ngơi và ngủ đủ giấc sau 3 chu kỳ Ultradian để không bị kiệt sức và Não Bỏng Ngô.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!`);
+        alert(`🛑 ĐÃ ĐẠT GIỚI HẠN TỐI ĐA 3 PHIÊN HỌC TRONG NGÀY!\n\nBạn đã hoàn thành 3 chu kỳ học sâu hôm nay.\n\nKhoa học thần kinh khuyến cáo não bộ cần nghỉ ngơi và ngủ đủ giấc sau 3 chu kỳ để không bị kiệt sức và Não Bỏng Ngô.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!`);
         return;
       }
 
@@ -2211,21 +2304,82 @@
       APP_STATE.timerTargetEndTime = null;
       saveSessionBackup();
 
-      APP_STATE.rankPoints += 50;
-      APP_STATE.bfsScore += 15;
-      APP_STATE.totalMinutes += Math.round(APP_STATE.timerDuration / 60);
+      const sessionMinutes = Math.round(APP_STATE.timerDuration / 60) || 15;
+      const pointsEarned = sessionMinutes; // 15p = 15đ, 25p = 25đ, 90p = 90đ
+      const cooldownSec = getCooldownSecondsForSession(sessionMinutes);
+      const cooldownMinutes = Math.round(cooldownSec / 60);
+
+      const now = Date.now();
+      const d = new Date();
+      const timeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+      const dateStr = `${timeStr} - ${d.toLocaleDateString('vi-VN')}`;
+      const subjectInput = document.getElementById('session-subject-input');
+      const defaultSubject = APP_STATE.timerMode === 'ultradian' 
+        ? 'Phiên Học Sâu Ultradian 90p' 
+        : (APP_STATE.timerMode === 'pomodoro' ? 'Phiên Tập Trung Pomodoro 25p' : 'Phiên Khởi Động Não 15p');
+      const subject = (subjectInput && subjectInput.value.trim()) || defaultSubject;
+
+      // 1. TỰ ĐỘNG LƯU PHIÊN HỌC VÀO LỊCH SỬ & HỒ SƠ NGAY LẬP TỨC
+      const sessionItem = {
+        id: now,
+        timestamp: now,
+        subject: subject,
+        minutes: sessionMinutes,
+        points: pointsEarned,
+        date: dateStr,
+        emotion: APP_STATE.selectedEmotion || 'Tập trung cao 🚀',
+        note: `Hoàn thành trọn vẹn phiên học ${sessionMinutes} phút tập trung cao độ.`
+      };
+      if (!Array.isArray(APP_STATE.history)) {
+        APP_STATE.history = [];
+      }
+      APP_STATE.history.unshift(sessionItem);
+      APP_STATE.lastCompletedSessionId = now;
+
+      // 2. CẬP NHẬT CHỈ SỐ & ĐIỂM
+      APP_STATE.sessionsCompletedCount = (APP_STATE.sessionsCompletedCount || 0) + 1;
+      APP_STATE.totalHours = parseFloat(((APP_STATE.totalHours || 0) + (sessionMinutes / 60)).toFixed(1));
+      APP_STATE.rankPoints = (APP_STATE.rankPoints || 1000) + 50;
+      APP_STATE.bfsScore = (APP_STATE.bfsScore || 0) + 15;
+      APP_STATE.totalMinutes = (APP_STATE.totalMinutes || 0) + sessionMinutes;
+
+      // 3. ĐỒNG BỘ BỘ ĐẾM SỐ PHIÊN HÔM NAY (TỐI ĐA 3 PHIÊN/NGÀY)
+      syncTodaySessionTracker();
+
+      // 4. LƯU LOCALSTORAGE NGAY LẬP TỨC
+      saveAppStateToLocal();
+
+      // 5. CẬP NHẬT GIAO DIỆN TOÀN BỘ CÁC BẢNG & PROFILE
       updateStatsUI();
+      updateDailySessionUI();
+      renderLeaderboard();
+      renderHistory();
       updateTimerDisplay();
 
-      // Kích hoạt thời gian nghỉ ngơi 15 phút bắt buộc sau phiên học 90 phút
-      startRestCooldown(REST_COOLDOWN_SECONDS);
+      // 6. KÍCH HOẠT THỜI GIAN NGHỈ NGƠI TỈ LỆ KHOA HỌC (90p -> nghỉ 15p, 15p/25p -> nghỉ 5p)
+      startRestCooldown(cooldownSec);
 
-      // Restore notifications after finishing study session
+      // 7. KHÔI PHỤC THÔNG BÁO NẾU AUTO-DND ĐANG BẬT
       if (APP_STATE.autoDndOnSession && APP_STATE.isDndActive) {
         toggleDnd(false);
       }
 
-      alert('🎉 Xuất sắc! Bạn đã hoàn thành trọn vẹn chu kỳ học sâu 90 phút mà không bị ngắt quãng!\n\n☕ Thời gian nghỉ ngơi 15 phút bắt buộc đã được kích hoạt. Hãy ghi lại đúc kết để nhận thêm +25 BFS!');
+      // 8. PHÁT CHUÔNG BÁO HOÀN THÀNH
+      playGentleChime();
+
+      // 9. THÔNG BÁO VÀ MỞ MODAL ĐÚC KẾT (TÙY CHỌN NHẬN THÊM +25 BFS)
+      const todayCount = getTodayCompletedSessionsCount();
+      const remainingToday = Math.max(0, MAX_SESSIONS_PER_DAY - todayCount);
+      const limitNotice = remainingToday > 0 
+        ? `📅 Hôm nay: Đã hoàn thành ${todayCount}/${MAX_SESSIONS_PER_DAY} phiên (Còn ${remainingToday} phiên).` 
+        : `👑 Bạn đã hoàn thành trọn vẹn 3/3 phiên tối đa trong ngày hôm nay!`;
+
+      alert(`🎉 XUẤT SẮC! BẠN ĐÃ HOÀN THÀNH PHIÊN HỌC ${sessionMinutes} PHÚT!\n\n` +
+            `✅ Đã lưu phiên vào Hồ Sơ & Lịch Sử (+${pointsEarned} điểm theo thời lượng).\n` +
+            `${limitNotice}\n\n` +
+            `☕ Thời gian nghỉ ngơi ${cooldownMinutes} phút hồi phục đã bắt đầu.\n` +
+            `Hãy ghi lại 1 câu đúc kết để nhận thêm +25 BFS củng cố hồi hải mã nhé!`);
+
       openReflectionModal();
     }
 
@@ -3376,16 +3530,34 @@
 
     function renderHistory() {
       const container = document.getElementById('session-history-list');
-      container.innerHTML = APP_STATE.history.map(item => `
-        <div class="glass-card-light p-3.5 rounded-2xl space-y-1 border-slate-200 shadow-xs">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-xs text-slate-900 font-cyber">${item.subject}</span>
-            <span class="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-bold">${item.minutes} phút</span>
+      if (!container) return;
+      if (!Array.isArray(APP_STATE.history) || APP_STATE.history.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card-light p-6 rounded-2xl text-center space-y-2 border-slate-200">
+            <div class="text-3xl">🌱</div>
+            <div class="font-bold text-xs text-slate-700">Chưa có phiên học nào được ghi nhận</div>
+            <div class="text-[11px] text-slate-500 leading-relaxed">Hãy bắt đầu một phiên học để ghi lại lịch sử tập trung và tích luỹ điểm thưởng vào hồ sơ nhé!</div>
           </div>
-          <div class="text-[11px] text-slate-600">${item.note}</div>
-          <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1">
-            <span>${item.date}</span>
-            <span>${item.emotion}</span>
+        `;
+        return;
+      }
+
+      container.innerHTML = APP_STATE.history.map(item => `
+        <div class="glass-card-light p-3.5 rounded-2xl space-y-1.5 border-slate-200 shadow-xs hover:border-blue-300 transition-all">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-slate-900 font-cyber flex items-center gap-1.5">
+              <span>🎯</span>
+              <span>${escapeHtml(item.subject || 'Phiên học sâu')}</span>
+            </span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-bold">${item.minutes || 15} phút</span>
+              <span class="text-[10px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 font-extrabold font-mono">+${item.points || item.minutes || 15}đ</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-slate-600 leading-relaxed">${escapeHtml(item.note || 'Hoàn thành chu kỳ tập trung.')}</div>
+          <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-100">
+            <span class="font-medium">${escapeHtml(item.date || 'Hôm nay')}</span>
+            <span class="font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">${escapeHtml(item.emotion || 'Tập trung cao 🚀')}</span>
           </div>
         </div>
       `).join('');
@@ -3427,6 +3599,9 @@
 
       const statStreakEl = document.getElementById('stat-streak-days');
       if (statStreakEl) statStreakEl.innerText = `${APP_STATE.streakDays} 🔥`;
+
+      const headerStreakEl = document.getElementById('header-streak-badge');
+      if (headerStreakEl) headerStreakEl.innerText = `${APP_STATE.streakDays || 1} Ngày Cháy Hết Mình`;
 
       const statGymEl = document.getElementById('stat-gym-count');
       if (statGymEl) statGymEl.innerText = APP_STATE.gymCompletedCount;
@@ -3652,48 +3827,38 @@
     }
 
     function saveSessionReflection() {
-      const note = document.getElementById('reflection-note-input').value || "Hoàn thành chu kỳ học sâu tập trung cao độ.";
-      const subject = document.getElementById('session-subject-input').value || "Phiên học sâu";
-      const minutes = Math.round(APP_STATE.timerDuration / 60) || 90;
-      const pointsEarned = minutes; // Điểm của phiên học tùy theo thời gian chạy: ví dụ 90 phút = 90 điểm
+      const noteInput = document.getElementById('reflection-note-input');
+      const note = (noteInput && noteInput.value.trim()) || "Đã hoàn thành phiên tập trung cao độ và củng cố synap thần kinh.";
+      const emotion = APP_STATE.selectedEmotion || "Tập trung cao 🚀";
 
-      const now = Date.now();
-      APP_STATE.history.unshift({
-        id: now,
-        timestamp: now,
-        subject: subject,
-        minutes: minutes,
-        points: pointsEarned,
-        date: "Vừa xong",
-        emotion: APP_STATE.selectedEmotion,
-        note: note
-      });
-
-      APP_STATE.sessionsCompletedCount = (APP_STATE.sessionsCompletedCount || 0) + 1;
-      APP_STATE.totalHours = parseFloat((APP_STATE.totalHours + minutes / 60).toFixed(1));
-
-      // Cập nhật số phiên học trong ngày (tối đa 3 phiên/ngày)
-      recordTodaySession();
-
-      // Kích hoạt thời gian nghỉ ngơi 15 phút nếu chưa kích hoạt
-      if (!isRestCooldownActive()) {
-        startRestCooldown(REST_COOLDOWN_SECONDS);
+      // Cập nhật đúc kết vào phiên học vừa hoàn thành
+      if (Array.isArray(APP_STATE.history) && APP_STATE.history.length > 0) {
+        let targetSession = null;
+        if (APP_STATE.lastCompletedSessionId) {
+          targetSession = APP_STATE.history.find(s => s.id === APP_STATE.lastCompletedSessionId);
+        }
+        if (!targetSession) {
+          targetSession = APP_STATE.history[0];
+        }
+        if (targetSession) {
+          targetSession.note = note;
+          targetSession.emotion = emotion;
+        }
       }
+
+      // Thưởng thêm +25 BFS và +25 Điểm Xếp Hạng khi người học đúc kết kiến thức
+      APP_STATE.bfsScore = (APP_STATE.bfsScore || 0) + 25;
+      APP_STATE.rankPoints = (APP_STATE.rankPoints || 1000) + 25;
 
       saveAppStateToLocal();
       updateStatsUI();
-      updateDailySessionUI();
       renderLeaderboard();
       renderHistory();
       closeReflectionModal();
 
-      const todayCount = getTodayCompletedSessionsCount();
-      const remainingToday = Math.max(0, MAX_SESSIONS_PER_DAY - todayCount);
-      const limitNotice = remainingToday > 0 
-        ? `📅 Hôm nay bạn đã hoàn thành ${todayCount}/${MAX_SESSIONS_PER_DAY} phiên (Còn ${remainingToday} phiên).` 
-        : `🎉 Bạn đã hoàn thành trọn vẹn 3/3 phiên học sâu tối đa trong ngày hôm nay!`;
+      if (noteInput) noteInput.value = '';
 
-      alert(`🎉 Hoàn thành phiên học sâu ${minutes} phút!\n\n+1 Phiên Học (+${pointsEarned} điểm theo thời lượng) đã được cộng trực tiếp vào Tổng Điểm Bảng Xếp Hạng của bạn!\n\n${limitNotice}\n\n☕ Thời gian nghỉ ngơi 15 phút bắt đầu. Bạn hãy thư giãn và không thể bắt đầu phiên học mới trong 15 phút này.`);
+      alert('🌟 ĐÃ LƯU ĐÚC KẾT THÀNH CÔNG!\n\n+25 điểm BFS củng cố trí nhớ và +25 điểm Bảng Xếp Hạng đã được cộng vào hồ sơ của bạn!');
     }
 
     // ================= ACCOUNT & PROFILE MANAGEMENT =================
@@ -3708,7 +3873,7 @@
           bfsScore: APP_STATE.bfsScore,
           totalHours: APP_STATE.totalHours,
           streakDays: APP_STATE.streakDays,
-          sessionsCompletedCount: APP_STATE.sessionsCompletedCount || APP_STATE.history.length,
+          sessionsCompletedCount: APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0),
           gymCompletedCount: APP_STATE.gymCompletedCount,
           history: APP_STATE.history
         }));
@@ -3728,9 +3893,26 @@
         const saved = localStorage.getItem('bf_user_profile');
         if (saved) {
           const data = JSON.parse(saved);
-          // Loại bỏ tài khoản thử nghiệm cũ
-          if (data.userEmail && data.userEmail !== 'tam.brainfocus@gmail.com') APP_STATE.userEmail = data.userEmail;
-          if (data.userName && data.userName !== 'Trịnh Hoài Tâm') APP_STATE.userName = data.userName;
+          // Loại bỏ hoàn toàn tài khoản thử nghiệm cũ hoặc clone
+          if (data.userEmail && 
+              data.userEmail !== 'tam.brainfocus@gmail.com' && 
+              data.userEmail !== 'demo@gmail.com' && 
+              !data.userEmail.toLowerCase().includes('clone') &&
+              !data.userEmail.toLowerCase().includes('demo')) {
+            APP_STATE.userEmail = data.userEmail;
+          } else {
+            APP_STATE.userEmail = "";
+          }
+
+          if (data.userName && 
+              data.userName !== 'Trịnh Hoài Tâm' && 
+              data.userName !== 'Tên Bạn' && 
+              !data.userName.toLowerCase().includes('clone')) {
+            APP_STATE.userName = data.userName;
+          } else {
+            APP_STATE.userName = "";
+          }
+
           if (data.userSchool && data.userSchool !== 'Chuyên gia trẻ') APP_STATE.userSchool = data.userSchool;
           if (data.userAvatar !== undefined) APP_STATE.userAvatar = data.userAvatar;
           if (data.rankPoints !== undefined) APP_STATE.rankPoints = data.rankPoints;
@@ -3739,7 +3921,7 @@
           if (data.streakDays !== undefined) APP_STATE.streakDays = data.streakDays;
           if (data.sessionsCompletedCount !== undefined) APP_STATE.sessionsCompletedCount = data.sessionsCompletedCount;
           if (data.gymCompletedCount !== undefined) APP_STATE.gymCompletedCount = data.gymCompletedCount;
-          if (data.history) APP_STATE.history = data.history;
+          if (data.history && Array.isArray(data.history)) APP_STATE.history = data.history;
         }
 
         const savedTracker = localStorage.getItem('bf_daily_tracker');
@@ -3755,11 +3937,18 @@
     }
 
     function syncProfileDOM() {
-      const initial = (APP_STATE.userName || 'T').charAt(0).toUpperCase();
+      const hasAccount = Boolean(APP_STATE.userEmail && APP_STATE.userName);
+      const initial = hasAccount ? APP_STATE.userName.charAt(0).toUpperCase() : '👤';
       
-      // Update Header Avatar
+      // Update Header Avatar & Name
       const headerInitialEl = document.getElementById('header-avatar-initial');
       const headerImgEl = document.getElementById('header-avatar-img');
+      const headerNameEl = document.getElementById('header-account-name');
+
+      if (headerNameEl) {
+        headerNameEl.innerText = hasAccount ? APP_STATE.userName : 'Tài khoản';
+      }
+
       if (headerInitialEl && headerImgEl) {
         if (APP_STATE.userAvatar) {
           headerImgEl.src = APP_STATE.userAvatar;
@@ -3774,13 +3963,23 @@
 
       // Update Profile Tab Info
       const profileNameEl = document.getElementById('user-display-name');
-      if (profileNameEl) profileNameEl.innerText = APP_STATE.userName || 'Chưa đăng ký';
+      if (profileNameEl) profileNameEl.innerText = hasAccount ? APP_STATE.userName : 'Chưa đăng ký';
 
       const profileSchoolEl = document.getElementById('user-display-school');
-      if (profileSchoolEl) profileSchoolEl.innerText = APP_STATE.userSchool || 'Người học tập trung';
+      if (profileSchoolEl) profileSchoolEl.innerText = APP_STATE.userSchool || (hasAccount ? 'Người học tập trung' : 'Tạo tài khoản để đồng bộ điểm và đua Top');
 
       const profileEmailEl = document.getElementById('user-display-email');
-      if (profileEmailEl) profileEmailEl.innerText = APP_STATE.userEmail || 'Chưa liên kết Gmail';
+      const authBadgeEl = document.getElementById('user-auth-badge');
+      if (profileEmailEl) {
+        profileEmailEl.innerText = hasAccount ? APP_STATE.userEmail : 'Chưa liên kết Gmail';
+      }
+      if (authBadgeEl) {
+        if (hasAccount) {
+          authBadgeEl.className = 'text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate';
+        } else {
+          authBadgeEl.className = 'text-[10px] bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700 border border-slate-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate cursor-pointer transition-all';
+        }
+      }
 
       const profileInitialEl = document.getElementById('user-avatar-initial');
       const profileImgEl = document.getElementById('user-avatar-img');
@@ -3806,14 +4005,16 @@
       const titleEl = document.getElementById('register-modal-title');
       const subtitleEl = document.getElementById('register-modal-subtitle');
 
+      if (closeBtn) closeBtn.classList.remove('hidden');
+      if (cancelBtn) {
+        cancelBtn.classList.remove('hidden');
+        cancelBtn.innerText = isOnboarding ? "Để sau" : "Huỷ";
+      }
+
       if (isOnboarding) {
-        if (closeBtn) closeBtn.classList.add('hidden');
-        if (cancelBtn) cancelBtn.classList.add('hidden');
         if (titleEl) titleEl.innerText = "CHÀO MỪNG ĐẾN VỚI BRAIN FOCUS";
         if (subtitleEl) subtitleEl.innerText = "Bước 1/2: Đăng ký Gmail & Nhận ngay 1000đ Xếp Hạng";
       } else {
-        if (closeBtn) closeBtn.classList.remove('hidden');
-        if (cancelBtn) cancelBtn.classList.remove('hidden');
         if (titleEl) titleEl.innerText = "TẠO TÀI KHOẢN HỌC VIÊN";
         if (subtitleEl) subtitleEl.innerText = "Nhận ngay 1000 điểm xếp hạng gốc";
       }
@@ -3823,6 +4024,9 @@
 
     function closeRegisterModal() {
       document.getElementById('register-modal').classList.add('hidden');
+      try {
+        localStorage.setItem('bf_onboarded_completed', 'true');
+      } catch (_) {}
     }
 
     function openEditProfileModal() {
@@ -3974,6 +4178,11 @@
           localStorage.removeItem('bf_onboarded_completed');
           localStorage.removeItem('bf_active_session');
           localStorage.removeItem('bf_active_session_backup');
+          localStorage.removeItem('bf_daily_tracker');
+          localStorage.removeItem('bf_daily_gym_tracker');
+          localStorage.removeItem('bf_cooldown_until');
+          localStorage.removeItem('bf_cooldown_total_seconds');
+          localStorage.removeItem('bf_restored_user_test_sessions');
         } catch (e) {}
         REGISTERED_USERS_DB = [];
         APP_STATE.userEmail = "";
