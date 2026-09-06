@@ -444,16 +444,13 @@
           </div>
 
           <!-- Controls Action Row -->
-          <div class="flex items-center gap-3 sm:gap-4 mt-4">
+          <div class="flex items-center justify-center gap-3 sm:gap-4 mt-4">
             <button onclick="resetTimer()" class="w-12 h-12 rounded-2xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-600 flex items-center justify-center text-lg active:scale-95 transition-all shadow-md" title="Đặt lại">
               🔄
             </button>
             <button onclick="toggleTimer()" id="main-timer-action-btn" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider">
               <span id="play-pause-icon">▶️</span>
               <span id="play-pause-text">BẮT ĐẦU LOCK IN</span>
-            </button>
-            <button onclick="openReflectionModal()" class="w-12 h-12 rounded-2xl bg-sky-50 hover:bg-sky-100 border border-sky-300 text-blue-700 flex items-center justify-center text-lg active:scale-95 transition-all shadow-md" title="Đúc kết phiên học">
-              📝
             </button>
           </div>
 
@@ -2509,13 +2506,15 @@
         points: pointsEarned,
         date: dateStr,
         emotion: APP_STATE.selectedEmotion || 'Tập trung cao 🚀',
-        note: `Hoàn thành trọn vẹn phiên học ${sessionMinutes} phút tập trung cao độ.`
+        note: `Hoàn thành trọn vẹn phiên học ${sessionMinutes} phút tập trung cao độ.`,
+        hasReflected: false
       };
       if (!Array.isArray(APP_STATE.history)) {
         APP_STATE.history = [];
       }
       APP_STATE.history.unshift(sessionItem);
       APP_STATE.lastCompletedSessionId = now;
+      APP_STATE.pendingReflectionSessionId = now;
 
       // 2. CẬP NHẬT CHỈ SỐ & ĐIỂM
       APP_STATE.sessionsCompletedCount = (APP_STATE.sessionsCompletedCount || 0) + 1;
@@ -3990,11 +3989,22 @@
 
     // ================= REFLECTION MODAL =================
     function openReflectionModal() {
-      document.getElementById('reflection-modal').classList.remove('hidden');
+      // Chỉ cho phép mở modal khi có một phiên học vừa hoàn thành thực tế và chưa đúc kết
+      if (!APP_STATE.pendingReflectionSessionId) {
+        return;
+      }
+      const noteInput = document.getElementById('reflection-note-input');
+      if (noteInput) noteInput.value = '';
+      selectEmotion('Tập trung cao 🚀');
+      const modal = document.getElementById('reflection-modal');
+      if (modal) modal.classList.remove('hidden');
     }
 
     function closeReflectionModal() {
-      document.getElementById('reflection-modal').classList.add('hidden');
+      // Khi bấm bỏ qua hoặc đóng, hủy quyền nhận điểm của phiên này để chống spam
+      APP_STATE.pendingReflectionSessionId = null;
+      const modal = document.getElementById('reflection-modal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function selectEmotion(em) {
@@ -4009,30 +4019,44 @@
     }
 
     function saveSessionReflection() {
+      // Chống hack/spam: Bắt buộc phải có đúng phiên học vừa hoàn thành
+      if (!APP_STATE.pendingReflectionSessionId) {
+        alert('⚠️ Bạn chỉ có thể đánh giá đúc kết ngay khi vừa hoàn thành 1 phiên học thực tế!');
+        closeReflectionModal();
+        return;
+      }
+
+      const targetSession = Array.isArray(APP_STATE.history)
+        ? APP_STATE.history.find(s => s.id === APP_STATE.pendingReflectionSessionId)
+        : null;
+
+      if (!targetSession) {
+        alert('⚠️ Không tìm thấy phiên học hợp lệ để lưu đúc kết.');
+        closeReflectionModal();
+        return;
+      }
+
+      if (targetSession.hasReflected) {
+        alert('⚠️ Phiên học này đã nhận điểm thưởng đúc kết trước đó. Mỗi phiên chỉ được nhận thưởng 1 lần duy nhất!');
+        closeReflectionModal();
+        return;
+      }
+
       const noteInput = document.getElementById('reflection-note-input');
       const note = (noteInput && noteInput.value.trim()) || "Đã hoàn thành phiên tập trung cao độ và củng cố synap thần kinh.";
       const emotion = APP_STATE.selectedEmotion || "Tập trung cao 🚀";
 
-      // Cập nhật đúc kết vào phiên học vừa hoàn thành
-      if (Array.isArray(APP_STATE.history) && APP_STATE.history.length > 0) {
-        let targetSession = null;
-        if (APP_STATE.lastCompletedSessionId) {
-          targetSession = APP_STATE.history.find(s => s.id === APP_STATE.lastCompletedSessionId);
-        }
-        if (!targetSession) {
-          targetSession = APP_STATE.history[0];
-        }
-        if (targetSession) {
-          targetSession.note = note;
-          targetSession.emotion = emotion;
-        }
-      }
+      // Khóa phiên học và hủy token pending ngay lập tức
+      targetSession.note = note;
+      targetSession.emotion = emotion;
+      targetSession.hasReflected = true;
+      APP_STATE.pendingReflectionSessionId = null;
 
-      // Thưởng thêm +25 BFS và +25 Điểm Xếp Hạng khi người học đúc kết kiến thức
+      // Thưởng duy nhất +25 BFS củng cố trí nhớ vào hồ sơ
       APP_STATE.bfsScore = (APP_STATE.bfsScore || 0) + 25;
-      APP_STATE.rankPoints = (APP_STATE.rankPoints || 1000) + 25;
 
       saveAppStateToLocal();
+      syncCurrentUserToDatabase();
       updateStatsUI();
       renderLeaderboard();
       renderHistory();
@@ -4040,7 +4064,7 @@
 
       if (noteInput) noteInput.value = '';
 
-      alert('🌟 ĐÃ LƯU ĐÚC KẾT THÀNH CÔNG!\n\n+25 điểm BFS củng cố trí nhớ và +25 điểm Bảng Xếp Hạng đã được cộng vào hồ sơ của bạn!');
+      alert('🌟 ĐÃ LƯU ĐÚC KẾT THÀNH CÔNG!\n\n+25 điểm BFS củng cố hồi hải mã đã được cộng vào hồ sơ của bạn!');
     }
 
     // ================= ACCOUNT & PROFILE MANAGEMENT =================
