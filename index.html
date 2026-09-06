@@ -1766,34 +1766,8 @@
       REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u && (u.email || u.name));
       saveUsersDatabase(true);
       renderLeaderboard();
-      if (notify) {
-        alert('✨ Đã làm mới danh sách tài khoản trên Bảng Xếp Hạng!');
-      }
-    }
-
-      // Nếu tài khoản hiện tại là clone thì giải phóng
-      if (isCloneAccount({ name: APP_STATE.userName, email: APP_STATE.userEmail })) {
-        if (REGISTERED_USERS_DB.length > 0) {
-          switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
-        } else {
-          APP_STATE.userEmail = "";
-          APP_STATE.userName = "";
-          APP_STATE.userSchool = "";
-          APP_STATE.userAvatar = "";
-          APP_STATE.rankPoints = 1000;
-          APP_STATE.bfsScore = 0;
-          APP_STATE.totalHours = 0;
-          APP_STATE.streakDays = 1;
-          APP_STATE.sessionsCompletedCount = 0;
-          APP_STATE.gymCompletedCount = 0;
-          APP_STATE.history = [];
-        }
-        saveAppStateToLocal();
-      }
-
       syncProfileDOM();
       updateStatsUI();
-      renderLeaderboard();
 
       const modal = document.getElementById('switch-account-modal');
       if (modal && !modal.classList.contains('hidden')) {
@@ -1801,7 +1775,7 @@
       }
 
       if (notify) {
-        alert('✨ Đã quét sạch tất cả tài khoản Clone khỏi Bảng Xếp Hạng!');
+        alert('✨ Đã làm mới danh sách tài khoản trên Bảng Xếp Hạng!');
       }
     }
 
