@@ -295,7 +295,7 @@
     </aside>
 
     <!-- DYNAMIC MAIN CONTENT -->
-    <main class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-5 md:p-6 pb-28 lg:pb-6 bg-gradient-to-b from-sky-50/50 via-slate-50 to-slate-100/60">
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-5 md:p-6 pb-20 sm:pb-24 lg:pb-6 bg-gradient-to-b from-sky-50/50 via-slate-50 to-slate-100/60">
 
       <!-- ================= TAB 1: FOCUS SESSION (LOCK IN) ================= -->
       <section id="tab-timer" class="tab-content max-w-3xl mx-auto space-y-4">
@@ -711,12 +711,18 @@
           </div>
         </div>
 
-        <!-- Rule Explainer Card -->
+        <!-- Rule Explainer Card & Cloud Sync Bar -->
         <div class="glass-card-light px-4 py-3 rounded-2xl border border-blue-200 text-xs text-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
           <div class="flex items-start gap-2.5">
             <span class="text-xl shrink-0">💡</span>
             <div>
-              <strong class="text-slate-900 font-bold">Quy chuẩn tính điểm xếp hạng mới:</strong>
+              <div class="flex items-center gap-2 flex-wrap">
+                <strong class="text-slate-900 font-bold">Quy chuẩn tính điểm xếp hạng mới:</strong>
+                <div id="cloud-sync-status-badge" class="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-xs">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Cloud BXH: Trực tuyến</span>
+                </div>
+              </div>
               <div class="text-[11px] text-blue-950 mt-1 font-mono font-bold bg-blue-50/80 px-2.5 py-1.5 rounded-xl border border-blue-200 leading-relaxed">
                 Tổng Điểm = 1000đ (Điểm XH) + Điểm BFS (từ 10 câu test) + [Số phiên × Điểm theo thời gian học: vd 1 phiên 90p = 90đ]
               </div>
@@ -732,8 +738,8 @@
             <button onclick="purgeCloneAccounts(true)" class="flex-1 sm:flex-initial text-xs font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Quét sạch tài khoản clone khỏi bảng xếp hạng">
               <span>🧹</span> Xóa clone
             </button>
-            <button onclick="renderLeaderboard()" class="flex-1 sm:flex-initial text-[11px] font-bold bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Làm mới bảng xếp hạng">
-              <span>🔄</span> Làm mới
+            <button onclick="fetchLeaderboardFromCloud(true)" class="flex-1 sm:flex-initial text-[11px] font-bold bg-blue-50 hover:bg-blue-100 border border-blue-300 text-blue-800 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Đồng bộ lại dữ liệu toàn hệ thống từ Cloud">
+              <span id="refresh-icon">🔄</span> Làm mới (Cloud)
             </button>
           </div>
         </div>
@@ -814,6 +820,54 @@
             <div class="text-[11px] sm:text-xs font-bold text-blue-800">👑 Tổng Điểm BXH</div>
             <div id="stat-total-score" class="text-xl sm:text-2xl font-black text-indigo-700 mt-1 font-cyber">2000 đ</div>
             <div class="text-[10px] text-blue-600 font-bold mt-0.5">1000 XH + BFS + Phiên</div>
+          </div>
+        </div>
+
+        <!-- 3-LEVEL BFS EVALUATION & BRAIN FOCUS RECOMMENDATIONS -->
+        <div id="profile-bfs-level-card" class="glass-card p-5 rounded-3xl border-slate-200 shadow-md space-y-4 bg-gradient-to-br from-white via-slate-50 to-blue-50/30">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl" id="profile-level-icon">🟢</span>
+              <div>
+                <span id="profile-level-badge" class="inline-block text-xs font-black px-3 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs font-cyber">
+                  LEVEL 1 – KHÁ ỔN ĐỊNH
+                </span>
+                <span class="text-[11px] text-slate-500 font-bold ml-2">(Chỉ số BFS: <span id="profile-level-bfs-pts" class="text-blue-600 font-black">740</span>/1000)</span>
+              </div>
+            </div>
+            <button onclick="openAssessmentModal(true)" class="text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-xl transition-all self-start sm:self-auto shadow-xs">
+              📝 Làm lại khảo sát BFS
+            </button>
+          </div>
+
+          <!-- Đánh giá hiện trạng -->
+          <div class="space-y-1">
+            <div class="text-[11px] font-bold uppercase text-slate-500 font-cyber">Đánh giá hiện trạng:</div>
+            <p id="profile-level-headline" class="text-sm font-extrabold text-slate-900 leading-snug">Bạn đang có nền tảng khá tốt.</p>
+            <p id="profile-level-desc" class="text-xs text-slate-600 leading-relaxed">Một số thói quen sử dụng thiết bị số của bạn tương đối hợp lý và khả năng duy trì nhiệm vụ khá ổn định.</p>
+          </div>
+
+          <!-- Brain Focus đề xuất -->
+          <div class="bg-blue-50/60 border border-blue-200/70 p-4 rounded-2xl space-y-2">
+            <div class="text-xs font-black text-blue-900 uppercase font-cyber flex items-center gap-1.5">
+              <span>🎯</span>
+              <span>Brain Focus đề xuất:</span>
+            </div>
+            <ul id="profile-level-recommendations" class="text-xs text-slate-700 space-y-1.5 list-disc pl-5 font-medium leading-relaxed">
+              <li>Focus Timer 30 phút.</li>
+              <li>Duy trì Focus Streak.</li>
+              <li>Thử thách đọc sách/học tập không gián đoạn.</li>
+              <li>Theo dõi Brain Progress hằng tuần.</li>
+            </ul>
+          </div>
+
+          <!-- Thông điệp truyền cảm hứng -->
+          <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 p-3.5 rounded-2xl flex items-center gap-3">
+            <span class="text-xl">✨</span>
+            <div class="text-xs text-slate-800 italic">
+              <strong class="text-amber-900 not-italic font-bold font-cyber">Thông điệp: </strong>
+              <span id="profile-level-quote" class="font-semibold text-slate-800">“Duy trì hôm nay để vững vàng ngày mai.”</span>
+            </div>
           </div>
         </div>
 
@@ -929,18 +983,90 @@
           <!-- Populated by JS -->
         </div>
 
-        <!-- Result Box -->
-        <div id="assessment-result-box" class="hidden space-y-3 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-300 p-5 rounded-2xl shadow-sm">
-          <div class="text-center">
+        <!-- Result Box (Categorized into 3 Levels with Advice & Quotes) -->
+        <div id="assessment-result-box" class="hidden space-y-4 bg-gradient-to-br from-white via-slate-50 to-blue-50 border-2 border-blue-400 p-5 sm:p-6 rounded-3xl shadow-lg">
+          <div class="text-center space-y-1.5">
             <span class="text-3xl">🎉</span>
-            <h4 class="text-base font-black text-slate-900 mt-1 font-cyber">KẾT QUẢ CHỈ SỐ BFS NÃO BỘ CỦA BẠN</h4>
-            <div id="result-bfs-number" class="text-4xl font-black text-blue-600 my-2 font-cyber">740 / 1000</div>
-            <div id="result-bfs-category" class="inline-block bg-blue-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-sm">Ổn Định - Vỏ Não Khá Kiên Định</div>
+            <h4 class="text-sm font-black text-slate-900 font-cyber tracking-wide">KẾT QUẢ CHỈ SỐ BFS NÃO BỘ CỦA BẠN</h4>
+            <div id="result-bfs-number" class="text-4xl sm:text-5xl font-black text-blue-600 font-cyber py-1">740 / 1000</div>
+            <div>
+              <div id="result-bfs-level-badge" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs font-cyber">
+                <span>🟢</span> <span>LEVEL 1 – KHÁ ỔN ĐỊNH</span>
+              </div>
+            </div>
           </div>
-          <p id="result-bfs-desc" class="text-xs text-slate-700 leading-relaxed text-center"></p>
+
+          <!-- Đánh giá hiện trạng -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-1">
+            <div class="text-[11px] font-bold uppercase text-slate-500 font-cyber">Đánh giá hiện trạng:</div>
+            <h5 id="result-bfs-headline" class="text-sm font-black text-slate-900 leading-snug">Bạn đang có nền tảng khá tốt.</h5>
+            <p id="result-bfs-desc" class="text-xs text-slate-600 leading-relaxed">Một số thói quen sử dụng thiết bị số của bạn tương đối hợp lý và khả năng duy trì nhiệm vụ khá ổn định.</p>
+          </div>
+
+          <!-- Brain Focus đề xuất -->
+          <div class="bg-blue-50/80 border border-blue-200 p-4 rounded-2xl space-y-2">
+            <div class="text-xs font-black text-blue-900 uppercase font-cyber flex items-center gap-1.5">
+              <span>🎯</span>
+              <span>Brain Focus đề xuất:</span>
+            </div>
+            <ul id="result-bfs-recommendations" class="text-xs text-slate-700 space-y-1.5 list-disc pl-5 font-medium leading-relaxed">
+              <li>Focus Timer 30 phút.</li>
+              <li>Duy trì Focus Streak.</li>
+              <li>Thử thách đọc sách/học tập không gián đoạn.</li>
+              <li>Theo dõi Brain Progress hằng tuần.</li>
+            </ul>
+          </div>
+
+          <!-- Thông điệp -->
+          <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-3.5 rounded-2xl flex items-center gap-3 shadow-xs">
+            <span class="text-xl">✨</span>
+            <div class="text-xs text-slate-800 italic">
+              <strong class="text-amber-900 not-italic font-bold font-cyber">Thông điệp: </strong>
+              <span id="result-bfs-quote" class="font-semibold text-slate-900">“Duy trì hôm nay để vững vàng ngày mai.”</span>
+            </div>
+          </div>
+
+          <!-- 3-Level Overview Accordion -->
+          <div class="pt-1">
+            <details class="group bg-slate-50 border border-slate-200 rounded-xl overflow-hidden transition-all">
+              <summary class="flex items-center justify-between p-3 text-xs font-bold text-slate-700 cursor-pointer hover:bg-slate-100">
+                <span class="flex items-center gap-1.5">
+                  <span>📊</span> Bảng đối chiếu 3 Cấp Độ (Level 1, 2, 3) của Brain Focus
+                </span>
+                <span class="text-[10px] text-blue-600 font-bold group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="p-3.5 border-t border-slate-200 bg-white space-y-3 text-xs">
+                <!-- Level 1 -->
+                <div class="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/50 space-y-1">
+                  <div class="font-black text-emerald-800 flex items-center gap-1.5">
+                    <span>🟢</span> LEVEL 1 – KHÁ ỔN ĐỊNH (≥ 700 điểm)
+                  </div>
+                  <p class="text-[11px] text-slate-600">Nền tảng tốt, thói quen thiết bị số hợp lý, khả năng duy trì nhiệm vụ ổn định.</p>
+                  <p class="text-[11px] text-emerald-900 italic">“Duy trì hôm nay để vững vàng ngày mai.”</p>
+                </div>
+                <!-- Level 2 -->
+                <div class="p-2.5 rounded-xl border border-amber-200 bg-amber-50/50 space-y-1">
+                  <div class="font-black text-amber-800 flex items-center gap-1.5">
+                    <span>🟡</span> LEVEL 2 – DỄ PHÂN TÂM (400 – 690 điểm)
+                  </div>
+                  <p class="text-[11px] text-slate-600">Sự chú ý đôi khi bị kéo khỏi nhiệm vụ, cần điều chỉnh một số thói quen để chủ động hơn.</p>
+                  <p class="text-[11px] text-amber-900 italic">“Mỗi thay đổi nhỏ hôm nay là một bước tiến.”</p>
+                </div>
+                <!-- Level 3 -->
+                <div class="p-2.5 rounded-xl border border-rose-200 bg-rose-50/50 space-y-1">
+                  <div class="font-black text-rose-800 flex items-center gap-1.5">
+                    <span>🔴</span> LEVEL 3 – CẦN RÈN LUYỆN THÊM (< 400 điểm)
+                  </div>
+                  <p class="text-[11px] text-slate-600">Dễ bị phân tán bởi môi trường số. Đây là tín hiệu để bắt đầu rèn luyện từng bước một.</p>
+                  <p class="text-[11px] text-rose-900 italic">“Không cần thay đổi tất cả trong một ngày. Hãy bắt đầu từ một thay đổi nhỏ.”</p>
+                </div>
+              </div>
+            </details>
+          </div>
+
           <div class="pt-2 text-center">
-            <button onclick="finishOnboardingAndEnterApp()" class="w-full py-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:opacity-95 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all font-cyber">
-              🚀 VÀO WEB & BẮT ĐẦU ĐUA TOP (1000đ XH + BFS)
+            <button onclick="finishOnboardingAndEnterApp()" class="w-full py-3.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:opacity-95 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all font-cyber flex items-center justify-center gap-2">
+              <span>🚀</span> <span>XÁC NHẬN & ĐỒNG BỘ ĐIỂM VÀO BẢNG XẾP HẠNG</span>
             </button>
           </div>
         </div>
@@ -1337,6 +1463,177 @@
       { id: 6, category: 'TECH', title: 'Sóng Não Gamma 40Hz & Binaural', text: 'Nghe âm thanh sóng não tần số 40Hz khi giải các bài toán tư duy để tăng cường kết nối đồng bộ giữa các vùng nơ-ron.', tag: 'Công nghệ' }
     ];
 
+    // ================= 3-LEVEL BFS EVALUATION SYSTEM (KHOA HỌC THẦN KINH) =================
+    const BFS_LEVELS_DATA = {
+      LEVEL_1: {
+        level: 1,
+        title: "LEVEL 1 – KHÁ ỔN ĐỊNH",
+        dot: "🟢",
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+        headline: "Bạn đang có nền tảng khá tốt.",
+        description: "Một số thói quen sử dụng thiết bị số của bạn tương đối hợp lý và khả năng duy trì nhiệm vụ khá ổn định.",
+        recommendations: [
+          "Focus Timer 30 phút.",
+          "Duy trì Focus Streak.",
+          "Thử thách đọc sách/học tập không gián đoạn.",
+          "Theo dõi Brain Progress hằng tuần."
+        ],
+        quote: "“Duy trì hôm nay để vững vàng ngày mai.”"
+      },
+      LEVEL_2: {
+        level: 2,
+        title: "LEVEL 2 – DỄ PHÂN TÂM",
+        dot: "🟡",
+        badgeClass: "bg-amber-100 text-amber-900 border-amber-300",
+        headline: "Sự chú ý của bạn đôi khi bị kéo khỏi nhiệm vụ.",
+        description: "Bạn có một số thói quen cần điều chỉnh để việc học trở nên chủ động hơn.",
+        recommendations: [
+          "Focus Timer 25 phút.",
+          "Brain Reset 2 phút trước khi học.",
+          "Tắt thông báo trong thời gian học.",
+          "Mini Challenge 7 ngày.",
+          "Focus Diary."
+        ],
+        quote: "“Mỗi thay đổi nhỏ hôm nay là một bước tiến.”"
+      },
+      LEVEL_3: {
+        level: 3,
+        title: "LEVEL 3 – CẦN RÈN LUYỆN THÊM",
+        dot: "🔴",
+        badgeClass: "bg-rose-100 text-rose-800 border-rose-300",
+        headline: "Bạn có nhiều biểu hiện dễ bị phân tán bởi môi trường số.",
+        description: "Điều này không có nghĩa bạn “kém tập trung”. Đây là tín hiệu để bắt đầu rèn luyện từng bước.",
+        recommendations: [
+          "Brain Reset 21 ngày.",
+          "Focus Timer 15–20 phút, sau đó tăng dần.",
+          "Nhật ký sử dụng điện thoại.",
+          "Bài tập thư giãn trước khi học.",
+          "Theo dõi Brain Progress hằng tuần.",
+          "Thử thách giảm yếu tố gây xao nhãng."
+        ],
+        quote: "“Không cần thay đổi tất cả trong một ngày. Hãy bắt đầu từ một thay đổi nhỏ.”"
+      }
+    };
+
+    function getBFSLevelDetails(score) {
+      const num = Number(score) || 0;
+      if (num >= 700) return BFS_LEVELS_DATA.LEVEL_1;
+      if (num >= 400) return BFS_LEVELS_DATA.LEVEL_2;
+      return BFS_LEVELS_DATA.LEVEL_3;
+    }
+
+    // ================= CLOUD LEADERBOARD SYNCHRONIZATION ENGINE =================
+    const CLOUD_LEADERBOARD_ENDPOINT = 'https://api.restful-api.dev/objects/ff808181a067127101a077a82e722a01';
+    let isCloudSyncInProgress = false;
+
+    function updateCloudSyncBadge(status) {
+      const badge = document.getElementById('cloud-sync-status-badge');
+      if (!badge) return;
+      if (status === 'syncing') {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-spin"></span> <span>Cloud: Đang đồng bộ...</span>`;
+        badge.className = 'text-[10px] bg-amber-50 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-xs';
+      } else if (status === 'online') {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> <span>Cloud BXH: Trực tuyến</span>`;
+        badge.className = 'text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-xs';
+      } else {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> <span>Cloud: Ngoại tuyến</span>`;
+        badge.className = 'text-[10px] bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-xs';
+      }
+    }
+
+    async function fetchLeaderboardFromCloud(notify = false) {
+      if (isCloudSyncInProgress) return;
+      isCloudSyncInProgress = true;
+      updateCloudSyncBadge('syncing');
+
+      const refreshIcon = document.getElementById('refresh-icon');
+      if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+      try {
+        const response = await fetch(CLOUD_LEADERBOARD_ENDPOINT);
+        if (!response.ok) throw new Error('Cloud HTTP error: ' + response.status);
+        const resJson = await response.json();
+        const cloudUsers = (resJson && resJson.data && Array.isArray(resJson.data.users)) ? resJson.data.users : [];
+
+        loadUsersDatabase();
+
+        let hasNewData = false;
+
+        // Hợp nhất dữ liệu học viên từ Cloud vào cơ sở dữ liệu trên thiết bị
+        cloudUsers.forEach(cu => {
+          if (!cu || !cu.email || !cu.name || isCloneAccount(cu)) return;
+          const localIdx = REGISTERED_USERS_DB.findIndex(u => u.email.toLowerCase().trim() === cu.email.toLowerCase().trim());
+          if (localIdx === -1) {
+            REGISTERED_USERS_DB.push(cu);
+            hasNewData = true;
+          } else {
+            const lu = REGISTERED_USERS_DB[localIdx];
+            const isLocalActiveUser = APP_STATE.userEmail && lu.email.toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim();
+            const cloudTotal = (Number(cu.rankPoints) || 1000) + (Number(cu.bfs) || 0) + (Number(cu.sessionPoints) || 0);
+            const localTotal = (Number(lu.rankPoints) || 1000) + (Number(lu.bfs) || 0) + (Number(lu.sessionPoints) || 0);
+
+            // Giữ lại tiến độ mới nhất / cao nhất giữa 2 nguồn
+            if (!isLocalActiveUser && cloudTotal >= localTotal) {
+              REGISTERED_USERS_DB[localIdx] = { ...lu, ...cu };
+              hasNewData = true;
+            }
+          }
+        });
+
+        // Đảm bảo thông tin của tài khoản hiện tại trên thiết bị không bị mất
+        if (APP_STATE.userEmail && APP_STATE.userName && !isCloneAccount({ name: APP_STATE.userName, email: APP_STATE.userEmail })) {
+          syncCurrentUserToDatabase();
+        }
+
+        saveUsersDatabase(false); // Lưu local mà không kích hoạt vòng lặp sync
+        renderLeaderboard();
+        updateCloudSyncBadge('online');
+
+        // Đẩy phiên bản hợp nhất đầy đủ nhất lên Cloud để các máy khác cùng nhận được
+        pushLeaderboardToCloud();
+
+        if (notify) {
+          alert('🌟 ĐỒNG BỘ CLOUD THÀNH CÔNG!\n\nBảng Xếp Hạng trực tuyến đã cập nhật đầy đủ dữ liệu người dùng từ mọi thiết bị!');
+        }
+      } catch (err) {
+        console.warn('Leaderboard cloud sync issue:', err);
+        updateCloudSyncBadge('offline');
+        renderLeaderboard();
+        if (notify) {
+          alert('⚠️ Không thể kết nối tới Cloud Server lúc này. Đang hiển thị dữ liệu cục bộ trên thiết bị!');
+        }
+      } finally {
+        isCloudSyncInProgress = false;
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+      }
+    }
+
+    let cloudPushTimeout = null;
+    function pushLeaderboardToCloud() {
+      if (cloudPushTimeout) clearTimeout(cloudPushTimeout);
+      // Debounce để tránh gửi liên tục khi người dùng tương tác dồn dập
+      cloudPushTimeout = setTimeout(async () => {
+        try {
+          const cleanList = REGISTERED_USERS_DB.filter(u => u && u.email && u.name && !isCloneAccount(u));
+          const payload = {
+            name: "brainfocus_leaderboard",
+            data: {
+              users: cleanList,
+              lastSynced: Date.now()
+            }
+          };
+
+          await fetch(CLOUD_LEADERBOARD_ENDPOINT, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          console.warn('Failed to push leaderboard to cloud:', err);
+        }
+      }, 500);
+    }
+
     // Bảng xếp hạng người dùng thực tế & Quản lý danh sách tài khoản đã đăng ký
     let REGISTERED_USERS_DB = [];
 
@@ -1372,10 +1669,13 @@
       } catch (e) {}
     }
 
-    function saveUsersDatabase() {
+    function saveUsersDatabase(triggerCloud = true) {
       try {
         const cleanList = REGISTERED_USERS_DB.filter(u => !isCloneAccount(u));
         localStorage.setItem('bf_registered_users', JSON.stringify(cleanList));
+        if (triggerCloud) {
+          pushLeaderboardToCloud();
+        }
       } catch (e) {}
     }
 
@@ -1712,6 +2012,13 @@
       window.addEventListener('pageshow', () => {
         resyncActiveSession();
       });
+
+      // Khởi động đồng bộ Bảng Xếp Hạng từ Cloud toàn hệ thống
+      fetchLeaderboardFromCloud(false);
+      // Tự động kiểm tra đồng bộ ngầm định kỳ mỗi 60 giây
+      setInterval(() => {
+        fetchLeaderboardFromCloud(false);
+      }, 60000);
     });
 
     function restoreSessionBackup() {
@@ -1806,6 +2113,7 @@
         updateUserInfoUI();
       } else if (tabId === 'leaderboard') {
         renderLeaderboard();
+        fetchLeaderboardFromCloud(false);
       }
 
       if (tabId !== 'gym') {
@@ -3512,6 +3820,12 @@
       const area = document.getElementById('game-dynamic-area');
       if (area) area.innerHTML = '';
       updateDailyGymUI();
+
+      // Cuộn mượt màn hình lên đầu để tránh bị kẹt ở khoảng trắng phía dưới
+      const mainEl = document.querySelector('main');
+      if (mainEl) {
+        mainEl.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
 
     // ================= RENDERING LISTS =================
@@ -3786,6 +4100,32 @@
       const statGymEl = document.getElementById('stat-gym-count');
       if (statGymEl) statGymEl.innerText = APP_STATE.gymCompletedCount;
 
+      // Cập nhật thẻ Level BFS & Lời khuyên trong Tab Profile
+      const levelData = getBFSLevelDetails(bfsPts);
+      const profLevelBadge = document.getElementById('profile-level-badge');
+      if (profLevelBadge) {
+        profLevelBadge.className = `inline-block text-xs font-black px-3 py-0.5 rounded-full shadow-xs font-cyber ${levelData.badgeClass}`;
+        profLevelBadge.innerText = levelData.title;
+      }
+      const profLevelIcon = document.getElementById('profile-level-icon');
+      if (profLevelIcon) profLevelIcon.innerText = levelData.dot;
+      const profLevelPts = document.getElementById('profile-level-bfs-pts');
+      if (profLevelPts) profLevelPts.innerText = bfsPts;
+      const profHeadline = document.getElementById('profile-level-headline');
+      if (profHeadline) profHeadline.innerText = levelData.headline;
+      const profDesc = document.getElementById('profile-level-desc');
+      if (profDesc) profDesc.innerText = levelData.description;
+      const profRecs = document.getElementById('profile-level-recommendations');
+      if (profRecs) profRecs.innerHTML = levelData.recommendations.map(r => `<li>${r}</li>`).join('');
+      const profQuote = document.getElementById('profile-level-quote');
+      if (profQuote) profQuote.innerText = levelData.quote;
+
+      const userDisplayLevel = document.getElementById('user-display-level');
+      if (userDisplayLevel) {
+        userDisplayLevel.innerText = `Level ${levelData.level}`;
+        userDisplayLevel.className = `text-[10px] px-2 py-0.5 rounded-full font-bold border ${levelData.badgeClass}`;
+      }
+
       renderLeaderboard();
     }
 
@@ -3953,25 +4293,28 @@
       resBox.classList.remove('hidden');
       document.getElementById('result-bfs-number').innerText = `${calculatedBFS} / 1000`;
       
-      let category = "Không Có Não Bỏng Ngô (Deep Focus Master)";
-      let desc = "Khả năng tập trung của bạn ở mức rất xuất sắc! Bạn sở hữu vùng vỏ não trước trán vững vàng, có khả năng trì hoãn khoái cảm dopamine và duy trì sự chú ý bền bỉ trong các chu kỳ 90 phút.";
-      
-      if (calculatedBFS === 1000) {
-        category = "🏆 ĐỈNH CAO CHÚ Ý: 1000/1000 ĐIỂM HOÀN HẢO!";
-        desc = "Tuyệt đối kiên định! Dù các đáp án đã bị xáo trộn ngẫu nhiên, bạn vẫn vượt qua trọn vẹn 10 câu hỏi với điểm số 1000/1000 tối đa. Vỏ não trước trán của bạn hoàn toàn miễn nhiễm trước hội chứng Não Bỏng Ngô!";
-      } else if (calculatedBFS >= 750) {
-        category = "Não bộ Kháng Xao Nhãng (Deep Focus Master)";
-        desc = "Khả năng tập trung của bạn ở mức rất xuất sắc, ít bị ảnh hưởng bởi hội chứng Não Bỏng Ngô! Bạn sở hữu vùng vỏ não trước trán vững vàng, có khả năng trì hoãn khoái cảm dopamine và duy trì sự chú ý bền bỉ trong các chu kỳ 90 phút.";
-      } else if (calculatedBFS >= 450) {
-        category = "Não bộ Nhạy Cảm Kích Thích (Moderate Popcorn Brain)";
-        desc = "Bạn có một số biểu hiện cho thấy sự chú ý dễ bị gián đoạn bởi các kích thích từ môi trường số. Vỏ não trước trán bắt đầu hình thành phản xạ tìm kiếm dopamine ngắn hạn khi gặp bài khó hoặc đoạn văn dài. Hãy duy trì các chu kỳ học sâu 90 phút và cách ly điện thoại khi học.";
-      } else {
-        category = "Hội Chứng Não Bỏng Ngô Mức Cao (Acute Popcorn Brain)";
-        desc = "Mức độ phân tán chú ý cao. Tâm trí bạn liên tục 'nhảy cóc' như những hạt ngô nổ trong chảo nóng do tiếp xúc nhiều với video ngắn. Hãy thực hiện ngay lộ trình Dopamine Reset, quy tắc 20 giây và bật sóng Gamma 40Hz khi học!";
+      const levelData = getBFSLevelDetails(calculatedBFS);
+
+      const badgeEl = document.getElementById('result-bfs-level-badge');
+      if (badgeEl) {
+        badgeEl.className = `inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black shadow-xs font-cyber ${levelData.badgeClass}`;
+        badgeEl.innerHTML = `<span>${levelData.dot}</span> <span>${levelData.title}</span>`;
       }
 
-      document.getElementById('result-bfs-category').innerText = category;
-      document.getElementById('result-bfs-desc').innerText = desc;
+      const headlineEl = document.getElementById('result-bfs-headline');
+      if (headlineEl) headlineEl.innerText = levelData.headline;
+
+      const descEl = document.getElementById('result-bfs-desc');
+      if (descEl) descEl.innerText = levelData.description;
+
+      const recsEl = document.getElementById('result-bfs-recommendations');
+      if (recsEl) {
+        recsEl.innerHTML = levelData.recommendations.map(r => `<li>${r}</li>`).join('');
+      }
+
+      const quoteEl = document.getElementById('result-bfs-quote');
+      if (quoteEl) quoteEl.innerText = levelData.quote;
+
       document.getElementById('assess-submit-btn').classList.add('hidden');
 
       // Scroll smoothly down to result
