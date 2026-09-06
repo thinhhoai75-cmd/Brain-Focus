@@ -726,11 +726,17 @@
             </div>
           </div>
           <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto">
-            <button onclick="openRegisterModal()" class="flex-1 sm:flex-initial text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-1.5 rounded-xl hover:opacity-90 shadow-xs">
-              + Tạo tài khoản
+            <button onclick="openRegisterModal(false)" class="flex-1 sm:flex-initial text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-1.5 rounded-xl hover:opacity-90 shadow-xs flex items-center justify-center gap-1">
+              <span>+</span> Tạo tài khoản mới
             </button>
-            <button onclick="resetAccountAndData()" class="flex-1 sm:flex-initial text-[11px] font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all" title="Xoá tất cả tài khoản thử nghiệm">
-              🗑️ Đặt lại
+            <button onclick="openSwitchAccountModal()" class="flex-1 sm:flex-initial text-xs font-bold bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1">
+              <span>👥</span> Đổi tài khoản
+            </button>
+            <button onclick="purgeCloneAccounts(true)" class="flex-1 sm:flex-initial text-xs font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Quét sạch tài khoản clone khỏi bảng xếp hạng">
+              <span>🧹</span> Xóa clone
+            </button>
+            <button onclick="renderLeaderboard()" class="flex-1 sm:flex-initial text-[11px] font-bold bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Làm mới bảng xếp hạng">
+              <span>🔄</span> Làm mới
             </button>
           </div>
         </div>
@@ -766,7 +772,7 @@
               <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                 <h2 id="user-display-name" class="text-base sm:text-lg font-black text-slate-900 font-cyber truncate">Chưa đăng ký</h2>
                 <span id="user-display-level" class="text-[10px] bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 rounded-full font-bold">Level 1</span>
-                <span id="user-auth-badge" onclick="openRegisterModal()" class="text-[10px] bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700 border border-slate-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate cursor-pointer transition-all">
+                <span id="user-auth-badge" onclick="openSwitchAccountModal()" class="text-[10px] bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700 border border-slate-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate cursor-pointer transition-all" title="Nhấn để đổi tài khoản">
                   <span>✉️</span> <span id="user-display-email" class="truncate">Chưa liên kết Gmail</span>
                 </span>
               </div>
@@ -784,34 +790,8 @@
             <button onclick="openAssessmentModal(true)" class="flex-1 sm:flex-initial px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
               <span>📝</span> Test Lại BFS (10 câu)
             </button>
-          </div>
-        </div>
-
-        <!-- Account Switcher & Gmail Auth Bar -->
-        <div class="glass-card-light p-3.5 sm:p-4 rounded-2xl border border-sky-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3 bg-gradient-to-r from-blue-50/80 to-indigo-50/50 w-full">
-          <div class="flex items-center gap-2.5 w-full sm:w-auto">
-            <div class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-base shadow-xs shrink-0">
-              <svg class="w-4 h-4" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-              </svg>
-            </div>
-            <div>
-              <div class="text-xs font-bold text-slate-900">Quản Lý Tài Khoản Gmail</div>
-              <div class="text-[11px] text-slate-600">Đăng nhập tài khoản Gmail để đồng bộ điểm và đua Top bảng xếp hạng.</div>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-2 w-full sm:w-auto">
-            <button onclick="openRegisterModal()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1">
-              <span>+</span> Tạo Mới
-            </button>
-            <button onclick="handleGoogleLogin()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black rounded-xl shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
-              <span>🔐</span> Đăng Nhập
-            </button>
-            <button onclick="resetAccountAndData()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Xoá toàn bộ tài khoản thử nghiệm & đặt lại">
-              <span>🗑️</span> Xoá Hết TK Thử Nghiệm
+            <button onclick="openSwitchAccountModal()" class="flex-1 sm:flex-initial px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
+              <span>👥</span> Đổi / Thêm TK
             </button>
           </div>
         </div>
@@ -1074,6 +1054,41 @@
     </div>
   </div>
 
+  <!-- ================= MODAL: CHỌN / ĐỔI TÀI KHOẢN ================= -->
+  <div id="switch-account-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden p-6 space-y-4 bg-white">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold">
+            👥
+          </div>
+          <div>
+            <h3 class="font-black text-base text-slate-900 font-cyber">TÀI KHOẢN HỌC VIÊN</h3>
+            <p class="text-xs text-slate-500">Chuyển đổi hoặc đăng ký thêm tài khoản</p>
+          </div>
+        </div>
+        <button onclick="closeSwitchAccountModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="bg-indigo-50/70 border border-indigo-200 p-2.5 rounded-2xl text-[11px] text-indigo-950">
+        💡 Mỗi tài khoản đăng ký trên thiết bị này sẽ được lưu giữ độc lập và cùng hiển thị trên Bảng Xếp Hạng.
+      </div>
+
+      <div class="space-y-2 max-h-64 overflow-y-auto pr-1" id="switch-account-list">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="pt-2 flex items-center gap-2">
+        <button onclick="closeSwitchAccountModal(); openRegisterModal(false);" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95 flex items-center justify-center gap-1.5">
+          <span>+</span> <span>Tạo Mới</span>
+        </button>
+        <button onclick="purgeCloneAccounts(true)" class="py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold shadow-xs transition-all flex items-center justify-center gap-1.5" title="Quét sạch tài khoản clone hoặc thử nghiệm">
+          <span>🧹</span> <span>Xóa Clone</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= MODAL: CHỈNH SỬA HỒ SƠ & AVATAR ================= -->
   <div id="edit-profile-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden p-6 space-y-4 bg-white">
@@ -1325,41 +1340,20 @@
       { id: 6, category: 'TECH', title: 'Sóng Não Gamma 40Hz & Binaural', text: 'Nghe âm thanh sóng não tần số 40Hz khi giải các bài toán tư duy để tăng cường kết nối đồng bộ giữa các vùng nơ-ron.', tag: 'Công nghệ' }
     ];
 
-    // Bảng xếp hạng người dùng thực tế (Không chứa bot ảo và tự động xoá tài khoản thử nghiệm)
+    // Bảng xếp hạng người dùng thực tế & Quản lý danh sách tài khoản đã đăng ký
     let REGISTERED_USERS_DB = [];
 
-    // Tự động xoá sạch các tài khoản và phiên thử nghiệm trước đó trên thiết bị để web hoàn toàn sạch cho người dùng
-    function cleanTestAccountsOnStartup() {
-      const WIPE_VERSION_KEY = 'bf_clean_release_v8_final';
-      if (!localStorage.getItem(WIPE_VERSION_KEY)) {
-        try {
-          localStorage.removeItem('bf_registered_users');
-          localStorage.removeItem('bf_user_profile');
-          localStorage.removeItem('bf_onboarded_completed');
-          localStorage.removeItem('bf_active_session');
-          localStorage.removeItem('bf_active_session_backup');
-          localStorage.removeItem('bf_daily_tracker');
-          localStorage.removeItem('bf_daily_gym_tracker');
-          localStorage.removeItem('bf_cooldown_until');
-          localStorage.removeItem('bf_cooldown_total_seconds');
-          localStorage.removeItem('bf_restored_user_test_sessions');
-        } catch (e) {}
-        REGISTERED_USERS_DB = [];
-        APP_STATE.userEmail = "";
-        APP_STATE.userName = "";
-        APP_STATE.userSchool = "";
-        APP_STATE.userAvatar = "";
-        APP_STATE.rankPoints = 1000;
-        APP_STATE.bfsScore = 0;
-        APP_STATE.totalHours = 0;
-        APP_STATE.streakDays = 1;
-        APP_STATE.sessionsCompletedCount = 0;
-        APP_STATE.gymCompletedCount = 0;
-        APP_STATE.history = [];
-        try {
-          localStorage.setItem(WIPE_VERSION_KEY, 'true');
-        } catch (e) {}
-      }
+    // Bộ lọc nhận diện tài khoản clone hoặc tài khoản test thử nghiệm
+    function isCloneAccount(u) {
+      if (!u) return true;
+      const name = String(u.name || '').toLowerCase().trim();
+      const email = String(u.email || '').toLowerCase().trim();
+      if (!email && !name) return true;
+      if (name.includes('clone') || email.includes('clone')) return true;
+      if (name.includes('demo') || email.includes('demo')) return true;
+      if (email === 'tam.brainfocus@gmail.com') return true;
+      if (name === 'tên bạn' || name === 'người dùng thử' || name.includes('tài khoản thử')) return true;
+      return false;
     }
 
     function loadUsersDatabase() {
@@ -1368,15 +1362,7 @@
         if (saved) {
           const parsed = JSON.parse(saved);
           REGISTERED_USERS_DB = Array.isArray(parsed)
-            ? parsed.filter(u => {
-                if (!u || !u.email || !u.name) return false;
-                const email = String(u.email).toLowerCase();
-                const name = String(u.name).toLowerCase();
-                if (email === 'tam.brainfocus@gmail.com' || email === 'demo@gmail.com') return false;
-                if (email.includes('clone') || email.includes('demo') || email.includes('test')) return false;
-                if (name === 'trịnh hoài tâm' || name.includes('clone') || name.includes('tên bạn')) return false;
-                return true;
-              })
+            ? parsed.filter(u => u && u.email && u.name && !isCloneAccount(u))
             : [];
         } else {
           REGISTERED_USERS_DB = [];
@@ -1384,12 +1370,90 @@
       } catch (e) {
         REGISTERED_USERS_DB = [];
       }
+      try {
+        localStorage.setItem('bf_registered_users', JSON.stringify(REGISTERED_USERS_DB));
+      } catch (e) {}
     }
 
     function saveUsersDatabase() {
       try {
-        localStorage.setItem('bf_registered_users', JSON.stringify(REGISTERED_USERS_DB));
+        const cleanList = REGISTERED_USERS_DB.filter(u => !isCloneAccount(u));
+        localStorage.setItem('bf_registered_users', JSON.stringify(cleanList));
       } catch (e) {}
+    }
+
+    // Xoá sạch toàn bộ tài khoản Clone và cập nhật lại giao diện
+    function purgeCloneAccounts(notify = false) {
+      loadUsersDatabase();
+      REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u && u.email && u.name && !isCloneAccount(u));
+      saveUsersDatabase();
+
+      // Nếu tài khoản hiện tại là clone thì giải phóng
+      if (isCloneAccount({ name: APP_STATE.userName, email: APP_STATE.userEmail })) {
+        if (REGISTERED_USERS_DB.length > 0) {
+          switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
+        } else {
+          APP_STATE.userEmail = "";
+          APP_STATE.userName = "";
+          APP_STATE.userSchool = "";
+          APP_STATE.userAvatar = "";
+          APP_STATE.rankPoints = 1000;
+          APP_STATE.bfsScore = 0;
+          APP_STATE.totalHours = 0;
+          APP_STATE.streakDays = 1;
+          APP_STATE.sessionsCompletedCount = 0;
+          APP_STATE.gymCompletedCount = 0;
+          APP_STATE.history = [];
+        }
+        saveAppStateToLocal();
+      }
+
+      syncProfileDOM();
+      updateStatsUI();
+      renderLeaderboard();
+
+      const modal = document.getElementById('switch-account-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        openSwitchAccountModal();
+      }
+
+      if (notify) {
+        alert('✨ Đã quét sạch tất cả tài khoản Clone khỏi Bảng Xếp Hạng!');
+      }
+    }
+
+    // Đồng bộ thông tin người dùng hiện tại vào danh sách người dùng toàn hệ thống
+    function syncCurrentUserToDatabase() {
+      if (!APP_STATE.userEmail || !APP_STATE.userName) return;
+      if (isCloneAccount({ name: APP_STATE.userName, email: APP_STATE.userEmail })) return;
+
+      const currentSessionPoints = getSessionPointsTotal();
+      const currentSessionsCount = APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0);
+
+      const userEntry = {
+        id: APP_STATE.userEmail.toLowerCase().trim(),
+        email: APP_STATE.userEmail.trim(),
+        name: APP_STATE.userName.trim(),
+        school: APP_STATE.userSchool || 'Người học tích cực',
+        avatar: APP_STATE.userAvatar || '',
+        rankPoints: Number(APP_STATE.rankPoints) || 1000,
+        sessionsCount: currentSessionsCount,
+        sessionPoints: currentSessionPoints,
+        bfs: Number(APP_STATE.bfsScore) || 0,
+        totalHours: APP_STATE.totalHours || 0,
+        streakDays: APP_STATE.streakDays || 1,
+        streak: `${APP_STATE.streakDays || 1} ngày`,
+        history: Array.isArray(APP_STATE.history) ? APP_STATE.history : [],
+        lastUpdated: Date.now()
+      };
+
+      const existingIdx = REGISTERED_USERS_DB.findIndex(u => u.email.toLowerCase().trim() === userEntry.email.toLowerCase().trim());
+      if (existingIdx >= 0) {
+        REGISTERED_USERS_DB[existingIdx] = { ...REGISTERED_USERS_DB[existingIdx], ...userEntry };
+      } else {
+        REGISTERED_USERS_DB.push(userEntry);
+      }
+      saveUsersDatabase();
     }
 
     // Tính tổng điểm từ tất cả các phiên học: mỗi phiên tính điểm tùy theo thời gian chạy (1 phút = 1 điểm, ví dụ 90p = 90đ)
@@ -1405,51 +1469,19 @@
     }
 
     function getFullLeaderboard() {
-      const currentSessionPoints = getSessionPointsTotal();
-      const currentSessionsCount = APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0);
+      // Đảm bảo dữ liệu người dùng hiện tại được đồng bộ vào database
+      syncCurrentUserToDatabase();
+      loadUsersDatabase();
 
-      // Chỉ đồng bộ user hiện tại nếu có email và tên thật sự
-      if (APP_STATE.userEmail && APP_STATE.userName) {
-        const userEntry = {
-          id: APP_STATE.userEmail,
-          email: APP_STATE.userEmail,
-          name: APP_STATE.userName,
-          school: APP_STATE.userSchool || 'Người học tích cực',
-          avatar: APP_STATE.userAvatar,
-          rankPoints: APP_STATE.rankPoints || 1000,
-          sessionsCount: currentSessionsCount,
-          sessionPoints: currentSessionPoints,
-          bfs: APP_STATE.bfsScore,
-          streak: `${APP_STATE.streakDays} ngày`
-        };
+      // Lọc các user có email và tên hợp lệ
+      const validUsers = REGISTERED_USERS_DB.filter(u => u && u.email && u.name);
 
-        const existingIdx = REGISTERED_USERS_DB.findIndex(u => u.email === APP_STATE.userEmail);
-        if (existingIdx >= 0) {
-          REGISTERED_USERS_DB[existingIdx] = userEntry;
-        } else {
-          REGISTERED_USERS_DB.push(userEntry);
-        }
-        saveUsersDatabase();
-      }
-
-      // Lọc các user hợp lệ (loại bỏ mọi tài khoản rỗng, clone hoặc tài khoản test cũ)
-      const validUsers = REGISTERED_USERS_DB.filter(u => {
-        if (!u || !u.email || !u.name) return false;
-        const email = String(u.email).toLowerCase();
-        const name = String(u.name).toLowerCase();
-        if (email === 'tam.brainfocus@gmail.com' || email === 'demo@gmail.com') return false;
-        if (email.includes('clone') || email.includes('demo') || email.includes('test')) return false;
-        if (name === 'trịnh hoài tâm' || name.includes('clone') || name.includes('tên bạn')) return false;
-        return true;
-      });
-
-      // Tập hợp tất cả tài khoản thực
       const all = validUsers.map(u => {
-        const isCurrent = (APP_STATE.userEmail && u.email === APP_STATE.userEmail);
-        const rankPts = isCurrent ? (APP_STATE.rankPoints || 1000) : (u.rankPoints || 1000);
-        const sessCount = isCurrent ? currentSessionsCount : (u.sessionsCount || 0);
-        const sessPts = isCurrent ? currentSessionPoints : (u.sessionPoints !== undefined ? u.sessionPoints : (sessCount * 90));
-        const bfsVal = isCurrent ? APP_STATE.bfsScore : (u.bfs || 0);
+        const isCurrent = Boolean(APP_STATE.userEmail && u.email.toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim());
+        const rankPts = isCurrent ? (Number(APP_STATE.rankPoints) || 1000) : (Number(u.rankPoints) || 1000);
+        const sessCount = isCurrent ? (APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0)) : (u.sessionsCount || 0);
+        const sessPts = isCurrent ? getSessionPointsTotal() : (u.sessionPoints !== undefined ? u.sessionPoints : (sessCount * 90));
+        const bfsVal = isCurrent ? (Number(APP_STATE.bfsScore) || 0) : (Number(u.bfs) || 0);
         
         // Công thức tính điểm chuẩn xác:
         // 1000 (Điểm Xếp Hạng khởi tạo) + Điểm BFS (từ 10 câu test) + Số phiên học × Điểm theo thời gian học (vd 1 phiên 90p = 90đ)
@@ -1474,11 +1506,152 @@
       return all.map((u, idx) => ({ ...u, rank: idx + 1 }));
     }
 
+    function switchToUserAccountSilently(user) {
+      if (!user) return;
+      APP_STATE.userEmail = user.email;
+      APP_STATE.userName = user.name;
+      APP_STATE.userSchool = user.school || '';
+      APP_STATE.userAvatar = user.avatar || '';
+      APP_STATE.rankPoints = Number(user.rankPoints) || 1000;
+      APP_STATE.bfsScore = Number(user.bfs) || 0;
+      APP_STATE.sessionsCompletedCount = user.sessionsCount || 0;
+      APP_STATE.totalHours = user.totalHours || 0;
+      APP_STATE.streakDays = user.streakDays || 1;
+      APP_STATE.history = Array.isArray(user.history) ? user.history : [];
+    }
+
+    function openSwitchAccountModal() {
+      purgeCloneAccounts(false);
+      const listEl = document.getElementById('switch-account-list');
+      if (!listEl) return;
+      
+      if (!REGISTERED_USERS_DB || REGISTERED_USERS_DB.length === 0) {
+        listEl.innerHTML = `
+          <div class="p-6 text-center text-slate-500 text-xs space-y-2">
+            <span class="text-3xl">👤</span>
+            <p class="font-bold text-slate-700">Chưa có tài khoản nào trên thiết bị</p>
+            <p class="text-[11px] text-slate-500">Hãy nhấn nút bên dưới để tạo tài khoản Gmail đầu tiên và bắt đầu đua Top!</p>
+          </div>
+        `;
+      } else {
+        listEl.innerHTML = REGISTERED_USERS_DB.map(u => {
+          const isCurrent = Boolean(APP_STATE.userEmail && u.email.toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim());
+          const sessCount = u.sessionsCount || (u.history ? u.history.length : 0) || 0;
+          const sessPts = u.sessionPoints !== undefined ? u.sessionPoints : (sessCount * 90);
+          const rankPts = Number(u.rankPoints) || 1000;
+          const bfsPts = Number(u.bfs) || 0;
+          const total = rankPts + bfsPts + sessPts;
+
+          return `
+            <div class="p-3 rounded-2xl border ${isCurrent ? 'border-blue-500 bg-blue-50/80 ring-2 ring-blue-400/40' : 'border-slate-200 bg-slate-50/80 hover:bg-slate-100'} flex items-center justify-between gap-3 transition-all">
+              <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center text-base font-black shrink-0 overflow-hidden shadow-xs border border-white">
+                  ${u.avatar ? `<img src="${u.avatar}" class="w-full h-full object-cover" />` : (u.name || 'U').charAt(0).toUpperCase()}
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="text-xs font-bold text-slate-900 truncate flex items-center gap-1.5">
+                    <span class="truncate">${u.name}</span>
+                    ${isCurrent ? '<span class="text-[9px] bg-blue-600 text-white px-1.5 py-0.5 rounded-full font-black shrink-0">Đang chọn</span>' : ''}
+                  </div>
+                  <div class="text-[10px] text-slate-500 truncate">${u.email}</div>
+                  <div class="text-[10px] text-amber-600 font-bold font-cyber mt-0.5">Tổng: ${total}đ (${rankPts} XH + ${bfsPts} BFS)</div>
+                </div>
+              </div>
+              <div class="shrink-0 flex items-center gap-1.5">
+                ${isCurrent ? `
+                  <span class="text-xs font-bold text-blue-700 flex items-center gap-1 bg-blue-100/70 px-2.5 py-1 rounded-xl">✓ Đang dùng</span>
+                ` : `
+                  <button onclick="switchToUserAccount('${u.email.replace(/'/g, "\\'")}')" class="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-xs hover:opacity-95 transition-all">
+                    Chuyển
+                  </button>
+                `}
+                <button onclick="event.stopPropagation(); deleteSpecificAccount('${u.email.replace(/'/g, "\\'")}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="Xoá tài khoản này">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      document.getElementById('switch-account-modal').classList.remove('hidden');
+    }
+
+    function closeSwitchAccountModal() {
+      const modal = document.getElementById('switch-account-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function deleteSpecificAccount(email) {
+      if (!confirm(`Bạn có chắc muốn xoá tài khoản "${email}" khỏi thiết bị này?`)) return;
+      loadUsersDatabase();
+      REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u.email.toLowerCase().trim() !== email.toLowerCase().trim());
+      saveUsersDatabase();
+
+      if (APP_STATE.userEmail.toLowerCase().trim() === email.toLowerCase().trim()) {
+        if (REGISTERED_USERS_DB.length > 0) {
+          switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
+          saveAppStateToLocal();
+        } else {
+          APP_STATE.userEmail = "";
+          APP_STATE.userName = "";
+          APP_STATE.userSchool = "";
+          APP_STATE.userAvatar = "";
+          APP_STATE.rankPoints = 1000;
+          APP_STATE.bfsScore = 0;
+          APP_STATE.totalHours = 0;
+          APP_STATE.streakDays = 1;
+          APP_STATE.sessionsCompletedCount = 0;
+          APP_STATE.gymCompletedCount = 0;
+          APP_STATE.history = [];
+          saveAppStateToLocal();
+        }
+      }
+
+      syncProfileDOM();
+      updateStatsUI();
+      renderLeaderboard();
+      openSwitchAccountModal();
+      alert(`🗑️ Đã xoá tài khoản ${email} thành công! Bảng xếp hạng đã được dọn sạch.`);
+    }
+
+    function switchToUserAccount(email) {
+      syncCurrentUserToDatabase();
+      loadUsersDatabase();
+
+      const user = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
+      if (!user) return;
+
+      APP_STATE.userEmail = user.email;
+      APP_STATE.userName = user.name;
+      APP_STATE.userSchool = user.school || '';
+      APP_STATE.userAvatar = user.avatar || '';
+      APP_STATE.rankPoints = Number(user.rankPoints) || 1000;
+      APP_STATE.bfsScore = Number(user.bfs) || 0;
+      APP_STATE.sessionsCompletedCount = user.sessionsCount || 0;
+      APP_STATE.totalHours = user.totalHours || 0;
+      APP_STATE.streakDays = user.streakDays || 1;
+      APP_STATE.history = Array.isArray(user.history) ? user.history : [];
+
+      saveAppStateToLocal();
+      syncProfileDOM();
+      updateStatsUI();
+      renderLeaderboard();
+      renderHistory();
+      closeSwitchAccountModal();
+      alert(`✅ Đã chuyển sang tài khoản: ${user.name} (${user.email})`);
+    }
+
     // ================= INIT =================
     window.addEventListener('DOMContentLoaded', () => {
-      cleanTestAccountsOnStartup();
       loadAppStateFromLocal();
-      loadUsersDatabase();
+      purgeCloneAccounts(false);
+
+      // Nếu APP_STATE rỗng nhưng thiết bị đã lưu tài khoản, tự động khôi phục tài khoản gần nhất
+      if ((!APP_STATE.userEmail || !APP_STATE.userName) && REGISTERED_USERS_DB.length > 0) {
+        switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
+        saveAppStateToLocal();
+      }
+
       syncProfileDOM();
       renderArticles();
       renderTips('ALL');
@@ -1496,13 +1669,21 @@
       }
       updateDndUI();
 
-      // Check for first-time onboarding flow: prompt account creation immediately, then 10-question BFS test
-      const hasOnboarded = localStorage.getItem('bf_onboarded_completed');
-      if (!hasOnboarded) {
+      // Khi mới vào web: nếu chưa có tài khoản Gmail thì hiện ngay form tạo tài khoản
+      const hasAccount = Boolean(APP_STATE.userEmail && APP_STATE.userName);
+      if (!hasAccount) {
         setTimeout(() => {
           openRegisterModal(true);
         }, 350);
       }
+
+      // Lắng nghe cập nhật đa tab (cross-tab) trong trình duyệt
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'bf_registered_users') {
+          loadUsersDatabase();
+          renderLeaderboard();
+        }
+      });
 
       // Restore active session if user refreshed or browser restored tab
       restoreSessionBackup();
@@ -3764,6 +3945,7 @@
       } catch (e) {}
 
       saveAppStateToLocal();
+      syncCurrentUserToDatabase();
       syncProfileDOM();
       updateStatsUI();
       renderLeaderboard();
@@ -3802,8 +3984,8 @@
 
     function finishOnboardingAndEnterApp() {
       closeAssessmentModal();
-      switchTab('timer');
-      alert(`🎉 Chúc mừng ${APP_STATE.userName}! Hồ sơ của bạn đã sẵn sàng với 1000đ Xếp Hạng + ${APP_STATE.bfsScore}đ BFS. Chúc bạn có những chu kỳ học sâu bứt phá!`);
+      switchTab('leaderboard');
+      alert(`🎉 Chúc mừng ${APP_STATE.userName}! Hồ sơ của bạn đã sẵn sàng với 1000đ Xếp Hạng + ${APP_STATE.bfsScore}đ BFS (Tổng ${1000 + APP_STATE.bfsScore}đ). Vị trí của bạn đã hiển thị trên Bảng Xếp Hạng!`);
     }
 
     // ================= REFLECTION MODAL =================
@@ -3885,6 +4067,8 @@
         if (APP_STATE.dailyGymTracker) {
           localStorage.setItem('bf_daily_gym_tracker', JSON.stringify(APP_STATE.dailyGymTracker));
         }
+        // Tự động đồng bộ vào database danh sách người dùng để BXH luôn đầy đủ
+        syncCurrentUserToDatabase();
       } catch (e) {}
     }
 
@@ -3893,34 +4077,24 @@
         const saved = localStorage.getItem('bf_user_profile');
         if (saved) {
           const data = JSON.parse(saved);
-          // Loại bỏ hoàn toàn tài khoản thử nghiệm cũ hoặc clone
-          if (data.userEmail && 
-              data.userEmail !== 'tam.brainfocus@gmail.com' && 
-              data.userEmail !== 'demo@gmail.com' && 
-              !data.userEmail.toLowerCase().includes('clone') &&
-              !data.userEmail.toLowerCase().includes('demo')) {
+          if (data.userEmail && !isCloneAccount({ name: data.userName, email: data.userEmail })) {
             APP_STATE.userEmail = data.userEmail;
           } else {
             APP_STATE.userEmail = "";
           }
-
-          if (data.userName && 
-              data.userName !== 'Trịnh Hoài Tâm' && 
-              data.userName !== 'Tên Bạn' && 
-              !data.userName.toLowerCase().includes('clone')) {
+          if (data.userName && !isCloneAccount({ name: data.userName, email: data.userEmail })) {
             APP_STATE.userName = data.userName;
           } else {
             APP_STATE.userName = "";
           }
-
-          if (data.userSchool && data.userSchool !== 'Chuyên gia trẻ') APP_STATE.userSchool = data.userSchool;
+          if (data.userSchool) APP_STATE.userSchool = data.userSchool;
           if (data.userAvatar !== undefined) APP_STATE.userAvatar = data.userAvatar;
-          if (data.rankPoints !== undefined) APP_STATE.rankPoints = data.rankPoints;
-          if (data.bfsScore !== undefined) APP_STATE.bfsScore = data.bfsScore;
-          if (data.totalHours !== undefined) APP_STATE.totalHours = data.totalHours;
-          if (data.streakDays !== undefined) APP_STATE.streakDays = data.streakDays;
-          if (data.sessionsCompletedCount !== undefined) APP_STATE.sessionsCompletedCount = data.sessionsCompletedCount;
-          if (data.gymCompletedCount !== undefined) APP_STATE.gymCompletedCount = data.gymCompletedCount;
+          if (data.rankPoints !== undefined) APP_STATE.rankPoints = Number(data.rankPoints) || 1000;
+          if (data.bfsScore !== undefined) APP_STATE.bfsScore = Number(data.bfsScore) || 0;
+          if (data.totalHours !== undefined) APP_STATE.totalHours = Number(data.totalHours) || 0;
+          if (data.streakDays !== undefined) APP_STATE.streakDays = Number(data.streakDays) || 1;
+          if (data.sessionsCompletedCount !== undefined) APP_STATE.sessionsCompletedCount = Number(data.sessionsCompletedCount) || 0;
+          if (data.gymCompletedCount !== undefined) APP_STATE.gymCompletedCount = Number(data.gymCompletedCount) || 0;
           if (data.history && Array.isArray(data.history)) APP_STATE.history = data.history;
         }
 
@@ -4119,24 +4293,69 @@
         return;
       }
 
-      APP_STATE.userEmail = email;
-      APP_STATE.userName = name;
-      APP_STATE.userSchool = school;
-      APP_STATE.rankPoints = 1000; // Khởi đầu đúng 1000 điểm xếp hạng
-      APP_STATE.sessionsCompletedCount = 0;
-      if (tempUploadedAvatarBase64 !== null) {
-        APP_STATE.userAvatar = tempUploadedAvatarBase64;
+      if (isCloneAccount({ name, email })) {
+        alert('⚠️ Tên hoặc email không được chứa từ khóa "clone" hoặc "demo". Vui lòng nhập tên và email thật của bạn để ghi nhận kết quả học!');
+        return;
       }
 
+      // 1. Lưu lại tài khoản hiện tại vào DB trước khi chuyển sang tài khoản mới
+      syncCurrentUserToDatabase();
+      loadUsersDatabase();
+
+      // 2. Kiểm tra xem email này đã từng được tạo trên thiết bị chưa
+      const existingUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
+      
+      if (existingUser) {
+        // Khôi phục tài khoản cũ với đầy đủ số điểm và tiến độ đã lưu
+        APP_STATE.userEmail = existingUser.email;
+        APP_STATE.userName = name || existingUser.name;
+        APP_STATE.userSchool = school || existingUser.school;
+        APP_STATE.rankPoints = Number(existingUser.rankPoints) || 1000;
+        APP_STATE.bfsScore = Number(existingUser.bfs) || 0;
+        APP_STATE.sessionsCompletedCount = existingUser.sessionsCount || 0;
+        APP_STATE.totalHours = existingUser.totalHours || 0;
+        APP_STATE.streakDays = existingUser.streakDays || 1;
+        APP_STATE.history = Array.isArray(existingUser.history) ? existingUser.history : [];
+        if (tempUploadedAvatarBase64 !== null) {
+          APP_STATE.userAvatar = tempUploadedAvatarBase64;
+        } else if (existingUser.avatar) {
+          APP_STATE.userAvatar = existingUser.avatar;
+        }
+      } else {
+        // Tài khoản học viên mới: khởi tạo 1000 điểm Xếp Hạng gốc
+        APP_STATE.userEmail = email;
+        APP_STATE.userName = name;
+        APP_STATE.userSchool = school;
+        APP_STATE.rankPoints = 1000;
+        APP_STATE.bfsScore = 0;
+        APP_STATE.sessionsCompletedCount = 0;
+        APP_STATE.totalHours = 0;
+        APP_STATE.streakDays = 1;
+        APP_STATE.history = [];
+        if (tempUploadedAvatarBase64 !== null) {
+          APP_STATE.userAvatar = tempUploadedAvatarBase64;
+        } else {
+          APP_STATE.userAvatar = '';
+        }
+      }
+
+      // 3. Lưu và đồng bộ ngay lập tức vào database & giao diện
       saveAppStateToLocal();
+      syncCurrentUserToDatabase();
       syncProfileDOM();
       updateStatsUI();
+      renderLeaderboard();
+      renderHistory();
       closeRegisterModal();
       
-      // TỰ ĐỘNG CHUYỂN NGAY SANG BƯỚC 2: BÀI TEST 10 CÂU BFS
-      setTimeout(() => {
-        openAssessmentModal(false, true);
-      }, 250);
+      // Nếu chưa có điểm BFS (tài khoản mới tạo), tự động mở bài test 10 câu BFS để tính điểm
+      if (!APP_STATE.bfsScore) {
+        setTimeout(() => {
+          openAssessmentModal(false, true);
+        }, 250);
+      } else {
+        alert(`🎉 Đã đăng nhập tài khoản: ${APP_STATE.userName}!\nTổng điểm xếp hạng hiện tại: ${(APP_STATE.rankPoints || 1000) + (APP_STATE.bfsScore || 0) + getSessionPointsTotal()}đ.`);
+      }
     }
 
     function handleEditProfileSubmit(e) {
@@ -4158,8 +4377,10 @@
       }
 
       saveAppStateToLocal();
+      syncCurrentUserToDatabase();
       syncProfileDOM();
       updateStatsUI();
+      renderLeaderboard();
       closeEditProfileModal();
 
       alert('✅ Đã cập nhật thành công Họ tên & Avatar của bạn!');
