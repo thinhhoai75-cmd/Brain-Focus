@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Brain Focus 🧠⚡ - Khắc Phục Não Bỏng Ngô</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1541,6 +1544,27 @@
       }
     }
 
+    function sanitizeUserForCloud(u) {
+      if (!u || !u.name) return null;
+      const email = String(u.email || '').toLowerCase().trim();
+      const name = String(u.name || '').trim();
+      if (!name) return null;
+
+      // Không gửi Base64 ảnh nặng lên Cloud để tránh lỗi HTTP 500
+      const avatarClean = (u.avatar && typeof u.avatar === 'string' && u.avatar.length < 250 && !u.avatar.startsWith('data:image')) ? u.avatar : '';
+      
+      return {
+        email: email || `${name.toLowerCase().replace(/\s+/g, '')}@student.brainfocus`,
+        name: name,
+        school: String(u.school || 'THPT Tân Túc').trim().slice(0, 50),
+        avatar: avatarClean,
+        rankPoints: Math.round(Number(u.rankPoints) || 1000),
+        sessionsCount: Math.round(Number(u.sessionsCount) || 0),
+        sessionPoints: Math.round(Number(u.sessionPoints) || 0),
+        bfs: Math.round(Number(u.bfs) || 0)
+      };
+    }
+
     async function fetchLeaderboardFromCloud(notify = false) {
       if (isCloudSyncInProgress) return;
       isCloudSyncInProgress = true;
@@ -1549,51 +1573,72 @@
       const refreshIcon = document.getElementById('refresh-icon');
       if (refreshIcon) refreshIcon.classList.add('animate-spin');
 
+      // Tự động giải phóng trạng thái sau tối đa 6 giây đề phòng nghẽn mạng
+      const safetyTimeout = setTimeout(() => {
+        isCloudSyncInProgress = false;
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+      }, 6000);
+
       try {
-        const response = await fetch(CLOUD_LEADERBOARD_ENDPOINT);
+        // Cache-busting URL để ngăn chặn triệt để cache của trình duyệt di động
+        const nocacheUrl = `${CLOUD_LEADERBOARD_ENDPOINT}?_t=${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+        const response = await fetch(nocacheUrl, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+            'Pragma': 'no-cache'
+          }
+        });
+
         if (!response.ok) throw new Error('Cloud HTTP error: ' + response.status);
         const resJson = await response.json();
         const cloudUsers = (resJson && resJson.data && Array.isArray(resJson.data.users)) ? resJson.data.users : [];
 
         loadUsersDatabase();
 
-        let hasNewData = false;
-
         // Hợp nhất dữ liệu học viên từ Cloud vào cơ sở dữ liệu trên thiết bị
         cloudUsers.forEach(cu => {
-          if (!cu || !cu.email || !cu.name || isCloneAccount(cu)) return;
-          const localIdx = REGISTERED_USERS_DB.findIndex(u => u.email.toLowerCase().trim() === cu.email.toLowerCase().trim());
+          if (!cu || isCloneAccount(cu)) return;
+          const cleanCloud = sanitizeUserForCloud(cu);
+          if (!cleanCloud) return;
+
+          const localIdx = REGISTERED_USERS_DB.findIndex(u => 
+            (u.email && cleanCloud.email && u.email.toLowerCase().trim() === cleanCloud.email) ||
+            (u.name && cleanCloud.name && u.name.toLowerCase().trim() === cleanCloud.name.toLowerCase().trim())
+          );
+
           if (localIdx === -1) {
-            REGISTERED_USERS_DB.push(cu);
-            hasNewData = true;
+            REGISTERED_USERS_DB.push(cleanCloud);
           } else {
             const lu = REGISTERED_USERS_DB[localIdx];
-            const isLocalActiveUser = APP_STATE.userEmail && lu.email.toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim();
-            const cloudTotal = (Number(cu.rankPoints) || 1000) + (Number(cu.bfs) || 0) + (Number(cu.sessionPoints) || 0);
+            const isLocalActiveUser = APP_STATE.userEmail && lu.email && lu.email.toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim();
+            const cloudTotal = cleanCloud.rankPoints + cleanCloud.bfs + cleanCloud.sessionPoints;
             const localTotal = (Number(lu.rankPoints) || 1000) + (Number(lu.bfs) || 0) + (Number(lu.sessionPoints) || 0);
 
-            // Giữ lại tiến độ mới nhất / cao nhất giữa 2 nguồn
-            if (!isLocalActiveUser && cloudTotal >= localTotal) {
-              REGISTERED_USERS_DB[localIdx] = { ...lu, ...cu };
-              hasNewData = true;
+            // Giữ lại bản ghi có tổng điểm cao nhất, bảo tồn avatar của thiết bị nếu có
+            if (!isLocalActiveUser || cloudTotal > localTotal) {
+              REGISTERED_USERS_DB[localIdx] = {
+                ...lu,
+                ...cleanCloud,
+                avatar: lu.avatar || ''
+              };
             }
           }
         });
 
         // Đảm bảo thông tin của tài khoản hiện tại trên thiết bị không bị mất
-        if (APP_STATE.userEmail && APP_STATE.userName && !isCloneAccount({ name: APP_STATE.userName, email: APP_STATE.userEmail })) {
+        if (APP_STATE.userName || APP_STATE.userEmail) {
           syncCurrentUserToDatabase();
         }
 
-        saveUsersDatabase(false); // Lưu local mà không kích hoạt vòng lặp sync
+        saveUsersDatabase(false); // Lưu local mà không lặp vô tận
         renderLeaderboard();
         updateCloudSyncBadge('online');
 
-        // Đẩy phiên bản hợp nhất đầy đủ nhất lên Cloud để các máy khác cùng nhận được
-        pushLeaderboardToCloud();
-
         if (notify) {
-          alert('🌟 ĐỒNG BỘ CLOUD THÀNH CÔNG!\n\nBảng Xếp Hạng trực tuyến đã cập nhật đầy đủ dữ liệu người dùng từ mọi thiết bị!');
+          const topList = getFullLeaderboard();
+          const topSummary = topList.slice(0, 3).map((u, i) => `#${i + 1} ${u.name}: ${u.totalScore}đ`).join('\n');
+          alert(`🌟 ĐỒNG BỘ CLOUD THÀNH CÔNG!\n\nTop 3 Bảng Xếp Hạng hiện tại:\n${topSummary}\n\nĐã đồng bộ toàn bộ người dùng từ mọi thiết bị!`);
         }
       } catch (err) {
         console.warn('Leaderboard cloud sync issue:', err);
@@ -1603,6 +1648,7 @@
           alert('⚠️ Không thể kết nối tới Cloud Server lúc này. Đang hiển thị dữ liệu cục bộ trên thiết bị!');
         }
       } finally {
+        clearTimeout(safetyTimeout);
         isCloudSyncInProgress = false;
         if (refreshIcon) refreshIcon.classList.remove('animate-spin');
       }
@@ -1611,67 +1657,102 @@
     let cloudPushTimeout = null;
     function pushLeaderboardToCloud() {
       if (cloudPushTimeout) clearTimeout(cloudPushTimeout);
-      // Debounce để tránh gửi liên tục khi người dùng tương tác dồn dập
+      // Gửi nhanh sau 200ms để người dùng khác thấy ngay lập tức
       cloudPushTimeout = setTimeout(async () => {
         try {
-          const cleanList = REGISTERED_USERS_DB.filter(u => u && u.email && u.name && !isCloneAccount(u));
+          // Bước 1: Tải danh sách hiện tại trên Cloud về trước để không đè mất người dùng khác
+          let currentCloudUsers = [];
+          try {
+            const getRes = await fetch(`${CLOUD_LEADERBOARD_ENDPOINT}?_t=${Date.now()}`, { cache: 'no-store' });
+            if (getRes.ok) {
+              const j = await getRes.json();
+              if (j && j.data && Array.isArray(j.data.users)) {
+                currentCloudUsers = j.data.users;
+              }
+            }
+          } catch (_) {}
+
+          // Bước 2: Hợp nhất Cloud + Local (khử trùng theo email và name)
+          const mergedMap = new Map();
+
+          // Thêm các user trên Cloud trước
+          currentCloudUsers.forEach(cu => {
+            const s = sanitizeUserForCloud(cu);
+            if (s && (s.email || s.name)) {
+              const key = s.email || s.name.toLowerCase().trim();
+              mergedMap.set(key, s);
+            }
+          });
+
+          // Thêm hoặc cập nhật user của Local
+          REGISTERED_USERS_DB.forEach(lu => {
+            const s = sanitizeUserForCloud(lu);
+            if (s && (s.email || s.name)) {
+              const key = s.email || s.name.toLowerCase().trim();
+              const existing = mergedMap.get(key);
+              if (!existing) {
+                mergedMap.set(key, s);
+              } else {
+                const localTotal = (s.rankPoints || 1000) + (s.bfs || 0) + (s.sessionPoints || 0);
+                const cloudTotal = (existing.rankPoints || 1000) + (existing.bfs || 0) + (existing.sessionPoints || 0);
+                if (localTotal >= cloudTotal) {
+                  mergedMap.set(key, { ...existing, ...s });
+                }
+              }
+            }
+          });
+
+          const finalCloudList = Array.from(mergedMap.values());
+
           const payload = {
             name: "brainfocus_leaderboard",
             data: {
-              users: cleanList,
+              users: finalCloudList,
               lastSynced: Date.now()
             }
           };
 
-          await fetch(CLOUD_LEADERBOARD_ENDPOINT, {
+          const putRes = await fetch(CLOUD_LEADERBOARD_ENDPOINT, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
+
+          if (putRes.ok) {
+            updateCloudSyncBadge('online');
+          }
         } catch (err) {
           console.warn('Failed to push leaderboard to cloud:', err);
         }
-      }, 500);
+      }, 200);
     }
 
     // Bảng xếp hạng người dùng thực tế & Quản lý danh sách tài khoản đã đăng ký
     let REGISTERED_USERS_DB = [];
 
-    // Bộ lọc nhận diện tài khoản clone hoặc tài khoản test thử nghiệm
+    // Bất kỳ ai tạo tài khoản trên web đều là người dùng hợp lệ, không bị coi là clone
     function isCloneAccount(u) {
       if (!u) return true;
-      const name = String(u.name || '').toLowerCase().trim();
-      const email = String(u.email || '').toLowerCase().trim();
-      if (!email && !name) return true;
-      if (name.includes('clone') || email.includes('clone')) return true;
-      if (name.includes('demo') || email.includes('demo')) return true;
-      if (email === 'tam.brainfocus@gmail.com') return true;
-      if (name === 'tên bạn' || name === 'người dùng thử' || name.includes('tài khoản thử')) return true;
-      return false;
+      const name = String(u.name || '').trim();
+      const email = String(u.email || '').trim();
+      return !name && !email;
     }
 
     function loadUsersDatabase() {
       try {
         const saved = localStorage.getItem('bf_registered_users');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          REGISTERED_USERS_DB = Array.isArray(parsed)
-            ? parsed.filter(u => u && u.email && u.name && !isCloneAccount(u))
-            : [];
-        } else {
-          REGISTERED_USERS_DB = [];
-        }
+        const parsed = saved ? JSON.parse(saved) : [];
+        REGISTERED_USERS_DB = Array.isArray(parsed)
+          ? parsed.filter(u => u && (u.name || u.email))
+          : [];
       } catch (e) {
         REGISTERED_USERS_DB = [];
       }
-      try {
-        localStorage.setItem('bf_registered_users', JSON.stringify(REGISTERED_USERS_DB));
-      } catch (e) {}
     }
 
     function saveUsersDatabase(triggerCloud = true) {
       try {
-        const cleanList = REGISTERED_USERS_DB.filter(u => !isCloneAccount(u));
+        const cleanList = REGISTERED_USERS_DB.filter(u => u && (u.name || u.email));
         localStorage.setItem('bf_registered_users', JSON.stringify(cleanList));
         if (triggerCloud) {
           pushLeaderboardToCloud();
@@ -1679,11 +1760,16 @@
       } catch (e) {}
     }
 
-    // Xoá sạch toàn bộ tài khoản Clone và cập nhật lại giao diện
+    // Làm sạch các mục rỗng nếu có và cập nhật lại giao diện
     function purgeCloneAccounts(notify = false) {
       loadUsersDatabase();
-      REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u && u.email && u.name && !isCloneAccount(u));
-      saveUsersDatabase();
+      REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u && (u.email || u.name));
+      saveUsersDatabase(true);
+      renderLeaderboard();
+      if (notify) {
+        alert('✨ Đã làm mới danh sách tài khoản trên Bảng Xếp Hạng!');
+      }
+    }
 
       // Nếu tài khoản hiện tại là clone thì giải phóng
       if (isCloneAccount({ name: APP_STATE.userName, email: APP_STATE.userEmail })) {
@@ -1721,16 +1807,16 @@
 
     // Đồng bộ thông tin người dùng hiện tại vào danh sách người dùng toàn hệ thống
     function syncCurrentUserToDatabase() {
-      if (!APP_STATE.userEmail || !APP_STATE.userName) return;
-      if (isCloneAccount({ name: APP_STATE.userName, email: APP_STATE.userEmail })) return;
+      if (!APP_STATE.userName && !APP_STATE.userEmail) return;
 
       const currentSessionPoints = getSessionPointsTotal();
       const currentSessionsCount = APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0);
+      const email = (APP_STATE.userEmail || '').trim() || `${(APP_STATE.userName || 'user').toLowerCase().replace(/\s+/g, '')}@student.brainfocus`;
 
       const userEntry = {
-        id: APP_STATE.userEmail.toLowerCase().trim(),
-        email: APP_STATE.userEmail.trim(),
-        name: APP_STATE.userName.trim(),
+        id: email.toLowerCase().trim(),
+        email: email,
+        name: (APP_STATE.userName || 'Học viên').trim(),
         school: APP_STATE.userSchool || 'Người học tích cực',
         avatar: APP_STATE.userAvatar || '',
         rankPoints: Number(APP_STATE.rankPoints) || 1000,
@@ -1744,7 +1830,10 @@
         lastUpdated: Date.now()
       };
 
-      const existingIdx = REGISTERED_USERS_DB.findIndex(u => u.email.toLowerCase().trim() === userEntry.email.toLowerCase().trim());
+      const existingIdx = REGISTERED_USERS_DB.findIndex(u => 
+        (u.email && u.email.toLowerCase().trim() === userEntry.email.toLowerCase().trim()) ||
+        (u.name && u.name.toLowerCase().trim() === userEntry.name.toLowerCase().trim())
+      );
       if (existingIdx >= 0) {
         REGISTERED_USERS_DB[existingIdx] = { ...REGISTERED_USERS_DB[existingIdx], ...userEntry };
       } else {
@@ -1800,7 +1889,25 @@
 
       // Sắp xếp theo tổng điểm giảm dần
       all.sort((a, b) => b.totalScore - a.totalScore);
-      return all.map((u, idx) => ({ ...u, rank: idx + 1 }));
+
+      // Khử trùng lặp: Nếu trùng email hoặc trùng họ tên thì chỉ giữ lại 1 bản ghi có điểm cao nhất
+      const uniqueMap = new Map();
+      all.forEach(item => {
+        const normKey = (item.name || '').replace(/\s*\(Bạn\)$/i, '').trim().toLowerCase();
+        const existing = uniqueMap.get(normKey);
+        if (!existing) {
+          uniqueMap.set(normKey, item);
+        } else {
+          // Ưu tiên tài khoản đang đăng nhập hoặc có tổng điểm cao hơn
+          if (item.isUser || item.totalScore > existing.totalScore) {
+            uniqueMap.set(normKey, item);
+          }
+        }
+      });
+
+      const uniqueList = Array.from(uniqueMap.values());
+      uniqueList.sort((a, b) => b.totalScore - a.totalScore);
+      return uniqueList.map((u, idx) => ({ ...u, rank: idx + 1 }));
     }
 
     function switchToUserAccountSilently(user) {
@@ -4444,16 +4551,8 @@
         const saved = localStorage.getItem('bf_user_profile');
         if (saved) {
           const data = JSON.parse(saved);
-          if (data.userEmail && !isCloneAccount({ name: data.userName, email: data.userEmail })) {
-            APP_STATE.userEmail = data.userEmail;
-          } else {
-            APP_STATE.userEmail = "";
-          }
-          if (data.userName && !isCloneAccount({ name: data.userName, email: data.userEmail })) {
-            APP_STATE.userName = data.userName;
-          } else {
-            APP_STATE.userName = "";
-          }
+          if (data.userEmail) APP_STATE.userEmail = data.userEmail;
+          if (data.userName) APP_STATE.userName = data.userName;
           if (data.userSchool) APP_STATE.userSchool = data.userSchool;
           if (data.userAvatar !== undefined) APP_STATE.userAvatar = data.userAvatar;
           if (data.rankPoints !== undefined) APP_STATE.rankPoints = Number(data.rankPoints) || 1000;
@@ -4655,13 +4754,8 @@
       const name = document.getElementById('reg-input-name').value.trim();
       const school = document.getElementById('reg-input-school').value.trim() || 'Người học tập trung';
       
-      if (!email || !name) {
-        alert('Vui lòng điền đầy đủ Email và Họ tên!');
-        return;
-      }
-
-      if (isCloneAccount({ name, email })) {
-        alert('⚠️ Tên hoặc email không được chứa từ khóa "clone" hoặc "demo". Vui lòng nhập tên và email thật của bạn để ghi nhận kết quả học!');
+      if (!name && !email) {
+        alert('Vui lòng điền họ tên và email của bạn!');
         return;
       }
 

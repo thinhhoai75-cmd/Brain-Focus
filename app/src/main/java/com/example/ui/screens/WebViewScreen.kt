@@ -241,8 +241,9 @@ fun WebReviewScreen(
                             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
                         }
 
-                        // In Android emulator/cloud headless environment, SOFTWARE layer avoids Mesa DRM rendernode crashes
-                        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                        // Use default layer type so Chromium and Android can use native compositor
+                        // and avoid software rasterizer lag or white-screen glitches
+                        setLayerType(View.LAYER_TYPE_NONE, null)
 
                         webViewClient = object : WebViewClient() {
                             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -276,7 +277,7 @@ fun WebReviewScreen(
                                 isLoading = false
                                 view?.let { wv ->
                                     try {
-                                        wv.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                                        wv.setLayerType(View.LAYER_TYPE_NONE, null)
                                         wv.post {
                                             try {
                                                 wv.loadUrl("file:///android_asset/web/index.html")
@@ -289,6 +290,13 @@ fun WebReviewScreen(
                         }
 
                         webChromeClient = object : WebChromeClient() {
+                            override fun onConsoleMessage(consoleMessage: android.webkit.ConsoleMessage?): Boolean {
+                                consoleMessage?.let {
+                                    android.util.Log.d("BrainFocusWebView", "${it.message()} -- From line ${it.lineNumber()} of ${it.sourceId()}")
+                                }
+                                return true
+                            }
+
                             override fun onJsAlert(
                                 view: WebView?,
                                 url: String?,

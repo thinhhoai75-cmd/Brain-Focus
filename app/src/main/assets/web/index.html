@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Brain Focus 🧠⚡ - Khắc Phục Não Bỏng Ngô</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,13 +54,19 @@
     }
   </script>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       background: linear-gradient(145deg, #f8fafc 0%, #f0f9ff 40%, #ecfeff 75%, #f0fdf4 100%);
       color: #0f172a;
       min-height: 100vh;
+      max-width: 100vw;
+      width: 100%;
+      overflow-x: hidden !important;
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
@@ -115,77 +124,79 @@
 <body class="h-full text-slate-800 antialiased overflow-hidden flex flex-col selection:bg-cyan-200 selection:text-blue-950">
 
   <!-- ================= TOP APP BAR (Luminous Gradient Header) ================= -->
-  <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 px-4 py-2.5 shadow-lg flex items-center justify-between shrink-0 border-b border-blue-400/30 z-20">
-    <div class="flex items-center space-x-3">
+  <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 px-2.5 sm:px-4 py-2 sm:py-2.5 shadow-lg flex items-center justify-between shrink-0 border-b border-blue-400/30 z-20 w-full max-w-full overflow-hidden">
+    <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
       <!-- Cyber Logo -->
-      <div class="relative">
-        <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-xl shadow-lg glow-blue font-black text-white">
+      <div class="relative shrink-0">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-lg sm:text-xl shadow-lg glow-blue font-black text-white">
           🧠
         </div>
-        <span class="absolute -bottom-1 -right-1 flex h-3 w-3">
+        <span class="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-300 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-emerald-400"></span>
         </span>
       </div>
 
-      <div>
-        <div class="flex items-center gap-2">
-          <h1 class="font-black text-base sm:text-lg tracking-tight leading-tight text-white font-cyber flex items-center gap-1.5 drop-shadow-sm">
+      <div class="shrink-0">
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <h1 class="font-black text-sm sm:text-lg tracking-tight leading-tight text-white font-cyber flex items-center gap-1 drop-shadow-sm">
             BRAIN FOCUS
           </h1>
-          <a href="https://brainfocus.id.vn" target="_blank" class="hidden sm:inline-flex items-center gap-1 text-[10px] bg-white/15 border border-white/30 text-white px-2 py-0.5 rounded-full font-mono hover:bg-white hover:text-blue-700 transition-all shadow-sm">
+          <a href="https://brainfocus.id.vn" target="_blank" class="hidden md:inline-flex items-center gap-1 text-[10px] bg-white/15 border border-white/30 text-white px-2 py-0.5 rounded-full font-mono hover:bg-white hover:text-blue-700 transition-all shadow-sm">
             <span>🌐</span>
             <span>brainfocus.id.vn</span>
           </a>
         </div>
-        <p class="text-[11px] text-blue-100 font-medium flex items-center gap-1.5">
-          <span class="text-amber-300 font-bold">🔥 Lock In Mode</span>
-          <span>•</span>
-          <span class="text-cyan-100">Diệt Não Bỏng Ngô 🍿🚫</span>
+        <p class="text-[10px] sm:text-[11px] text-blue-100 font-medium flex items-center gap-1">
+          <span class="text-amber-300 font-bold">🔥 Lock In</span>
+          <span class="hidden sm:inline">•</span>
+          <span class="hidden sm:inline text-cyan-100">Diệt Não Bỏng Ngô 🍿🚫</span>
         </p>
       </div>
     </div>
 
     <!-- Right Header Actions (Audio & BFS Badge & Rank Points) -->
-    <div class="flex items-center space-x-1.5 sm:space-x-2.5">
+    <div class="flex items-center space-x-1 sm:space-x-2 shrink-0">
       
       <!-- Equalizer Visualizer & Sound Synth Button -->
-      <button id="quick-sound-btn" onclick="toggleAudio()" class="flex items-center gap-2 bg-white/15 hover:bg-white/25 active:scale-95 transition-all text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/30 text-white shadow-sm">
-        <!-- Animated Equalizer Bars -->
-        <div id="equalizer-bars" class="flex items-end gap-0.5 h-4 opacity-75">
-          <span class="w-1 bg-cyan-200 rounded-full h-1"></span>
-          <span class="w-1 bg-white rounded-full h-2"></span>
-          <span class="w-1 bg-sky-200 rounded-full h-1"></span>
-          <span class="w-1 bg-cyan-100 rounded-full h-3"></span>
+      <button id="quick-sound-btn" onclick="toggleAudio()" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 active:scale-95 transition-all text-xs font-bold px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl border border-white/30 text-white shadow-sm" title="Bật/Tắt Sóng Não 40Hz">
+        <div id="equalizer-bars" class="flex items-end gap-0.5 h-3.5 sm:h-4 opacity-75">
+          <span class="w-0.5 sm:w-1 bg-cyan-200 rounded-full h-1"></span>
+          <span class="w-0.5 sm:w-1 bg-white rounded-full h-2"></span>
+          <span class="w-0.5 sm:w-1 bg-sky-200 rounded-full h-1"></span>
+          <span class="w-0.5 sm:w-1 bg-cyan-100 rounded-full h-3"></span>
         </div>
-        <span id="sound-status" class="hidden md:inline text-white text-[11px] font-semibold">Sóng 40Hz: Tắt</span>
+        <span id="sound-status" class="hidden lg:inline text-white text-[11px] font-semibold">Sóng 40Hz: Tắt</span>
       </button>
 
-      <!-- Điểm Xếp Hạng (Rank Points) -->
-      <div onclick="switchTab('profile')" class="cursor-pointer bg-amber-400/90 hover:bg-amber-400 text-slate-900 border border-amber-300 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-bold transition-all shadow-md active:scale-95">
-        <span class="text-amber-950 font-extrabold">🏆 XH:</span>
-        <span id="header-rank-points" class="text-slate-950 text-xs sm:text-sm font-cyber font-black">850đ</span>
+      <!-- Điểm Xếp Hạng Gốc (1000đ khởi tạo) -->
+      <div onclick="switchTab('profile')" class="cursor-pointer bg-amber-400/95 hover:bg-amber-400 text-slate-900 border border-amber-300 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-xl flex items-center space-x-0.5 sm:space-x-1 text-[11px] sm:text-xs font-bold transition-all shadow-md active:scale-95" title="Điểm Xếp Hạng khởi tạo (1000đ)">
+        <span class="text-amber-950 font-extrabold">🏆</span>
+        <span class="hidden sm:inline text-amber-950 font-bold">XH:</span>
+        <span id="header-rank-points" class="text-slate-950 text-xs sm:text-sm font-cyber font-black">1000đ</span>
       </div>
 
       <!-- BFS Score Pill (Interactive) -->
-      <div onclick="switchTab('profile')" class="cursor-pointer bg-white text-blue-700 hover:bg-blue-50 border border-white/60 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-bold transition-all shadow-md active:scale-95">
-        <span class="text-blue-600 font-black">⚡ BFS:</span>
-        <span id="header-bfs-score" class="text-blue-900 text-xs sm:text-sm font-cyber font-black">740</span>
+      <div onclick="switchTab('profile')" class="cursor-pointer bg-white text-blue-700 hover:bg-blue-50 border border-white/60 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-xl flex items-center space-x-0.5 sm:space-x-1 text-[11px] sm:text-xs font-bold transition-all shadow-md active:scale-95" title="Điểm BFS từ bài test 10 câu">
+        <span class="text-blue-600 font-black">⚡</span>
+        <span class="hidden sm:inline text-blue-600 font-bold">BFS:</span>
+        <span id="header-bfs-score" class="text-blue-900 text-xs sm:text-sm font-cyber font-black">1000</span>
       </div>
 
       <!-- Total Combined Score for Leaderboard -->
-      <div onclick="switchTab('leaderboard')" class="cursor-pointer bg-gradient-to-r from-emerald-400 to-cyan-300 text-slate-950 px-2.5 py-1 rounded-xl flex items-center space-x-1 text-xs font-black transition-all shadow-md active:scale-95">
-        <span>👑 Tổng:</span>
-        <span id="header-total-score" class="font-cyber font-black text-xs sm:text-sm">1590đ</span>
+      <div onclick="switchTab('leaderboard')" class="cursor-pointer bg-gradient-to-r from-emerald-400 to-cyan-300 text-slate-950 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-xl flex items-center space-x-0.5 sm:space-x-1 text-[11px] sm:text-xs font-black transition-all shadow-md active:scale-95" title="Tổng Điểm BXH = 1000 XH + BFS + (Số phiên × Điểm theo thời gian)">
+        <span>👑</span>
+        <span class="hidden sm:inline">Tổng:</span>
+        <span id="header-total-score" class="font-cyber font-black text-xs sm:text-sm">2000đ</span>
       </div>
 
       <!-- User Profile & Avatar Quick Button -->
-      <button onclick="switchTab('profile')" class="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 border border-white/40 px-2 py-1 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95">
+      <button onclick="switchTab('profile')" class="flex items-center gap-1 bg-white/20 hover:bg-white/30 border border-white/40 p-1 sm:px-2 sm:py-1 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95" title="Hồ Sơ Của Bạn">
         <div id="header-avatar-circle" class="w-6 h-6 rounded-full overflow-hidden bg-gradient-to-tr from-amber-400 to-pink-500 flex items-center justify-center text-[11px] font-black text-white shadow-xs">
-          <span id="header-avatar-initial">T</span>
+          <span id="header-avatar-initial">👤</span>
           <img id="header-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
         </div>
-        <span id="header-account-name" class="hidden sm:inline text-xs font-bold max-w-[80px] truncate">Bạn</span>
+        <span id="header-account-name" class="hidden lg:inline text-xs font-bold max-w-[70px] truncate">Tài khoản</span>
       </button>
     </div>
   </header>
@@ -199,7 +210,7 @@
     </div>
     <div class="text-[11px] font-bold text-blue-800 flex items-center gap-1">
       <span>🔥 Streak:</span>
-      <span id="header-streak-badge" class="text-amber-600 font-black">5 Ngày Cháy Hết Mình</span>
+      <span id="header-streak-badge" class="text-amber-600 font-black">1 Ngày Khởi Đầu</span>
     </div>
   </div>
 
@@ -287,11 +298,87 @@
     </aside>
 
     <!-- DYNAMIC MAIN CONTENT -->
-    <main class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-5 md:p-6 pb-28 lg:pb-6 bg-gradient-to-b from-sky-50/50 via-slate-50 to-slate-100/60">
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-5 md:p-6 pb-20 sm:pb-24 lg:pb-6 bg-gradient-to-b from-sky-50/50 via-slate-50 to-slate-100/60">
 
       <!-- ================= TAB 1: FOCUS SESSION (LOCK IN) ================= -->
       <section id="tab-timer" class="tab-content max-w-3xl mx-auto space-y-4">
         
+        <!-- DAILY SESSIONS TRACKER & LIMIT (Tối đa 3 phiên/ngày) -->
+        <div id="daily-session-tracker-card" class="glass-card rounded-2xl p-3.5 sm:p-4 border border-blue-200/90 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
+              📅
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-black text-slate-900 font-cyber">HẠN MỨC HỌC SÂU HÔM NAY:</span>
+                <span id="daily-sessions-counter-badge" class="font-cyber font-black text-xs text-blue-700 bg-blue-50 border border-blue-300 px-2.5 py-0.5 rounded-full">0/3 Phiên</span>
+              </div>
+              <p id="daily-sessions-subtext" class="text-[11px] text-slate-500 mt-0.5">
+                Khoa học thần kinh khuyến nghị tối đa 3 chu kỳ Ultradian (4.5h)/ngày để tránh quá tải não bộ.
+              </p>
+            </div>
+          </div>
+
+          <!-- 3 Sessions Visual Progress Indicators -->
+          <div class="flex items-center gap-2 self-start sm:self-auto shrink-0" id="daily-sessions-pills">
+            <div id="session-dot-1" class="flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+              <span>①</span> <span>Phiên 1</span>
+            </div>
+            <div id="session-dot-2" class="flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+              <span>②</span> <span>Phiên 2</span>
+            </div>
+            <div id="session-dot-3" class="flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+              <span>③</span> <span>Phiên 3</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MANDATORY 15-MINUTE REST COOLDOWN BANNER -->
+        <div id="mandatory-rest-banner" class="hidden rounded-2xl p-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-lg border border-amber-300/40">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center text-2xl shrink-0 animate-bounce">
+                ☕
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 id="cooldown-banner-title" class="font-cyber font-black text-xs sm:text-sm text-amber-100 uppercase tracking-wider">THỜI GIAN NGHỈ NGƠI HỒI PHỤC (15 PHÚT BẮT BUỘC)</h4>
+                  <span class="text-[9px] font-extrabold bg-white/25 px-2 py-0.5 rounded-full border border-white/30 text-white">REST MODE</span>
+                </div>
+                <p id="cooldown-banner-subtext" class="text-xs text-amber-50 mt-0.5 font-medium leading-tight">
+                  Sau 90 phút học sâu, vỏ não cần 15 phút hạ nhiệt và giải tỏa Adenosine. Bạn chưa thể bắt đầu phiên học mới.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between sm:justify-end gap-3 bg-white/15 backdrop-blur-md px-4 py-2 rounded-xl border border-white/30 shrink-0">
+              <span class="text-xs font-bold text-amber-100">Thời gian nghỉ:</span>
+              <span id="cooldown-timer-display" class="font-cyber font-black text-xl tracking-wider text-white">15:00</span>
+            </div>
+          </div>
+          <!-- Progress bar -->
+          <div class="w-full bg-black/20 rounded-full h-1.5 mt-3 overflow-hidden">
+            <div id="cooldown-progress-bar" class="bg-white h-full transition-all duration-1000 ease-linear" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- DAILY LIMIT REACHED CELEBRATION / LOCK BANNER -->
+        <div id="daily-limit-banner" class="hidden rounded-2xl p-4 bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 text-white shadow-xl border border-indigo-500/40">
+          <div class="flex items-start gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl shrink-0 shadow-md">
+              👑
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h4 class="font-cyber font-black text-xs sm:text-sm text-amber-300 uppercase tracking-wider">XUẤT SẮC: ĐÃ HOÀN THÀNH 3/3 PHIÊN HÔM NAY (4.5 TIẾNG)</h4>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed font-medium">
+                Bạn đã hoàn thành trọn vẹn hạn mức 3 chu kỳ Ultradian tối đa trong ngày. Vỏ não trước trán cần ngủ đủ giấc để củng cố các liên kết thần kinh từ trí nhớ ngắn hạn sang dài hạn. Hãy nghỉ ngơi trọn vẹn và hẹn gặp lại bạn vào ngày mai!
+              </p>
+            </div>
+          </div>
+        </div>
+
         <!-- Mode Tabs Pills -->
         <div class="flex justify-center">
           <div class="inline-flex p-1 bg-white border border-slate-200 shadow-md rounded-2xl">
@@ -301,8 +388,8 @@
             <button onclick="setTimerMode('pomodoro')" id="mode-btn-pomodoro" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-blue-600">
               🍅 Pomodoro 25p
             </button>
-            <button onclick="setTimerMode('break')" id="mode-btn-break" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-blue-600">
-              ☕ Sạc Pin 15p
+            <button onclick="setTimerMode('sprint')" id="mode-btn-sprint" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-blue-600">
+              ⚡ Khởi Động 15p
             </button>
           </div>
         </div>
@@ -360,16 +447,13 @@
           </div>
 
           <!-- Controls Action Row -->
-          <div class="flex items-center gap-3 sm:gap-4 mt-4">
+          <div class="flex items-center justify-center gap-3 sm:gap-4 mt-4">
             <button onclick="resetTimer()" class="w-12 h-12 rounded-2xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-600 flex items-center justify-center text-lg active:scale-95 transition-all shadow-md" title="Đặt lại">
               🔄
             </button>
             <button onclick="toggleTimer()" id="main-timer-action-btn" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider">
               <span id="play-pause-icon">▶️</span>
               <span id="play-pause-text">BẮT ĐẦU LOCK IN</span>
-            </button>
-            <button onclick="openReflectionModal()" class="w-12 h-12 rounded-2xl bg-sky-50 hover:bg-sky-100 border border-sky-300 text-blue-700 flex items-center justify-center text-lg active:scale-95 transition-all shadow-md" title="Đúc kết phiên học">
-              📝
             </button>
           </div>
 
@@ -456,10 +540,54 @@
           </div>
         </div>
 
+        <!-- DAILY GYM SESSIONS TRACKER & LIMIT (Tối đa 5 lượt/ngày) -->
+        <div id="daily-gym-tracker-card" class="glass-card rounded-2xl p-3.5 sm:p-4 border border-indigo-200/90 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
+              ⚡
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-black text-slate-900 font-cyber">LƯỢT TẬP GYM HÔM NAY:</span>
+                <span id="daily-gym-counter-badge" class="font-cyber font-black text-xs text-indigo-700 bg-indigo-50 border border-indigo-300 px-2.5 py-0.5 rounded-full">0/5 Lượt</span>
+              </div>
+              <p id="daily-gym-subtext" class="text-[11px] text-slate-500 mt-0.5">
+                Khoa học thần kinh khuyến nghị rèn luyện ngắt quãng tối đa 5 lượt/ngày để vỏ não trước trán củng cố synap tự nhiên.
+              </p>
+            </div>
+          </div>
+
+          <!-- 5 Visual Pills -->
+          <div class="flex items-center gap-1.5 self-start sm:self-auto shrink-0 flex-wrap" id="daily-gym-pills">
+            <div id="gym-dot-1" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>①</span><span>L1</span></div>
+            <div id="gym-dot-2" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>②</span><span>L2</span></div>
+            <div id="gym-dot-3" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>③</span><span>L3</span></div>
+            <div id="gym-dot-4" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>④</span><span>L4</span></div>
+            <div id="gym-dot-5" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>⑤</span><span>L5</span></div>
+          </div>
+        </div>
+
+        <!-- GYM DAILY LIMIT REACHED BANNER -->
+        <div id="daily-gym-limit-banner" class="hidden rounded-2xl p-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white shadow-xl border border-purple-500/40">
+          <div class="flex items-start gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl shrink-0 shadow-md">
+              👑
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h4 class="font-cyber font-black text-xs sm:text-sm text-amber-300 uppercase tracking-wider">XUẤT SẮC: ĐÃ HOÀN THÀNH 5/5 LƯỢT TẬP GYM HÔM NAY!</h4>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed font-medium">
+                Vỏ não trước trán (Prefrontal Cortex) đã được kích hoạt nhận thức tối ưu trong ngày hôm nay. Tập quá nhiều có thể gây mỏi synap và bão hòa. Hãy nghỉ ngơi, ngủ đủ giấc và quay lại rèn luyện vào ngày mai!
+              </p>
+            </div>
+          </div>
+        </div>
+
         <!-- 3 Game Selection Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
           <!-- Game 1: Stroop Test -->
-          <div onclick="startStroopGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
+          <div id="gym-card-stroop" onclick="startStroopGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
             <div>
               <div class="w-10 h-10 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
                 🎨
@@ -471,12 +599,12 @@
             </div>
             <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
               <span class="text-slate-500">12 Lượt • 2.5s/câu</span>
-              <span class="text-blue-700 font-black">+40 BFS →</span>
+              <span id="gym-badge-stroop" class="text-blue-700 font-black">+40 BFS →</span>
             </div>
           </div>
 
           <!-- Game 2: Memory Matrix -->
-          <div onclick="startMemoryGridGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
+          <div id="gym-card-grid" onclick="startMemoryGridGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
             <div>
               <div class="w-10 h-10 rounded-xl bg-sky-100 border border-sky-200 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
                 🧩
@@ -488,12 +616,12 @@
             </div>
             <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
               <span class="text-slate-500">6 Cấp độ • Có Ô Bẫy</span>
-              <span class="text-blue-700 font-black">+50 BFS →</span>
+              <span id="gym-badge-grid" class="text-blue-700 font-black">+50 BFS →</span>
             </div>
           </div>
 
           <!-- Game 3: Rapid Math -->
-          <div onclick="startRapidMathGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
+          <div id="gym-card-math" onclick="startRapidMathGame()" class="cursor-pointer glass-card p-4 rounded-2xl hover:border-blue-400 transition-all flex flex-col justify-between group shadow-md border-slate-200">
             <div>
               <div class="w-10 h-10 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
                 ⚡
@@ -505,13 +633,23 @@
             </div>
             <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
               <span class="text-slate-500">20s • Combo x2 x3</span>
-              <span class="text-blue-700 font-black">+40 BFS →</span>
+              <span id="gym-badge-math" class="text-blue-700 font-black">+40 BFS →</span>
             </div>
           </div>
         </div>
 
         <!-- Active Game Container -->
-        <div id="active-game-container" class="hidden glass-card p-6 rounded-3xl border-blue-300 shadow-2xl relative">
+        <div id="active-game-container" class="hidden glass-card p-4 sm:p-6 rounded-3xl border-2 border-indigo-400/80 shadow-2xl relative space-y-4">
+          <!-- Persistent Top Control Bar with Clear Exit Button -->
+          <div class="flex items-center justify-between border-b border-slate-200/80 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+              <span id="active-game-title" class="font-cyber font-black text-xs sm:text-sm text-slate-900 uppercase">ĐANG TẬP GYM NÃO BỘ</span>
+            </div>
+            <button onclick="closeGameContainer()" class="px-3.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-cyber font-black text-xs border border-rose-300 transition-all flex items-center gap-1 active:scale-95 shadow-xs" title="Dừng trò chơi ngay lập tức và quay về phòng gym">
+              <span>🛑</span> <span>DỪNG CHƠI / THOÁT</span>
+            </button>
+          </div>
           <div id="game-dynamic-area"></div>
         </div>
 
@@ -564,35 +702,47 @@
       </section>
 
       <!-- ================= TAB 5: LEADERBOARD ================= -->
-      <section id="tab-leaderboard" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+      <section id="tab-leaderboard" class="tab-content hidden max-w-3xl mx-auto space-y-4 w-full">
         
-        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-5 rounded-3xl border border-blue-300 shadow-lg text-center text-white relative overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 p-4 sm:p-5 rounded-3xl border border-blue-300 shadow-lg text-center text-white relative overflow-hidden">
           <div class="relative z-10">
             <span class="text-3xl">🏆</span>
             <h2 class="text-lg font-black text-white font-cyber mt-1">BẢNG XẾP HẠNG NGƯỜI DÙNG THỰC TẾ</h2>
             <p class="text-xs text-amber-300 font-bold mt-0.5">
-              ⚡ Xếp hạng theo: Điểm XH (mặc định 1000đ khi tạo mới) + Số phiên học sâu + Điểm BFS
+              ⚡ Tổng Điểm = 1000 (Điểm XH) + Điểm BFS + (Số phiên học × Điểm theo thời lượng chạy)
             </p>
           </div>
         </div>
 
-        <!-- Rule Explainer Card -->
-        <div class="glass-card-light px-4 py-3 rounded-2xl border border-blue-200 text-xs text-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 shadow-xs">
-          <div class="flex items-center gap-2.5">
-            <span class="text-lg shrink-0">💡</span>
+        <!-- Rule Explainer Card & Cloud Sync Bar -->
+        <div class="glass-card-light px-4 py-3 rounded-2xl border border-blue-200 text-xs text-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+          <div class="flex items-start gap-2.5">
+            <span class="text-xl shrink-0">💡</span>
             <div>
-              <strong class="text-slate-900 font-bold">Quy chuẩn tính điểm xếp hạng mới:</strong>
-              <div class="text-[11px] text-slate-600 mt-0.5 font-mono">
-                Tổng Điểm = Điểm Xếp Hạng (Khởi tạo 1000đ) + (Số Phiên Học × 10) + Điểm BFS (0–1000)
+              <div class="flex items-center gap-2 flex-wrap">
+                <strong class="text-slate-900 font-bold">Quy chuẩn tính điểm xếp hạng mới:</strong>
+                <div id="cloud-sync-status-badge" class="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-xs">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Cloud BXH: Trực tuyến</span>
+                </div>
+              </div>
+              <div class="text-[11px] text-blue-950 mt-1 font-mono font-bold bg-blue-50/80 px-2.5 py-1.5 rounded-xl border border-blue-200 leading-relaxed">
+                Tổng Điểm = 1000đ (Điểm XH) + Điểm BFS (từ 10 câu test) + [Số phiên × Điểm theo thời gian học: vd 1 phiên 90p = 90đ]
               </div>
             </div>
           </div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <button onclick="openRegisterModal()" class="shrink-0 text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-1.5 rounded-xl hover:opacity-90 shadow-xs">
-              + Tạo tài khoản mới
+          <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+            <button onclick="openRegisterModal(false)" class="flex-1 sm:flex-initial text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-1.5 rounded-xl hover:opacity-90 shadow-xs flex items-center justify-center gap-1">
+              <span>+</span> Tạo tài khoản mới
             </button>
-            <button onclick="resetAccountAndData()" class="shrink-0 text-[11px] font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all" title="Xoá tất cả tài khoản thử nghiệm">
-              🗑️ Xoá TK Thử Nghiệm
+            <button onclick="openSwitchAccountModal()" class="flex-1 sm:flex-initial text-xs font-bold bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1">
+              <span>👥</span> Đổi tài khoản
+            </button>
+            <button onclick="purgeCloneAccounts(true)" class="flex-1 sm:flex-initial text-xs font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Quét sạch tài khoản clone khỏi bảng xếp hạng">
+              <span>🧹</span> Xóa clone
+            </button>
+            <button onclick="fetchLeaderboardFromCloud(true)" class="flex-1 sm:flex-initial text-[11px] font-bold bg-blue-50 hover:bg-blue-100 border border-blue-300 text-blue-800 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Đồng bộ lại dữ liệu toàn hệ thống từ Cloud">
+              <span id="refresh-icon">🔄</span> Làm mới (Cloud)
             </button>
           </div>
         </div>
@@ -610,95 +760,117 @@
       </section>
 
       <!-- ================= TAB 6: PROFILE & STATS ================= -->
-      <section id="tab-profile" class="tab-content hidden max-w-3xl mx-auto space-y-4">
+      <section id="tab-profile" class="tab-content hidden max-w-3xl mx-auto space-y-4 w-full">
         
         <!-- User Info Card with Level Badge & Custom Avatar -->
-        <div class="glass-card p-5 rounded-3xl border-slate-200 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center space-x-4">
-            <div class="relative group cursor-pointer" onclick="openAvatarCustomizer()" title="Nhấn để đổi Avatar">
-              <div class="w-16 h-16 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white flex items-center justify-center text-3xl font-black shadow-md font-cyber border-2 border-white">
+        <div class="glass-card p-4 sm:p-5 rounded-3xl border-slate-200 shadow-md flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 w-full">
+          <div class="flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto">
+            <div class="relative group cursor-pointer shrink-0" onclick="openAvatarCustomizer()" title="Nhấn để đổi Avatar">
+              <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 text-white flex items-center justify-center text-2xl sm:text-3xl font-black shadow-md font-cyber border-2 border-white">
                 <span id="user-avatar-initial">T</span>
                 <img id="user-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
               </div>
-              <div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] border-2 border-white shadow-xs">
+              <div class="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] border-2 border-white shadow-xs">
                 ✏️
               </div>
             </div>
-            <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                <h2 id="user-display-name" class="text-lg font-black text-slate-900 font-cyber">Tên Bạn</h2>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h2 id="user-display-name" class="text-base sm:text-lg font-black text-slate-900 font-cyber truncate">Chưa đăng ký</h2>
                 <span id="user-display-level" class="text-[10px] bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 rounded-full font-bold">Level 1</span>
-                <span id="user-auth-badge" class="text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
-                  <span>✉️</span> <span id="user-display-email">demo@gmail.com</span>
+                <span id="user-auth-badge" onclick="openSwitchAccountModal()" class="text-[10px] bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700 border border-slate-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate cursor-pointer transition-all" title="Nhấn để đổi tài khoản">
+                  <span>✉️</span> <span id="user-display-email" class="truncate">Chưa liên kết Gmail</span>
                 </span>
               </div>
-              <p id="user-display-school" class="text-xs text-slate-600 mt-0.5">Mục tiêu: Tối ưu hóa vỏ não & 900+ BFS</p>
+              <p id="user-display-school" class="text-xs text-slate-600 mt-0.5 truncate">Tạo tài khoản để đồng bộ điểm và đua Top</p>
               <div class="inline-flex items-center gap-1.5 mt-1.5 bg-sky-50 border border-sky-200 text-blue-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
                 <span id="user-display-title">🌟 Danh hiệu: Học Viên Mới (New Brain)</span>
               </div>
             </div>
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <button onclick="openEditProfileModal()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
+          <div class="flex flex-row sm:flex-col gap-2 w-full sm:w-auto shrink-0">
+            <button onclick="openEditProfileModal()" class="flex-1 sm:flex-initial px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
               <span>⚙️</span> Đổi Tên / Avatar
             </button>
-            <button onclick="openAssessmentModal(true)" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
+            <button onclick="openAssessmentModal(true)" class="flex-1 sm:flex-initial px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
               <span>📝</span> Test Lại BFS (10 câu)
             </button>
-          </div>
-        </div>
-
-        <!-- Account Switcher & Gmail Auth Bar -->
-        <div class="glass-card-light p-4 rounded-2xl border border-sky-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3 bg-gradient-to-r from-blue-50/80 to-indigo-50/50">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-base shadow-xs">
-              <svg class="w-4 h-4" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-              </svg>
-            </div>
-            <div>
-              <div class="text-xs font-bold text-slate-900">Quản Lý Tài Khoản Gmail</div>
-              <div class="text-[11px] text-slate-600">Đăng nhập tài khoản Gmail để đồng bộ điểm và đua Top bảng xếp hạng.</div>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-2 w-full sm:w-auto">
-            <button onclick="openRegisterModal()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1">
-              <span>+</span> Tạo Mới
-            </button>
-            <button onclick="handleGoogleLogin()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black rounded-xl shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
-              <span>🔐</span> Đăng Nhập
-            </button>
-            <button onclick="resetAccountAndData()" class="flex-1 sm:flex-initial px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Xoá toàn bộ tài khoản thử nghiệm & đặt lại">
-              <span>🗑️</span> Xoá Hết TK Thử Nghiệm
+            <button onclick="openSwitchAccountModal()" class="flex-1 sm:flex-initial px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
+              <span>👥</span> Đổi / Thêm TK
             </button>
           </div>
         </div>
 
-        <!-- 2x2 Key Metrics Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
-            <div class="text-xs font-bold text-slate-600">Chỉ số BFS</div>
-            <div id="stat-bfs-score" class="text-2xl font-black text-blue-600 mt-1 font-cyber">740</div>
-            <div class="text-[10px] text-emerald-600 font-bold mt-0.5">Khảo sát 10 câu & Gym</div>
+        <!-- 4 Key Metrics Grid with Session Calculation breakdown -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 w-full">
+          <div class="glass-card p-3.5 sm:p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-[11px] sm:text-xs font-bold text-slate-600">⚡ Chỉ số BFS</div>
+            <div id="stat-bfs-score" class="text-xl sm:text-2xl font-black text-blue-600 mt-1 font-cyber">1000</div>
+            <div class="text-[10px] text-emerald-600 font-bold mt-0.5">Khảo sát 10 câu</div>
           </div>
-          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
-            <div class="text-xs font-bold text-slate-600">Điểm Xếp Hạng</div>
-            <div id="stat-rank-points" class="text-2xl font-black text-amber-600 mt-1 font-cyber">1000 đ</div>
-            <div class="text-[10px] text-amber-700 font-medium mt-0.5">Gốc 1000đ + Học tập</div>
+          <div class="glass-card p-3.5 sm:p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-[11px] sm:text-xs font-bold text-slate-600">🏆 Điểm XH Gốc</div>
+            <div id="stat-rank-points" class="text-xl sm:text-2xl font-black text-amber-600 mt-1 font-cyber">1000 đ</div>
+            <div class="text-[10px] text-amber-700 font-medium mt-0.5">Khởi tạo 1000đ</div>
           </div>
-          <div class="glass-card p-4 rounded-2xl text-center border-blue-200 shadow-xs bg-gradient-to-b from-blue-50/70 to-white">
-            <div class="text-xs font-bold text-blue-800">Tổng Điểm XH</div>
-            <div id="stat-total-score" class="text-2xl font-black text-indigo-700 mt-1 font-cyber">1740 đ</div>
-            <div class="text-[10px] text-blue-600 font-bold mt-0.5">XH + Phiên học + BFS</div>
+          <div class="glass-card p-3.5 sm:p-4 rounded-2xl text-center border-slate-200 shadow-xs">
+            <div class="text-[11px] sm:text-xs font-bold text-slate-600">⏱️ Điểm Phiên Học</div>
+            <div id="stat-session-points" class="text-xl sm:text-2xl font-black text-emerald-600 mt-1 font-cyber">+0 đ</div>
+            <div id="stat-sessions-count" class="text-[10px] text-emerald-700 font-bold mt-0.5">0 phiên (1p = 1đ)</div>
           </div>
-          <div class="glass-card p-4 rounded-2xl text-center border-slate-200 shadow-xs">
-            <div class="text-xs font-bold text-slate-600">Số Phiên / Chuỗi</div>
-            <div id="stat-streak-days" class="text-2xl font-black text-orange-600 mt-1 font-cyber">0 🔥</div>
-            <div id="stat-sessions-count" class="text-[10px] text-slate-500 font-bold mt-0.5">0 phiên học sâu</div>
+          <div class="glass-card p-3.5 sm:p-4 rounded-2xl text-center border-blue-200 shadow-xs bg-gradient-to-b from-blue-50/70 to-white">
+            <div class="text-[11px] sm:text-xs font-bold text-blue-800">👑 Tổng Điểm BXH</div>
+            <div id="stat-total-score" class="text-xl sm:text-2xl font-black text-indigo-700 mt-1 font-cyber">2000 đ</div>
+            <div class="text-[10px] text-blue-600 font-bold mt-0.5">1000 XH + BFS + Phiên</div>
+          </div>
+        </div>
+
+        <!-- 3-LEVEL BFS EVALUATION & BRAIN FOCUS RECOMMENDATIONS -->
+        <div id="profile-bfs-level-card" class="glass-card p-5 rounded-3xl border-slate-200 shadow-md space-y-4 bg-gradient-to-br from-white via-slate-50 to-blue-50/30">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl" id="profile-level-icon">🟢</span>
+              <div>
+                <span id="profile-level-badge" class="inline-block text-xs font-black px-3 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs font-cyber">
+                  LEVEL 1 – KHÁ ỔN ĐỊNH
+                </span>
+                <span class="text-[11px] text-slate-500 font-bold ml-2">(Chỉ số BFS: <span id="profile-level-bfs-pts" class="text-blue-600 font-black">740</span>/1000)</span>
+              </div>
+            </div>
+            <button onclick="openAssessmentModal(true)" class="text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-xl transition-all self-start sm:self-auto shadow-xs">
+              📝 Làm lại khảo sát BFS
+            </button>
+          </div>
+
+          <!-- Đánh giá hiện trạng -->
+          <div class="space-y-1">
+            <div class="text-[11px] font-bold uppercase text-slate-500 font-cyber">Đánh giá hiện trạng:</div>
+            <p id="profile-level-headline" class="text-sm font-extrabold text-slate-900 leading-snug">Bạn đang có nền tảng khá tốt.</p>
+            <p id="profile-level-desc" class="text-xs text-slate-600 leading-relaxed">Một số thói quen sử dụng thiết bị số của bạn tương đối hợp lý và khả năng duy trì nhiệm vụ khá ổn định.</p>
+          </div>
+
+          <!-- Brain Focus đề xuất -->
+          <div class="bg-blue-50/60 border border-blue-200/70 p-4 rounded-2xl space-y-2">
+            <div class="text-xs font-black text-blue-900 uppercase font-cyber flex items-center gap-1.5">
+              <span>🎯</span>
+              <span>Brain Focus đề xuất:</span>
+            </div>
+            <ul id="profile-level-recommendations" class="text-xs text-slate-700 space-y-1.5 list-disc pl-5 font-medium leading-relaxed">
+              <li>Focus Timer 30 phút.</li>
+              <li>Duy trì Focus Streak.</li>
+              <li>Thử thách đọc sách/học tập không gián đoạn.</li>
+              <li>Theo dõi Brain Progress hằng tuần.</li>
+            </ul>
+          </div>
+
+          <!-- Thông điệp truyền cảm hứng -->
+          <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 p-3.5 rounded-2xl flex items-center gap-3">
+            <span class="text-xl">✨</span>
+            <div class="text-xs text-slate-800 italic">
+              <strong class="text-amber-900 not-italic font-bold font-cyber">Thông điệp: </strong>
+              <span id="profile-level-quote" class="font-semibold text-slate-800">“Duy trì hôm nay để vững vàng ngày mai.”</span>
+            </div>
           </div>
         </div>
 
@@ -793,23 +965,111 @@
           <input type="text" id="assess-input-school" placeholder="Trường / Cơ quan / Lĩnh vực" value="" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
 
+        <!-- Randomized Choices Notice Banner -->
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300/80 p-3.5 rounded-2xl text-xs text-amber-950 flex items-start gap-3 shadow-xs">
+          <div class="w-7 h-7 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shrink-0 font-black shadow-xs">
+            🔀
+          </div>
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-2">
+              <strong class="font-bold text-amber-950 font-cyber text-[11px] uppercase tracking-wide">ĐÁP ÁN ĐÃ ĐƯỢC XÁO TRỘN NGẪU NHIÊN</strong>
+              <span class="text-[9px] bg-amber-200 text-amber-900 font-extrabold px-1.5 py-0.5 rounded-md">CHỐNG ĐOÁN MẸO</span>
+            </div>
+            <p class="text-[11px] text-amber-800 leading-relaxed font-medium">
+              Các phương án A, B, C, D của mỗi câu hỏi đã được đảo lộn không theo thứ tự điểm số. Hãy đọc thật kỹ từng lựa chọn và chọn đáp án phản ánh đúng nhất thói quen thực tế của bạn để đo lường độ kiên định của não bộ!
+            </p>
+          </div>
+        </div>
+
         <!-- 10 Questions Container -->
         <div class="space-y-4" id="questions-list-container">
           <!-- Populated by JS -->
         </div>
 
-        <!-- Result Box -->
-        <div id="assessment-result-box" class="hidden space-y-3 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-300 p-5 rounded-2xl shadow-sm">
-          <div class="text-center">
+        <!-- Result Box (Categorized into 3 Levels with Advice & Quotes) -->
+        <div id="assessment-result-box" class="hidden space-y-4 bg-gradient-to-br from-white via-slate-50 to-blue-50 border-2 border-blue-400 p-5 sm:p-6 rounded-3xl shadow-lg">
+          <div class="text-center space-y-1.5">
             <span class="text-3xl">🎉</span>
-            <h4 class="text-base font-black text-slate-900 mt-1 font-cyber">KẾT QUẢ CHỈ SỐ BFS NÃO BỘ CỦA BẠN</h4>
-            <div id="result-bfs-number" class="text-4xl font-black text-blue-600 my-2 font-cyber">740 / 1000</div>
-            <div id="result-bfs-category" class="inline-block bg-blue-600 text-white text-xs font-black px-3.5 py-1 rounded-full shadow-sm">Ổn Định - Vỏ Não Khá Kiên Định</div>
+            <h4 class="text-sm font-black text-slate-900 font-cyber tracking-wide">KẾT QUẢ CHỈ SỐ BFS NÃO BỘ CỦA BẠN</h4>
+            <div id="result-bfs-number" class="text-4xl sm:text-5xl font-black text-blue-600 font-cyber py-1">740 / 1000</div>
+            <div>
+              <div id="result-bfs-level-badge" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs font-cyber">
+                <span>🟢</span> <span>LEVEL 1 – KHÁ ỔN ĐỊNH</span>
+              </div>
+            </div>
           </div>
-          <p id="result-bfs-desc" class="text-xs text-slate-700 leading-relaxed text-center"></p>
+
+          <!-- Đánh giá hiện trạng -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-1">
+            <div class="text-[11px] font-bold uppercase text-slate-500 font-cyber">Đánh giá hiện trạng:</div>
+            <h5 id="result-bfs-headline" class="text-sm font-black text-slate-900 leading-snug">Bạn đang có nền tảng khá tốt.</h5>
+            <p id="result-bfs-desc" class="text-xs text-slate-600 leading-relaxed">Một số thói quen sử dụng thiết bị số của bạn tương đối hợp lý và khả năng duy trì nhiệm vụ khá ổn định.</p>
+          </div>
+
+          <!-- Brain Focus đề xuất -->
+          <div class="bg-blue-50/80 border border-blue-200 p-4 rounded-2xl space-y-2">
+            <div class="text-xs font-black text-blue-900 uppercase font-cyber flex items-center gap-1.5">
+              <span>🎯</span>
+              <span>Brain Focus đề xuất:</span>
+            </div>
+            <ul id="result-bfs-recommendations" class="text-xs text-slate-700 space-y-1.5 list-disc pl-5 font-medium leading-relaxed">
+              <li>Focus Timer 30 phút.</li>
+              <li>Duy trì Focus Streak.</li>
+              <li>Thử thách đọc sách/học tập không gián đoạn.</li>
+              <li>Theo dõi Brain Progress hằng tuần.</li>
+            </ul>
+          </div>
+
+          <!-- Thông điệp -->
+          <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-3.5 rounded-2xl flex items-center gap-3 shadow-xs">
+            <span class="text-xl">✨</span>
+            <div class="text-xs text-slate-800 italic">
+              <strong class="text-amber-900 not-italic font-bold font-cyber">Thông điệp: </strong>
+              <span id="result-bfs-quote" class="font-semibold text-slate-900">“Duy trì hôm nay để vững vàng ngày mai.”</span>
+            </div>
+          </div>
+
+          <!-- 3-Level Overview Accordion -->
+          <div class="pt-1">
+            <details class="group bg-slate-50 border border-slate-200 rounded-xl overflow-hidden transition-all">
+              <summary class="flex items-center justify-between p-3 text-xs font-bold text-slate-700 cursor-pointer hover:bg-slate-100">
+                <span class="flex items-center gap-1.5">
+                  <span>📊</span> Bảng đối chiếu 3 Cấp Độ (Level 1, 2, 3) của Brain Focus
+                </span>
+                <span class="text-[10px] text-blue-600 font-bold group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="p-3.5 border-t border-slate-200 bg-white space-y-3 text-xs">
+                <!-- Level 1 -->
+                <div class="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/50 space-y-1">
+                  <div class="font-black text-emerald-800 flex items-center gap-1.5">
+                    <span>🟢</span> LEVEL 1 – KHÁ ỔN ĐỊNH (≥ 700 điểm)
+                  </div>
+                  <p class="text-[11px] text-slate-600">Nền tảng tốt, thói quen thiết bị số hợp lý, khả năng duy trì nhiệm vụ ổn định.</p>
+                  <p class="text-[11px] text-emerald-900 italic">“Duy trì hôm nay để vững vàng ngày mai.”</p>
+                </div>
+                <!-- Level 2 -->
+                <div class="p-2.5 rounded-xl border border-amber-200 bg-amber-50/50 space-y-1">
+                  <div class="font-black text-amber-800 flex items-center gap-1.5">
+                    <span>🟡</span> LEVEL 2 – DỄ PHÂN TÂM (400 – 690 điểm)
+                  </div>
+                  <p class="text-[11px] text-slate-600">Sự chú ý đôi khi bị kéo khỏi nhiệm vụ, cần điều chỉnh một số thói quen để chủ động hơn.</p>
+                  <p class="text-[11px] text-amber-900 italic">“Mỗi thay đổi nhỏ hôm nay là một bước tiến.”</p>
+                </div>
+                <!-- Level 3 -->
+                <div class="p-2.5 rounded-xl border border-rose-200 bg-rose-50/50 space-y-1">
+                  <div class="font-black text-rose-800 flex items-center gap-1.5">
+                    <span>🔴</span> LEVEL 3 – CẦN RÈN LUYỆN THÊM (< 400 điểm)
+                  </div>
+                  <p class="text-[11px] text-slate-600">Dễ bị phân tán bởi môi trường số. Đây là tín hiệu để bắt đầu rèn luyện từng bước một.</p>
+                  <p class="text-[11px] text-rose-900 italic">“Không cần thay đổi tất cả trong một ngày. Hãy bắt đầu từ một thay đổi nhỏ.”</p>
+                </div>
+              </div>
+            </details>
+          </div>
+
           <div class="pt-2 text-center">
-            <button onclick="finishOnboardingAndEnterApp()" class="w-full py-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:opacity-95 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all font-cyber">
-              🚀 VÀO WEB & BẮT ĐẦU ĐUA TOP (1000đ XH + BFS)
+            <button onclick="finishOnboardingAndEnterApp()" class="w-full py-3.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:opacity-95 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all font-cyber flex items-center justify-center gap-2">
+              <span>🚀</span> <span>XÁC NHẬN & ĐỒNG BỘ ĐIỂM VÀO BẢNG XẾP HẠNG</span>
             </button>
           </div>
         </div>
@@ -920,6 +1180,41 @@
     </div>
   </div>
 
+  <!-- ================= MODAL: CHỌN / ĐỔI TÀI KHOẢN ================= -->
+  <div id="switch-account-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden p-6 space-y-4 bg-white">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold">
+            👥
+          </div>
+          <div>
+            <h3 class="font-black text-base text-slate-900 font-cyber">TÀI KHOẢN HỌC VIÊN</h3>
+            <p class="text-xs text-slate-500">Chuyển đổi hoặc đăng ký thêm tài khoản</p>
+          </div>
+        </div>
+        <button onclick="closeSwitchAccountModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="bg-indigo-50/70 border border-indigo-200 p-2.5 rounded-2xl text-[11px] text-indigo-950">
+        💡 Mỗi tài khoản đăng ký trên thiết bị này sẽ được lưu giữ độc lập và cùng hiển thị trên Bảng Xếp Hạng.
+      </div>
+
+      <div class="space-y-2 max-h-64 overflow-y-auto pr-1" id="switch-account-list">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="pt-2 flex items-center gap-2">
+        <button onclick="closeSwitchAccountModal(); openRegisterModal(false);" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95 flex items-center justify-center gap-1.5">
+          <span>+</span> <span>Tạo Mới</span>
+        </button>
+        <button onclick="purgeCloneAccounts(true)" class="py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold shadow-xs transition-all flex items-center justify-center gap-1.5" title="Quét sạch tài khoản clone hoặc thử nghiệm">
+          <span>🧹</span> <span>Xóa Clone</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= MODAL: CHỈNH SỬA HỒ SƠ & AVATAR ================= -->
   <div id="edit-profile-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden p-6 space-y-4 bg-white">
@@ -994,6 +1289,12 @@
       timerTargetEndTime: null,
       timerInterval: null,
       distractionsCount: 0,
+      
+      // Cooldown (15p nghỉ ngơi sau phiên 90p) & Giới hạn tối đa 3 phiên/ngày
+      cooldownEndTime: null,
+      restInterval: null,
+      dailyTracker: null,
+      dailyGymTracker: null, // Giới hạn tối đa 5 lượt tập gym não bộ/ngày
       
       // Do Not Disturb (DND) / Phone Notification Mute Shield
       isDndActive: false,
@@ -1165,89 +1466,412 @@
       { id: 6, category: 'TECH', title: 'Sóng Não Gamma 40Hz & Binaural', text: 'Nghe âm thanh sóng não tần số 40Hz khi giải các bài toán tư duy để tăng cường kết nối đồng bộ giữa các vùng nơ-ron.', tag: 'Công nghệ' }
     ];
 
-    // Bảng xếp hạng người dùng thực tế (Không chứa bot ảo và tự động xoá tài khoản thử nghiệm)
+    // ================= 3-LEVEL BFS EVALUATION SYSTEM (KHOA HỌC THẦN KINH) =================
+    const BFS_LEVELS_DATA = {
+      LEVEL_1: {
+        level: 1,
+        title: "LEVEL 1 – KHÁ ỔN ĐỊNH",
+        dot: "🟢",
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+        headline: "Bạn đang có nền tảng khá tốt.",
+        description: "Một số thói quen sử dụng thiết bị số của bạn tương đối hợp lý và khả năng duy trì nhiệm vụ khá ổn định.",
+        recommendations: [
+          "Focus Timer 30 phút.",
+          "Duy trì Focus Streak.",
+          "Thử thách đọc sách/học tập không gián đoạn.",
+          "Theo dõi Brain Progress hằng tuần."
+        ],
+        quote: "“Duy trì hôm nay để vững vàng ngày mai.”"
+      },
+      LEVEL_2: {
+        level: 2,
+        title: "LEVEL 2 – DỄ PHÂN TÂM",
+        dot: "🟡",
+        badgeClass: "bg-amber-100 text-amber-900 border-amber-300",
+        headline: "Sự chú ý của bạn đôi khi bị kéo khỏi nhiệm vụ.",
+        description: "Bạn có một số thói quen cần điều chỉnh để việc học trở nên chủ động hơn.",
+        recommendations: [
+          "Focus Timer 25 phút.",
+          "Brain Reset 2 phút trước khi học.",
+          "Tắt thông báo trong thời gian học.",
+          "Mini Challenge 7 ngày.",
+          "Focus Diary."
+        ],
+        quote: "“Mỗi thay đổi nhỏ hôm nay là một bước tiến.”"
+      },
+      LEVEL_3: {
+        level: 3,
+        title: "LEVEL 3 – CẦN RÈN LUYỆN THÊM",
+        dot: "🔴",
+        badgeClass: "bg-rose-100 text-rose-800 border-rose-300",
+        headline: "Bạn có nhiều biểu hiện dễ bị phân tán bởi môi trường số.",
+        description: "Điều này không có nghĩa bạn “kém tập trung”. Đây là tín hiệu để bắt đầu rèn luyện từng bước.",
+        recommendations: [
+          "Brain Reset 21 ngày.",
+          "Focus Timer 15–20 phút, sau đó tăng dần.",
+          "Nhật ký sử dụng điện thoại.",
+          "Bài tập thư giãn trước khi học.",
+          "Theo dõi Brain Progress hằng tuần.",
+          "Thử thách giảm yếu tố gây xao nhãng."
+        ],
+        quote: "“Không cần thay đổi tất cả trong một ngày. Hãy bắt đầu từ một thay đổi nhỏ.”"
+      }
+    };
+
+    function getBFSLevelDetails(score) {
+      const num = Number(score) || 0;
+      if (num >= 700) return BFS_LEVELS_DATA.LEVEL_1;
+      if (num >= 400) return BFS_LEVELS_DATA.LEVEL_2;
+      return BFS_LEVELS_DATA.LEVEL_3;
+    }
+
+    // ================= CLOUD LEADERBOARD SYNCHRONIZATION ENGINE =================
+    const CLOUD_LEADERBOARD_ENDPOINT = 'https://api.restful-api.dev/objects/ff808181a067127101a077a82e722a01';
+    let isCloudSyncInProgress = false;
+
+    function updateCloudSyncBadge(status) {
+      const badge = document.getElementById('cloud-sync-status-badge');
+      if (!badge) return;
+      if (status === 'syncing') {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-spin"></span> <span>Cloud: Đang đồng bộ...</span>`;
+        badge.className = 'text-[10px] bg-amber-50 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-xs';
+      } else if (status === 'online') {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> <span>Cloud BXH: Trực tuyến</span>`;
+        badge.className = 'text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-xs';
+      } else {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> <span>Cloud: Ngoại tuyến</span>`;
+        badge.className = 'text-[10px] bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-xs';
+      }
+    }
+
+    function sanitizeUserForCloud(u) {
+      if (!u || !u.name) return null;
+      const email = String(u.email || '').toLowerCase().trim();
+      const name = String(u.name || '').trim();
+      if (!name) return null;
+
+      // Không gửi Base64 ảnh nặng lên Cloud để tránh lỗi HTTP 500
+      const avatarClean = (u.avatar && typeof u.avatar === 'string' && u.avatar.length < 250 && !u.avatar.startsWith('data:image')) ? u.avatar : '';
+      
+      return {
+        email: email || `${name.toLowerCase().replace(/\s+/g, '')}@student.brainfocus`,
+        name: name,
+        school: String(u.school || 'THPT Tân Túc').trim().slice(0, 50),
+        avatar: avatarClean,
+        rankPoints: Math.round(Number(u.rankPoints) || 1000),
+        sessionsCount: Math.round(Number(u.sessionsCount) || 0),
+        sessionPoints: Math.round(Number(u.sessionPoints) || 0),
+        bfs: Math.round(Number(u.bfs) || 0)
+      };
+    }
+
+    async function fetchLeaderboardFromCloud(notify = false) {
+      if (isCloudSyncInProgress) return;
+      isCloudSyncInProgress = true;
+      updateCloudSyncBadge('syncing');
+
+      const refreshIcon = document.getElementById('refresh-icon');
+      if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+      // Tự động giải phóng trạng thái sau tối đa 6 giây đề phòng nghẽn mạng
+      const safetyTimeout = setTimeout(() => {
+        isCloudSyncInProgress = false;
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+      }, 6000);
+
+      try {
+        // Cache-busting URL để ngăn chặn triệt để cache của trình duyệt di động
+        const nocacheUrl = `${CLOUD_LEADERBOARD_ENDPOINT}?_t=${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+        const response = await fetch(nocacheUrl, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+            'Pragma': 'no-cache'
+          }
+        });
+
+        if (!response.ok) throw new Error('Cloud HTTP error: ' + response.status);
+        const resJson = await response.json();
+        const cloudUsers = (resJson && resJson.data && Array.isArray(resJson.data.users)) ? resJson.data.users : [];
+
+        loadUsersDatabase();
+
+        // Hợp nhất dữ liệu học viên từ Cloud vào cơ sở dữ liệu trên thiết bị
+        cloudUsers.forEach(cu => {
+          if (!cu || isCloneAccount(cu)) return;
+          const cleanCloud = sanitizeUserForCloud(cu);
+          if (!cleanCloud) return;
+
+          const localIdx = REGISTERED_USERS_DB.findIndex(u => 
+            (u.email && cleanCloud.email && u.email.toLowerCase().trim() === cleanCloud.email) ||
+            (u.name && cleanCloud.name && u.name.toLowerCase().trim() === cleanCloud.name.toLowerCase().trim())
+          );
+
+          if (localIdx === -1) {
+            REGISTERED_USERS_DB.push(cleanCloud);
+          } else {
+            const lu = REGISTERED_USERS_DB[localIdx];
+            const isLocalActiveUser = APP_STATE.userEmail && lu.email && lu.email.toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim();
+            const cloudTotal = cleanCloud.rankPoints + cleanCloud.bfs + cleanCloud.sessionPoints;
+            const localTotal = (Number(lu.rankPoints) || 1000) + (Number(lu.bfs) || 0) + (Number(lu.sessionPoints) || 0);
+
+            // Giữ lại bản ghi có tổng điểm cao nhất, bảo tồn avatar của thiết bị nếu có
+            if (!isLocalActiveUser || cloudTotal > localTotal) {
+              REGISTERED_USERS_DB[localIdx] = {
+                ...lu,
+                ...cleanCloud,
+                avatar: lu.avatar || ''
+              };
+            }
+          }
+        });
+
+        // Đảm bảo thông tin của tài khoản hiện tại trên thiết bị không bị mất
+        if (APP_STATE.userName || APP_STATE.userEmail) {
+          syncCurrentUserToDatabase();
+        }
+
+        saveUsersDatabase(false); // Lưu local mà không lặp vô tận
+        renderLeaderboard();
+        updateCloudSyncBadge('online');
+
+        if (notify) {
+          const topList = getFullLeaderboard();
+          const topSummary = topList.slice(0, 3).map((u, i) => `#${i + 1} ${u.name}: ${u.totalScore}đ`).join('\n');
+          alert(`🌟 ĐỒNG BỘ CLOUD THÀNH CÔNG!\n\nTop 3 Bảng Xếp Hạng hiện tại:\n${topSummary}\n\nĐã đồng bộ toàn bộ người dùng từ mọi thiết bị!`);
+        }
+      } catch (err) {
+        console.warn('Leaderboard cloud sync issue:', err);
+        updateCloudSyncBadge('offline');
+        renderLeaderboard();
+        if (notify) {
+          alert('⚠️ Không thể kết nối tới Cloud Server lúc này. Đang hiển thị dữ liệu cục bộ trên thiết bị!');
+        }
+      } finally {
+        clearTimeout(safetyTimeout);
+        isCloudSyncInProgress = false;
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+      }
+    }
+
+    let cloudPushTimeout = null;
+    function pushLeaderboardToCloud() {
+      if (cloudPushTimeout) clearTimeout(cloudPushTimeout);
+      // Gửi nhanh sau 200ms để người dùng khác thấy ngay lập tức
+      cloudPushTimeout = setTimeout(async () => {
+        try {
+          // Bước 1: Tải danh sách hiện tại trên Cloud về trước để không đè mất người dùng khác
+          let currentCloudUsers = [];
+          try {
+            const getRes = await fetch(`${CLOUD_LEADERBOARD_ENDPOINT}?_t=${Date.now()}`, { cache: 'no-store' });
+            if (getRes.ok) {
+              const j = await getRes.json();
+              if (j && j.data && Array.isArray(j.data.users)) {
+                currentCloudUsers = j.data.users;
+              }
+            }
+          } catch (_) {}
+
+          // Bước 2: Hợp nhất Cloud + Local (khử trùng theo email và name)
+          const mergedMap = new Map();
+
+          // Thêm các user trên Cloud trước
+          currentCloudUsers.forEach(cu => {
+            const s = sanitizeUserForCloud(cu);
+            if (s && (s.email || s.name)) {
+              const key = s.email || s.name.toLowerCase().trim();
+              mergedMap.set(key, s);
+            }
+          });
+
+          // Thêm hoặc cập nhật user của Local
+          REGISTERED_USERS_DB.forEach(lu => {
+            const s = sanitizeUserForCloud(lu);
+            if (s && (s.email || s.name)) {
+              const key = s.email || s.name.toLowerCase().trim();
+              const existing = mergedMap.get(key);
+              if (!existing) {
+                mergedMap.set(key, s);
+              } else {
+                const localTotal = (s.rankPoints || 1000) + (s.bfs || 0) + (s.sessionPoints || 0);
+                const cloudTotal = (existing.rankPoints || 1000) + (existing.bfs || 0) + (existing.sessionPoints || 0);
+                if (localTotal >= cloudTotal) {
+                  mergedMap.set(key, { ...existing, ...s });
+                }
+              }
+            }
+          });
+
+          const finalCloudList = Array.from(mergedMap.values());
+
+          const payload = {
+            name: "brainfocus_leaderboard",
+            data: {
+              users: finalCloudList,
+              lastSynced: Date.now()
+            }
+          };
+
+          const putRes = await fetch(CLOUD_LEADERBOARD_ENDPOINT, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (putRes.ok) {
+            updateCloudSyncBadge('online');
+          }
+        } catch (err) {
+          console.warn('Failed to push leaderboard to cloud:', err);
+        }
+      }, 200);
+    }
+
+    // Bảng xếp hạng người dùng thực tế & Quản lý danh sách tài khoản đã đăng ký
     let REGISTERED_USERS_DB = [];
 
-    // Tự động xoá sạch các tài khoản và phiên thử nghiệm trước đó trên thiết bị
-    function cleanTestAccountsOnStartup() {
-      const WIPE_VERSION_KEY = 'bf_clean_test_v5';
-      if (!localStorage.getItem(WIPE_VERSION_KEY)) {
-        try {
-          localStorage.removeItem('bf_registered_users');
-          localStorage.removeItem('bf_user_profile');
-          localStorage.removeItem('bf_onboarded_completed');
-          localStorage.removeItem('bf_active_session');
-          localStorage.removeItem('bf_active_session_backup');
-        } catch (e) {}
-        REGISTERED_USERS_DB = [];
-        try {
-          localStorage.setItem(WIPE_VERSION_KEY, 'true');
-        } catch (e) {}
-      }
+    // Bất kỳ ai tạo tài khoản trên web đều là người dùng hợp lệ, không bị coi là clone
+    function isCloneAccount(u) {
+      if (!u) return true;
+      const name = String(u.name || '').trim();
+      const email = String(u.email || '').trim();
+      return !name && !email;
     }
 
     function loadUsersDatabase() {
       try {
         const saved = localStorage.getItem('bf_registered_users');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          REGISTERED_USERS_DB = Array.isArray(parsed)
-            ? parsed.filter(u => u && u.email && u.name && u.email !== 'tam.brainfocus@gmail.com' && u.name !== 'Trịnh Hoài Tâm')
-            : [];
-        } else {
-          REGISTERED_USERS_DB = [];
-        }
+        const parsed = saved ? JSON.parse(saved) : [];
+        REGISTERED_USERS_DB = Array.isArray(parsed)
+          ? parsed.filter(u => u && (u.name || u.email))
+          : [];
       } catch (e) {
         REGISTERED_USERS_DB = [];
       }
     }
 
-    function saveUsersDatabase() {
+    function saveUsersDatabase(triggerCloud = true) {
       try {
-        localStorage.setItem('bf_registered_users', JSON.stringify(REGISTERED_USERS_DB));
+        const cleanList = REGISTERED_USERS_DB.filter(u => u && (u.name || u.email));
+        localStorage.setItem('bf_registered_users', JSON.stringify(cleanList));
+        if (triggerCloud) {
+          pushLeaderboardToCloud();
+        }
       } catch (e) {}
     }
 
-    function getFullLeaderboard() {
-      // Chỉ đồng bộ user hiện tại nếu có email và tên thật sự
-      if (APP_STATE.userEmail && APP_STATE.userName) {
-        const userEntry = {
-          id: APP_STATE.userEmail,
-          email: APP_STATE.userEmail,
-          name: APP_STATE.userName,
-          school: APP_STATE.userSchool || 'Người học tích cực',
-          avatar: APP_STATE.userAvatar,
-          rankPoints: APP_STATE.rankPoints,
-          sessionsCount: APP_STATE.sessionsCompletedCount || APP_STATE.history.length || 0,
-          bfs: APP_STATE.bfsScore,
-          streak: `${APP_STATE.streakDays} ngày`
-        };
+    // Làm sạch các mục rỗng nếu có và cập nhật lại giao diện
+    function purgeCloneAccounts(notify = false) {
+      loadUsersDatabase();
+      REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u && (u.email || u.name));
+      saveUsersDatabase(true);
+      renderLeaderboard();
+      if (notify) {
+        alert('✨ Đã làm mới danh sách tài khoản trên Bảng Xếp Hạng!');
+      }
+    }
 
-        const existingIdx = REGISTERED_USERS_DB.findIndex(u => u.email === APP_STATE.userEmail);
-        if (existingIdx >= 0) {
-          REGISTERED_USERS_DB[existingIdx] = userEntry;
+      // Nếu tài khoản hiện tại là clone thì giải phóng
+      if (isCloneAccount({ name: APP_STATE.userName, email: APP_STATE.userEmail })) {
+        if (REGISTERED_USERS_DB.length > 0) {
+          switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
         } else {
-          REGISTERED_USERS_DB.push(userEntry);
+          APP_STATE.userEmail = "";
+          APP_STATE.userName = "";
+          APP_STATE.userSchool = "";
+          APP_STATE.userAvatar = "";
+          APP_STATE.rankPoints = 1000;
+          APP_STATE.bfsScore = 0;
+          APP_STATE.totalHours = 0;
+          APP_STATE.streakDays = 1;
+          APP_STATE.sessionsCompletedCount = 0;
+          APP_STATE.gymCompletedCount = 0;
+          APP_STATE.history = [];
         }
-        saveUsersDatabase();
+        saveAppStateToLocal();
       }
 
-      // Lọc các user hợp lệ (loại bỏ mọi tài khoản rỗng hoặc tài khoản test cũ)
-      const validUsers = REGISTERED_USERS_DB.filter(u => 
-        u && u.email && u.name && 
-        u.email !== 'tam.brainfocus@gmail.com' && 
-        u.name !== 'Trịnh Hoài Tâm'
-      );
+      syncProfileDOM();
+      updateStatsUI();
+      renderLeaderboard();
 
-      // Tập hợp tất cả tài khoản thực
+      const modal = document.getElementById('switch-account-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        openSwitchAccountModal();
+      }
+
+      if (notify) {
+        alert('✨ Đã quét sạch tất cả tài khoản Clone khỏi Bảng Xếp Hạng!');
+      }
+    }
+
+    // Đồng bộ thông tin người dùng hiện tại vào danh sách người dùng toàn hệ thống
+    function syncCurrentUserToDatabase() {
+      if (!APP_STATE.userName && !APP_STATE.userEmail) return;
+
+      const currentSessionPoints = getSessionPointsTotal();
+      const currentSessionsCount = APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0);
+      const email = (APP_STATE.userEmail || '').trim() || `${(APP_STATE.userName || 'user').toLowerCase().replace(/\s+/g, '')}@student.brainfocus`;
+
+      const userEntry = {
+        id: email.toLowerCase().trim(),
+        email: email,
+        name: (APP_STATE.userName || 'Học viên').trim(),
+        school: APP_STATE.userSchool || 'Người học tích cực',
+        avatar: APP_STATE.userAvatar || '',
+        rankPoints: Number(APP_STATE.rankPoints) || 1000,
+        sessionsCount: currentSessionsCount,
+        sessionPoints: currentSessionPoints,
+        bfs: Number(APP_STATE.bfsScore) || 0,
+        totalHours: APP_STATE.totalHours || 0,
+        streakDays: APP_STATE.streakDays || 1,
+        streak: `${APP_STATE.streakDays || 1} ngày`,
+        history: Array.isArray(APP_STATE.history) ? APP_STATE.history : [],
+        lastUpdated: Date.now()
+      };
+
+      const existingIdx = REGISTERED_USERS_DB.findIndex(u => 
+        (u.email && u.email.toLowerCase().trim() === userEntry.email.toLowerCase().trim()) ||
+        (u.name && u.name.toLowerCase().trim() === userEntry.name.toLowerCase().trim())
+      );
+      if (existingIdx >= 0) {
+        REGISTERED_USERS_DB[existingIdx] = { ...REGISTERED_USERS_DB[existingIdx], ...userEntry };
+      } else {
+        REGISTERED_USERS_DB.push(userEntry);
+      }
+      saveUsersDatabase();
+    }
+
+    // Tính tổng điểm từ tất cả các phiên học: mỗi phiên tính điểm tùy theo thời gian chạy (1 phút = 1 điểm, ví dụ 90p = 90đ)
+    function getSessionPointsTotal() {
+      let totalPts = 0;
+      if (Array.isArray(APP_STATE.history) && APP_STATE.history.length > 0) {
+        totalPts = APP_STATE.history.reduce((sum, item) => sum + (Number(item.points) || Number(item.minutes) || 90), 0);
+      } else {
+        const count = Number(APP_STATE.sessionsCompletedCount) || 0;
+        totalPts = count * 90; // Mặc định mỗi phiên học sâu 90 phút = 90 điểm
+      }
+      return totalPts;
+    }
+
+    function getFullLeaderboard() {
+      // Đảm bảo dữ liệu người dùng hiện tại được đồng bộ vào database
+      syncCurrentUserToDatabase();
+      loadUsersDatabase();
+
+      // Lọc các user có email và tên hợp lệ
+      const validUsers = REGISTERED_USERS_DB.filter(u => u && u.email && u.name);
+
       const all = validUsers.map(u => {
-        const isCurrent = (APP_STATE.userEmail && u.email === APP_STATE.userEmail);
-        const rankPts = isCurrent ? APP_STATE.rankPoints : (u.rankPoints || 1000);
-        const sessCount = isCurrent ? (APP_STATE.sessionsCompletedCount || APP_STATE.history.length || 0) : (u.sessionsCount || 0);
-        const bfsVal = isCurrent ? APP_STATE.bfsScore : (u.bfs || 0);
+        const isCurrent = Boolean(APP_STATE.userEmail && u.email.toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim());
+        const rankPts = isCurrent ? (Number(APP_STATE.rankPoints) || 1000) : (Number(u.rankPoints) || 1000);
+        const sessCount = isCurrent ? (APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0)) : (u.sessionsCount || 0);
+        const sessPts = isCurrent ? getSessionPointsTotal() : (u.sessionPoints !== undefined ? u.sessionPoints : (sessCount * 90));
+        const bfsVal = isCurrent ? (Number(APP_STATE.bfsScore) || 0) : (Number(u.bfs) || 0);
         
-        // Công thức tính điểm: Điểm xếp hạng (khởi tạo 1000) + (Số phiên học * 10) + Điểm BFS
-        const total = rankPts + (sessCount * 10) + bfsVal;
+        // Công thức tính điểm chuẩn xác:
+        // 1000 (Điểm Xếp Hạng khởi tạo) + Điểm BFS (từ 10 câu test) + Số phiên học × Điểm theo thời gian học (vd 1 phiên 90p = 90đ)
+        const total = rankPts + bfsVal + sessPts;
         
         return {
           ...u,
@@ -1256,6 +1880,7 @@
           avatar: isCurrent ? APP_STATE.userAvatar : u.avatar,
           rankPoints: rankPts,
           sessionsCount: sessCount,
+          sessionPoints: sessPts,
           bfs: bfsVal,
           totalScore: total,
           isUser: isCurrent
@@ -1264,14 +1889,173 @@
 
       // Sắp xếp theo tổng điểm giảm dần
       all.sort((a, b) => b.totalScore - a.totalScore);
-      return all.map((u, idx) => ({ ...u, rank: idx + 1 }));
+
+      // Khử trùng lặp: Nếu trùng email hoặc trùng họ tên thì chỉ giữ lại 1 bản ghi có điểm cao nhất
+      const uniqueMap = new Map();
+      all.forEach(item => {
+        const normKey = (item.name || '').replace(/\s*\(Bạn\)$/i, '').trim().toLowerCase();
+        const existing = uniqueMap.get(normKey);
+        if (!existing) {
+          uniqueMap.set(normKey, item);
+        } else {
+          // Ưu tiên tài khoản đang đăng nhập hoặc có tổng điểm cao hơn
+          if (item.isUser || item.totalScore > existing.totalScore) {
+            uniqueMap.set(normKey, item);
+          }
+        }
+      });
+
+      const uniqueList = Array.from(uniqueMap.values());
+      uniqueList.sort((a, b) => b.totalScore - a.totalScore);
+      return uniqueList.map((u, idx) => ({ ...u, rank: idx + 1 }));
+    }
+
+    function switchToUserAccountSilently(user) {
+      if (!user) return;
+      APP_STATE.userEmail = user.email;
+      APP_STATE.userName = user.name;
+      APP_STATE.userSchool = user.school || '';
+      APP_STATE.userAvatar = user.avatar || '';
+      APP_STATE.rankPoints = Number(user.rankPoints) || 1000;
+      APP_STATE.bfsScore = Number(user.bfs) || 0;
+      APP_STATE.sessionsCompletedCount = user.sessionsCount || 0;
+      APP_STATE.totalHours = user.totalHours || 0;
+      APP_STATE.streakDays = user.streakDays || 1;
+      APP_STATE.history = Array.isArray(user.history) ? user.history : [];
+    }
+
+    function openSwitchAccountModal() {
+      purgeCloneAccounts(false);
+      const listEl = document.getElementById('switch-account-list');
+      if (!listEl) return;
+      
+      if (!REGISTERED_USERS_DB || REGISTERED_USERS_DB.length === 0) {
+        listEl.innerHTML = `
+          <div class="p-6 text-center text-slate-500 text-xs space-y-2">
+            <span class="text-3xl">👤</span>
+            <p class="font-bold text-slate-700">Chưa có tài khoản nào trên thiết bị</p>
+            <p class="text-[11px] text-slate-500">Hãy nhấn nút bên dưới để tạo tài khoản Gmail đầu tiên và bắt đầu đua Top!</p>
+          </div>
+        `;
+      } else {
+        listEl.innerHTML = REGISTERED_USERS_DB.map(u => {
+          const isCurrent = Boolean(APP_STATE.userEmail && u.email.toLowerCase().trim() === APP_STATE.userEmail.toLowerCase().trim());
+          const sessCount = u.sessionsCount || (u.history ? u.history.length : 0) || 0;
+          const sessPts = u.sessionPoints !== undefined ? u.sessionPoints : (sessCount * 90);
+          const rankPts = Number(u.rankPoints) || 1000;
+          const bfsPts = Number(u.bfs) || 0;
+          const total = rankPts + bfsPts + sessPts;
+
+          return `
+            <div class="p-3 rounded-2xl border ${isCurrent ? 'border-blue-500 bg-blue-50/80 ring-2 ring-blue-400/40' : 'border-slate-200 bg-slate-50/80 hover:bg-slate-100'} flex items-center justify-between gap-3 transition-all">
+              <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center text-base font-black shrink-0 overflow-hidden shadow-xs border border-white">
+                  ${u.avatar ? `<img src="${u.avatar}" class="w-full h-full object-cover" />` : (u.name || 'U').charAt(0).toUpperCase()}
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="text-xs font-bold text-slate-900 truncate flex items-center gap-1.5">
+                    <span class="truncate">${u.name}</span>
+                    ${isCurrent ? '<span class="text-[9px] bg-blue-600 text-white px-1.5 py-0.5 rounded-full font-black shrink-0">Đang chọn</span>' : ''}
+                  </div>
+                  <div class="text-[10px] text-slate-500 truncate">${u.email}</div>
+                  <div class="text-[10px] text-amber-600 font-bold font-cyber mt-0.5">Tổng: ${total}đ (${rankPts} XH + ${bfsPts} BFS)</div>
+                </div>
+              </div>
+              <div class="shrink-0 flex items-center gap-1.5">
+                ${isCurrent ? `
+                  <span class="text-xs font-bold text-blue-700 flex items-center gap-1 bg-blue-100/70 px-2.5 py-1 rounded-xl">✓ Đang dùng</span>
+                ` : `
+                  <button onclick="switchToUserAccount('${u.email.replace(/'/g, "\\'")}')" class="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-xs hover:opacity-95 transition-all">
+                    Chuyển
+                  </button>
+                `}
+                <button onclick="event.stopPropagation(); deleteSpecificAccount('${u.email.replace(/'/g, "\\'")}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="Xoá tài khoản này">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      document.getElementById('switch-account-modal').classList.remove('hidden');
+    }
+
+    function closeSwitchAccountModal() {
+      const modal = document.getElementById('switch-account-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function deleteSpecificAccount(email) {
+      if (!confirm(`Bạn có chắc muốn xoá tài khoản "${email}" khỏi thiết bị này?`)) return;
+      loadUsersDatabase();
+      REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u.email.toLowerCase().trim() !== email.toLowerCase().trim());
+      saveUsersDatabase();
+
+      if (APP_STATE.userEmail.toLowerCase().trim() === email.toLowerCase().trim()) {
+        if (REGISTERED_USERS_DB.length > 0) {
+          switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
+          saveAppStateToLocal();
+        } else {
+          APP_STATE.userEmail = "";
+          APP_STATE.userName = "";
+          APP_STATE.userSchool = "";
+          APP_STATE.userAvatar = "";
+          APP_STATE.rankPoints = 1000;
+          APP_STATE.bfsScore = 0;
+          APP_STATE.totalHours = 0;
+          APP_STATE.streakDays = 1;
+          APP_STATE.sessionsCompletedCount = 0;
+          APP_STATE.gymCompletedCount = 0;
+          APP_STATE.history = [];
+          saveAppStateToLocal();
+        }
+      }
+
+      syncProfileDOM();
+      updateStatsUI();
+      renderLeaderboard();
+      openSwitchAccountModal();
+      alert(`🗑️ Đã xoá tài khoản ${email} thành công! Bảng xếp hạng đã được dọn sạch.`);
+    }
+
+    function switchToUserAccount(email) {
+      syncCurrentUserToDatabase();
+      loadUsersDatabase();
+
+      const user = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
+      if (!user) return;
+
+      APP_STATE.userEmail = user.email;
+      APP_STATE.userName = user.name;
+      APP_STATE.userSchool = user.school || '';
+      APP_STATE.userAvatar = user.avatar || '';
+      APP_STATE.rankPoints = Number(user.rankPoints) || 1000;
+      APP_STATE.bfsScore = Number(user.bfs) || 0;
+      APP_STATE.sessionsCompletedCount = user.sessionsCount || 0;
+      APP_STATE.totalHours = user.totalHours || 0;
+      APP_STATE.streakDays = user.streakDays || 1;
+      APP_STATE.history = Array.isArray(user.history) ? user.history : [];
+
+      saveAppStateToLocal();
+      syncProfileDOM();
+      updateStatsUI();
+      renderLeaderboard();
+      renderHistory();
+      closeSwitchAccountModal();
+      alert(`✅ Đã chuyển sang tài khoản: ${user.name} (${user.email})`);
     }
 
     // ================= INIT =================
     window.addEventListener('DOMContentLoaded', () => {
-      cleanTestAccountsOnStartup();
       loadAppStateFromLocal();
-      loadUsersDatabase();
+      purgeCloneAccounts(false);
+
+      // Nếu APP_STATE rỗng nhưng thiết bị đã lưu tài khoản, tự động khôi phục tài khoản gần nhất
+      if ((!APP_STATE.userEmail || !APP_STATE.userName) && REGISTERED_USERS_DB.length > 0) {
+        switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
+        saveAppStateToLocal();
+      }
+
       syncProfileDOM();
       renderArticles();
       renderTips('ALL');
@@ -1289,16 +2073,27 @@
       }
       updateDndUI();
 
-      // Check for first-time onboarding flow: prompt account creation immediately, then 10-question BFS test
-      const hasOnboarded = localStorage.getItem('bf_onboarded_completed');
-      if (!hasOnboarded) {
+      // Khi mới vào web: nếu chưa có tài khoản Gmail thì hiện ngay form tạo tài khoản
+      const hasAccount = Boolean(APP_STATE.userEmail && APP_STATE.userName);
+      if (!hasAccount) {
         setTimeout(() => {
           openRegisterModal(true);
         }, 350);
       }
 
+      // Lắng nghe cập nhật đa tab (cross-tab) trong trình duyệt
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'bf_registered_users') {
+          loadUsersDatabase();
+          renderLeaderboard();
+        }
+      });
+
       // Restore active session if user refreshed or browser restored tab
       restoreSessionBackup();
+      restoreRestCooldown();
+      updateDailySessionUI();
+      updateDailyGymUI();
 
       // Listen for window blur / focus (anti-distraction detector & seamless timer sync)
       document.addEventListener('visibilitychange', () => {
@@ -1324,6 +2119,13 @@
       window.addEventListener('pageshow', () => {
         resyncActiveSession();
       });
+
+      // Khởi động đồng bộ Bảng Xếp Hạng từ Cloud toàn hệ thống
+      fetchLeaderboardFromCloud(false);
+      // Tự động kiểm tra đồng bộ ngầm định kỳ mỗi 60 giây
+      setInterval(() => {
+        fetchLeaderboardFromCloud(false);
+      }, 60000);
     });
 
     function restoreSessionBackup() {
@@ -1361,9 +2163,15 @@
       const activeContent = document.getElementById(`tab-${tabId}`);
       if (activeContent) activeContent.classList.remove('hidden');
 
-      // Cuộn nội dung lên đầu khi đổi tab để không bị lưu vị trí cuộn cũ
+      // Cuộn nội dung lên đầu khi đổi tab và triệt tiêu hoàn toàn cuộn ngang
       const mainEl = document.querySelector('main');
-      if (mainEl) mainEl.scrollTop = 0;
+      if (mainEl) {
+        mainEl.scrollTop = 0;
+        mainEl.scrollLeft = 0;
+      }
+      window.scrollTo(0, 0);
+      document.body.scrollLeft = 0;
+      document.documentElement.scrollLeft = 0;
 
       // Desktop Sidebar sync
       document.querySelectorAll('.sidebar-item').forEach(btn => {
@@ -1376,16 +2184,19 @@
         currentSidebarBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-md', 'glow-electric');
       }
 
-      // Mobile Sticky Top Tabs Scroller sync
+      // Mobile Sticky Top Tabs Scroller sync - CHỈ cuộn riêng thanh tabs bar, không cuộn window
       document.querySelectorAll('.top-nav-tab').forEach(btn => {
         btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-sm', 'font-bold');
         btn.classList.add('text-slate-700', 'hover:bg-slate-100', 'font-semibold');
       });
       const currentTopBtn = document.getElementById(`top-tab-${tabId}`);
-      if (currentTopBtn) {
+      const tabsBar = document.getElementById('mobile-top-tabs-bar');
+      if (currentTopBtn && tabsBar) {
         currentTopBtn.classList.remove('text-slate-700', 'hover:bg-slate-100', 'font-semibold');
         currentTopBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'shadow-sm', 'font-bold');
-        currentTopBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        
+        const scrollTarget = currentTopBtn.offsetLeft - (tabsBar.clientWidth / 2) + (currentTopBtn.clientWidth / 2);
+        tabsBar.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
       }
 
       // Mobile Bottom Nav sync
@@ -1397,6 +2208,25 @@
       if (currentMobBtn) {
         currentMobBtn.classList.remove('text-slate-500', 'font-semibold');
         currentMobBtn.classList.add('text-blue-600', 'font-bold', 'bg-blue-50/80');
+      }
+
+      if (tabId === 'timer') {
+        updateDailySessionUI();
+        updateTimerButtonsUI(APP_STATE.isTimerRunning);
+      } else if (tabId === 'profile') {
+        updateStatsUI();
+        renderHistory();
+        renderReminders();
+        updateUserInfoUI();
+      } else if (tabId === 'leaderboard') {
+        renderLeaderboard();
+        fetchLeaderboardFromCloud(false);
+      }
+
+      if (tabId !== 'gym') {
+        closeGameContainer();
+      } else {
+        updateDailyGymUI();
       }
     }
 
@@ -1502,21 +2332,319 @@
       }
     }
 
+    // ================= REST COOLDOWN & GIỚI HẠN 3 PHIÊN/NGÀY =================
+    const MAX_SESSIONS_PER_DAY = 3;
+    const REST_COOLDOWN_SECONDS = 15 * 60; // Mặc định phiên 90p nghỉ 15 phút
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Thời gian nghỉ ngơi tỉ lệ khoa học theo độ dài phiên học:
+    // - Phiên học sâu 90p: nghỉ 15 phút (Adenosine clearance)
+    // - Phiên 45-60p: nghỉ 10 phút
+    // - Phiên 15-25p (Khởi động / Pomodoro): nghỉ 5 phút
+    function getCooldownSecondsForSession(sessionMinutes) {
+      const mins = Number(sessionMinutes) || 90;
+      if (mins >= 90) {
+        return 15 * 60; // 90p -> nghỉ 15 phút
+      } else if (mins >= 45) {
+        return 10 * 60; // 45-60p -> nghỉ 10 phút
+      } else {
+        return 5 * 60;  // 15p hoặc 25p -> nghỉ 5 phút
+      }
+    }
+
+    function getTodayDateString() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function getTodayCompletedSessionsCount() {
+      const today = getTodayDateString();
+      let historyCount = 0;
+      if (Array.isArray(APP_STATE.history)) {
+        historyCount = APP_STATE.history.filter(item => {
+          const ts = item.timestamp || item.id;
+          if (!ts) return false;
+          const d = new Date(ts);
+          const itemDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+          return itemDate === today;
+        }).length;
+      }
+      let trackerCount = 0;
+      if (APP_STATE.dailyTracker && APP_STATE.dailyTracker.date === today) {
+        trackerCount = Number(APP_STATE.dailyTracker.count) || 0;
+      }
+      return Math.max(historyCount, trackerCount);
+    }
+
+    function syncTodaySessionTracker() {
+      const today = getTodayDateString();
+      const count = getTodayCompletedSessionsCount();
+      APP_STATE.dailyTracker = { date: today, count: count };
+      try {
+        localStorage.setItem('bf_daily_tracker', JSON.stringify(APP_STATE.dailyTracker));
+      } catch (_) {}
+      updateDailySessionUI();
+    }
+
+    function recordTodaySession() {
+      syncTodaySessionTracker();
+    }
+
+    function isRestCooldownActive() {
+      if (!APP_STATE.cooldownEndTime) return false;
+      return Date.now() < APP_STATE.cooldownEndTime;
+    }
+
+    function getRestCooldownRemaining() {
+      if (!APP_STATE.cooldownEndTime) return 0;
+      return Math.max(0, Math.ceil((APP_STATE.cooldownEndTime - Date.now()) / 1000));
+    }
+
+    function startRestCooldown(seconds) {
+      const sessionMinutes = Math.round(APP_STATE.timerDuration / 60) || 90;
+      const cooldownSec = seconds || getCooldownSecondsForSession(sessionMinutes);
+      APP_STATE.currentCooldownTotalSeconds = cooldownSec;
+      APP_STATE.cooldownEndTime = Date.now() + (cooldownSec * 1000);
+      try {
+        localStorage.setItem('bf_cooldown_until', String(APP_STATE.cooldownEndTime));
+        localStorage.setItem('bf_cooldown_total_seconds', String(cooldownSec));
+      } catch (_) {}
+      startCooldownTicker();
+      updateDailySessionUI();
+      updateTimerButtonsUI(false);
+    }
+
+    function startCooldownTicker() {
+      if (APP_STATE.restInterval) {
+        clearInterval(APP_STATE.restInterval);
+      }
+      updateCooldownDisplay();
+      APP_STATE.restInterval = setInterval(() => {
+        if (!isRestCooldownActive()) {
+          finishRestCooldown();
+          return;
+        }
+        updateCooldownDisplay();
+        updateTimerButtonsUI(false);
+      }, 1000);
+    }
+
+    function finishRestCooldown() {
+      if (APP_STATE.restInterval) {
+        clearInterval(APP_STATE.restInterval);
+        APP_STATE.restInterval = null;
+      }
+      APP_STATE.cooldownEndTime = null;
+      const cooldownMin = Math.round((APP_STATE.currentCooldownTotalSeconds || 900) / 60);
+      try {
+        localStorage.removeItem('bf_cooldown_until');
+        localStorage.removeItem('bf_cooldown_total_seconds');
+      } catch (_) {}
+
+      updateDailySessionUI();
+      updateTimerButtonsUI(false);
+
+      // Âm thanh nhẹ báo hết giờ nghỉ ngơi
+      playGentleChime();
+
+      setTimeout(() => {
+        alert(`✨ HẾT ${cooldownMin} PHÚT NGHỈ NGƠI HỒI PHỤC!\n\nVỏ não của bạn đã hạ nhiệt và nạp lại Adenosine thành công. Bạn đã sẵn sàng bước vào phiên học tiếp theo!`);
+      }, 100);
+    }
+
+    function restoreRestCooldown() {
+      try {
+        const saved = localStorage.getItem('bf_cooldown_until');
+        const savedTotal = localStorage.getItem('bf_cooldown_total_seconds');
+        if (savedTotal) {
+          APP_STATE.currentCooldownTotalSeconds = Number(savedTotal) || (15 * 60);
+        }
+        if (saved) {
+          const target = Number(saved);
+          if (target && target > Date.now()) {
+            APP_STATE.cooldownEndTime = target;
+            startCooldownTicker();
+          } else {
+            localStorage.removeItem('bf_cooldown_until');
+            localStorage.removeItem('bf_cooldown_total_seconds');
+            APP_STATE.cooldownEndTime = null;
+          }
+        }
+      } catch (_) {}
+    }
+
+    function updateCooldownDisplay() {
+      const banner = document.getElementById('mandatory-rest-banner');
+      const timeDisplay = document.getElementById('cooldown-timer-display');
+      const progressBar = document.getElementById('cooldown-progress-bar');
+      const titleEl = document.getElementById('cooldown-banner-title');
+      const subtextEl = document.getElementById('cooldown-banner-subtext');
+      if (!banner) return;
+
+      if (!isRestCooldownActive()) {
+        banner.classList.add('hidden');
+        return;
+      }
+
+      banner.classList.remove('hidden');
+      const remSec = getRestCooldownRemaining();
+      const mm = String(Math.floor(remSec / 60)).padStart(2, '0');
+      const ss = String(remSec % 60).padStart(2, '0');
+      if (timeDisplay) timeDisplay.innerText = `${mm}:${ss}`;
+
+      const totalCooldown = APP_STATE.currentCooldownTotalSeconds || (15 * 60);
+      const cooldownMin = Math.round(totalCooldown / 60);
+      const pct = Math.max(0, Math.min(100, (remSec / totalCooldown) * 100));
+      if (progressBar) progressBar.style.width = `${pct}%`;
+
+      if (titleEl) {
+        titleEl.innerText = `THỜI GIAN NGHỈ NGƠI HỒI PHỤC (${cooldownMin} PHÚT BẮT BUỘC)`;
+      }
+      if (subtextEl) {
+        if (cooldownMin >= 15) {
+          subtextEl.innerText = `Sau phiên học sâu 90 phút, vỏ não cần 15 phút hạ nhiệt và giải tỏa Adenosine. Bạn hãy thư giãn và không bắt đầu phiên mới.`;
+        } else {
+          subtextEl.innerText = `Sau phiên tập trung, não bộ cần ${cooldownMin} phút nghỉ ngơi nạp lại năng lượng trước khi bắt đầu phiên tiếp theo.`;
+        }
+      }
+    }
+
+    function updateDailySessionUI() {
+      const todayCount = getTodayCompletedSessionsCount();
+      const counterBadge = document.getElementById('daily-sessions-counter-badge');
+      const subtext = document.getElementById('daily-sessions-subtext');
+      const limitBanner = document.getElementById('daily-limit-banner');
+
+      if (counterBadge) {
+        counterBadge.innerText = `${todayCount}/${MAX_SESSIONS_PER_DAY} Phiên`;
+        if (todayCount >= MAX_SESSIONS_PER_DAY) {
+          counterBadge.className = 'font-cyber font-black text-xs text-rose-700 bg-rose-50 border border-rose-300 px-2.5 py-0.5 rounded-full';
+        } else if (todayCount > 0) {
+          counterBadge.className = 'font-cyber font-black text-xs text-amber-700 bg-amber-50 border border-amber-300 px-2.5 py-0.5 rounded-full';
+        } else {
+          counterBadge.className = 'font-cyber font-black text-xs text-blue-700 bg-blue-50 border border-blue-300 px-2.5 py-0.5 rounded-full';
+        }
+      }
+
+      if (subtext) {
+        if (todayCount >= MAX_SESSIONS_PER_DAY) {
+          subtext.innerText = 'Đã đạt hạn mức 3 phiên hôm nay. Não bộ cần nghỉ ngơi và ngủ đủ giấc!';
+        } else {
+          subtext.innerText = `Còn lại ${MAX_SESSIONS_PER_DAY - todayCount} phiên học sâu. Khoa học thần kinh khuyến nghị tối đa 3 chu kỳ Ultradian (4.5h)/ngày.`;
+        }
+      }
+
+      // Update 3 session pills
+      for (let i = 1; i <= MAX_SESSIONS_PER_DAY; i++) {
+        const dot = document.getElementById(`session-dot-${i}`);
+        if (dot) {
+          if (todayCount >= i) {
+            dot.className = 'flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs';
+            dot.innerHTML = `<span>✓</span> <span>Phiên ${i}</span>`;
+          } else if (todayCount === i - 1 && APP_STATE.isTimerRunning) {
+            dot.className = 'flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-black bg-blue-100 text-blue-800 border border-blue-300 animate-pulse';
+            dot.innerHTML = `<span>●</span> <span>Phiên ${i}</span>`;
+          } else {
+            dot.className = 'flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200';
+            dot.innerHTML = `<span>○</span> <span>Phiên ${i}</span>`;
+          }
+        }
+      }
+
+      // Show/hide daily limit banner
+      if (limitBanner) {
+        if (todayCount >= MAX_SESSIONS_PER_DAY) {
+          limitBanner.classList.remove('hidden');
+        } else {
+          limitBanner.classList.add('hidden');
+        }
+      }
+
+      updateCooldownDisplay();
+    }
+
+    function playGentleChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+        osc1.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.3); // E5
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(659.25, ctx.currentTime + 0.3);
+        osc2.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.7); // G5
+
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start();
+        osc2.start(ctx.currentTime + 0.3);
+        osc1.stop(ctx.currentTime + 0.3);
+        osc2.stop(ctx.currentTime + 1.2);
+      } catch (_) {}
+    }
+
     function updateTimerButtonsUI(isRunning) {
       const playPauseIcon = document.getElementById('play-pause-icon');
       const playPauseText = document.getElementById('play-pause-text');
       const mainBtn = document.getElementById('main-timer-action-btn');
       
       if (!mainBtn) return;
+
+      const cooldownActive = isRestCooldownActive();
+      const dailyLimitReached = getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY;
+
       if (isRunning) {
         if (playPauseIcon) playPauseIcon.innerText = '⏸️';
         if (playPauseText) playPauseText.innerText = 'TẠM DỪNG';
         mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
-      } else {
-        if (playPauseIcon) playPauseIcon.innerText = '▶️';
-        if (playPauseText) playPauseText.innerText = (APP_STATE.timerRemaining < APP_STATE.timerDuration) ? 'TIẾP TỤC LOCK IN' : 'BẮT ĐẦU LOCK IN';
-        mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
+        return;
       }
+
+      if (cooldownActive) {
+        const remSec = getRestCooldownRemaining();
+        const mm = String(Math.floor(remSec / 60)).padStart(2, '0');
+        const ss = String(remSec % 60).padStart(2, '0');
+        if (playPauseIcon) playPauseIcon.innerText = '☕';
+        if (playPauseText) playPauseText.innerText = `ĐANG NGHỈ NGƠI (${mm}:${ss})`;
+        mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider animate-pulse';
+        return;
+      }
+
+      if (dailyLimitReached && APP_STATE.timerRemaining === APP_STATE.timerDuration) {
+        if (playPauseIcon) playPauseIcon.innerText = '🔒';
+        if (playPauseText) playPauseText.innerText = 'ĐÃ ĐẠT 3 PHIÊN/NGÀY';
+        mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-slate-600 to-slate-700 text-slate-200 font-black text-sm sm:text-base shadow-lg cursor-not-allowed transition-all flex items-center gap-2 font-cyber tracking-wider opacity-90';
+        return;
+      }
+
+      if (playPauseIcon) playPauseIcon.innerText = '▶️';
+      if (playPauseText) {
+        playPauseText.innerText = (APP_STATE.timerRemaining < APP_STATE.timerDuration) ? 'TIẾP TỤC LOCK IN' : 'BẮT ĐẦU LOCK IN';
+      }
+      mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
     }
 
     function setTimerMode(mode) {
@@ -1524,27 +2652,43 @@
         if (!confirm('Phiên học đang chạy. Bạn có muốn đổi chế độ?')) return;
         resetTimer();
       }
-      APP_STATE.timerMode = mode;
+
+      if (isRestCooldownActive()) {
+        const remSec = getRestCooldownRemaining();
+        const mm = Math.floor(remSec / 60);
+        const ss = remSec % 60;
+        const cooldownMin = Math.round((APP_STATE.currentCooldownTotalSeconds || 900) / 60);
+        alert(`☕ Đang trong thời gian nghỉ ngơi ${cooldownMin} phút hồi phục (Còn ${mm}p ${ss}s). Bạn hãy nghỉ ngơi và không thể bắt đầu phiên học mới trong khoảng thời gian này!`);
+        return;
+      }
+
+      if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY) {
+        alert(`🛑 Bạn đã hoàn thành tối đa 3 phiên học trong ngày hôm nay (4.5 tiếng). Não bộ cần nghỉ ngơi để phục hồi cho ngày mai!`);
+        return;
+      }
+
+      const normalizedMode = (mode === 'break') ? 'sprint' : mode;
+      APP_STATE.timerMode = normalizedMode;
       
-      ['ultradian', 'pomodoro', 'break'].forEach(m => {
+      ['ultradian', 'pomodoro', 'sprint', 'break'].forEach(m => {
         const btn = document.getElementById(`mode-btn-${m}`);
         if (!btn) return;
-        if (m === mode) {
+        if (m === normalizedMode || (m === 'break' && normalizedMode === 'sprint') || (m === 'sprint' && normalizedMode === 'break')) {
           btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md';
         } else {
           btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
         }
       });
 
-      if (mode === 'ultradian') {
+      if (normalizedMode === 'ultradian') {
         APP_STATE.timerDuration = 90 * 60;
         document.getElementById('timer-phase-label').innerText = 'Khởi động vỏ não (0-15p)';
-      } else if (mode === 'pomodoro') {
+      } else if (normalizedMode === 'pomodoro') {
         APP_STATE.timerDuration = 25 * 60;
         document.getElementById('timer-phase-label').innerText = 'Pomodoro Lock-In (25p)';
       } else {
         APP_STATE.timerDuration = 15 * 60;
-        document.getElementById('timer-phase-label').innerText = 'Nghỉ ngơi nạp Adenosine';
+        document.getElementById('timer-phase-label').innerText = 'Sprint Khởi Động Não (15p)';
       }
 
       APP_STATE.timerRemaining = APP_STATE.timerDuration;
@@ -1633,12 +2777,38 @@
     function toggleTimer() {
       if (APP_STATE.isTimerRunning) {
         pauseTimer();
-      } else {
-        startTimer();
+        return;
       }
+
+      // Kiểm tra 1: Thời gian nghỉ ngơi hồi phục theo phiên học
+      if (isRestCooldownActive()) {
+        const remSec = getRestCooldownRemaining();
+        const mm = Math.floor(remSec / 60);
+        const ss = remSec % 60;
+        const cooldownMin = Math.round((APP_STATE.currentCooldownTotalSeconds || 900) / 60);
+        alert(`☕ ĐANG TRONG THỜI GIAN NGHỈ NGƠI HỒI PHỤC!\n\nSau phiên học, bạn cần nghỉ ngơi ${cooldownMin} phút để não bộ hạ nhiệt và phục hồi nồng độ dẫn truyền thần kinh.\n\nThời gian nghỉ còn lại: ${mm} phút ${ss} giây.\nHãy cho mắt nghỉ ngơi, uống nước hoặc vận động nhẹ nhàng nhé!`);
+        return;
+      }
+
+      // Kiểm tra 2: Tối đa 3 phiên học trong ngày
+      if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY && APP_STATE.timerRemaining === APP_STATE.timerDuration) {
+        alert(`🛑 ĐÃ ĐẠT GIỚI HẠN TỐI ĐA 3 PHIÊN HỌC TRONG NGÀY!\n\nBạn đã hoàn thành 3 chu kỳ học sâu hôm nay.\n\nKhoa học thần kinh khuyến cáo não bộ cần nghỉ ngơi và ngủ đủ giấc sau 3 chu kỳ để không bị kiệt sức và Não Bỏng Ngô.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!`);
+        return;
+      }
+
+      startTimer();
     }
 
     function startTimer(isResumingBackup = false) {
+      if (!isResumingBackup) {
+        if (isRestCooldownActive()) {
+          return;
+        }
+        if (getTodayCompletedSessionsCount() >= MAX_SESSIONS_PER_DAY && APP_STATE.timerRemaining === APP_STATE.timerDuration) {
+          return;
+        }
+      }
+
       if (APP_STATE.timerRemaining <= 0) {
         APP_STATE.timerRemaining = APP_STATE.timerDuration;
       }
@@ -1727,18 +2897,84 @@
       APP_STATE.timerTargetEndTime = null;
       saveSessionBackup();
 
-      APP_STATE.rankPoints += 50;
-      APP_STATE.bfsScore += 15;
-      APP_STATE.totalMinutes += Math.round(APP_STATE.timerDuration / 60);
+      const sessionMinutes = Math.round(APP_STATE.timerDuration / 60) || 15;
+      const pointsEarned = sessionMinutes; // 15p = 15đ, 25p = 25đ, 90p = 90đ
+      const cooldownSec = getCooldownSecondsForSession(sessionMinutes);
+      const cooldownMinutes = Math.round(cooldownSec / 60);
+
+      const now = Date.now();
+      const d = new Date();
+      const timeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+      const dateStr = `${timeStr} - ${d.toLocaleDateString('vi-VN')}`;
+      const subjectInput = document.getElementById('session-subject-input');
+      const defaultSubject = APP_STATE.timerMode === 'ultradian' 
+        ? 'Phiên Học Sâu Ultradian 90p' 
+        : (APP_STATE.timerMode === 'pomodoro' ? 'Phiên Tập Trung Pomodoro 25p' : 'Phiên Khởi Động Não 15p');
+      const subject = (subjectInput && subjectInput.value.trim()) || defaultSubject;
+
+      // 1. TỰ ĐỘNG LƯU PHIÊN HỌC VÀO LỊCH SỬ & HỒ SƠ NGAY LẬP TỨC
+      const sessionItem = {
+        id: now,
+        timestamp: now,
+        subject: subject,
+        minutes: sessionMinutes,
+        points: pointsEarned,
+        date: dateStr,
+        emotion: APP_STATE.selectedEmotion || 'Tập trung cao 🚀',
+        note: `Hoàn thành trọn vẹn phiên học ${sessionMinutes} phút tập trung cao độ.`,
+        hasReflected: false
+      };
+      if (!Array.isArray(APP_STATE.history)) {
+        APP_STATE.history = [];
+      }
+      APP_STATE.history.unshift(sessionItem);
+      APP_STATE.lastCompletedSessionId = now;
+      APP_STATE.pendingReflectionSessionId = now;
+
+      // 2. CẬP NHẬT CHỈ SỐ & ĐIỂM
+      APP_STATE.sessionsCompletedCount = (APP_STATE.sessionsCompletedCount || 0) + 1;
+      APP_STATE.totalHours = parseFloat(((APP_STATE.totalHours || 0) + (sessionMinutes / 60)).toFixed(1));
+      APP_STATE.rankPoints = (APP_STATE.rankPoints || 1000) + 50;
+      APP_STATE.bfsScore = (APP_STATE.bfsScore || 0) + 15;
+      APP_STATE.totalMinutes = (APP_STATE.totalMinutes || 0) + sessionMinutes;
+
+      // 3. ĐỒNG BỘ BỘ ĐẾM SỐ PHIÊN HÔM NAY (TỐI ĐA 3 PHIÊN/NGÀY)
+      syncTodaySessionTracker();
+
+      // 4. LƯU LOCALSTORAGE NGAY LẬP TỨC
+      saveAppStateToLocal();
+
+      // 5. CẬP NHẬT GIAO DIỆN TOÀN BỘ CÁC BẢNG & PROFILE
       updateStatsUI();
+      updateDailySessionUI();
+      renderLeaderboard();
+      renderHistory();
       updateTimerDisplay();
 
-      // Restore notifications after finishing study session
+      // 6. KÍCH HOẠT THỜI GIAN NGHỈ NGƠI TỈ LỆ KHOA HỌC (90p -> nghỉ 15p, 15p/25p -> nghỉ 5p)
+      startRestCooldown(cooldownSec);
+
+      // 7. KHÔI PHỤC THÔNG BÁO NẾU AUTO-DND ĐANG BẬT
       if (APP_STATE.autoDndOnSession && APP_STATE.isDndActive) {
         toggleDnd(false);
       }
 
-      alert('🎉 Xuất sắc! Bạn đã hoàn thành trọn vẹn chu kỳ học sâu mà không bị ngắt quãng. Hãy ghi lại đúc kết để nhận thêm +25 BFS!');
+      // 8. PHÁT CHUÔNG BÁO HOÀN THÀNH
+      playGentleChime();
+
+      // 9. THÔNG BÁO VÀ MỞ MODAL ĐÚC KẾT (TÙY CHỌN NHẬN THÊM +25 BFS)
+      const todayCount = getTodayCompletedSessionsCount();
+      const remainingToday = Math.max(0, MAX_SESSIONS_PER_DAY - todayCount);
+      const limitNotice = remainingToday > 0 
+        ? `📅 Hôm nay: Đã hoàn thành ${todayCount}/${MAX_SESSIONS_PER_DAY} phiên (Còn ${remainingToday} phiên).` 
+        : `👑 Bạn đã hoàn thành trọn vẹn 3/3 phiên tối đa trong ngày hôm nay!`;
+
+      alert(`🎉 XUẤT SẮC! BẠN ĐÃ HOÀN THÀNH PHIÊN HỌC ${sessionMinutes} PHÚT!\n\n` +
+            `✅ Đã lưu phiên vào Hồ Sơ & Lịch Sử (+${pointsEarned} điểm theo thời lượng).\n` +
+            `${limitNotice}\n\n` +
+            `☕ Thời gian nghỉ ngơi ${cooldownMinutes} phút hồi phục đã bắt đầu.\n` +
+            `Hãy ghi lại 1 câu đúc kết để nhận thêm +25 BFS củng cố hồi hải mã nhé!`);
+
       openReflectionModal();
     }
 
@@ -1946,13 +3182,122 @@
       { name: "Đen", color: "#0f172a", bg: "bg-slate-100 text-slate-800 border-slate-300" }
     ];
 
+    // ================= BRAIN FOCUS GYM LOGIC & DAILY LIMIT =================
+    const MAX_GYM_PLAYS_PER_DAY = 5;
+
+    function getTodayGymPlaysCount() {
+      const today = getTodayDateString();
+      if (APP_STATE.dailyGymTracker && APP_STATE.dailyGymTracker.date === today) {
+        return Math.max(0, Number(APP_STATE.dailyGymTracker.count) || 0);
+      }
+      return 0;
+    }
+
+    function recordTodayGymPlay() {
+      const today = getTodayDateString();
+      const current = getTodayGymPlaysCount();
+      APP_STATE.dailyGymTracker = { date: today, count: current + 1 };
+      try {
+        localStorage.setItem('bf_daily_gym_tracker', JSON.stringify(APP_STATE.dailyGymTracker));
+      } catch (_) {}
+      updateDailyGymUI();
+    }
+
+    function isGymDailyLimitReached() {
+      return getTodayGymPlaysCount() >= MAX_GYM_PLAYS_PER_DAY;
+    }
+
+    function updateDailyGymUI() {
+      const todayCount = getTodayGymPlaysCount();
+      const badge = document.getElementById('daily-gym-counter-badge');
+      const subtext = document.getElementById('daily-gym-subtext');
+      const banner = document.getElementById('daily-gym-limit-banner');
+
+      if (badge) {
+        badge.innerText = `${todayCount}/${MAX_GYM_PLAYS_PER_DAY} Lượt`;
+        if (todayCount >= MAX_GYM_PLAYS_PER_DAY) {
+          badge.className = "font-cyber font-black text-xs text-amber-900 bg-amber-200 border border-amber-400 px-2.5 py-0.5 rounded-full shadow-xs animate-pulse";
+        } else {
+          badge.className = "font-cyber font-black text-xs text-indigo-700 bg-indigo-50 border border-indigo-300 px-2.5 py-0.5 rounded-full";
+        }
+      }
+
+      if (subtext) {
+        if (todayCount >= MAX_GYM_PLAYS_PER_DAY) {
+          subtext.innerText = "Đã hoàn thành 5/5 lượt tập hôm nay. Các synap thần kinh cần nghỉ ngơi phục hồi.";
+        } else {
+          subtext.innerText = `Còn lại ${MAX_GYM_PLAYS_PER_DAY - todayCount} lượt tập hôm nay. Khoa học thần kinh khuyến nghị tối đa 5 lượt/ngày.`;
+        }
+      }
+
+      if (banner) {
+        if (todayCount >= MAX_GYM_PLAYS_PER_DAY) {
+          banner.classList.remove('hidden');
+        } else {
+          banner.classList.add('hidden');
+        }
+      }
+
+      // Update 5 pills
+      for (let i = 1; i <= MAX_GYM_PLAYS_PER_DAY; i++) {
+        const dot = document.getElementById(`gym-dot-${i}`);
+        if (dot) {
+          if (i <= todayCount) {
+            dot.className = "flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-black bg-gradient-to-r from-emerald-500 to-teal-600 text-white border border-emerald-400 shadow-xs";
+            dot.innerHTML = `<span>✓</span><span>L${i}</span>`;
+          } else if (i === todayCount + 1) {
+            dot.className = "flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-black bg-indigo-100 text-indigo-800 border border-indigo-400 ring-2 ring-indigo-300 animate-pulse";
+            dot.innerHTML = `<span>⚡</span><span>L${i}</span>`;
+          } else {
+            dot.className = "flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-400 border border-slate-200";
+            dot.innerHTML = `<span>${i}</span><span>L${i}</span>`;
+          }
+        }
+      }
+
+      // Update game cards state
+      const isFull = todayCount >= MAX_GYM_PLAYS_PER_DAY;
+      ['stroop', 'grid', 'math'].forEach(id => {
+        const card = document.getElementById(`gym-card-${id}`);
+        const badgeEl = document.getElementById(`gym-badge-${id}`);
+        if (card) {
+          if (isFull) {
+            card.classList.add('opacity-75', 'bg-slate-50');
+          } else {
+            card.classList.remove('opacity-75', 'bg-slate-50');
+          }
+        }
+        if (badgeEl && isFull) {
+          badgeEl.innerText = "Đã hết lượt (5/5) 🔒";
+          badgeEl.className = "text-amber-700 font-bold text-[11px]";
+        } else if (badgeEl) {
+          badgeEl.innerText = (id === 'grid' ? '+50 BFS →' : '+40 BFS →');
+          badgeEl.className = "text-blue-700 font-black";
+        }
+      });
+    }
+
+    // ---------------- GAME 1: STROOP TEST ----------------
     function startStroopGame() {
+      if (isGymDailyLimitReached()) {
+        alert("🛑 ĐÃ ĐẠT GIỚI HẠN 5 LƯỢT GYM HÔM NAY!\n\nBạn đã hoàn thành trọn vẹn 5/5 lượt rèn luyện não bộ trong ngày hôm nay.\n\nKhoa học thần kinh khuyến cáo tập luyện ngắt quãng để các nơ-ron và synap thần kinh vỏ não trước trán củng cố tự nhiên mà không bị quá tải.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!");
+        return;
+      }
+
       stroopCurrentRound = 0;
       stroopScore = 0;
       stroopStreak = 0;
-      if (stroopRoundTimer) clearInterval(stroopRoundTimer);
+      if (stroopRoundTimer) {
+        clearInterval(stroopRoundTimer);
+        stroopRoundTimer = null;
+      }
+      
+      const titleEl = document.getElementById('active-game-title');
+      if (titleEl) titleEl.innerText = "STROOP SIÊU CẤP (ỨC CHẾ XUNG ĐỘNG)";
+
       const container = document.getElementById('active-game-container');
       container.classList.remove('hidden');
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
       renderNextStroopRound();
     }
 
@@ -1997,7 +3342,9 @@
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-blue-700">Lượt ${stroopCurrentRound}/12</span>
             <span class="text-xs font-black text-amber-600">Điểm: ${stroopScore} ${stroopStreak > 1 ? `(🔥x${stroopStreak})` : ''}</span>
-            <button onclick="closeGameContainer()" class="text-slate-500 hover:text-slate-800 text-xs">Đóng ✕</button>
+            <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1">
+              <span>✕</span> <span>Thoát</span>
+            </button>
           </div>
 
           <!-- Speed countdown bar -->
@@ -2058,18 +3405,27 @@
     }
 
     function finishStroopGame() {
-      if (stroopRoundTimer) clearInterval(stroopRoundTimer);
+      if (stroopRoundTimer) {
+        clearInterval(stroopRoundTimer);
+        stroopRoundTimer = null;
+      }
       APP_STATE.bfsScore += 40;
       APP_STATE.rankPoints += 40;
       APP_STATE.gymCompletedCount++;
+      recordTodayGymPlay();
       updateStatsUI();
+      saveAppStateToLocal();
+      renderLeaderboard();
+
       document.getElementById('game-dynamic-area').innerHTML = `
         <div class="text-center space-y-3 py-4">
           <span class="text-4xl">🏆</span>
           <h3 class="text-lg font-black text-slate-900 font-cyber">HOÀN THÀNH STROOP SIÊU CẤP!</h3>
           <p class="text-xs text-slate-600">Bạn đạt <strong>${stroopScore}/150 điểm</strong>. Vỏ não trước trán (Prefrontal Cortex) đã ức chế xung động phản xạ vượt bậc!</p>
           <div class="text-sm font-black text-blue-600">+40 Điểm BFS & +40 Điểm XH đã cộng!</div>
-          <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md">Tiếp Tục</button>
+          <div class="pt-2">
+            <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">✕ Đóng / Về Phòng Gym</button>
+          </div>
         </div>
       `;
     }
@@ -2081,28 +3437,57 @@
     let userSelectedCells = [];
     let gridRecallTimer = null;
     let gridRecallSeconds = 8;
+    let gridFlashTimeout = null;
+    let gridFeedbackTimeout = null;
+    let isGridGameActive = false;
 
     function startMemoryGridGame() {
+      if (isGymDailyLimitReached()) {
+        alert("🛑 ĐÃ ĐẠT GIỚI HẠN 5 LƯỢT GYM HÔM NAY!\n\nBạn đã hoàn thành trọn vẹn 5/5 lượt rèn luyện não bộ trong ngày hôm nay.\n\nKhoa học thần kinh khuyến cáo tập luyện ngắt quãng để các nơ-ron và synap thần kinh vỏ não trước trán củng cố tự nhiên mà không bị quá tải.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!");
+        return;
+      }
+
+      // Reset state and clear all existing timers cleanly
       gridLevel = 1;
-      if (gridRecallTimer) clearInterval(gridRecallTimer);
+      isGridGameActive = true;
+      if (gridRecallTimer) {
+        clearInterval(gridRecallTimer);
+        gridRecallTimer = null;
+      }
+      if (gridFlashTimeout) {
+        clearTimeout(gridFlashTimeout);
+        gridFlashTimeout = null;
+      }
+      if (gridFeedbackTimeout) {
+        clearTimeout(gridFeedbackTimeout);
+        gridFeedbackTimeout = null;
+      }
+
+      const titleEl = document.getElementById('active-game-title');
+      if (titleEl) titleEl.innerText = "MA TRẬN Ô NHỚ & BẪY BOM (WORKING MEMORY)";
+
       const container = document.getElementById('active-game-container');
       container.classList.remove('hidden');
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
       renderMemoryGridRound();
     }
 
     function renderMemoryGridRound() {
-      if (gridRecallTimer) clearInterval(gridRecallTimer);
+      if (!isGridGameActive) return;
+
+      if (gridRecallTimer) {
+        clearInterval(gridRecallTimer);
+        gridRecallTimer = null;
+      }
+      if (gridFlashTimeout) {
+        clearTimeout(gridFlashTimeout);
+        gridFlashTimeout = null;
+      }
+
       targetCells = [];
       trapCells = [];
       userSelectedCells = [];
 
-      // Grid configuration per level
-      // Level 1: 3x3 (9 cells), 4 targets, 0 traps, flash 1.4s
-      // Level 2: 4x4 (16 cells), 5 targets, 0 traps, flash 1.2s
-      // Level 3: 4x4 (16 cells), 6 targets, 1 trap, flash 1.1s
-      // Level 4: 5x5 (25 cells), 7 targets, 2 traps, flash 1.0s
-      // Level 5: 5x5 (25 cells), 8 targets, 3 traps, flash 0.9s
-      // Level 6: 5x5 (25 cells), 9 targets, 4 traps, flash 0.8s
       let gridSize = 3;
       let numTargets = 4;
       let numTraps = 0;
@@ -2140,7 +3525,9 @@
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-blue-600">Cấp độ ${gridLevel}/6 (${gridSize}x${gridSize})</span>
             <span class="text-xs font-black text-rose-600" id="grid-timer-display">Ghi nhớ...</span>
-            <button onclick="closeGameContainer()" class="text-slate-500 hover:text-slate-800 text-xs">Đóng ✕</button>
+            <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1">
+              <span>✕</span> <span>Thoát</span>
+            </button>
           </div>
           
           <div class="flex items-center justify-center gap-2">
@@ -2171,7 +3558,9 @@
         </div>
       `;
 
-      setTimeout(() => {
+      gridFlashTimeout = setTimeout(() => {
+        if (!isGridGameActive) return;
+
         const instr = document.getElementById('memory-grid-instruction');
         if (instr) instr.innerText = '⚡ CHẠM LẠI CÁC Ô XANH (Tuyệt đối tránh ô Bẫy Bom!):';
         
@@ -2181,13 +3570,21 @@
         if (timerDisp) timerDisp.innerText = `Còn: ${gridRecallSeconds}s`;
 
         gridRecallTimer = setInterval(() => {
+          if (!isGridGameActive) {
+            clearInterval(gridRecallTimer);
+            gridRecallTimer = null;
+            return;
+          }
+
           gridRecallSeconds--;
           const td = document.getElementById('grid-timer-display');
           if (td) td.innerText = `Còn: ${gridRecallSeconds}s`;
+
           if (gridRecallSeconds <= 0) {
             clearInterval(gridRecallTimer);
-            alert('⏰ Hết 8 giây suy nghĩ! Bạn bị quá thời gian. Hãy thử lại từ cấp 1!');
-            startMemoryGridGame();
+            gridRecallTimer = null;
+            // DỪNG LẠI và hiển thị bảng kết thúc ngay tại chỗ, TUYỆT ĐỐI KHÔNG ALERT LẶP và KHÔNG TỰ ĐỘNG CHẠY LẠI
+            showMemoryGameOver('timeout');
           }
         }, 1000);
 
@@ -2203,54 +3600,128 @@
     }
 
     function selectGridCell(index, totalCells) {
+      if (!isGridGameActive) return;
       if (userSelectedCells.includes(index)) return;
       userSelectedCells.push(index);
       const el = document.getElementById(`grid-cell-${index}`);
       
       if (trapCells.includes(index)) {
-        if (gridRecallTimer) clearInterval(gridRecallTimer);
-        el.className = 'rounded-xl bg-rose-600 text-white font-black flex items-center justify-center animate-ping';
-        el.innerText = '💥';
-        setTimeout(() => {
-          alert('💥 BÙM! Bạn đã chạm trúng Ô BẪY BOM! Phản xạ nơ-ron bị reset về cấp 1.');
-          startMemoryGridGame();
+        if (gridRecallTimer) {
+          clearInterval(gridRecallTimer);
+          gridRecallTimer = null;
+        }
+        if (el) {
+          el.className = 'rounded-xl bg-rose-600 text-white font-black flex items-center justify-center animate-ping';
+          el.innerText = '💥';
+        }
+        gridFeedbackTimeout = setTimeout(() => {
+          showMemoryGameOver('bomb');
         }, 400);
         return;
       }
 
       if (targetCells.includes(index)) {
-        el.className = 'rounded-xl bg-blue-600 text-white shadow-md flex items-center justify-center font-black';
-        el.innerText = '✓';
+        if (el) {
+          el.className = 'rounded-xl bg-blue-600 text-white shadow-md flex items-center justify-center font-black';
+          el.innerText = '✓';
+        }
         if (userSelectedCells.length === targetCells.length) {
-          if (gridRecallTimer) clearInterval(gridRecallTimer);
+          if (gridRecallTimer) {
+            clearInterval(gridRecallTimer);
+            gridRecallTimer = null;
+          }
           if (gridLevel >= 6) {
             APP_STATE.bfsScore += 50;
             APP_STATE.rankPoints += 50;
             APP_STATE.gymCompletedCount++;
+            recordTodayGymPlay();
             updateStatsUI();
+            saveAppStateToLocal();
+            renderLeaderboard();
+
             document.getElementById('game-dynamic-area').innerHTML = `
               <div class="text-center space-y-3 py-4">
                 <span class="text-4xl">👑</span>
                 <h3 class="text-lg font-black text-slate-900 font-cyber">CHIẾN THẦN TRÍ NHỚ VÔ ĐỊCH!</h3>
                 <p class="text-xs text-slate-600">Bạn đã chinh phục trọn vẹn 6 cấp độ ma trận 5x5 và vượt qua toàn bộ bẫy bom nơ-ron.</p>
                 <div class="text-sm font-black text-blue-600">+50 Điểm BFS & +50 Điểm XH đã cộng!</div>
-                <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md">Tiếp Tục</button>
+                <div class="pt-2">
+                  <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">✕ Về Phòng Gym</button>
+                </div>
               </div>
             `;
           } else {
             gridLevel++;
-            setTimeout(renderMemoryGridRound, 600);
+            gridFeedbackTimeout = setTimeout(renderMemoryGridRound, 500);
           }
         }
       } else {
-        if (gridRecallTimer) clearInterval(gridRecallTimer);
-        el.className = 'rounded-xl bg-rose-500 text-white font-bold flex items-center justify-center';
-        el.innerText = '✕';
-        setTimeout(() => {
-          alert('Sai ô rồi! Vùng nhớ ngắn hạn bị quá tải. Hãy thử lại từ cấp 1.');
-          startMemoryGridGame();
+        if (gridRecallTimer) {
+          clearInterval(gridRecallTimer);
+          gridRecallTimer = null;
+        }
+        if (el) {
+          el.className = 'rounded-xl bg-rose-500 text-white font-bold flex items-center justify-center';
+          el.innerText = '✕';
+        }
+        gridFeedbackTimeout = setTimeout(() => {
+          showMemoryGameOver('wrong');
         }, 400);
       }
+    }
+
+    // GIAO DIỆN DỪNG VÀ BÁO KẾT QUẢ RÕ RÀNG (KHÔNG DÙNG ALERT CHẶN TRÌNH DUYỆT)
+    function showMemoryGameOver(reason) {
+      if (gridRecallTimer) {
+        clearInterval(gridRecallTimer);
+        gridRecallTimer = null;
+      }
+      if (gridFlashTimeout) {
+        clearTimeout(gridFlashTimeout);
+        gridFlashTimeout = null;
+      }
+
+      let icon = '⏰';
+      let title = 'HẾT 8 GIÂY SUY NGHĨ!';
+      let desc = 'Thời gian 8 giây ghi nhớ đã trôi qua. Vùng nhớ làm việc (Working Memory) tạm thời bị bão hòa. Hãy thư giãn một nhịp.';
+      let bgBadge = 'bg-amber-100 text-amber-800 border-amber-300';
+
+      if (reason === 'bomb') {
+        icon = '💥';
+        title = 'BÙM! CHẠM TRÚNG Ô BẪY BOM';
+        desc = 'Bạn đã kích hoạt trúng ô bẫy bom ẩn. Trong môi trường học tập, các kích thích xao nhãng đột ngột cũng nguy hiểm như vậy.';
+        bgBadge = 'bg-rose-100 text-rose-800 border-rose-300';
+      } else if (reason === 'wrong') {
+        icon = '✕';
+        title = 'CHƯA CHÍNH XÁC!';
+        desc = 'Bạn đã chạm nhầm ô không phát sáng. Hãy tập trung quan sát kỹ các nơ-ron liên kết ở lượt tiếp theo.';
+        bgBadge = 'bg-rose-100 text-rose-800 border-rose-300';
+      }
+
+      const area = document.getElementById('game-dynamic-area');
+      if (!area) return;
+
+      area.innerHTML = `
+        <div class="space-y-4 text-center py-4">
+          <div class="w-14 h-14 rounded-2xl ${bgBadge} border text-3xl flex items-center justify-center mx-auto shadow-sm">
+            ${icon}
+          </div>
+          <div>
+            <h3 class="font-cyber font-black text-base text-slate-900">${title}</h3>
+            <p class="text-xs text-slate-600 mt-1 max-w-sm mx-auto leading-relaxed">
+              ${desc}
+            </p>
+          </div>
+          <div class="flex items-center justify-center gap-3 pt-2">
+            <button onclick="startMemoryGridGame()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5">
+              <span>🔄</span> <span>Thử Lại (Cấp 1)</span>
+            </button>
+            <button onclick="closeGameContainer()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-all active:scale-95 flex items-center gap-1.5">
+              <span>🛑</span> <span>Dừng Chơi / Thoát</span>
+            </button>
+          </div>
+        </div>
+      `;
     }
 
     // ---------------- GAME 3: TÍNH NHẨM ĐA BIỂU THỨC (Complex Arithmetic & Dynamic Time) ----------------
@@ -2261,12 +3732,25 @@
     let mathStreak = 0;
 
     function startRapidMathGame() {
+      if (isGymDailyLimitReached()) {
+        alert("🛑 ĐÃ ĐẠT GIỚI HẠN 5 LƯỢT GYM HÔM NAY!\n\nBạn đã hoàn thành trọn vẹn 5/5 lượt rèn luyện não bộ trong ngày hôm nay.\n\nKhoa học thần kinh khuyến cáo tập luyện ngắt quãng để các nơ-ron và synap thần kinh vỏ não trước trán củng cố tự nhiên mà không bị quá tải.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!");
+        return;
+      }
+
       mathScore = 0;
       mathStreak = 0;
       mathTimeRemaining = 20;
+      if (mathInterval) {
+        clearInterval(mathInterval);
+        mathInterval = null;
+      }
+
+      const titleEl = document.getElementById('active-game-title');
+      if (titleEl) titleEl.innerText = "TÍNH NHẨM ĐA BIỂU THỨC (PHẢN XẠ NHẬN THỨC)";
+
       const container = document.getElementById('active-game-container');
       container.classList.remove('hidden');
-      if (mathInterval) clearInterval(mathInterval);
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
       
       mathInterval = setInterval(() => {
         mathTimeRemaining--;
@@ -2274,6 +3758,7 @@
         if (timeEl) timeEl.innerText = `${mathTimeRemaining}s`;
         if (mathTimeRemaining <= 0) {
           clearInterval(mathInterval);
+          mathInterval = null;
           finishRapidMath();
         }
       }, 1000);
@@ -2282,12 +3767,10 @@
     }
 
     function renderNextMathProblem() {
-      // Generate challenging expressions
       const templates = [
-        // Type 1: (a * b) - c = res
         () => {
-          const a = Math.floor(Math.random() * 15) + 6; // 6-20
-          const b = Math.floor(Math.random() * 8) + 3;  // 3-10
+          const a = Math.floor(Math.random() * 15) + 6;
+          const b = Math.floor(Math.random() * 8) + 3;
           const c = Math.floor(Math.random() * 40) + 10;
           const exact = (a * b) - c;
           const isCorrect = Math.random() > 0.5;
@@ -2295,7 +3778,6 @@
           const shown = isCorrect ? exact : exact + delta;
           return { expr: `(${a} × ${b}) - ${c} = ${shown}`, answer: isCorrect };
         },
-        // Type 2: a - (b * c) = res
         () => {
           const b = Math.floor(Math.random() * 8) + 4;
           const c = Math.floor(Math.random() * 9) + 4;
@@ -2306,9 +3788,8 @@
           const shown = isCorrect ? exact : exact + delta;
           return { expr: `${a} - (${b} × ${c}) = ${shown}`, answer: isCorrect };
         },
-        // Type 3: (a / b) * c + d = res
         () => {
-          const b = Math.floor(Math.random() * 6) + 4; // 4-9
+          const b = Math.floor(Math.random() * 6) + 4;
           const quotient = Math.floor(Math.random() * 10) + 4;
           const a = b * quotient;
           const c = Math.floor(Math.random() * 7) + 3;
@@ -2319,7 +3800,6 @@
           const shown = isCorrect ? exact : exact + delta;
           return { expr: `(${a} ÷ ${b}) × ${c} + ${d} = ${shown}`, answer: isCorrect };
         },
-        // Type 4: (a + b) * 3 - c = res
         () => {
           const a = Math.floor(Math.random() * 20) + 10;
           const b = Math.floor(Math.random() * 20) + 10;
@@ -2345,7 +3825,9 @@
               <span class="text-[10px] text-slate-500 font-bold">(Đúng +2s | Sai -3s)</span>
             </div>
             <span class="text-xs font-black text-amber-600">Điểm: ${mathScore} ${mathStreak > 1 ? `(🔥x${mathStreak})` : ''}</span>
-            <button onclick="closeGameContainer()" class="text-slate-500 hover:text-slate-800 text-xs">Đóng ✕</button>
+            <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1">
+              <span>✕</span> <span>Thoát</span>
+            </button>
           </div>
 
           <p class="text-xs text-slate-700 font-semibold">Phép tính phức hợp sau Đúng hay Sai?</p>
@@ -2371,17 +3853,20 @@
         mathStreak++;
         const pts = mathStreak >= 3 ? 20 : 15;
         mathScore += pts;
-        mathTimeRemaining = Math.min(45, mathTimeRemaining + 2); // bonus +2s
+        mathTimeRemaining = Math.min(45, mathTimeRemaining + 2);
       } else {
         mathStreak = 0;
-        mathTimeRemaining = Math.max(0, mathTimeRemaining - 3); // penalty -3s
+        mathTimeRemaining = Math.max(0, mathTimeRemaining - 3);
       }
       
       const timeEl = document.getElementById('math-time-display');
       if (timeEl) timeEl.innerText = `${mathTimeRemaining}s`;
 
       if (mathTimeRemaining <= 0) {
-        if (mathInterval) clearInterval(mathInterval);
+        if (mathInterval) {
+          clearInterval(mathInterval);
+          mathInterval = null;
+        }
         finishRapidMath();
       } else {
         renderNextMathProblem();
@@ -2389,27 +3874,65 @@
     }
 
     function finishRapidMath() {
-      if (mathInterval) clearInterval(mathInterval);
+      if (mathInterval) {
+        clearInterval(mathInterval);
+        mathInterval = null;
+      }
       APP_STATE.bfsScore += 40;
       APP_STATE.rankPoints += 40;
       APP_STATE.gymCompletedCount++;
+      recordTodayGymPlay();
       updateStatsUI();
+      saveAppStateToLocal();
+      renderLeaderboard();
+
       document.getElementById('game-dynamic-area').innerHTML = `
         <div class="text-center space-y-3 py-4">
           <span class="text-4xl">⚡</span>
           <h3 class="text-lg font-black text-slate-900 font-cyber">KẾT THÚC TÍNH NHẨM PHẢN XẠ!</h3>
           <p class="text-xs text-slate-600">Bạn ghi được <strong>${mathScore} điểm</strong> phản xạ tính nhẩm tổ hợp.</p>
           <div class="text-sm font-black text-blue-600">+40 Điểm BFS & +40 Điểm XH đã cộng!</div>
-          <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md">Tiếp Tục</button>
+          <div class="pt-2">
+            <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">✕ Đóng / Về Phòng Gym</button>
+          </div>
         </div>
       `;
     }
 
+    // DỪNG TOÀN DIỆN VÀ AN TOÀN MỌI TIẾN TRÌNH TRÒ CHƠI
     function closeGameContainer() {
-      if (stroopRoundTimer) clearInterval(stroopRoundTimer);
-      if (gridRecallTimer) clearInterval(gridRecallTimer);
-      if (mathInterval) clearInterval(mathInterval);
-      document.getElementById('active-game-container').classList.add('hidden');
+      isGridGameActive = false;
+      if (stroopRoundTimer) {
+        clearInterval(stroopRoundTimer);
+        stroopRoundTimer = null;
+      }
+      if (gridRecallTimer) {
+        clearInterval(gridRecallTimer);
+        gridRecallTimer = null;
+      }
+      if (gridFlashTimeout) {
+        clearTimeout(gridFlashTimeout);
+        gridFlashTimeout = null;
+      }
+      if (gridFeedbackTimeout) {
+        clearTimeout(gridFeedbackTimeout);
+        gridFeedbackTimeout = null;
+      }
+      if (mathInterval) {
+        clearInterval(mathInterval);
+        mathInterval = null;
+      }
+      const container = document.getElementById('active-game-container');
+      if (container) container.classList.add('hidden');
+      const area = document.getElementById('game-dynamic-area');
+      if (area) area.innerHTML = '';
+      updateDailyGymUI();
+
+      // Cuộn mượt màn hình lên đầu để tránh bị kẹt ở khoảng trắng phía dưới
+      const mainEl = document.querySelector('main');
+      if (mainEl) {
+        mainEl.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
 
     // ================= RENDERING LISTS =================
@@ -2498,7 +4021,7 @@
               </div>
               <span class="text-xs font-black text-blue-600 truncate w-full">${first.name}</span>
               <span class="text-xs text-amber-600 font-black font-cyber">${first.totalScore}đ</span>
-              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.sessionsCount} phiên + ${first.bfs} BFS</span>
+              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.bfs} BFS + ${first.sessionsCount} phiên (+${first.sessionPoints}đ)</span>
               <div class="h-20 w-full bg-amber-200 border border-amber-300 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-base font-cyber">#1</div>
             </div>
             <div></div>
@@ -2517,7 +4040,7 @@
               </div>
               <span class="text-xs font-bold ${second && second.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${second ? second.name : 'Đang chờ...'}</span>
               <span class="text-[11px] text-amber-600 font-black font-cyber">${second ? second.totalScore + 'đ' : '-'}</span>
-              <span class="text-[9px] text-slate-500 font-mono">${second ? `${second.rankPoints} XH + ${second.sessionsCount}p + ${second.bfs} BFS` : ''}</span>
+              <span class="text-[9px] text-slate-500 font-mono font-bold">${second ? `${second.rankPoints} XH + ${second.bfs} BFS + ${second.sessionsCount} phiên (+${second.sessionPoints}đ)` : ''}</span>
               <div class="h-16 w-full bg-slate-200 rounded-t-xl mt-2 flex items-center justify-center text-slate-700 font-extrabold text-sm">#2</div>
             </div>
 
@@ -2528,7 +4051,7 @@
               </div>
               <span class="text-xs font-black ${first.isUser ? 'text-blue-600' : 'text-amber-800'} truncate w-full">${first.name}</span>
               <span class="text-xs text-amber-600 font-black font-cyber">${first.totalScore}đ</span>
-              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.sessionsCount} phiên + ${first.bfs} BFS</span>
+              <span class="text-[9px] text-slate-600 font-mono font-bold">${first.rankPoints} XH + ${first.bfs} BFS + ${first.sessionsCount} phiên (+${first.sessionPoints}đ)</span>
               <div class="h-24 w-full bg-amber-200 border border-amber-300 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-base font-cyber">#1</div>
             </div>
 
@@ -2539,7 +4062,7 @@
               </div>
               <span class="text-xs font-bold ${third && third.isUser ? 'text-blue-600' : 'text-slate-900'} truncate w-full">${third ? third.name : 'Đang chờ...'}</span>
               <span class="text-[11px] text-amber-600 font-black font-cyber">${third ? third.totalScore + 'đ' : '-'}</span>
-              <span class="text-[9px] text-slate-500 font-mono">${third ? `${third.rankPoints} XH + ${third.sessionsCount}p + ${third.bfs} BFS` : ''}</span>
+              <span class="text-[9px] text-slate-500 font-mono font-bold">${third ? `${third.rankPoints} XH + ${third.bfs} BFS + ${third.sessionsCount} phiên (+${third.sessionPoints}đ)` : ''}</span>
               <div class="h-12 w-full bg-orange-200 rounded-t-xl mt-2 flex items-center justify-center text-orange-800 font-extrabold text-sm">#3</div>
             </div>
           `;
@@ -2568,7 +4091,7 @@
               </div>
               <div class="text-right">
                 <div class="font-cyber font-black text-xs text-blue-700">Tổng: ${user.totalScore}đ</div>
-                <div class="text-[10px] text-amber-600 font-medium font-mono">${user.rankPoints} XH + ${user.sessionsCount}p + ${user.bfs} BFS</div>
+                <div class="text-[10px] text-amber-600 font-medium font-mono">${user.rankPoints} XH + ${user.bfs} BFS + ${user.sessionsCount} phiên (+${user.sessionPoints}đ)</div>
               </div>
             </div>
           `).join('');
@@ -2608,38 +4131,66 @@
 
     function renderHistory() {
       const container = document.getElementById('session-history-list');
-      container.innerHTML = APP_STATE.history.map(item => `
-        <div class="glass-card-light p-3.5 rounded-2xl space-y-1 border-slate-200 shadow-xs">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-xs text-slate-900 font-cyber">${item.subject}</span>
-            <span class="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-bold">${item.minutes} phút</span>
+      if (!container) return;
+      if (!Array.isArray(APP_STATE.history) || APP_STATE.history.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card-light p-6 rounded-2xl text-center space-y-2 border-slate-200">
+            <div class="text-3xl">🌱</div>
+            <div class="font-bold text-xs text-slate-700">Chưa có phiên học nào được ghi nhận</div>
+            <div class="text-[11px] text-slate-500 leading-relaxed">Hãy bắt đầu một phiên học để ghi lại lịch sử tập trung và tích luỹ điểm thưởng vào hồ sơ nhé!</div>
           </div>
-          <div class="text-[11px] text-slate-600">${item.note}</div>
-          <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1">
-            <span>${item.date}</span>
-            <span>${item.emotion}</span>
+        `;
+        return;
+      }
+
+      container.innerHTML = APP_STATE.history.map(item => `
+        <div class="glass-card-light p-3.5 rounded-2xl space-y-1.5 border-slate-200 shadow-xs hover:border-blue-300 transition-all">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-slate-900 font-cyber flex items-center gap-1.5">
+              <span>🎯</span>
+              <span>${escapeHtml(item.subject || 'Phiên học sâu')}</span>
+            </span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-bold">${item.minutes || 15} phút</span>
+              <span class="text-[10px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 font-extrabold font-mono">+${item.points || item.minutes || 15}đ</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-slate-600 leading-relaxed">${escapeHtml(item.note || 'Hoàn thành chu kỳ tập trung.')}</div>
+          <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-100">
+            <span class="font-medium">${escapeHtml(item.date || 'Hôm nay')}</span>
+            <span class="font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">${escapeHtml(item.emotion || 'Tập trung cao 🚀')}</span>
           </div>
         </div>
       `).join('');
     }
 
     function updateStatsUI() {
-      const totalScore = APP_STATE.rankPoints + APP_STATE.bfsScore;
+      const sessionPts = getSessionPointsTotal();
+      const sessCount = APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0);
+      const rankPts = Number(APP_STATE.rankPoints) || 1000;
+      const bfsPts = Number(APP_STATE.bfsScore) || 0;
+      const totalScore = rankPts + bfsPts + sessionPts;
 
       const headerRankEl = document.getElementById('header-rank-points');
-      if (headerRankEl) headerRankEl.innerText = `${APP_STATE.rankPoints}đ`;
+      if (headerRankEl) headerRankEl.innerText = `${rankPts}đ`;
 
       const headerBfsEl = document.getElementById('header-bfs-score');
-      if (headerBfsEl) headerBfsEl.innerText = APP_STATE.bfsScore;
+      if (headerBfsEl) headerBfsEl.innerText = bfsPts;
 
       const headerTotalEl = document.getElementById('header-total-score');
       if (headerTotalEl) headerTotalEl.innerText = `${totalScore}đ`;
 
       const statBfsEl = document.getElementById('stat-bfs-score');
-      if (statBfsEl) statBfsEl.innerText = APP_STATE.bfsScore;
+      if (statBfsEl) statBfsEl.innerText = bfsPts;
 
       const statRankEl = document.getElementById('stat-rank-points');
-      if (statRankEl) statRankEl.innerText = `${APP_STATE.rankPoints} đ`;
+      if (statRankEl) statRankEl.innerText = `${rankPts} đ`;
+
+      const statSessionPtsEl = document.getElementById('stat-session-points');
+      if (statSessionPtsEl) statSessionPtsEl.innerText = `+${sessionPts} đ`;
+
+      const statSessionsEl = document.getElementById('stat-sessions-count');
+      if (statSessionsEl) statSessionsEl.innerText = `${sessCount} phiên (+${sessionPts}đ)`;
 
       const statTotalEl = document.getElementById('stat-total-score');
       if (statTotalEl) statTotalEl.innerText = `${totalScore} đ`;
@@ -2650,8 +4201,37 @@
       const statStreakEl = document.getElementById('stat-streak-days');
       if (statStreakEl) statStreakEl.innerText = `${APP_STATE.streakDays} 🔥`;
 
+      const headerStreakEl = document.getElementById('header-streak-badge');
+      if (headerStreakEl) headerStreakEl.innerText = `${APP_STATE.streakDays || 1} Ngày Cháy Hết Mình`;
+
       const statGymEl = document.getElementById('stat-gym-count');
       if (statGymEl) statGymEl.innerText = APP_STATE.gymCompletedCount;
+
+      // Cập nhật thẻ Level BFS & Lời khuyên trong Tab Profile
+      const levelData = getBFSLevelDetails(bfsPts);
+      const profLevelBadge = document.getElementById('profile-level-badge');
+      if (profLevelBadge) {
+        profLevelBadge.className = `inline-block text-xs font-black px-3 py-0.5 rounded-full shadow-xs font-cyber ${levelData.badgeClass}`;
+        profLevelBadge.innerText = levelData.title;
+      }
+      const profLevelIcon = document.getElementById('profile-level-icon');
+      if (profLevelIcon) profLevelIcon.innerText = levelData.dot;
+      const profLevelPts = document.getElementById('profile-level-bfs-pts');
+      if (profLevelPts) profLevelPts.innerText = bfsPts;
+      const profHeadline = document.getElementById('profile-level-headline');
+      if (profHeadline) profHeadline.innerText = levelData.headline;
+      const profDesc = document.getElementById('profile-level-desc');
+      if (profDesc) profDesc.innerText = levelData.description;
+      const profRecs = document.getElementById('profile-level-recommendations');
+      if (profRecs) profRecs.innerHTML = levelData.recommendations.map(r => `<li>${r}</li>`).join('');
+      const profQuote = document.getElementById('profile-level-quote');
+      if (profQuote) profQuote.innerText = levelData.quote;
+
+      const userDisplayLevel = document.getElementById('user-display-level');
+      if (userDisplayLevel) {
+        userDisplayLevel.innerText = `Level ${levelData.level}`;
+        userDisplayLevel.className = `text-[10px] px-2 py-0.5 rounded-full font-bold border ${levelData.badgeClass}`;
+      }
 
       renderLeaderboard();
     }
@@ -2704,41 +4284,94 @@
       document.getElementById('assessment-modal').classList.add('hidden');
     }
 
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function markQuestionAnswered(qId) {
+      const card = document.getElementById(`question-card-${qId}`);
+      if (card) {
+        card.classList.remove('border-rose-400', 'bg-rose-50/40');
+        card.classList.add('border-emerald-300');
+      }
+    }
+
     function renderQuestions() {
       const container = document.getElementById('questions-list-container');
-      container.innerHTML = ASSESSMENT_QUESTIONS.map((q, qIdx) => `
-        <div class="bg-white p-4 sm:p-5 rounded-2xl space-y-3 border border-slate-200 shadow-xs">
+      const alphabet = ['A', 'B', 'C', 'D'];
+
+      container.innerHTML = ASSESSMENT_QUESTIONS.map((q) => {
+        // Đảo lộn ngẫu nhiên thứ tự các đáp án của từng câu hỏi để không theo trình tự điểm
+        const shuffled = shuffleArray(q.options);
+        return `
+        <div id="question-card-${q.id}" class="bg-white p-4 sm:p-5 rounded-2xl space-y-3 border border-slate-200 shadow-xs transition-all duration-200 hover:border-blue-300">
           <div class="flex items-center justify-between gap-2">
             <span class="inline-block bg-blue-100 text-blue-800 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
               ${q.category}
             </span>
-            <span class="text-blue-600 font-cyber font-black text-xs">#${q.id} / 10</span>
+            <span class="text-blue-600 font-cyber font-black text-xs">CÂU ${q.id} / 10</span>
           </div>
           <p class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
             ${q.question}
           </p>
           <div class="space-y-2 pt-1">
-            ${q.options.map((opt, optIdx) => `
-              <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50/40 cursor-pointer transition-all">
-                <input type="radio" name="question_${q.id}" value="${opt.score}" class="accent-blue-600 w-4 h-4 shrink-0" ${optIdx === 0 ? 'checked' : ''}>
-                <span class="text-xs text-slate-800 font-medium leading-relaxed">${opt.text}</span>
+            ${shuffled.map((opt, optIdx) => `
+              <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 cursor-pointer transition-all active:scale-[0.99] group">
+                <input type="radio" name="question_${q.id}" value="${opt.score}" onchange="markQuestionAnswered(${q.id})" class="accent-blue-600 w-4 h-4 mt-0.5 shrink-0 cursor-pointer">
+                <div class="flex items-start gap-2">
+                  <span class="font-cyber font-black text-xs text-blue-700 bg-blue-50 group-hover:bg-blue-100 border border-blue-200 px-1.5 py-0.5 rounded-md shrink-0">
+                    ${alphabet[optIdx] || (optIdx + 1)}
+                  </span>
+                  <span class="text-xs text-slate-800 font-medium leading-relaxed">${opt.text}</span>
+                </div>
               </label>
             `).join('')}
           </div>
         </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function calculateAndSaveAssessment() {
+      // Kiểm tra xem đã trả lời đầy đủ 10 câu hỏi chưa
+      const missingQuestions = [];
       let totalScore = 0;
+
       for (let i = 1; i <= 10; i++) {
         const radios = document.getElementsByName(`question_${i}`);
+        let answered = false;
         for (const r of radios) {
           if (r.checked) {
             totalScore += parseInt(r.value, 10);
+            answered = true;
             break;
           }
         }
+        if (!answered) {
+          missingQuestions.push(i);
+        }
+      }
+
+      if (missingQuestions.length > 0) {
+        missingQuestions.forEach(id => {
+          const card = document.getElementById(`question-card-${id}`);
+          if (card) {
+            card.classList.add('border-rose-400', 'bg-rose-50/40');
+          }
+        });
+
+        const firstCard = document.getElementById(`question-card-${missingQuestions[0]}`);
+        if (firstCard) {
+          firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        alert(`⚠️ BẠN CHƯA HOÀN THÀNH ĐỦ 10 CÂU HỎI!\n\nBạn còn thiếu câu số: ${missingQuestions.join(', ')}.\n\nVì các đáp án đã được xáo trộn ngẫu nhiên, vui lòng đọc kỹ từng câu và chọn đáp án trước khi nộp bài!`);
+        return;
       }
 
       // Total score from 10 questions ranges from 100 to 1000
@@ -2758,26 +4391,37 @@
       } catch (e) {}
 
       saveAppStateToLocal();
+      syncCurrentUserToDatabase();
       syncProfileDOM();
       updateStatsUI();
+      renderLeaderboard();
 
       const resBox = document.getElementById('assessment-result-box');
       resBox.classList.remove('hidden');
       document.getElementById('result-bfs-number').innerText = `${calculatedBFS} / 1000`;
       
-      let category = "Não bộ Nhạy Cảm Kích Thích (Moderate Popcorn Brain)";
-      let desc = "Bạn có một số biểu hiện cho thấy sự chú ý dễ bị gián đoạn bởi các kích thích từ môi trường số. Vỏ não trước trán bắt đầu hình thành phản xạ tìm kiếm dopamine ngắn hạn khi gặp bài khó hoặc đoạn văn dài. Hãy duy trì các chu kỳ học sâu 90 phút và cách ly điện thoại khi học.";
-      
-      if (calculatedBFS >= 750) {
-        category = "Não bộ Kháng Xao Nhãng (Deep Focus Master)";
-        desc = "Khả năng tập trung của bạn ở mức rất xuất sắc, ít bị ảnh hưởng bởi hội chứng Não Bỏng Ngô! Bạn sở hữu vùng vỏ não trước trán vững vàng, có khả năng trì hoãn khoái cảm dopamine và duy trì sự chú ý bền bỉ trong các chu kỳ 90 phút.";
-      } else if (calculatedBFS < 450) {
-        category = "Hội Chứng Não Bỏng Ngô Mức Cao (Acute Popcorn Brain)";
-        desc = "Mức độ phân tán chú ý cao. Tâm trí bạn liên tục 'nhảy cóc' như những hạt ngô nổ trong chảo nóng do tiếp xúc nhiều với video ngắn. Hãy thực hiện ngay lộ trình Dopamine Reset, quy tắc 20 giây và bật sóng Gamma 40Hz khi học!";
+      const levelData = getBFSLevelDetails(calculatedBFS);
+
+      const badgeEl = document.getElementById('result-bfs-level-badge');
+      if (badgeEl) {
+        badgeEl.className = `inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black shadow-xs font-cyber ${levelData.badgeClass}`;
+        badgeEl.innerHTML = `<span>${levelData.dot}</span> <span>${levelData.title}</span>`;
       }
 
-      document.getElementById('result-bfs-category').innerText = category;
-      document.getElementById('result-bfs-desc').innerText = desc;
+      const headlineEl = document.getElementById('result-bfs-headline');
+      if (headlineEl) headlineEl.innerText = levelData.headline;
+
+      const descEl = document.getElementById('result-bfs-desc');
+      if (descEl) descEl.innerText = levelData.description;
+
+      const recsEl = document.getElementById('result-bfs-recommendations');
+      if (recsEl) {
+        recsEl.innerHTML = levelData.recommendations.map(r => `<li>${r}</li>`).join('');
+      }
+
+      const quoteEl = document.getElementById('result-bfs-quote');
+      if (quoteEl) quoteEl.innerText = levelData.quote;
+
       document.getElementById('assess-submit-btn').classList.add('hidden');
 
       // Scroll smoothly down to result
@@ -2789,17 +4433,28 @@
 
     function finishOnboardingAndEnterApp() {
       closeAssessmentModal();
-      switchTab('timer');
-      alert(`🎉 Chúc mừng ${APP_STATE.userName}! Hồ sơ của bạn đã sẵn sàng với 1000đ Xếp Hạng + ${APP_STATE.bfsScore}đ BFS. Chúc bạn có những chu kỳ học sâu bứt phá!`);
+      switchTab('leaderboard');
+      alert(`🎉 Chúc mừng ${APP_STATE.userName}! Hồ sơ của bạn đã sẵn sàng với 1000đ Xếp Hạng + ${APP_STATE.bfsScore}đ BFS (Tổng ${1000 + APP_STATE.bfsScore}đ). Vị trí của bạn đã hiển thị trên Bảng Xếp Hạng!`);
     }
 
     // ================= REFLECTION MODAL =================
     function openReflectionModal() {
-      document.getElementById('reflection-modal').classList.remove('hidden');
+      // Chỉ cho phép mở modal khi có một phiên học vừa hoàn thành thực tế và chưa đúc kết
+      if (!APP_STATE.pendingReflectionSessionId) {
+        return;
+      }
+      const noteInput = document.getElementById('reflection-note-input');
+      if (noteInput) noteInput.value = '';
+      selectEmotion('Tập trung cao 🚀');
+      const modal = document.getElementById('reflection-modal');
+      if (modal) modal.classList.remove('hidden');
     }
 
     function closeReflectionModal() {
-      document.getElementById('reflection-modal').classList.add('hidden');
+      // Khi bấm bỏ qua hoặc đóng, hủy quyền nhận điểm của phiên này để chống spam
+      APP_STATE.pendingReflectionSessionId = null;
+      const modal = document.getElementById('reflection-modal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function selectEmotion(em) {
@@ -2814,28 +4469,52 @@
     }
 
     function saveSessionReflection() {
-      const note = document.getElementById('reflection-note-input').value || "Hoàn thành chu kỳ học sâu tập trung cao độ.";
-      const subject = document.getElementById('session-subject-input').value || "Phiên học sâu";
-      const minutes = Math.round(APP_STATE.timerDuration / 60);
+      // Chống hack/spam: Bắt buộc phải có đúng phiên học vừa hoàn thành
+      if (!APP_STATE.pendingReflectionSessionId) {
+        alert('⚠️ Bạn chỉ có thể đánh giá đúc kết ngay khi vừa hoàn thành 1 phiên học thực tế!');
+        closeReflectionModal();
+        return;
+      }
 
-      APP_STATE.history.unshift({
-        id: Date.now(),
-        subject: subject,
-        minutes: minutes,
-        date: "Vừa xong",
-        emotion: APP_STATE.selectedEmotion,
-        note: note
-      });
+      const targetSession = Array.isArray(APP_STATE.history)
+        ? APP_STATE.history.find(s => s.id === APP_STATE.pendingReflectionSessionId)
+        : null;
 
-      APP_STATE.bfsScore += 25;
-      APP_STATE.rankPoints += 50;
-      APP_STATE.sessionsCompletedCount = (APP_STATE.sessionsCompletedCount || 0) + 1;
-      APP_STATE.totalHours = parseFloat((APP_STATE.totalHours + minutes / 60).toFixed(1));
+      if (!targetSession) {
+        alert('⚠️ Không tìm thấy phiên học hợp lệ để lưu đúc kết.');
+        closeReflectionModal();
+        return;
+      }
+
+      if (targetSession.hasReflected) {
+        alert('⚠️ Phiên học này đã nhận điểm thưởng đúc kết trước đó. Mỗi phiên chỉ được nhận thưởng 1 lần duy nhất!');
+        closeReflectionModal();
+        return;
+      }
+
+      const noteInput = document.getElementById('reflection-note-input');
+      const note = (noteInput && noteInput.value.trim()) || "Đã hoàn thành phiên tập trung cao độ và củng cố synap thần kinh.";
+      const emotion = APP_STATE.selectedEmotion || "Tập trung cao 🚀";
+
+      // Khóa phiên học và hủy token pending ngay lập tức
+      targetSession.note = note;
+      targetSession.emotion = emotion;
+      targetSession.hasReflected = true;
+      APP_STATE.pendingReflectionSessionId = null;
+
+      // Thưởng duy nhất +25 BFS củng cố trí nhớ vào hồ sơ
+      APP_STATE.bfsScore = (APP_STATE.bfsScore || 0) + 25;
+
       saveAppStateToLocal();
+      syncCurrentUserToDatabase();
       updateStatsUI();
+      renderLeaderboard();
       renderHistory();
       closeReflectionModal();
-      alert('🌟 Đã ghi nhận đúc kết: +50 Điểm Xếp Hạng, +1 Phiên Học & +25 Điểm BFS vào hồ sơ của bạn!');
+
+      if (noteInput) noteInput.value = '';
+
+      alert('🌟 ĐÃ LƯU ĐÚC KẾT THÀNH CÔNG!\n\n+25 điểm BFS củng cố hồi hải mã đã được cộng vào hồ sơ của bạn!');
     }
 
     // ================= ACCOUNT & PROFILE MANAGEMENT =================
@@ -2850,10 +4529,20 @@
           bfsScore: APP_STATE.bfsScore,
           totalHours: APP_STATE.totalHours,
           streakDays: APP_STATE.streakDays,
-          sessionsCompletedCount: APP_STATE.sessionsCompletedCount || APP_STATE.history.length,
+          sessionsCompletedCount: APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0),
           gymCompletedCount: APP_STATE.gymCompletedCount,
           history: APP_STATE.history
         }));
+
+        if (APP_STATE.dailyTracker) {
+          localStorage.setItem('bf_daily_tracker', JSON.stringify(APP_STATE.dailyTracker));
+        }
+
+        if (APP_STATE.dailyGymTracker) {
+          localStorage.setItem('bf_daily_gym_tracker', JSON.stringify(APP_STATE.dailyGymTracker));
+        }
+        // Tự động đồng bộ vào database danh sách người dùng để BXH luôn đầy đủ
+        syncCurrentUserToDatabase();
       } catch (e) {}
     }
 
@@ -2862,28 +4551,44 @@
         const saved = localStorage.getItem('bf_user_profile');
         if (saved) {
           const data = JSON.parse(saved);
-          // Loại bỏ tài khoản thử nghiệm cũ
-          if (data.userEmail && data.userEmail !== 'tam.brainfocus@gmail.com') APP_STATE.userEmail = data.userEmail;
-          if (data.userName && data.userName !== 'Trịnh Hoài Tâm') APP_STATE.userName = data.userName;
-          if (data.userSchool && data.userSchool !== 'Chuyên gia trẻ') APP_STATE.userSchool = data.userSchool;
+          if (data.userEmail) APP_STATE.userEmail = data.userEmail;
+          if (data.userName) APP_STATE.userName = data.userName;
+          if (data.userSchool) APP_STATE.userSchool = data.userSchool;
           if (data.userAvatar !== undefined) APP_STATE.userAvatar = data.userAvatar;
-          if (data.rankPoints !== undefined) APP_STATE.rankPoints = data.rankPoints;
-          if (data.bfsScore !== undefined) APP_STATE.bfsScore = data.bfsScore;
-          if (data.totalHours !== undefined) APP_STATE.totalHours = data.totalHours;
-          if (data.streakDays !== undefined) APP_STATE.streakDays = data.streakDays;
-          if (data.sessionsCompletedCount !== undefined) APP_STATE.sessionsCompletedCount = data.sessionsCompletedCount;
-          if (data.gymCompletedCount !== undefined) APP_STATE.gymCompletedCount = data.gymCompletedCount;
-          if (data.history) APP_STATE.history = data.history;
+          if (data.rankPoints !== undefined) APP_STATE.rankPoints = Number(data.rankPoints) || 1000;
+          if (data.bfsScore !== undefined) APP_STATE.bfsScore = Number(data.bfsScore) || 0;
+          if (data.totalHours !== undefined) APP_STATE.totalHours = Number(data.totalHours) || 0;
+          if (data.streakDays !== undefined) APP_STATE.streakDays = Number(data.streakDays) || 1;
+          if (data.sessionsCompletedCount !== undefined) APP_STATE.sessionsCompletedCount = Number(data.sessionsCompletedCount) || 0;
+          if (data.gymCompletedCount !== undefined) APP_STATE.gymCompletedCount = Number(data.gymCompletedCount) || 0;
+          if (data.history && Array.isArray(data.history)) APP_STATE.history = data.history;
+        }
+
+        const savedTracker = localStorage.getItem('bf_daily_tracker');
+        if (savedTracker) {
+          APP_STATE.dailyTracker = JSON.parse(savedTracker);
+        }
+
+        const savedGymTracker = localStorage.getItem('bf_daily_gym_tracker');
+        if (savedGymTracker) {
+          APP_STATE.dailyGymTracker = JSON.parse(savedGymTracker);
         }
       } catch (e) {}
     }
 
     function syncProfileDOM() {
-      const initial = (APP_STATE.userName || 'T').charAt(0).toUpperCase();
+      const hasAccount = Boolean(APP_STATE.userEmail && APP_STATE.userName);
+      const initial = hasAccount ? APP_STATE.userName.charAt(0).toUpperCase() : '👤';
       
-      // Update Header Avatar
+      // Update Header Avatar & Name
       const headerInitialEl = document.getElementById('header-avatar-initial');
       const headerImgEl = document.getElementById('header-avatar-img');
+      const headerNameEl = document.getElementById('header-account-name');
+
+      if (headerNameEl) {
+        headerNameEl.innerText = hasAccount ? APP_STATE.userName : 'Tài khoản';
+      }
+
       if (headerInitialEl && headerImgEl) {
         if (APP_STATE.userAvatar) {
           headerImgEl.src = APP_STATE.userAvatar;
@@ -2898,13 +4603,23 @@
 
       // Update Profile Tab Info
       const profileNameEl = document.getElementById('user-display-name');
-      if (profileNameEl) profileNameEl.innerText = APP_STATE.userName || 'Chưa đăng ký';
+      if (profileNameEl) profileNameEl.innerText = hasAccount ? APP_STATE.userName : 'Chưa đăng ký';
 
       const profileSchoolEl = document.getElementById('user-display-school');
-      if (profileSchoolEl) profileSchoolEl.innerText = APP_STATE.userSchool || 'Người học tập trung';
+      if (profileSchoolEl) profileSchoolEl.innerText = APP_STATE.userSchool || (hasAccount ? 'Người học tập trung' : 'Tạo tài khoản để đồng bộ điểm và đua Top');
 
       const profileEmailEl = document.getElementById('user-display-email');
-      if (profileEmailEl) profileEmailEl.innerText = APP_STATE.userEmail || 'Chưa liên kết Gmail';
+      const authBadgeEl = document.getElementById('user-auth-badge');
+      if (profileEmailEl) {
+        profileEmailEl.innerText = hasAccount ? APP_STATE.userEmail : 'Chưa liên kết Gmail';
+      }
+      if (authBadgeEl) {
+        if (hasAccount) {
+          authBadgeEl.className = 'text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate';
+        } else {
+          authBadgeEl.className = 'text-[10px] bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700 border border-slate-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 max-w-[190px] truncate cursor-pointer transition-all';
+        }
+      }
 
       const profileInitialEl = document.getElementById('user-avatar-initial');
       const profileImgEl = document.getElementById('user-avatar-img');
@@ -2930,14 +4645,16 @@
       const titleEl = document.getElementById('register-modal-title');
       const subtitleEl = document.getElementById('register-modal-subtitle');
 
+      if (closeBtn) closeBtn.classList.remove('hidden');
+      if (cancelBtn) {
+        cancelBtn.classList.remove('hidden');
+        cancelBtn.innerText = isOnboarding ? "Để sau" : "Huỷ";
+      }
+
       if (isOnboarding) {
-        if (closeBtn) closeBtn.classList.add('hidden');
-        if (cancelBtn) cancelBtn.classList.add('hidden');
         if (titleEl) titleEl.innerText = "CHÀO MỪNG ĐẾN VỚI BRAIN FOCUS";
         if (subtitleEl) subtitleEl.innerText = "Bước 1/2: Đăng ký Gmail & Nhận ngay 1000đ Xếp Hạng";
       } else {
-        if (closeBtn) closeBtn.classList.remove('hidden');
-        if (cancelBtn) cancelBtn.classList.remove('hidden');
         if (titleEl) titleEl.innerText = "TẠO TÀI KHOẢN HỌC VIÊN";
         if (subtitleEl) subtitleEl.innerText = "Nhận ngay 1000 điểm xếp hạng gốc";
       }
@@ -2947,6 +4664,9 @@
 
     function closeRegisterModal() {
       document.getElementById('register-modal').classList.add('hidden');
+      try {
+        localStorage.setItem('bf_onboarded_completed', 'true');
+      } catch (_) {}
     }
 
     function openEditProfileModal() {
@@ -3034,29 +4754,69 @@
       const name = document.getElementById('reg-input-name').value.trim();
       const school = document.getElementById('reg-input-school').value.trim() || 'Người học tập trung';
       
-      if (!email || !name) {
-        alert('Vui lòng điền đầy đủ Email và Họ tên!');
+      if (!name && !email) {
+        alert('Vui lòng điền họ tên và email của bạn!');
         return;
       }
 
-      APP_STATE.userEmail = email;
-      APP_STATE.userName = name;
-      APP_STATE.userSchool = school;
-      APP_STATE.rankPoints = 1000; // Khởi đầu đúng 1000 điểm xếp hạng
-      APP_STATE.sessionsCompletedCount = 0;
-      if (tempUploadedAvatarBase64 !== null) {
-        APP_STATE.userAvatar = tempUploadedAvatarBase64;
+      // 1. Lưu lại tài khoản hiện tại vào DB trước khi chuyển sang tài khoản mới
+      syncCurrentUserToDatabase();
+      loadUsersDatabase();
+
+      // 2. Kiểm tra xem email này đã từng được tạo trên thiết bị chưa
+      const existingUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
+      
+      if (existingUser) {
+        // Khôi phục tài khoản cũ với đầy đủ số điểm và tiến độ đã lưu
+        APP_STATE.userEmail = existingUser.email;
+        APP_STATE.userName = name || existingUser.name;
+        APP_STATE.userSchool = school || existingUser.school;
+        APP_STATE.rankPoints = Number(existingUser.rankPoints) || 1000;
+        APP_STATE.bfsScore = Number(existingUser.bfs) || 0;
+        APP_STATE.sessionsCompletedCount = existingUser.sessionsCount || 0;
+        APP_STATE.totalHours = existingUser.totalHours || 0;
+        APP_STATE.streakDays = existingUser.streakDays || 1;
+        APP_STATE.history = Array.isArray(existingUser.history) ? existingUser.history : [];
+        if (tempUploadedAvatarBase64 !== null) {
+          APP_STATE.userAvatar = tempUploadedAvatarBase64;
+        } else if (existingUser.avatar) {
+          APP_STATE.userAvatar = existingUser.avatar;
+        }
+      } else {
+        // Tài khoản học viên mới: khởi tạo 1000 điểm Xếp Hạng gốc
+        APP_STATE.userEmail = email;
+        APP_STATE.userName = name;
+        APP_STATE.userSchool = school;
+        APP_STATE.rankPoints = 1000;
+        APP_STATE.bfsScore = 0;
+        APP_STATE.sessionsCompletedCount = 0;
+        APP_STATE.totalHours = 0;
+        APP_STATE.streakDays = 1;
+        APP_STATE.history = [];
+        if (tempUploadedAvatarBase64 !== null) {
+          APP_STATE.userAvatar = tempUploadedAvatarBase64;
+        } else {
+          APP_STATE.userAvatar = '';
+        }
       }
 
+      // 3. Lưu và đồng bộ ngay lập tức vào database & giao diện
       saveAppStateToLocal();
+      syncCurrentUserToDatabase();
       syncProfileDOM();
       updateStatsUI();
+      renderLeaderboard();
+      renderHistory();
       closeRegisterModal();
       
-      // TỰ ĐỘNG CHUYỂN NGAY SANG BƯỚC 2: BÀI TEST 10 CÂU BFS
-      setTimeout(() => {
-        openAssessmentModal(false, true);
-      }, 250);
+      // Nếu chưa có điểm BFS (tài khoản mới tạo), tự động mở bài test 10 câu BFS để tính điểm
+      if (!APP_STATE.bfsScore) {
+        setTimeout(() => {
+          openAssessmentModal(false, true);
+        }, 250);
+      } else {
+        alert(`🎉 Đã đăng nhập tài khoản: ${APP_STATE.userName}!\nTổng điểm xếp hạng hiện tại: ${(APP_STATE.rankPoints || 1000) + (APP_STATE.bfsScore || 0) + getSessionPointsTotal()}đ.`);
+      }
     }
 
     function handleEditProfileSubmit(e) {
@@ -3078,8 +4838,10 @@
       }
 
       saveAppStateToLocal();
+      syncCurrentUserToDatabase();
       syncProfileDOM();
       updateStatsUI();
+      renderLeaderboard();
       closeEditProfileModal();
 
       alert('✅ Đã cập nhật thành công Họ tên & Avatar của bạn!');
@@ -3098,6 +4860,11 @@
           localStorage.removeItem('bf_onboarded_completed');
           localStorage.removeItem('bf_active_session');
           localStorage.removeItem('bf_active_session_backup');
+          localStorage.removeItem('bf_daily_tracker');
+          localStorage.removeItem('bf_daily_gym_tracker');
+          localStorage.removeItem('bf_cooldown_until');
+          localStorage.removeItem('bf_cooldown_total_seconds');
+          localStorage.removeItem('bf_restored_user_test_sessions');
         } catch (e) {}
         REGISTERED_USERS_DB = [];
         APP_STATE.userEmail = "";
