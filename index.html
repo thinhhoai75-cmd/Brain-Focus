@@ -8,6 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Brain Focus 🧠⚡ - Khắc Phục Não Bỏng Ngô</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -738,8 +739,18 @@
             <button onclick="openSwitchAccountModal()" class="flex-1 sm:flex-initial text-xs font-bold bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1">
               <span>👥</span> Đổi tài khoản
             </button>
+            <button onclick="exportLeaderboardToExcel()" class="flex-1 sm:flex-initial text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Tải toàn bộ danh sách học viên & điểm số về máy dạng file Excel (.xlsx)">
+              <span>📥</span> Xuất Excel
+            </button>
+            <label class="flex-1 sm:flex-initial text-xs font-bold bg-teal-50 hover:bg-teal-100 border border-teal-300 text-teal-800 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1 cursor-pointer" title="Nhập danh sách học viên từ file Excel (.xlsx, .xls, .csv)">
+              <span>📤</span> Nhập Excel
+              <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="importLeaderboardFromExcel(event)" />
+            </label>
             <button onclick="purgeCloneAccounts(true)" class="flex-1 sm:flex-initial text-xs font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Quét sạch tài khoản clone khỏi bảng xếp hạng">
               <span>🧹</span> Xóa clone
+            </button>
+            <button onclick="clearAllSystemUsersAndReset(true)" class="flex-1 sm:flex-initial text-xs font-bold bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Xóa sạch toàn bộ học viên và điểm số trên Cloud & máy để đưa vào sử dụng thật">
+              <span>🗑️</span> Xóa trắng (Clear Data)
             </button>
             <button onclick="fetchLeaderboardFromCloud(true)" class="flex-1 sm:flex-initial text-[11px] font-bold bg-blue-50 hover:bg-blue-100 border border-blue-300 text-blue-800 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Đồng bộ lại dữ liệu toàn hệ thống từ Cloud">
               <span id="refresh-icon">🔄</span> Làm mới (Cloud)
@@ -1603,8 +1614,7 @@
           if (!cleanCloud) return;
 
           const localIdx = REGISTERED_USERS_DB.findIndex(u => 
-            (u.email && cleanCloud.email && u.email.toLowerCase().trim() === cleanCloud.email) ||
-            (u.name && cleanCloud.name && u.name.toLowerCase().trim() === cleanCloud.name.toLowerCase().trim())
+            (u.email && cleanCloud.email && u.email.toLowerCase().trim() === cleanCloud.email.toLowerCase().trim())
           );
 
           if (localIdx === -1) {
@@ -1657,13 +1667,14 @@
     let cloudPushTimeout = null;
     function pushLeaderboardToCloud() {
       if (cloudPushTimeout) clearTimeout(cloudPushTimeout);
-      // Gửi nhanh sau 200ms để người dùng khác thấy ngay lập tức
+      // Áp dụng jitter ngẫu nhiên 300ms - 800ms để tránh việc nhiều người cùng gửi tại đúng 1 mili-giây gây xung đột
+      const jitter = 300 + Math.floor(Math.random() * 500);
       cloudPushTimeout = setTimeout(async () => {
         try {
           // Bước 1: Tải danh sách hiện tại trên Cloud về trước để không đè mất người dùng khác
           let currentCloudUsers = [];
           try {
-            const getRes = await fetch(`${CLOUD_LEADERBOARD_ENDPOINT}?_t=${Date.now()}`, { cache: 'no-store' });
+            const getRes = await fetch(`${CLOUD_LEADERBOARD_ENDPOINT}?_t=${Date.now()}_${Math.floor(Math.random()*1000)}`, { cache: 'no-store' });
             if (getRes.ok) {
               const j = await getRes.json();
               if (j && j.data && Array.isArray(j.data.users)) {
@@ -1724,7 +1735,7 @@
         } catch (err) {
           console.warn('Failed to push leaderboard to cloud:', err);
         }
-      }, 200);
+      }, jitter);
     }
 
     // Bảng xếp hạng người dùng thực tế & Quản lý danh sách tài khoản đã đăng ký
@@ -1779,6 +1790,70 @@
       }
     }
 
+    // Xóa sạch 100% dữ liệu toàn bộ người dùng cả trên Cloud và LocalStorage để bắt đầu sử dụng thật
+    async function clearAllSystemUsersAndReset(confirmTwice = true) {
+      if (confirmTwice) {
+        const c1 = confirm('⚠️ CẢNH BÁO XÓA SẠCH DỮ LIỆU:\nBạn có chắc chắn muốn xóa toàn bộ học viên và điểm số để bắt đầu đưa vào sử dụng thật 100% không?');
+        if (!c1) return;
+        const c2 = confirm('Xác nhận lần cuối: Mọi tài khoản thử nghiệm trên cả Cloud và máy này sẽ bị xóa trắng hoàn toàn. Tiếp tục?');
+        if (!c2) return;
+      }
+
+      try {
+        // 1. Gửi lệnh xóa trắng lên Cloud
+        await fetch(CLOUD_LEADERBOARD_ENDPOINT, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'brainfocus_leaderboard',
+            data: {
+              users: [],
+              lastSynced: Date.now()
+            }
+          })
+        });
+      } catch (err) {
+        console.warn('Clear cloud error:', err);
+      }
+
+      // 2. Xóa sạch dữ liệu trong LocalStorage
+      try {
+        localStorage.removeItem('bf_registered_users');
+        localStorage.removeItem('bf_user_profile');
+        localStorage.removeItem('bf_onboarded_completed');
+        localStorage.removeItem('bf_active_session');
+        localStorage.removeItem('bf_active_session_backup');
+        localStorage.removeItem('bf_daily_tracker');
+        localStorage.removeItem('bf_daily_gym_tracker');
+        localStorage.removeItem('bf_cooldown_until');
+        localStorage.removeItem('bf_cooldown_total_seconds');
+        localStorage.removeItem('bf_restored_user_test_sessions');
+      } catch (e) {}
+
+      // 3. Reset APP_STATE về trạng thái ban đầu
+      REGISTERED_USERS_DB = [];
+      APP_STATE.userEmail = "";
+      APP_STATE.userName = "";
+      APP_STATE.userSchool = "";
+      APP_STATE.userAvatar = "";
+      APP_STATE.rankPoints = 1000;
+      APP_STATE.bfsScore = 0;
+      APP_STATE.totalHours = 0;
+      APP_STATE.streakDays = 1;
+      APP_STATE.sessionsCompletedCount = 0;
+      APP_STATE.gymCompletedCount = 0;
+      APP_STATE.history = [];
+
+      saveAppStateToLocal();
+      syncProfileDOM();
+      updateStatsUI();
+      renderLeaderboard();
+      renderHistory();
+      openRegisterModal(true);
+
+      alert('🎉 ĐÃ XÓA TRẮNG TOÀN BỘ HỌC VIÊN THÀNH CÔNG!\nWeb hiện ở trạng thái mới tinh 100% sẵn sàng cho người dùng thật.');
+    }
+
     // Đồng bộ thông tin người dùng hiện tại vào danh sách người dùng toàn hệ thống
     function syncCurrentUserToDatabase() {
       if (!APP_STATE.userName && !APP_STATE.userEmail) return;
@@ -1805,8 +1880,7 @@
       };
 
       const existingIdx = REGISTERED_USERS_DB.findIndex(u => 
-        (u.email && u.email.toLowerCase().trim() === userEntry.email.toLowerCase().trim()) ||
-        (u.name && u.name.toLowerCase().trim() === userEntry.name.toLowerCase().trim())
+        (u.email && u.email.toLowerCase().trim() === userEntry.email.toLowerCase().trim())
       );
       if (existingIdx >= 0) {
         REGISTERED_USERS_DB[existingIdx] = { ...REGISTERED_USERS_DB[existingIdx], ...userEntry };
@@ -1864,10 +1938,10 @@
       // Sắp xếp theo tổng điểm giảm dần
       all.sort((a, b) => b.totalScore - a.totalScore);
 
-      // Khử trùng lặp: Nếu trùng email hoặc trùng họ tên thì chỉ giữ lại 1 bản ghi có điểm cao nhất
+      // Khử trùng lặp: Phân định theo email định danh (khóa chính)
       const uniqueMap = new Map();
       all.forEach(item => {
-        const normKey = (item.name || '').replace(/\s*\(Bạn\)$/i, '').trim().toLowerCase();
+        const normKey = (item.email || item.name || '').trim().toLowerCase();
         const existing = uniqueMap.get(normKey);
         if (!existing) {
           uniqueMap.set(normKey, item);
@@ -2019,16 +2093,162 @@
       alert(`✅ Đã chuyển sang tài khoản: ${user.name} (${user.email})`);
     }
 
+    // ================= EXCEL (XLSX) IMPORT / EXPORT =================
+    function exportLeaderboardToExcel() {
+      try {
+        if (typeof XLSX === 'undefined') {
+          alert('⚠️ Thư viện Excel đang được tải, vui lòng thử lại sau 3 giây.');
+          return;
+        }
+
+        const leaderboard = getFullLeaderboard();
+        if (!leaderboard || leaderboard.length === 0) {
+          alert('⚠️ Chưa có dữ liệu học viên để xuất file Excel.');
+          return;
+        }
+
+        const excelData = leaderboard.map((u, idx) => ({
+          'Hạng': idx + 1,
+          'Họ Và Tên': (u.name || '').replace(/\s*\(Bạn\)$/i, '').trim(),
+          'Email (Tài khoản)': u.email || '',
+          'Trường / Đơn vị': u.school || 'Người học tích cực',
+          'Tổng Điểm': u.totalScore || 0,
+          'Điểm Xếp Hạng': u.rankPoints || 1000,
+          'Điểm Bài Test BFS': u.bfs || 0,
+          'Số Phiên Học Hoàn Thành': u.sessionsCount || 0,
+          'Điểm Phiên Học': u.sessionPoints || 0,
+          'Chuỗi Ngày (Streak)': u.streak || `${u.streakDays || 1} ngày`,
+          'Tổng Giờ Học (Giờ)': u.totalHours || 0
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        // Tối ưu độ rộng cột
+        ws['!cols'] = [
+          { wch: 6 },  // Hạng
+          { wch: 25 }, // Họ tên
+          { wch: 30 }, // Email
+          { wch: 25 }, // Trường
+          { wch: 12 }, // Tổng điểm
+          { wch: 15 }, // Điểm XH
+          { wch: 18 }, // Điểm BFS
+          { wch: 24 }, // Số phiên
+          { wch: 16 }, // Điểm phiên
+          { wch: 20 }, // Streak
+          { wch: 18 }  // Tổng giờ
+        ];
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "BangXepHang_BrainFocus");
+
+        const todayStr = getTodayDateString();
+        const fileName = `BrainFocus_DanhSachHocVien_${todayStr}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+        alert(`📥 Đã xuất file Excel thành công: ${fileName}\nTổng số học viên: ${excelData.length}`);
+      } catch (err) {
+        console.error('Export Excel error:', err);
+        alert('❌ Có lỗi khi xuất file Excel: ' + err.message);
+      }
+    }
+
+    function importLeaderboardFromExcel(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (typeof XLSX === 'undefined') {
+        alert('⚠️ Thư viện Excel đang được tải, vui lòng thử lại sau giây lát.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const rawRows = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+
+          if (!rawRows || rawRows.length === 0) {
+            alert('⚠️ File Excel không có dòng dữ liệu nào!');
+            return;
+          }
+
+          loadUsersDatabase();
+          let importedCount = 0;
+          let updatedCount = 0;
+
+          rawRows.forEach(row => {
+            // Linh hoạt nhận diện tên cột tiếng Việt hoặc tiếng Anh
+            const name = String(row['Họ Và Tên'] || row['Họ và Tên'] || row['Tên'] || row['Name'] || row['FullName'] || '').replace(/\s*\(Bạn\)$/i, '').trim();
+            let email = String(row['Email (Tài khoản)'] || row['Email'] || row['Mail'] || '').trim().toLowerCase();
+            const school = String(row['Trường / Đơn vị'] || row['Trường'] || row['School'] || 'Người học tích cực').trim();
+            const totalScore = Number(row['Tổng Điểm'] || row['TotalScore'] || row['Total']) || 0;
+            const rankPoints = Number(row['Điểm Xếp Hạng'] || row['RankPoints']) || 1000;
+            const bfs = Number(row['Điểm Bài Test BFS'] || row['Điểm BFS'] || row['BFS']) || 0;
+            const sessionsCount = Number(row['Số Phiên Học Hoàn Thành'] || row['Số Phiên'] || row['Sessions']) || 0;
+            const sessionPoints = Number(row['Điểm Phiên Học'] || row['SessionPoints']) || (sessionsCount * 90);
+            const totalHours = Number(row['Tổng Giờ Học (Giờ)'] || row['TotalHours']) || 0;
+            const streakDays = parseInt(String(row['Chuỗi Ngày (Streak)'] || row['Streak'] || '1').replace(/\D/g, '')) || 1;
+
+            if (!name && !email) return;
+            if (!email) {
+              email = `${name.toLowerCase().replace(/\s+/g, '')}@student.brainfocus`;
+            }
+
+            const existingIdx = REGISTERED_USERS_DB.findIndex(u => 
+              (u.email && u.email.toLowerCase().trim() === email)
+            );
+
+            const userObj = {
+              id: email,
+              email: email,
+              name: name || 'Học viên',
+              school: school,
+              avatar: '',
+              rankPoints: rankPoints,
+              bfs: bfs,
+              sessionsCount: sessionsCount,
+              sessionPoints: sessionPoints,
+              totalHours: totalHours,
+              streakDays: streakDays,
+              streak: `${streakDays} ngày`,
+              lastUpdated: Date.now()
+            };
+
+            if (existingIdx === -1) {
+              REGISTERED_USERS_DB.push(userObj);
+              importedCount++;
+            } else {
+              REGISTERED_USERS_DB[existingIdx] = {
+                ...REGISTERED_USERS_DB[existingIdx],
+                ...userObj,
+                avatar: REGISTERED_USERS_DB[existingIdx].avatar || ''
+              };
+              updatedCount++;
+            }
+          });
+
+          saveUsersDatabase(true); // Lưu và tự động đồng bộ lên Cloud
+          renderLeaderboard();
+          alert(`🎉 Nhập file Excel thành công!\n- Thêm mới: ${importedCount} học viên\n- Cập nhật: ${updatedCount} học viên\nBảng xếp hạng đã được làm mới!`);
+        } catch (err) {
+          console.error('Import Excel error:', err);
+          alert('❌ Đọc file Excel thất bại: ' + err.message);
+        } finally {
+          event.target.value = ''; // Reset input để có thể chọn lại cùng file
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
     // ================= INIT =================
     window.addEventListener('DOMContentLoaded', () => {
       loadAppStateFromLocal();
       purgeCloneAccounts(false);
 
-      // Nếu APP_STATE rỗng nhưng thiết bị đã lưu tài khoản, tự động khôi phục tài khoản gần nhất
-      if ((!APP_STATE.userEmail || !APP_STATE.userName) && REGISTERED_USERS_DB.length > 0) {
-        switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
-        saveAppStateToLocal();
-      }
+      // Nếu APP_STATE rỗng, KHÔNG tự động lấy tài khoản của người khác gán vào!
+      // Mỗi thiết bị mới phải có tài khoản riêng của chính mình.
+      const hasAccount = Boolean(APP_STATE.userEmail && APP_STATE.userName);
 
       syncProfileDOM();
       renderArticles();
@@ -2048,7 +2268,6 @@
       updateDndUI();
 
       // Khi mới vào web: nếu chưa có tài khoản Gmail thì hiện ngay form tạo tài khoản
-      const hasAccount = Boolean(APP_STATE.userEmail && APP_STATE.userName);
       if (!hasAccount) {
         setTimeout(() => {
           openRegisterModal(true);
