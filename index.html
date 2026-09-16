@@ -598,13 +598,13 @@
               <div class="w-10 h-10 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
                 🎨
               </div>
-              <h3 class="font-extrabold text-sm text-slate-900">Stroop Siêu Cấp</h3>
+              <h3 class="font-extrabold text-sm text-slate-900">Stroop: Chọn Đúng Màu</h3>
               <p class="text-[11px] text-slate-600 mt-1 leading-normal">
-                Ức chế xung động cực độ. Đảo quy tắc liên tục (Màu sắc vs Nghĩa từ) dưới áp lực 2.5 giây/câu!
+                Ức chế xung động phản xạ. Hãy nhìn nhanh và chọn chính xác MÀU SẮC MỰC của chữ (bỏ qua nghĩa từ)!
               </p>
             </div>
             <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
-              <span class="text-slate-500">12 Lượt • 2.5s/câu</span>
+              <span class="text-slate-500">12 Lượt • 3.0s/câu</span>
               <span id="gym-badge-stroop" class="text-blue-700 font-black">+40 BFS →</span>
             </div>
           </div>
@@ -1161,8 +1161,34 @@
 
       <form onsubmit="handleRegisterSubmit(event)" class="space-y-3">
         <div>
-          <label class="text-xs font-bold text-slate-700 block mb-1">Địa chỉ Gmail của bạn:</label>
-          <input type="email" id="reg-input-email" required placeholder="vidu@gmail.com" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-xs font-bold text-slate-700">Địa chỉ Gmail của bạn:</label>
+            <span class="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-md">Bắt buộc đuôi @gmail.com</span>
+          </div>
+          <div class="relative">
+            <input 
+              type="text" 
+              inputmode="email"
+              id="reg-input-email" 
+              required 
+              placeholder="tentaikhoan123@gmail.com" 
+              oninput="handleRegEmailInput(this.value)" 
+              autocomplete="email"
+              class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors" 
+            />
+            <button 
+              type="button" 
+              id="reg-email-quick-suffix-btn" 
+              onclick="appendRegGmailSuffix()" 
+              class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-[10px] bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded-lg shadow-xs transition-all active:scale-95"
+              title="Nhấn để tự động thêm @gmail.com"
+            >
+              + @gmail.com
+            </button>
+          </div>
+          <div id="reg-email-feedback" class="text-[11px] mt-1.5 transition-all text-slate-500 flex items-start gap-1 leading-tight">
+            <span>💡</span> <span>Định dạng chuẩn: <strong>tentaikhoan@gmail.com</strong> (chỉ chữ thường, số, dấu chấm; từ 6 - 30 ký tự trước @)</span>
+          </div>
         </div>
 
         <div>
@@ -1337,8 +1363,21 @@
         </div>
 
         <div>
-          <label class="text-xs font-bold text-slate-700 block mb-1">Email liên kết:</label>
-          <input type="email" id="edit-input-email" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-xs font-bold text-slate-700">Email liên kết:</label>
+            <span class="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-md">Đuôi @gmail.com</span>
+          </div>
+          <input 
+            type="text" 
+            inputmode="email"
+            id="edit-input-email" 
+            placeholder="tentaikhoan123@gmail.com" 
+            oninput="handleEditEmailInput(this.value)"
+            class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors" 
+          />
+          <div id="edit-email-feedback" class="text-[11px] mt-1.5 transition-all text-slate-500 flex items-start gap-1 leading-tight">
+            <span>💡</span> <span>Bắt buộc tài khoản Google có đuôi @gmail.com</span>
+          </div>
         </div>
 
         <div>
@@ -3732,16 +3771,18 @@
     let stroopScore = 0;
     let stroopStreak = 0;
     let stroopRoundTimer = null;
-    let stroopTimeLeftMs = 2500;
+    let stroopFeedbackTimeout = null;
+    let isStroopHandlingAnswer = false;
+    let stroopTimeLeftMs = 3000;
     const STROOP_PALETTE = [
-      { name: "Đỏ", color: "#dc2626", bg: "bg-red-50 text-red-700 border-red-200" },
-      { name: "Xanh Dương", color: "#2563eb", bg: "bg-blue-50 text-blue-700 border-blue-200" },
-      { name: "Xanh Lá", color: "#059669", bg: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-      { name: "Vàng", color: "#d97706", bg: "bg-amber-50 text-amber-700 border-amber-200" },
-      { name: "Tím", color: "#7c3aed", bg: "bg-purple-50 text-purple-700 border-purple-200" },
-      { name: "Cam", color: "#ea580c", bg: "bg-orange-50 text-orange-700 border-orange-200" },
-      { name: "Hồng", color: "#db2777", bg: "bg-pink-50 text-pink-700 border-pink-200" },
-      { name: "Đen", color: "#0f172a", bg: "bg-slate-100 text-slate-800 border-slate-300" }
+      { name: "Đỏ", color: "#ef4444", dot: "#ef4444" },
+      { name: "Xanh Dương", color: "#3b82f6", dot: "#3b82f6" },
+      { name: "Xanh Lá", color: "#22c55e", dot: "#22c55e" },
+      { name: "Vàng", color: "#facc15", dot: "#eab308" },
+      { name: "Tím", color: "#c084fc", dot: "#a855f7" },
+      { name: "Cam", color: "#fb923c", dot: "#f97316" },
+      { name: "Hồng", color: "#f472b6", dot: "#ec4899" },
+      { name: "Trắng", color: "#f8fafc", dot: "#ffffff" }
     ];
 
     // ================= BRAIN FOCUS GYM LOGIC & DAILY LIMIT =================
@@ -3839,7 +3880,7 @@
       });
     }
 
-    // ---------------- GAME 1: STROOP TEST ----------------
+    // ---------------- GAME 1: STROOP TEST (CHỌN ĐÚNG MÀU MỰC) ----------------
     function startStroopGame() {
       if (isGymDailyLimitReached()) {
         alert("🛑 ĐÃ ĐẠT GIỚI HẠN 5 LƯỢT GYM HÔM NAY!\n\nBạn đã hoàn thành trọn vẹn 5/5 lượt rèn luyện não bộ trong ngày hôm nay.\n\nKhoa học thần kinh khuyến cáo tập luyện ngắt quãng để các nơ-ron và synap thần kinh vỏ não trước trán củng cố tự nhiên mà không bị quá tải.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!");
@@ -3849,13 +3890,18 @@
       stroopCurrentRound = 0;
       stroopScore = 0;
       stroopStreak = 0;
+      isStroopHandlingAnswer = false;
       if (stroopRoundTimer) {
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
       }
+      if (stroopFeedbackTimeout) {
+        clearTimeout(stroopFeedbackTimeout);
+        stroopFeedbackTimeout = null;
+      }
       
       const titleEl = document.getElementById('active-game-title');
-      if (titleEl) titleEl.innerText = "STROOP SIÊU CẤP (ỨC CHẾ XUNG ĐỘNG)";
+      if (titleEl) titleEl.innerText = "STROOP TEST: CHỌN ĐÚNG MÀU MỰC CỦA CHỮ";
 
       const container = document.getElementById('active-game-container');
       container.classList.remove('hidden');
@@ -3868,6 +3914,11 @@
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
       }
+      if (stroopFeedbackTimeout) {
+        clearTimeout(stroopFeedbackTimeout);
+        stroopFeedbackTimeout = null;
+      }
+      isStroopHandlingAnswer = false;
 
       if (stroopCurrentRound >= 12) {
         finishStroopGame();
@@ -3875,95 +3926,186 @@
       }
       stroopCurrentRound++;
 
-      // Pick text item and mismatch color item
+      // Chọn chữ và màu mực hiển thị lệch nhau để tạo hiệu ứng Stroop kinh điển
       const textItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
       let colorItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
       while (colorItem.name === textItem.name) {
         colorItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
       }
 
-      // 60% chance: ask for visual COLOR, 40% chance: ask for TEXT meaning
-      const askForColor = Math.random() > 0.4;
-      const targetAnswer = askForColor ? colorItem.name : textItem.name;
+      // ĐÁP ÁN ĐÚNG 100% LUÔN LÀ MÀU MỰC MÀ MẮT ĐANG NHÌN THẤY
+      const targetAnswer = colorItem.name;
+      // Đáp án bẫy tâm lý (tên chữ viết ra) luôn luôn có mặt để kích hoạt vỏ não ức chế
+      const trickDistractor = textItem.name;
 
-      // Select 6 distractor options including the target
-      const pool = STROOP_PALETTE.map(p => p.name);
-      const shuffledOptions = [targetAnswer];
-      const otherOptions = pool.filter(n => n !== targetAnswer).sort(() => 0.5 - Math.random());
-      while (shuffledOptions.length < 6 && otherOptions.length > 0) {
-        shuffledOptions.push(otherOptions.pop());
+      // Chọn thêm 2 màu gây nhiễu khác trong danh sách màu còn lại
+      const remaining = STROOP_PALETTE.filter(p => p.name !== targetAnswer && p.name !== trickDistractor);
+      for (let i = remaining.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
       }
-      shuffledOptions.sort(() => 0.5 - Math.random());
+      const distractor1 = remaining[0].name;
+      const distractor2 = remaining[1].name;
 
-      const promptHtml = askForColor 
-        ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 border border-rose-300 shadow-xs">🎯 CHỌN MÀU CỦA CHỮ (Bỏ qua nghĩa từ)</span>`
-        : `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-xs animate-pulse">⚡ CHỌN NGHĨA CỦA TỪ (Bỏ qua màu sắc)</span>`;
+      // 4 lựa chọn đảm bảo 100% CÓ ĐÁP ÁN ĐÚNG và không bao giờ trùng lặp
+      const options = [targetAnswer, trickDistractor, distractor1, distractor2];
+      for (let i = options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [options[i], options[j]] = [options[j], options[i]];
+      }
 
       const html = `
-        <div class="space-y-3.5 text-center">
+        <div class="space-y-3 text-center">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-black text-blue-700">Lượt ${stroopCurrentRound}/12</span>
-            <span class="text-xs font-black text-amber-600">Điểm: ${stroopScore} ${stroopStreak > 1 ? `(🔥x${stroopStreak})` : ''}</span>
-            <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1">
+            <span class="text-xs font-black text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-lg">Lượt ${stroopCurrentRound}/12</span>
+            <span class="text-xs font-black text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg">Điểm: ${stroopScore} ${stroopStreak > 1 ? `(🔥x${stroopStreak})` : ''}</span>
+            <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1 active:scale-95 transition-all">
               <span>✕</span> <span>Thoát</span>
             </button>
           </div>
 
-          <!-- Speed countdown bar -->
-          <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-            <div id="stroop-time-bar" class="h-full bg-gradient-to-r from-blue-600 to-rose-500 transition-all duration-100" style="width: 100%;"></div>
+          <!-- Thanh đếm ngược thời gian (3.0 giây) -->
+          <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden shadow-inner">
+            <div id="stroop-time-bar" class="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-rose-500 transition-all duration-75" style="width: 100%;"></div>
           </div>
 
-          <div class="py-1">${promptHtml}</div>
+          <!-- Hướng dẫn câu hỏi rõ ràng -->
+          <div class="py-1">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black bg-rose-50 text-rose-700 border border-rose-200 shadow-xs">
+              <span>🎯</span> <span>CHỌN ĐÚNG MÀU MỰC CỦA CHỮ</span>
+            </span>
+            <p class="text-[11px] text-slate-500 mt-1">Đừng đọc nghĩa của chữ! Hãy nhìn xem chữ bên dưới đang mang <strong>màu gì</strong>:</p>
+          </div>
 
-          <div class="py-5 my-1 bg-white border border-slate-200 rounded-2xl shadow-sm flex items-center justify-center">
-            <span class="text-4xl sm:text-5xl font-black font-cyber tracking-wider select-none animate-bounce" style="color: ${colorItem.color}">
+          <!-- Bảng chữ tương phản cao, hiển thị màu sắc sống động rực rỡ -->
+          <div class="py-6 my-1 bg-slate-950 border-2 border-slate-800 rounded-2xl shadow-md flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-radial from-slate-900 to-slate-950 opacity-70 pointer-events-none"></div>
+            <span class="text-4xl sm:text-5xl font-black font-cyber tracking-wider select-none relative z-10 transition-transform" style="color: ${colorItem.color}; text-shadow: 0 0 20px ${colorItem.color}40;">
               ${textItem.name.toUpperCase()}
             </span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
-            ${shuffledOptions.map(opt => `
-              <button onclick="checkStroopAnswer('${opt}', '${targetAnswer}')" class="py-3 px-3 rounded-xl bg-white hover:bg-blue-50 text-slate-800 font-extrabold text-xs border border-slate-300 active:scale-95 transition-all shadow-xs hover:border-blue-400">
-                ${opt}
-              </button>
-            `).join('')}
+          <!-- Phản hồi trạng thái tức thì -->
+          <div id="stroop-feedback-banner" class="min-h-[26px] flex items-center justify-center text-xs font-bold text-slate-600">
+            <span>👇 Nhấn chọn 1 trong 4 màu bên dưới:</span>
+          </div>
+
+          <!-- 4 Nút đáp án trực quan, to bản, có chấm màu rõ ràng -->
+          <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+            ${options.map((opt, idx) => {
+              const pal = STROOP_PALETTE.find(p => p.name === opt) || { dot: '#94a3b8' };
+              return `
+                <button 
+                  id="stroop-opt-btn-${idx}" 
+                  data-opt="${opt}"
+                  onclick="checkStroopAnswer('${opt}', '${targetAnswer}', ${idx})" 
+                  class="py-3.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-extrabold text-xs sm:text-sm border-2 border-slate-200 active:scale-95 transition-all shadow-xs hover:border-blue-400 flex items-center justify-center gap-2.5"
+                >
+                  <span class="w-4 h-4 rounded-full shrink-0 shadow-xs border border-slate-300" style="background-color: ${pal.dot}"></span>
+                  <span>${opt}</span>
+                </button>
+              `;
+            }).join('')}
           </div>
         </div>
       `;
       document.getElementById('game-dynamic-area').innerHTML = html;
 
-      // 2.5s timer per question
-      stroopTimeLeftMs = 2500;
+      // Bộ đếm 3.0s cho mỗi câu
+      stroopTimeLeftMs = 3000;
       const stepMs = 50;
       stroopRoundTimer = setInterval(() => {
         stroopTimeLeftMs -= stepMs;
-        const pct = Math.max(0, (stroopTimeLeftMs / 2500) * 100);
+        const pct = Math.max(0, (stroopTimeLeftMs / 3000) * 100);
         const bar = document.getElementById('stroop-time-bar');
         if (bar) bar.style.width = `${pct}%`;
 
         if (stroopTimeLeftMs <= 0) {
           clearInterval(stroopRoundTimer);
           stroopRoundTimer = null;
-          stroopStreak = 0;
-          renderNextStroopRound();
+          handleStroopTimeout(targetAnswer);
         }
       }, stepMs);
     }
 
-    function checkStroopAnswer(chosen, correct) {
+    // Xử lý khi hết thời gian 3.0s
+    function handleStroopTimeout(correct) {
+      if (isStroopHandlingAnswer) return;
+      isStroopHandlingAnswer = true;
+      stroopStreak = 0;
+
+      const feedbackBanner = document.getElementById('stroop-feedback-banner');
+      if (feedbackBanner) {
+        feedbackBanner.className = "min-h-[26px] py-1 px-3 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black flex items-center justify-center gap-1.5 animate-pulse";
+        feedbackBanner.innerHTML = `<span>⏰ HẾT GIỜ! Màu đúng của chữ là: <strong>${correct}</strong></span>`;
+      }
+
+      // Làm sáng nút đáp án đúng
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`stroop-opt-btn-${i}`);
+        if (btn && btn.getAttribute('data-opt') === correct) {
+          btn.className = "py-3.5 px-4 rounded-xl bg-emerald-50 text-emerald-800 font-black text-xs sm:text-sm border-2 border-emerald-500 shadow-md flex items-center justify-center gap-2.5 scale-[1.02] transition-all";
+        }
+      }
+
+      stroopFeedbackTimeout = setTimeout(() => {
+        renderNextStroopRound();
+      }, 700);
+    }
+
+    // Xử lý khi người chơi bấm chọn đáp án
+    function checkStroopAnswer(chosen, correct, clickedIdx) {
+      if (isStroopHandlingAnswer) return;
+      isStroopHandlingAnswer = true;
+
       if (stroopRoundTimer) {
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
       }
+
+      const clickedBtn = document.getElementById(`stroop-opt-btn-${clickedIdx}`);
+      const feedbackBanner = document.getElementById('stroop-feedback-banner');
+
       if (chosen === correct) {
         stroopStreak++;
         const bonus = (stroopStreak >= 3) ? 15 : 10;
         stroopScore += bonus;
+
+        if (clickedBtn) {
+          clickedBtn.className = "py-3.5 px-4 rounded-xl bg-emerald-50 text-emerald-800 font-black text-xs sm:text-sm border-2 border-emerald-500 shadow-md flex items-center justify-center gap-2.5 scale-[1.02] transition-all";
+        }
+        if (feedbackBanner) {
+          feedbackBanner.className = "min-h-[26px] py-1 px-3 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-black flex items-center justify-center gap-1.5 animate-bounce";
+          feedbackBanner.innerHTML = `<span>✅ CHÍNH XÁC! +${bonus} Điểm ${stroopStreak > 1 ? `(Combo x${stroopStreak} 🔥)` : ''}</span>`;
+        }
+
+        stroopFeedbackTimeout = setTimeout(() => {
+          renderNextStroopRound();
+        }, 400);
       } else {
         stroopStreak = 0;
+
+        if (clickedBtn) {
+          clickedBtn.className = "py-3.5 px-4 rounded-xl bg-rose-50 text-rose-800 font-black text-xs sm:text-sm border-2 border-rose-500 shadow-md flex items-center justify-center gap-2.5 transition-all";
+        }
+
+        // Hiện rõ đáp án đúng để người chơi thấy ngay
+        for (let i = 0; i < 4; i++) {
+          const btn = document.getElementById(`stroop-opt-btn-${i}`);
+          if (btn && btn.getAttribute('data-opt') === correct) {
+            btn.className = "py-3.5 px-4 rounded-xl bg-emerald-50 text-emerald-800 font-black text-xs sm:text-sm border-2 border-emerald-500 shadow-md flex items-center justify-center gap-2.5 scale-[1.02] transition-all";
+          }
+        }
+
+        if (feedbackBanner) {
+          feedbackBanner.className = "min-h-[26px] py-1 px-3 rounded-lg bg-rose-100 text-rose-900 border border-rose-300 text-xs font-black flex items-center justify-center gap-1.5";
+          feedbackBanner.innerHTML = `<span>❌ CHƯA ĐÚNG! Chữ đang có màu: <strong>${correct}</strong></span>`;
+        }
+
+        stroopFeedbackTimeout = setTimeout(() => {
+          renderNextStroopRound();
+        }, 650);
       }
-      renderNextStroopRound();
     }
 
     function finishStroopGame() {
@@ -3971,6 +4113,12 @@
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
       }
+      if (stroopFeedbackTimeout) {
+        clearTimeout(stroopFeedbackTimeout);
+        stroopFeedbackTimeout = null;
+      }
+      isStroopHandlingAnswer = false;
+
       APP_STATE.bfsScore += 40;
       APP_STATE.rankPoints += 40;
       APP_STATE.gymCompletedCount++;
@@ -3982,9 +4130,9 @@
       document.getElementById('game-dynamic-area').innerHTML = `
         <div class="text-center space-y-3 py-4">
           <span class="text-4xl">🏆</span>
-          <h3 class="text-lg font-black text-slate-900 font-cyber">HOÀN THÀNH STROOP SIÊU CẤP!</h3>
-          <p class="text-xs text-slate-600">Bạn đạt <strong>${stroopScore}/150 điểm</strong>. Vỏ não trước trán (Prefrontal Cortex) đã ức chế xung động phản xạ vượt bậc!</p>
-          <div class="text-sm font-black text-blue-600">+40 Điểm BFS & +40 Điểm XH đã cộng!</div>
+          <h3 class="text-lg font-black text-slate-900 font-cyber">HOÀN THÀNH BÀI TẬP CHỌN MÀU!</h3>
+          <p class="text-xs text-slate-600">Bạn đạt <strong>${stroopScore}/150 điểm</strong>. Vỏ não trước trán (Prefrontal Cortex) đã ức chế xung động phản xạ tuyệt vời!</p>
+          <div class="text-sm font-black text-blue-600 bg-blue-50 border border-blue-200 py-2 px-4 rounded-xl inline-block">+40 Điểm BFS & +40 Điểm XH đã được cộng!</div>
           <div class="pt-2">
             <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">✕ Đóng / Về Phòng Gym</button>
           </div>
@@ -4464,9 +4612,14 @@
     // DỪNG TOÀN DIỆN VÀ AN TOÀN MỌI TIẾN TRÌNH TRÒ CHƠI
     function closeGameContainer() {
       isGridGameActive = false;
+      isStroopHandlingAnswer = false;
       if (stroopRoundTimer) {
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
+      }
+      if (stroopFeedbackTimeout) {
+        clearTimeout(stroopFeedbackTimeout);
+        stroopFeedbackTimeout = null;
       }
       if (gridRecallTimer) {
         clearInterval(gridRecallTimer);
@@ -5235,6 +5388,17 @@
         if (subtitleEl) subtitleEl.innerText = "Nhận ngay 1000 điểm xếp hạng gốc";
       }
 
+      // Reset trường email và phản hồi trạng thái
+      const regEmailInput = document.getElementById('reg-input-email');
+      if (regEmailInput) {
+        if (!APP_STATE.userEmail) {
+          regEmailInput.value = '';
+          handleRegEmailInput('');
+        } else {
+          handleRegEmailInput(regEmailInput.value);
+        }
+      }
+
       modal.classList.remove('hidden');
     }
 
@@ -5265,7 +5429,11 @@
     function openEditProfileModal() {
       document.getElementById('edit-input-name').value = APP_STATE.userName || '';
       document.getElementById('edit-input-school').value = APP_STATE.userSchool || '';
-      document.getElementById('edit-input-email').value = APP_STATE.userEmail || '';
+      const editEmailInput = document.getElementById('edit-input-email');
+      if (editEmailInput) {
+        editEmailInput.value = APP_STATE.userEmail || '';
+        handleEditEmailInput(editEmailInput.value);
+      }
       
       const prevImg = document.getElementById('edit-avatar-img');
       const prevInit = document.getElementById('edit-avatar-initial');
@@ -5340,37 +5508,214 @@
       }
     }
 
+    // ================= XÁC THỰC ĐỊNH DẠNG GMAIL NGHIÊM NGẶT =================
+    function validateGmailAddress(rawEmail) {
+      const email = String(rawEmail || '').trim().toLowerCase();
+      if (!email) {
+        return { valid: false, message: 'Vui lòng nhập địa chỉ Gmail của bạn!' };
+      }
+
+      // 1. Tuyệt đối không chứa khoảng trắng
+      if (/\s/.test(email)) {
+        return { valid: false, message: '❌ Địa chỉ Gmail không được chứa khoảng cách (dấu cách)!' };
+      }
+
+      // 2. Kiểm tra phần đuôi @gmail.com
+      if (!email.endsWith('@gmail.com')) {
+        if (email.includes('@')) {
+          const parts = email.split('@');
+          const domain = parts[1] || '';
+          return {
+            valid: false,
+            message: `❌ Địa chỉ phải có đuôi "@gmail.com" (bạn đang nhập "@${domain}"). Ứng dụng chỉ chấp nhận tài khoản Google Gmail!`
+          };
+        } else {
+          return {
+            valid: false,
+            message: '❌ Bắt buộc phải có đuôi "@gmail.com" (Ví dụ: ' + (email || 'tentaikhoan') + '@gmail.com)!'
+          };
+        }
+      }
+
+      // 3. Đúng một ký tự '@' duy nhất
+      const atMatches = email.match(/@/g);
+      if (!atMatches || atMatches.length !== 1) {
+        return { valid: false, message: '❌ Địa chỉ Gmail chỉ được chứa đúng 1 ký tự "@"!' };
+      }
+
+      // 4. Lấy phần tên người dùng (trước @gmail.com)
+      const username = email.slice(0, -10); // cắt bỏ 10 ký tự '@gmail.com'
+
+      // 5. Kiểm tra độ dài chuẩn của Google (6 - 30 ký tự)
+      if (username.length < 6) {
+        return {
+          valid: false,
+          message: `❌ Tên tài khoản Gmail quá ngắn (${username.length}/6 ký tự). Tên trước @gmail.com phải từ 6 đến 30 ký tự!`
+        };
+      }
+      if (username.length > 30) {
+        return {
+          valid: false,
+          message: `❌ Tên tài khoản Gmail quá dài (${username.length}/30 ký tự). Tên trước @gmail.com tối đa 30 ký tự!`
+        };
+      }
+
+      // 6. Kiểm tra các quy tắc dấu chấm theo chuẩn Google
+      if (username.startsWith('.')) {
+        return { valid: false, message: '❌ Tên tài khoản Gmail không được bắt đầu bằng dấu chấm (.)!' };
+      }
+      if (username.endsWith('.')) {
+        return { valid: false, message: '❌ Tên tài khoản Gmail không được kết thúc bằng dấu chấm (.)!' };
+      }
+      if (username.includes('..')) {
+        return { valid: false, message: '❌ Tên tài khoản Gmail không được chứa hai dấu chấm liên tiếp (..)!' };
+      }
+
+      // 7. Chỉ cho phép chữ cái thường (a-z), chữ số (0-9) và dấu chấm (.)
+      const validGmailRegex = /^[a-z0-9]+(\.[a-z0-9]+)*$/;
+      if (!validGmailRegex.test(username)) {
+        return {
+          valid: false,
+          message: '❌ Tên Gmail chỉ được chứa chữ cái (a-z), số (0-9) và dấu chấm (.). Không dùng ký tự đặc biệt, dấu gạch dưới (_) hoặc tiếng Việt có dấu!'
+        };
+      }
+
+      return { valid: true, email: email, username: username };
+    }
+
+    // Phản hồi thời gian thực khi người dùng gõ email tại Modal Đăng Ký
+    function handleRegEmailInput(val) {
+      const trimmed = String(val || '').trim().toLowerCase();
+      const feedbackEl = document.getElementById('reg-email-feedback');
+      const inputEl = document.getElementById('reg-input-email');
+      const quickBtn = document.getElementById('reg-email-quick-suffix-btn');
+
+      if (!inputEl) return;
+
+      // Hiển thị nút bấm nhanh "+ @gmail.com" nếu người dùng gõ tên mà chưa có @
+      if (trimmed.length > 0 && !trimmed.includes('@')) {
+        if (quickBtn) quickBtn.classList.remove('hidden');
+      } else {
+        if (quickBtn) quickBtn.classList.add('hidden');
+      }
+
+      if (!trimmed) {
+        inputEl.className = 'w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-slate-500 flex items-start gap-1 leading-tight';
+          feedbackEl.innerHTML = '<span>💡</span> <span>Định dạng chuẩn: <strong>tentaikhoan@gmail.com</strong> (chỉ chữ thường, số, dấu chấm; từ 6 - 30 ký tự trước @)</span>';
+        }
+        return;
+      }
+
+      const res = validateGmailAddress(trimmed);
+      if (res.valid) {
+        inputEl.className = 'w-full text-xs bg-emerald-50/50 border-2 border-emerald-500 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-emerald-400 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-emerald-600 font-bold flex items-center gap-1 leading-tight';
+          feedbackEl.innerHTML = `<span>✅</span> <span>Địa chỉ Gmail hợp lệ (${res.username}@gmail.com)</span>`;
+        }
+      } else {
+        inputEl.className = 'w-full text-xs bg-rose-50/50 border-2 border-rose-400 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-rose-400 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-rose-600 font-bold flex items-start gap-1 leading-snug';
+          feedbackEl.innerHTML = `<span>⚠️</span> <span>${res.message}</span>`;
+        }
+      }
+    }
+
+    // Tự động gắn đuôi @gmail.com khi nhấn nút gợi ý
+    function appendRegGmailSuffix() {
+      const inputEl = document.getElementById('reg-input-email');
+      if (!inputEl) return;
+      let val = inputEl.value.trim();
+      if (!val.includes('@')) {
+        val = val.replace(/[^a-zA-Z0-9.]/g, '').toLowerCase() + '@gmail.com';
+        inputEl.value = val;
+        handleRegEmailInput(val);
+        inputEl.focus();
+      }
+    }
+
+    // Phản hồi thời gian thực khi chỉnh sửa email tại Modal Chỉnh Sửa Hồ Sơ
+    function handleEditEmailInput(val) {
+      const trimmed = String(val || '').trim().toLowerCase();
+      const feedbackEl = document.getElementById('edit-email-feedback');
+      const inputEl = document.getElementById('edit-input-email');
+      if (!inputEl) return;
+
+      if (!trimmed) {
+        inputEl.className = 'w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-slate-500 flex items-start gap-1 leading-tight';
+          feedbackEl.innerHTML = '<span>💡</span> <span>Bắt buộc tài khoản Google có đuôi @gmail.com</span>';
+        }
+        return;
+      }
+
+      const res = validateGmailAddress(trimmed);
+      if (res.valid) {
+        inputEl.className = 'w-full text-xs bg-emerald-50/50 border-2 border-emerald-500 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-emerald-400 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-emerald-600 font-bold flex items-center gap-1 leading-tight';
+          feedbackEl.innerHTML = `<span>✅</span> <span>Gmail hợp lệ (${res.username}@gmail.com)</span>`;
+        }
+      } else {
+        inputEl.className = 'w-full text-xs bg-rose-50/50 border-2 border-rose-400 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-rose-400 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-rose-600 font-bold flex items-start gap-1 leading-snug';
+          feedbackEl.innerHTML = `<span>⚠️</span> <span>${res.message}</span>`;
+        }
+      }
+    }
+
     // Submission Handlers
     function handleRegisterSubmit(e) {
       e.preventDefault();
-      const email = document.getElementById('reg-input-email').value.trim();
-      const name = document.getElementById('reg-input-name').value.trim();
-      const school = document.getElementById('reg-input-school').value.trim() || 'Người học tập trung';
+      const emailInput = document.getElementById('reg-input-email');
+      const rawEmail = (emailInput ? emailInput.value : '').trim();
+      const nameInput = document.getElementById('reg-input-name');
+      const name = (nameInput ? nameInput.value : '').trim();
+      const school = (document.getElementById('reg-input-school')?.value || '').trim() || 'Người học tập trung';
       const passwordInput = document.getElementById('reg-input-password');
       const password = passwordInput ? passwordInput.value.trim() : '';
       
-      if (!name && !email) {
-        alert('Vui lòng điền họ tên và email của bạn!');
+      // 1. Kiểm tra gắt gao chuẩn định dạng Gmail
+      const gmailCheck = validateGmailAddress(rawEmail);
+      if (!gmailCheck.valid) {
+        alert(gmailCheck.message);
+        if (emailInput) {
+          emailInput.focus();
+          emailInput.select();
+        }
+        handleRegEmailInput(rawEmail);
+        return;
+      }
+      const email = gmailCheck.email;
+
+      if (!name || name.length < 2) {
+        alert('Vui lòng điền họ và tên của bạn (tối thiểu 2 ký tự)!');
+        if (nameInput) nameInput.focus();
         return;
       }
 
       if (!password || password.length < 4) {
-        alert('Vui lòng nhập mật khẩu tối thiểu 4 ký tự để bảo mật tài khoản!');
+        alert('Vui lòng nhập mật khẩu tối thiểu 4 ký tự để bảo vệ tài khoản!');
         if (passwordInput) passwordInput.focus();
         return;
       }
 
-      // 1. Lưu lại tài khoản hiện tại vào DB trước khi chuyển sang tài khoản mới
+      // 2. Lưu lại tài khoản hiện tại vào DB trước khi chuyển sang tài khoản mới
       syncCurrentUserToDatabase();
       loadUsersDatabase();
 
-      // 2. Kiểm tra xem email này đã từng được tạo trên thiết bị chưa
+      // 3. Kiểm tra xem email này đã từng được tạo trên thiết bị chưa
       const existingUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
       
       if (existingUser) {
         // Nếu tài khoản cũ đã có mật khẩu và mật khẩu nhập vào không khớp
         if (existingUser.password && String(existingUser.password).trim() !== password) {
-          alert('❌ Email này đã được đăng ký trên thiết bị nhưng mật khẩu bạn nhập không đúng!\nVui lòng nhập đúng mật khẩu để truy cập.');
+          alert('❌ Email Gmail này đã được đăng ký trên thiết bị nhưng mật khẩu bạn nhập không đúng!\nVui lòng nhập đúng mật khẩu để truy cập.');
           if (passwordInput) {
             passwordInput.focus();
             passwordInput.select();
@@ -5413,7 +5758,7 @@
         }
       }
 
-      // 3. Đánh dấu đã xác thực mật khẩu thành công & lưu vào DB
+      // 4. Đánh dấu đã xác thực mật khẩu thành công & lưu vào DB
       APP_STATE.isAuthenticated = true;
       APP_STATE.isAuthModalStartupLock = false;
       saveAppStateToLocal();
@@ -5430,26 +5775,43 @@
           openAssessmentModal(false, true);
         }, 250);
       } else {
-        alert(`🎉 Đã đăng nhập tài khoản: ${APP_STATE.userName}!\nTổng điểm xếp hạng hiện tại: ${(APP_STATE.rankPoints || 1000) + (APP_STATE.bfsScore || 0) + getSessionPointsTotal()}đ.`);
+        alert(`🎉 Đã đăng nhập tài khoản Gmail: ${APP_STATE.userEmail}!\nTổng điểm xếp hạng hiện tại: ${(APP_STATE.rankPoints || 1000) + (APP_STATE.bfsScore || 0) + getSessionPointsTotal()}đ.`);
       }
     }
 
     function handleEditProfileSubmit(e) {
       e.preventDefault();
-      const name = document.getElementById('edit-input-name').value.trim();
-      const school = document.getElementById('edit-input-school').value.trim();
-      const email = document.getElementById('edit-input-email').value.trim();
+      const nameInput = document.getElementById('edit-input-name');
+      const name = (nameInput ? nameInput.value : '').trim();
+      const school = (document.getElementById('edit-input-school')?.value || '').trim();
+      const emailInput = document.getElementById('edit-input-email');
+      const email = (emailInput ? emailInput.value : '').trim();
       const newPasswordInput = document.getElementById('edit-input-password');
       const newPassword = newPasswordInput ? newPasswordInput.value.trim() : '';
 
       if (!name) {
         alert('Vui lòng nhập họ và tên!');
+        if (nameInput) nameInput.focus();
         return;
+      }
+
+      // Kiểm tra định dạng Gmail nếu có nhập hoặc thay đổi
+      if (email) {
+        const gmailCheck = validateGmailAddress(email);
+        if (!gmailCheck.valid) {
+          alert('Cập nhật thất bại:\n' + gmailCheck.message);
+          if (emailInput) {
+            emailInput.focus();
+            emailInput.select();
+          }
+          handleEditEmailInput(email);
+          return;
+        }
+        APP_STATE.userEmail = gmailCheck.email;
       }
 
       APP_STATE.userName = name;
       if (school) APP_STATE.userSchool = school;
-      if (email) APP_STATE.userEmail = email;
       if (newPassword && newPassword.length >= 4) {
         APP_STATE.userPassword = newPassword;
       }
