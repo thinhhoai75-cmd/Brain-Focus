@@ -314,7 +314,17 @@ fun WebReviewScreen(
                                 message: String?,
                                 result: JsResult?
                             ): Boolean {
-                                result?.confirm()
+                                try {
+                                    android.app.AlertDialog.Builder(ctx)
+                                        .setTitle("Xác nhận")
+                                        .setMessage(message ?: "")
+                                        .setPositiveButton("Đồng ý") { _, _ -> result?.confirm() }
+                                        .setNegativeButton("Hủy") { _, _ -> result?.cancel() }
+                                        .setOnCancelListener { result?.cancel() }
+                                        .show()
+                                } catch (_: Exception) {
+                                    result?.cancel()
+                                }
                                 return true
                             }
 

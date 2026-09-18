@@ -8,6 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Brain Focus 🧠⚡ - Khắc Phục Não Bỏng Ngô</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -191,13 +192,18 @@
       </div>
 
       <!-- User Profile & Avatar Quick Button -->
-      <button onclick="switchTab('profile')" class="flex items-center gap-1 bg-white/20 hover:bg-white/30 border border-white/40 p-1 sm:px-2 sm:py-1 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95" title="Hồ Sơ Của Bạn">
-        <div id="header-avatar-circle" class="w-6 h-6 rounded-full overflow-hidden bg-gradient-to-tr from-amber-400 to-pink-500 flex items-center justify-center text-[11px] font-black text-white shadow-xs">
-          <span id="header-avatar-initial">👤</span>
-          <img id="header-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
-        </div>
-        <span id="header-account-name" class="hidden lg:inline text-xs font-bold max-w-[70px] truncate">Tài khoản</span>
-      </button>
+      <div class="flex items-center gap-1.5">
+        <button onclick="switchTab('profile')" class="flex items-center gap-1 bg-white/20 hover:bg-white/30 border border-white/40 p-1 sm:px-2 sm:py-1 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95" title="Hồ Sơ Của Bạn">
+          <div id="header-avatar-circle" class="w-6 h-6 rounded-full overflow-hidden bg-gradient-to-tr from-amber-400 to-pink-500 flex items-center justify-center text-[11px] font-black text-white shadow-xs">
+            <span id="header-avatar-initial">👤</span>
+            <img id="header-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" />
+          </div>
+          <span id="header-account-name" class="hidden lg:inline text-xs font-bold max-w-[70px] truncate">Tài khoản</span>
+        </button>
+        <button onclick="lockScreenNow()" class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-white/20 hover:bg-white/30 border border-white/40 rounded-xl text-white text-xs font-bold transition-all shadow-sm active:scale-95" title="Khóa màn hình (Bảo mật tài khoản)">
+          <span>🔒</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -540,7 +546,7 @@
           </div>
         </div>
 
-        <!-- DAILY GYM SESSIONS TRACKER & LIMIT (Tối đa 5 lượt/ngày) -->
+        <!-- DAILY GYM SESSIONS TRACKER & LIMIT (Tối đa 5 lượt/ngày + Cửa hàng mua thêm) -->
         <div id="daily-gym-tracker-card" class="glass-card rounded-2xl p-3.5 sm:p-4 border border-indigo-200/90 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
@@ -550,37 +556,52 @@
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-xs font-black text-slate-900 font-cyber">LƯỢT TẬP GYM HÔM NAY:</span>
                 <span id="daily-gym-counter-badge" class="font-cyber font-black text-xs text-indigo-700 bg-indigo-50 border border-indigo-300 px-2.5 py-0.5 rounded-full">0/5 Lượt</span>
+                <span id="daily-gym-bonus-badge" class="font-cyber font-black text-xs text-emerald-700 bg-emerald-50 border border-emerald-300 px-2.5 py-0.5 rounded-full hidden">+0 lượt mua</span>
               </div>
               <p id="daily-gym-subtext" class="text-[11px] text-slate-500 mt-0.5">
-                Khoa học thần kinh khuyến nghị rèn luyện ngắt quãng tối đa 5 lượt/ngày để vỏ não trước trán củng cố synap tự nhiên.
+                5 lượt miễn phí/ngày. Chơi hoặc thua đều mất 1 lượt (vẫn có điểm tích lũy). Có thể mua thêm 35đ/lượt!
               </p>
             </div>
           </div>
 
-          <!-- 5 Visual Pills -->
-          <div class="flex items-center gap-1.5 self-start sm:self-auto shrink-0 flex-wrap" id="daily-gym-pills">
-            <div id="gym-dot-1" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>①</span><span>L1</span></div>
-            <div id="gym-dot-2" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>②</span><span>L2</span></div>
-            <div id="gym-dot-3" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>③</span><span>L3</span></div>
-            <div id="gym-dot-4" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>④</span><span>L4</span></div>
-            <div id="gym-dot-5" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>⑤</span><span>L5</span></div>
+          <div class="flex items-center gap-2 self-start sm:self-auto shrink-0 flex-wrap">
+            <!-- 5 Visual Pills -->
+            <div class="flex items-center gap-1 shrink-0" id="daily-gym-pills">
+              <div id="gym-dot-1" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>①</span><span>L1</span></div>
+              <div id="gym-dot-2" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>②</span><span>L2</span></div>
+              <div id="gym-dot-3" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>③</span><span>L3</span></div>
+              <div id="gym-dot-4" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>④</span><span>L4</span></div>
+              <div id="gym-dot-5" class="flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200"><span>⑤</span><span>L5</span></div>
+            </div>
+
+            <!-- Cửa hàng mua lượt chơi -->
+            <button onclick="openGymShopModal()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-black shadow-xs flex items-center gap-1.5 active:scale-95 transition-all">
+              <span>🛒</span>
+              <span>Mua Lượt (35đ)</span>
+            </button>
           </div>
         </div>
 
         <!-- GYM DAILY LIMIT REACHED BANNER -->
         <div id="daily-gym-limit-banner" class="hidden rounded-2xl p-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white shadow-xl border border-purple-500/40">
-          <div class="flex items-start gap-3">
-            <div class="w-11 h-11 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl shrink-0 shadow-md">
-              👑
-            </div>
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <h4 class="font-cyber font-black text-xs sm:text-sm text-amber-300 uppercase tracking-wider">XUẤT SẮC: ĐÃ HOÀN THÀNH 5/5 LƯỢT TẬP GYM HÔM NAY!</h4>
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl shrink-0 shadow-md">
+                👑
               </div>
-              <p class="text-xs text-slate-200 leading-relaxed font-medium">
-                Vỏ não trước trán (Prefrontal Cortex) đã được kích hoạt nhận thức tối ưu trong ngày hôm nay. Tập quá nhiều có thể gây mỏi synap và bão hòa. Hãy nghỉ ngơi, ngủ đủ giấc và quay lại rèn luyện vào ngày mai!
-              </p>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <h4 class="font-cyber font-black text-xs sm:text-sm text-amber-300 uppercase tracking-wider">HẾT 5 LƯỢT MIỄN PHÍ HÔM NAY!</h4>
+                </div>
+                <p class="text-xs text-slate-200 leading-relaxed font-medium">
+                  Bạn đã dùng hết 5 lượt tập miễn phí trong ngày. Muốn tiếp tục thử thách? Hãy dùng Điểm XH hoặc BFS để mua thêm lượt tại Cửa Hàng!
+                </p>
+              </div>
             </div>
+            <button onclick="openGymShopModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950 font-black text-xs shadow-md shrink-0 active:scale-95 transition-all flex items-center gap-1.5">
+              <span>🛒</span>
+              <span>Mở Cửa Hàng (35đ/lượt)</span>
+            </button>
           </div>
         </div>
 
@@ -592,14 +613,14 @@
               <div class="w-10 h-10 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
                 🎨
               </div>
-              <h3 class="font-extrabold text-sm text-slate-900">Stroop Siêu Cấp</h3>
+              <h3 class="font-extrabold text-sm text-slate-900">Stroop: Chọn Đúng Màu</h3>
               <p class="text-[11px] text-slate-600 mt-1 leading-normal">
-                Ức chế xung động cực độ. Đảo quy tắc liên tục (Màu sắc vs Nghĩa từ) dưới áp lực 2.5 giây/câu!
+                Ức chế xung động phản xạ. Hãy nhìn nhanh và chọn chính xác MÀU SẮC MỰC của chữ (bỏ qua nghĩa từ)!
               </p>
             </div>
             <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
-              <span class="text-slate-500">12 Lượt • 2.5s/câu</span>
-              <span id="gym-badge-stroop" class="text-blue-700 font-black">+40 BFS →</span>
+              <span class="text-slate-500">12 Lượt • 3.0s/câu</span>
+              <span id="gym-badge-stroop" class="text-blue-700 font-black">+50 BFS & XH →</span>
             </div>
           </div>
 
@@ -616,7 +637,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
               <span class="text-slate-500">6 Cấp độ • Có Ô Bẫy</span>
-              <span id="gym-badge-grid" class="text-blue-700 font-black">+50 BFS →</span>
+              <span id="gym-badge-grid" class="text-blue-700 font-black">+50 BFS & XH →</span>
             </div>
           </div>
 
@@ -633,7 +654,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between text-xs font-bold text-blue-600">
               <span class="text-slate-500">20s • Combo x2 x3</span>
-              <span id="gym-badge-math" class="text-blue-700 font-black">+40 BFS →</span>
+              <span id="gym-badge-math" class="text-blue-700 font-black">+50 BFS & XH →</span>
             </div>
           </div>
         </div>
@@ -732,17 +753,14 @@
             </div>
           </div>
           <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto">
-            <button onclick="openRegisterModal(false)" class="flex-1 sm:flex-initial text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-1.5 rounded-xl hover:opacity-90 shadow-xs flex items-center justify-center gap-1">
+            <button onclick="openRegisterModal(false)" class="flex-1 sm:flex-initial text-xs font-black bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3.5 py-2 rounded-xl hover:opacity-90 shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all">
               <span>+</span> Tạo tài khoản mới
             </button>
-            <button onclick="openSwitchAccountModal()" class="flex-1 sm:flex-initial text-xs font-bold bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1">
+            <button onclick="openSwitchAccountModal()" class="flex-1 sm:flex-initial text-xs font-bold bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 px-3.5 py-2 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 active:scale-95">
               <span>👥</span> Đổi tài khoản
             </button>
-            <button onclick="purgeCloneAccounts(true)" class="flex-1 sm:flex-initial text-xs font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Quét sạch tài khoản clone khỏi bảng xếp hạng">
-              <span>🧹</span> Xóa clone
-            </button>
-            <button onclick="fetchLeaderboardFromCloud(true)" class="flex-1 sm:flex-initial text-[11px] font-bold bg-blue-50 hover:bg-blue-100 border border-blue-300 text-blue-800 px-3 py-1.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1" title="Đồng bộ lại dữ liệu toàn hệ thống từ Cloud">
-              <span id="refresh-icon">🔄</span> Làm mới (Cloud)
+            <button onclick="fetchLeaderboardFromCloud(true)" class="flex-1 sm:flex-initial text-xs font-bold bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 px-3.5 py-2 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 active:scale-95" title="Đồng bộ lại dữ liệu toàn hệ thống từ Cloud">
+              <span id="refresh-icon">🔄</span> Làm mới
             </button>
           </div>
         </div>
@@ -798,6 +816,9 @@
             </button>
             <button onclick="openSwitchAccountModal()" class="flex-1 sm:flex-initial px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
               <span>👥</span> Đổi / Thêm TK
+            </button>
+            <button onclick="lockScreenNow()" class="flex-1 sm:flex-initial px-3.5 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5" title="Khóa ứng dụng ngay">
+              <span>🔒</span> Khóa Màn Hình
             </button>
           </div>
         </div>
@@ -1142,8 +1163,34 @@
 
       <form onsubmit="handleRegisterSubmit(event)" class="space-y-3">
         <div>
-          <label class="text-xs font-bold text-slate-700 block mb-1">Địa chỉ Gmail của bạn:</label>
-          <input type="email" id="reg-input-email" required placeholder="vidu@gmail.com" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-xs font-bold text-slate-700">Địa chỉ Gmail của bạn:</label>
+            <span class="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-md">Bắt buộc đuôi @gmail.com</span>
+          </div>
+          <div class="relative">
+            <input 
+              type="text" 
+              inputmode="email"
+              id="reg-input-email" 
+              required 
+              placeholder="tentaikhoan123@gmail.com" 
+              oninput="handleRegEmailInput(this.value)" 
+              autocomplete="email"
+              class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors" 
+            />
+            <button 
+              type="button" 
+              id="reg-email-quick-suffix-btn" 
+              onclick="appendRegGmailSuffix()" 
+              class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-[10px] bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded-lg shadow-xs transition-all active:scale-95"
+              title="Nhấn để tự động thêm @gmail.com"
+            >
+              + @gmail.com
+            </button>
+          </div>
+          <div id="reg-email-feedback" class="text-[11px] mt-1.5 transition-all text-slate-500 flex items-start gap-1 leading-tight">
+            <span>💡</span> <span>Định dạng chuẩn: <strong>tentaikhoan@gmail.com</strong> (chỉ chữ thường, số, dấu chấm; từ 6 - 30 ký tự trước @)</span>
+          </div>
         </div>
 
         <div>
@@ -1154,6 +1201,15 @@
         <div>
           <label class="text-xs font-bold text-slate-700 block mb-1">Trường học / Mục tiêu:</label>
           <input type="text" id="reg-input-school" placeholder="VD: ĐH Bách Khoa, Chuyên Toán, IELTS 8.0..." class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Mật khẩu bảo vệ tài khoản:</label>
+          <div class="relative">
+            <input type="password" id="reg-input-password" required placeholder="Nhập mật khẩu (tối thiểu 4 ký tự)" minlength="4" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 pr-10 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+            <button type="button" onclick="togglePasswordVisibility('reg-input-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs px-1">👁️</button>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">🔒 Mật khẩu dùng để xác thực khi chuyển hoặc đăng nhập vào tài khoản này.</p>
         </div>
 
         <div>
@@ -1174,6 +1230,62 @@
           <button id="reg-cancel-btn" type="button" onclick="closeRegisterModal()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100">Huỷ</button>
           <button type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95 flex items-center justify-center gap-1.5">
             <span>Tiếp Tục Test BFS</span> <span>➔</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: XÁC THỰC MẬT KHẨU KHI VÀO / CHUYỂN TÀI KHOẢN ================= -->
+  <div id="account-auth-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-xl hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="glass-card w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden p-6 space-y-4 bg-white animate-in fade-in duration-200">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold shadow-xs">
+            🔐
+          </div>
+          <div>
+            <h3 id="auth-modal-title" class="font-black text-sm text-slate-900 font-cyber">XÁC THỰC MẬT KHẨU</h3>
+            <p id="auth-modal-subtitle" class="text-[11px] text-slate-500">Bảo mật truy cập tài khoản</p>
+          </div>
+        </div>
+        <button id="auth-modal-close-btn" onclick="closeAccountAuthModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+        <div id="auth-target-avatar" class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-sm font-bold shrink-0 overflow-hidden shadow-xs">
+          👤
+        </div>
+        <div class="min-w-0 flex-1">
+          <div id="auth-target-name" class="text-xs font-black text-slate-900 truncate">Tên người dùng</div>
+          <div id="auth-target-email" class="text-[11px] text-slate-500 truncate">email@domain.com</div>
+        </div>
+      </div>
+
+      <form onsubmit="handleAccountAuthSubmit(event)" class="space-y-3">
+        <input type="hidden" id="auth-target-email-hidden" value="" />
+        <div>
+          <label id="auth-input-label" class="text-xs font-bold text-slate-700 block mb-1">Mật khẩu tài khoản:</label>
+          <div class="relative">
+            <input type="password" id="auth-input-password" required placeholder="Nhập mật khẩu..." class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 pr-10 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" autofocus />
+            <button type="button" onclick="togglePasswordVisibility('auth-input-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs px-1">👁️</button>
+          </div>
+          <p id="auth-error-msg" class="text-[11px] text-rose-600 font-semibold mt-1 hidden"></p>
+        </div>
+
+        <div class="pt-1 flex items-center gap-2">
+          <button id="auth-cancel-btn" type="button" onclick="handleAuthCancelClick()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100">Đổi TK</button>
+          <button id="auth-submit-btn" type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95 flex items-center justify-center gap-1.5">
+            <span>Mở Khóa</span> <span>🔓</span>
+          </button>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+          <button type="button" onclick="openSwitchAccountModal()" class="text-blue-600 hover:text-blue-800 font-bold hover:underline flex items-center gap-1">
+            <span>🔄 Chọn tài khoản khác</span>
+          </button>
+          <button type="button" onclick="openRegisterModal(false)" class="text-indigo-600 hover:text-indigo-800 font-bold hover:underline flex items-center gap-1">
+            <span>➕ Tạo tài khoản mới</span>
           </button>
         </div>
       </form>
@@ -1204,12 +1316,9 @@
         <!-- Rendered by JS -->
       </div>
 
-      <div class="pt-2 flex items-center gap-2">
-        <button onclick="closeSwitchAccountModal(); openRegisterModal(false);" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95 flex items-center justify-center gap-1.5">
-          <span>+</span> <span>Tạo Mới</span>
-        </button>
-        <button onclick="purgeCloneAccounts(true)" class="py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold shadow-xs transition-all flex items-center justify-center gap-1.5" title="Quét sạch tài khoản clone hoặc thử nghiệm">
-          <span>🧹</span> <span>Xóa Clone</span>
+      <div class="pt-2">
+        <button onclick="closeSwitchAccountModal(); openRegisterModal(false);" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95 flex items-center justify-center gap-1.5 active:scale-95 transition-all">
+          <span>+</span> <span>Tạo Tài Khoản Mới</span>
         </button>
       </div>
     </div>
@@ -1253,8 +1362,29 @@
         </div>
 
         <div>
-          <label class="text-xs font-bold text-slate-700 block mb-1">Email liên kết:</label>
-          <input type="email" id="edit-input-email" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-xs font-bold text-slate-700">Email liên kết:</label>
+            <span class="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-md">Đuôi @gmail.com</span>
+          </div>
+          <input 
+            type="text" 
+            inputmode="email"
+            id="edit-input-email" 
+            placeholder="tentaikhoan123@gmail.com" 
+            oninput="handleEditEmailInput(this.value)"
+            class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors" 
+          />
+          <div id="edit-email-feedback" class="text-[11px] mt-1.5 transition-all text-slate-500 flex items-start gap-1 leading-tight">
+            <span>💡</span> <span>Bắt buộc tài khoản Google có đuôi @gmail.com</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Đổi Mật Khẩu (để trống nếu không đổi):</label>
+          <div class="relative">
+            <input type="password" id="edit-input-password" placeholder="Nhập mật khẩu mới nếu muốn đổi..." minlength="4" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 pr-10 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+            <button type="button" onclick="togglePasswordVisibility('edit-input-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs px-1">👁️</button>
+          </div>
         </div>
 
         <div class="pt-2 flex items-center gap-2">
@@ -1262,6 +1392,134 @@
           <button type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black shadow-md hover:opacity-95">Lưu Thay Đổi</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CỬA HÀNG LƯỢT CHƠI GYM (35đ/lượt) ================= -->
+  <div id="gym-shop-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl border border-amber-300/80 overflow-hidden p-5 sm:p-6 space-y-4 bg-white">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 text-white flex items-center justify-center text-xl shadow-md">
+            🛒
+          </div>
+          <div>
+            <h3 class="font-black text-sm sm:text-base text-slate-900 font-cyber">CỬA HÀNG LƯỢT GYM</h3>
+            <p class="text-[11px] text-slate-500">Đổi điểm thành tích lấy thêm lượt rèn luyện</p>
+          </div>
+        </div>
+        <button onclick="closeGymShopModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">✕</button>
+      </div>
+
+      <!-- Current Balances Display -->
+      <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white p-3.5 rounded-2xl shadow-inner space-y-2">
+        <div class="text-[11px] font-bold text-slate-300 flex items-center justify-between">
+          <span>TÀI KHOẢN CỦA BẠN:</span>
+          <span class="text-amber-400 font-black">1 LƯỢT = 35 ĐIỂM</span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-center pt-1">
+          <div class="bg-white/10 rounded-xl p-2 border border-white/10">
+            <div class="text-[10px] text-amber-200">Điểm XH</div>
+            <div class="text-sm font-black text-amber-400 font-cyber" id="shop-rank-points">1000đ</div>
+          </div>
+          <div class="bg-white/10 rounded-xl p-2 border border-white/10">
+            <div class="text-[10px] text-blue-200">Điểm BFS</div>
+            <div class="text-sm font-black text-blue-400 font-cyber" id="shop-bfs-points">0đ</div>
+          </div>
+          <div class="bg-emerald-500/20 border border-emerald-400/40 rounded-xl p-2">
+            <div class="text-[10px] text-emerald-200">Lượt dự trữ</div>
+            <div class="text-sm font-black text-emerald-300 font-cyber" id="shop-bonus-plays">0 lượt</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toast message for shop purchases -->
+      <div id="shop-alert-msg" class="hidden p-2.5 rounded-xl text-xs font-bold text-center"></div>
+
+      <!-- Purchase Options -->
+      <div class="space-y-2.5">
+        <!-- Option 1: Buy with Rank Points -->
+        <div class="border-2 border-amber-200 hover:border-amber-400 rounded-2xl p-3 bg-amber-50/50 flex items-center justify-between gap-2 transition-all">
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-1.5">
+              <span class="text-base">🏆</span>
+              <span class="text-xs font-black text-slate-900">Mua bằng Điểm Xếp Hạng</span>
+            </div>
+            <p class="text-[11px] text-amber-900/80 font-medium">Trừ 35 điểm XH → Nhận ngay +1 lượt chơi</p>
+          </div>
+          <button onclick="buyGymPlays('rank', 1)" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs shadow-xs active:scale-95 transition-all shrink-0">
+            Mua 1 Lượt (35đ)
+          </button>
+        </div>
+
+        <!-- Option 2: Buy with BFS Score -->
+        <div class="border-2 border-blue-200 hover:border-blue-400 rounded-2xl p-3 bg-blue-50/50 flex items-center justify-between gap-2 transition-all">
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-1.5">
+              <span class="text-base">🧠</span>
+              <span class="text-xs font-black text-slate-900">Mua bằng Điểm BFS Não Bộ</span>
+            </div>
+            <p class="text-[11px] text-blue-900/80 font-medium">Trừ 35 điểm BFS → Nhận ngay +1 lượt chơi</p>
+          </div>
+          <button onclick="buyGymPlays('bfs', 1)" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-xs shadow-xs active:scale-95 transition-all shrink-0">
+            Mua 1 Lượt (35đ)
+          </button>
+        </div>
+
+        <!-- Combo 3 plays -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button onclick="buyGymPlays('rank', 3)" class="py-2 px-2.5 rounded-xl border border-amber-300 bg-white hover:bg-amber-50 text-[11px] font-bold text-amber-900 text-center active:scale-95 transition-all">
+            📦 Gói 3 lượt (105đ XH)
+          </button>
+          <button onclick="buyGymPlays('bfs', 3)" class="py-2 px-2.5 rounded-xl border border-blue-300 bg-white hover:bg-blue-50 text-[11px] font-bold text-blue-900 text-center active:scale-95 transition-all">
+            📦 Gói 3 lượt (105đ BFS)
+          </button>
+        </div>
+      </div>
+
+      <div class="pt-1">
+        <button onclick="closeGymShopModal()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all">
+          Đóng Cửa Hàng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL BẢO VỆ PHIÊN HỌC: XÁC NHẬN KHI LỠ BẤM CHUYỂN PHIÊN -->
+  <div id="session-switch-confirm-modal" class="fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="glass-card bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-amber-200 space-y-4 animate-scale-in">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-rose-500 text-white flex items-center justify-center text-2xl shadow-md shrink-0">
+          ⚠️
+        </div>
+        <div>
+          <h3 class="font-cyber font-black text-sm sm:text-base text-slate-900">BẢO VỆ TIẾN ĐỘ PHIÊN HỌC</h3>
+          <p class="text-[11px] text-slate-500">Phát hiện thao tác chọn đổi phiên khi đang học</p>
+        </div>
+      </div>
+
+      <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-3.5 space-y-2 text-xs">
+        <div class="flex items-center justify-between text-slate-700 font-bold">
+          <span>Phiên đang diễn ra:</span>
+          <span id="switch-modal-current-name" class="text-blue-700 font-black">Phiên Học Sâu Ultradian 90p</span>
+        </div>
+        <div id="switch-modal-current-status" class="text-[11px] font-semibold text-amber-900 bg-white/70 px-2.5 py-1 rounded-xl border border-amber-200">
+          🔥 Đang chạy • Đã học: 0p 0s • Còn lại: 90p 0s
+        </div>
+        <div class="text-[11px] text-slate-600 pt-1 leading-relaxed">
+          Bạn vừa bấm chọn: <strong id="switch-modal-target-name" class="text-slate-900">Phiên Pomodoro 25p</strong>.<br>
+          Nếu chuyển đổi, <span class="text-rose-600 font-bold">tiến độ phiên hiện tại sẽ bị hủy</span> để đặt lại từ đầu.
+        </div>
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <button onclick="cancelSessionSwitch()" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-xs sm:text-sm shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
+          <span>🛡️</span> <span>TIẾP TỤC HỌC PHIÊN HIỆN TẠI (GIỮ NGUYÊN)</span>
+        </button>
+        <button onclick="confirmSessionSwitch()" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 font-bold text-xs border border-slate-200 hover:border-rose-300 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+          <span>✕</span> <span>Hủy phiên hiện tại để đổi phiên mới</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1273,8 +1531,12 @@
       userName: "",
       userSchool: "",
       userAvatar: "", // Base64 data or image url
+      userPassword: "",
+      isAuthenticated: false,
+      isAuthModalStartupLock: false,
       rankPoints: 1000, // Điểm xếp hạng rèn luyện khởi tạo 1000đ
       bfsScore: 0,     // Chỉ số đánh giá não bộ BFS (sau 10 câu hỏi & gym)
+      purchasedGymPlays: 0, // Số lượt gym mua thêm từ Cửa Hàng (35đ/lượt)
       totalHours: 0,
       streakDays: 1,
       sessionsCompletedCount: 0,
@@ -1556,7 +1818,7 @@
       return {
         email: email || `${name.toLowerCase().replace(/\s+/g, '')}@student.brainfocus`,
         name: name,
-        school: String(u.school || 'THPT Tân Túc').trim().slice(0, 50),
+        school: String(u.school || 'Học viên tích cực').trim().slice(0, 50),
         avatar: avatarClean,
         rankPoints: Math.round(Number(u.rankPoints) || 1000),
         sessionsCount: Math.round(Number(u.sessionsCount) || 0),
@@ -1603,8 +1865,7 @@
           if (!cleanCloud) return;
 
           const localIdx = REGISTERED_USERS_DB.findIndex(u => 
-            (u.email && cleanCloud.email && u.email.toLowerCase().trim() === cleanCloud.email) ||
-            (u.name && cleanCloud.name && u.name.toLowerCase().trim() === cleanCloud.name.toLowerCase().trim())
+            (u.email && cleanCloud.email && u.email.toLowerCase().trim() === cleanCloud.email.toLowerCase().trim())
           );
 
           if (localIdx === -1) {
@@ -1657,13 +1918,14 @@
     let cloudPushTimeout = null;
     function pushLeaderboardToCloud() {
       if (cloudPushTimeout) clearTimeout(cloudPushTimeout);
-      // Gửi nhanh sau 200ms để người dùng khác thấy ngay lập tức
+      // Áp dụng jitter ngẫu nhiên 300ms - 800ms để tránh việc nhiều người cùng gửi tại đúng 1 mili-giây gây xung đột
+      const jitter = 300 + Math.floor(Math.random() * 500);
       cloudPushTimeout = setTimeout(async () => {
         try {
           // Bước 1: Tải danh sách hiện tại trên Cloud về trước để không đè mất người dùng khác
           let currentCloudUsers = [];
           try {
-            const getRes = await fetch(`${CLOUD_LEADERBOARD_ENDPOINT}?_t=${Date.now()}`, { cache: 'no-store' });
+            const getRes = await fetch(`${CLOUD_LEADERBOARD_ENDPOINT}?_t=${Date.now()}_${Math.floor(Math.random()*1000)}`, { cache: 'no-store' });
             if (getRes.ok) {
               const j = await getRes.json();
               if (j && j.data && Array.isArray(j.data.users)) {
@@ -1724,18 +1986,23 @@
         } catch (err) {
           console.warn('Failed to push leaderboard to cloud:', err);
         }
-      }, 200);
+      }, jitter);
     }
 
     // Bảng xếp hạng người dùng thực tế & Quản lý danh sách tài khoản đã đăng ký
     let REGISTERED_USERS_DB = [];
 
-    // Bất kỳ ai tạo tài khoản trên web đều là người dùng hợp lệ, không bị coi là clone
+    // Lọc và phát hiện các tài khoản clone / ảo / thử nghiệm
     function isCloneAccount(u) {
       if (!u) return true;
       const name = String(u.name || '').trim();
-      const email = String(u.email || '').trim();
-      return !name && !email;
+      const email = String(u.email || '').trim().toLowerCase();
+      if (!name || !email) return true;
+      if (email.includes('clone') || email.includes('testaccount') || email.includes('mock') || 
+          name.toLowerCase().includes('clone') || name.toLowerCase().includes('thử nghiệm') || name.toLowerCase().includes('test')) {
+        return true;
+      }
+      return false;
     }
 
     function loadUsersDatabase() {
@@ -1743,7 +2010,7 @@
         const saved = localStorage.getItem('bf_registered_users');
         const parsed = saved ? JSON.parse(saved) : [];
         REGISTERED_USERS_DB = Array.isArray(parsed)
-          ? parsed.filter(u => u && (u.name || u.email))
+          ? parsed.filter(u => u && !isCloneAccount(u))
           : [];
       } catch (e) {
         REGISTERED_USERS_DB = [];
@@ -1752,7 +2019,7 @@
 
     function saveUsersDatabase(triggerCloud = true) {
       try {
-        const cleanList = REGISTERED_USERS_DB.filter(u => u && (u.name || u.email));
+        const cleanList = REGISTERED_USERS_DB.filter(u => u && !isCloneAccount(u));
         localStorage.setItem('bf_registered_users', JSON.stringify(cleanList));
         if (triggerCloud) {
           pushLeaderboardToCloud();
@@ -1760,10 +2027,10 @@
       } catch (e) {}
     }
 
-    // Làm sạch các mục rỗng nếu có và cập nhật lại giao diện
+    // Làm sạch toàn bộ tài khoản clone và cập nhật lại giao diện
     function purgeCloneAccounts(notify = false) {
       loadUsersDatabase();
-      REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u && (u.email || u.name));
+      REGISTERED_USERS_DB = REGISTERED_USERS_DB.filter(u => u && !isCloneAccount(u));
       saveUsersDatabase(true);
       renderLeaderboard();
       syncProfileDOM();
@@ -1775,8 +2042,80 @@
       }
 
       if (notify) {
-        alert('✨ Đã làm mới danh sách tài khoản trên Bảng Xếp Hạng!');
+        alert('✨ Đã quét sạch và loại bỏ toàn bộ tài khoản clone/thử nghiệm!');
       }
+    }
+
+    // Xóa sạch 100% dữ liệu toàn bộ người dùng cả trên Cloud và LocalStorage để bắt đầu sử dụng thật
+    async function clearAllSystemUsersAndReset(confirmTwice = true) {
+      if (confirmTwice) {
+        const c1 = confirm('⚠️ CẢNH BÁO XÓA SẠCH DỮ LIỆU:\nBạn có chắc chắn muốn xóa toàn bộ học viên và điểm số để bắt đầu đưa vào sử dụng thật 100% không?');
+        if (!c1) return;
+        const c2 = confirm('Xác nhận lần cuối: Mọi tài khoản thử nghiệm trên cả Cloud và máy này sẽ bị xóa trắng hoàn toàn. Tiếp tục?');
+        if (!c2) return;
+      }
+
+      try {
+        // 1. Gửi lệnh xóa trắng lên Cloud
+        await fetch(CLOUD_LEADERBOARD_ENDPOINT, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'brainfocus_leaderboard',
+            data: {
+              users: [],
+              lastSynced: Date.now()
+            }
+          })
+        });
+      } catch (err) {
+        console.warn('Clear cloud error:', err);
+      }
+
+      // 2. Xóa sạch dữ liệu trong LocalStorage
+      try {
+        localStorage.removeItem('bf_registered_users');
+        localStorage.removeItem('bf_user_profile');
+        localStorage.removeItem('bf_onboarded_completed');
+        localStorage.removeItem('bf_active_session');
+        localStorage.removeItem('bf_active_session_backup');
+        localStorage.removeItem('bf_daily_tracker');
+        localStorage.removeItem('bf_daily_gym_tracker');
+        localStorage.removeItem('bf_cooldown_until');
+        localStorage.removeItem('bf_cooldown_total_seconds');
+        localStorage.removeItem('bf_restored_user_test_sessions');
+      } catch (e) {}
+
+      // 3. Reset APP_STATE về trạng thái ban đầu
+      REGISTERED_USERS_DB = [];
+      APP_STATE.userEmail = "";
+      APP_STATE.userName = "";
+      APP_STATE.userSchool = "";
+      APP_STATE.userAvatar = "";
+      APP_STATE.userPassword = "";
+      APP_STATE.isAuthenticated = false;
+      APP_STATE.isAuthModalStartupLock = false;
+      APP_STATE.rankPoints = 1000;
+      APP_STATE.bfsScore = 0;
+      APP_STATE.totalHours = 0;
+      APP_STATE.streakDays = 1;
+      APP_STATE.sessionsCompletedCount = 0;
+      APP_STATE.gymCompletedCount = 0;
+      APP_STATE.history = [];
+
+      const authModal = document.getElementById('account-auth-modal');
+      if (authModal) authModal.classList.add('hidden');
+      const switchModal = document.getElementById('switch-account-modal');
+      if (switchModal) switchModal.classList.add('hidden');
+
+      saveAppStateToLocal();
+      syncProfileDOM();
+      updateStatsUI();
+      renderLeaderboard();
+      renderHistory();
+      openRegisterModal(true);
+
+      alert('🎉 ĐÃ XÓA TRẮNG TOÀN BỘ DỮ LIỆU CLONE THÀNH CÔNG!\nWeb đã được làm mới tinh 100% để khởi động lại.');
     }
 
     // Đồng bộ thông tin người dùng hiện tại vào danh sách người dùng toàn hệ thống
@@ -1787,9 +2126,15 @@
       const currentSessionsCount = APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0);
       const email = (APP_STATE.userEmail || '').trim() || `${(APP_STATE.userName || 'user').toLowerCase().replace(/\s+/g, '')}@student.brainfocus`;
 
+      const existingUser = REGISTERED_USERS_DB.find(u => 
+        (u.email && u.email.toLowerCase().trim() === email.toLowerCase().trim())
+      );
+      const userPassword = (existingUser && existingUser.password) ? existingUser.password : (APP_STATE.userPassword || '');
+
       const userEntry = {
         id: email.toLowerCase().trim(),
         email: email,
+        password: userPassword,
         name: (APP_STATE.userName || 'Học viên').trim(),
         school: APP_STATE.userSchool || 'Người học tích cực',
         avatar: APP_STATE.userAvatar || '',
@@ -1805,8 +2150,7 @@
       };
 
       const existingIdx = REGISTERED_USERS_DB.findIndex(u => 
-        (u.email && u.email.toLowerCase().trim() === userEntry.email.toLowerCase().trim()) ||
-        (u.name && u.name.toLowerCase().trim() === userEntry.name.toLowerCase().trim())
+        (u.email && u.email.toLowerCase().trim() === userEntry.email.toLowerCase().trim())
       );
       if (existingIdx >= 0) {
         REGISTERED_USERS_DB[existingIdx] = { ...REGISTERED_USERS_DB[existingIdx], ...userEntry };
@@ -1864,10 +2208,10 @@
       // Sắp xếp theo tổng điểm giảm dần
       all.sort((a, b) => b.totalScore - a.totalScore);
 
-      // Khử trùng lặp: Nếu trùng email hoặc trùng họ tên thì chỉ giữ lại 1 bản ghi có điểm cao nhất
+      // Khử trùng lặp: Phân định theo email định danh (khóa chính)
       const uniqueMap = new Map();
       all.forEach(item => {
-        const normKey = (item.name || '').replace(/\s*\(Bạn\)$/i, '').trim().toLowerCase();
+        const normKey = (item.email || item.name || '').trim().toLowerCase();
         const existing = uniqueMap.get(normKey);
         if (!existing) {
           uniqueMap.set(normKey, item);
@@ -1939,8 +2283,8 @@
                 ${isCurrent ? `
                   <span class="text-xs font-bold text-blue-700 flex items-center gap-1 bg-blue-100/70 px-2.5 py-1 rounded-xl">✓ Đang dùng</span>
                 ` : `
-                  <button onclick="switchToUserAccount('${u.email.replace(/'/g, "\\'")}')" class="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-xs hover:opacity-95 transition-all">
-                    Chuyển
+                  <button onclick="requestAccountSwitch('${u.email.replace(/'/g, "\\'")}')" class="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-xs hover:opacity-95 transition-all flex items-center gap-1">
+                    <span>${u.password ? '🔒' : ''}</span> <span>Chuyển</span>
                   </button>
                 `}
                 <button onclick="event.stopPropagation(); deleteSpecificAccount('${u.email.replace(/'/g, "\\'")}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="Xoá tài khoản này">
@@ -1957,6 +2301,16 @@
     function closeSwitchAccountModal() {
       const modal = document.getElementById('switch-account-modal');
       if (modal) modal.classList.add('hidden');
+      if (!APP_STATE.isAuthenticated) {
+        loadUsersDatabase();
+        const targetUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === (APP_STATE.userEmail || '').toLowerCase().trim()) || {
+          email: APP_STATE.userEmail,
+          name: APP_STATE.userName,
+          avatar: APP_STATE.userAvatar,
+          password: APP_STATE.userPassword
+        };
+        openAccountAuthModal(targetUser, true);
+      }
     }
 
     function deleteSpecificAccount(email) {
@@ -1992,7 +2346,196 @@
       alert(`🗑️ Đã xoá tài khoản ${email} thành công! Bảng xếp hạng đã được dọn sạch.`);
     }
 
-    function switchToUserAccount(email) {
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (btn) btn.innerText = '🙈';
+      } else {
+        input.type = 'password';
+        if (btn) btn.innerText = '👁️';
+      }
+    }
+
+    function requestAccountSwitch(email) {
+      loadUsersDatabase();
+      const user = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
+      if (!user) return;
+
+      const switchModal = document.getElementById('switch-account-modal');
+      if (switchModal) switchModal.classList.add('hidden');
+
+      // Bắt buộc nhập mật khẩu của tài khoản đó để chuyển
+      openAccountAuthModal(user, !APP_STATE.isAuthenticated);
+    }
+
+    function openAccountAuthModal(user, isStartup = false) {
+      if (!user) return;
+      APP_STATE.isAuthModalStartupLock = Boolean(isStartup);
+
+      const modal = document.getElementById('account-auth-modal');
+      const closeBtn = document.getElementById('auth-modal-close-btn');
+      const cancelBtn = document.getElementById('auth-cancel-btn');
+      const titleEl = document.getElementById('auth-modal-title');
+      const subtitleEl = document.getElementById('auth-modal-subtitle');
+      const labelEl = document.getElementById('auth-input-label');
+      const submitBtn = document.getElementById('auth-submit-btn');
+      const emailHidden = document.getElementById('auth-target-email-hidden');
+      const nameEl = document.getElementById('auth-target-name');
+      const emailEl = document.getElementById('auth-target-email');
+      const avatarEl = document.getElementById('auth-target-avatar');
+      const passInput = document.getElementById('auth-input-password');
+      const errorMsg = document.getElementById('auth-error-msg');
+
+      if (emailHidden) emailHidden.value = user.email || '';
+      if (nameEl) nameEl.innerText = user.name || 'Học viên';
+      if (emailEl) emailEl.innerText = user.email || '';
+      if (avatarEl) {
+        if (user.avatar) {
+          avatarEl.innerHTML = `<img src="${user.avatar}" class="w-full h-full object-cover" />`;
+        } else {
+          avatarEl.innerText = (user.name || 'U').charAt(0).toUpperCase();
+        }
+      }
+
+      const hasExistingPass = Boolean(user.password && String(user.password).trim().length > 0);
+      if (hasExistingPass) {
+        if (titleEl) titleEl.innerText = isStartup ? "MỞ KHÓA BRAIN FOCUS" : "XÁC THỰC MẬT KHẨU";
+        if (subtitleEl) subtitleEl.innerText = isStartup ? "Chắc chắn nhập mật khẩu để vào ứng dụng" : "Bảo mật truy cập tài khoản";
+        if (labelEl) labelEl.innerText = "Mật khẩu tài khoản:";
+        if (passInput) passInput.placeholder = "Nhập mật khẩu tài khoản...";
+        if (submitBtn) submitBtn.innerHTML = `<span>Mở Khóa</span> <span>🔓</span>`;
+      } else {
+        if (titleEl) titleEl.innerText = "THIẾT LẬP MẬT KHẨU";
+        if (subtitleEl) subtitleEl.innerText = "Tài khoản của bạn chưa có mật khẩu. Vui lòng đặt mật khẩu để bảo vệ:";
+        if (labelEl) labelEl.innerText = "Tạo mật khẩu mới (tối thiểu 4 ký tự):";
+        if (passInput) passInput.placeholder = "Tạo mật khẩu bảo vệ...";
+        if (submitBtn) submitBtn.innerHTML = `<span>Lưu & Mở Khóa</span> <span>🔓</span>`;
+      }
+
+      if (closeBtn) {
+        if (isStartup || !APP_STATE.isAuthenticated) {
+          closeBtn.classList.add('hidden');
+        } else {
+          closeBtn.classList.remove('hidden');
+        }
+      }
+
+      if (cancelBtn) {
+        if (isStartup || !APP_STATE.isAuthenticated) {
+          cancelBtn.innerText = "Đổi TK";
+        } else {
+          cancelBtn.innerText = "Huỷ";
+        }
+      }
+
+      if (passInput) {
+        passInput.value = '';
+        passInput.type = 'password';
+      }
+      if (errorMsg) {
+        errorMsg.innerText = '';
+        errorMsg.classList.add('hidden');
+      }
+
+      if (modal) modal.classList.remove('hidden');
+      setTimeout(() => {
+        if (passInput) passInput.focus();
+      }, 150);
+    }
+
+    function handleAuthCancelClick() {
+      if (APP_STATE.isAuthModalStartupLock || !APP_STATE.isAuthenticated) {
+        openSwitchAccountModal();
+      } else {
+        closeAccountAuthModal();
+      }
+    }
+
+    function closeAccountAuthModal() {
+      if (!APP_STATE.isAuthenticated) {
+        // Bắt buộc nhập mật khẩu khi vào web, không thể đóng
+        return;
+      }
+      const modal = document.getElementById('account-auth-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function handleAccountAuthSubmit(e) {
+      e.preventDefault();
+      const emailHidden = document.getElementById('auth-target-email-hidden');
+      const passInput = document.getElementById('auth-input-password');
+      const errorMsg = document.getElementById('auth-error-msg');
+
+      const targetEmail = (emailHidden ? emailHidden.value : '').trim();
+      const enteredPassword = (passInput ? passInput.value : '').trim();
+
+      loadUsersDatabase();
+      const user = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === targetEmail.toLowerCase().trim()) || (
+        targetEmail.toLowerCase().trim() === (APP_STATE.userEmail || '').toLowerCase().trim() ? {
+          email: APP_STATE.userEmail,
+          name: APP_STATE.userName,
+          avatar: APP_STATE.userAvatar,
+          password: APP_STATE.userPassword
+        } : null
+      );
+
+      if (!user) {
+        if (errorMsg) {
+          errorMsg.innerText = '❌ Không tìm thấy tài khoản trong hệ thống!';
+          errorMsg.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const correctPassword = String(user.password || '').trim();
+
+      // Nếu tài khoản cũ chưa từng có mật khẩu, lưu mật khẩu người dùng vừa tạo
+      if (!correctPassword) {
+        if (enteredPassword.length < 4) {
+          if (errorMsg) {
+            errorMsg.innerText = '❌ Mật khẩu phải có tối thiểu 4 ký tự!';
+            errorMsg.classList.remove('hidden');
+          }
+          if (passInput) passInput.focus();
+          return;
+        }
+        user.password = enteredPassword;
+        if (user.email.toLowerCase().trim() === (APP_STATE.userEmail || '').toLowerCase().trim()) {
+          APP_STATE.userPassword = enteredPassword;
+        }
+        const idx = REGISTERED_USERS_DB.findIndex(u => u.email.toLowerCase().trim() === user.email.toLowerCase().trim());
+        if (idx >= 0) {
+          REGISTERED_USERS_DB[idx].password = enteredPassword;
+        } else {
+          REGISTERED_USERS_DB.push(user);
+        }
+        saveUsersDatabase();
+        saveAppStateToLocal();
+      } else if (enteredPassword !== correctPassword) {
+        if (errorMsg) {
+          errorMsg.innerText = '❌ Mật khẩu không chính xác! Vui lòng thử lại.';
+          errorMsg.classList.remove('hidden');
+        }
+        if (passInput) {
+          passInput.focus();
+          passInput.select();
+        }
+        return;
+      }
+
+      // Xác thực mật khẩu thành công!
+      APP_STATE.isAuthenticated = true;
+      APP_STATE.isAuthModalStartupLock = false;
+
+      const modal = document.getElementById('account-auth-modal');
+      if (modal) modal.classList.add('hidden');
+
+      switchToUserAccount(user.email, true);
+    }
+
+    function switchToUserAccount(email, isFromAuth = false) {
       syncCurrentUserToDatabase();
       loadUsersDatabase();
 
@@ -2003,6 +2546,7 @@
       APP_STATE.userName = user.name;
       APP_STATE.userSchool = user.school || '';
       APP_STATE.userAvatar = user.avatar || '';
+      APP_STATE.userPassword = user.password || '';
       APP_STATE.rankPoints = Number(user.rankPoints) || 1000;
       APP_STATE.bfsScore = Number(user.bfs) || 0;
       APP_STATE.sessionsCompletedCount = user.sessionsCount || 0;
@@ -2015,20 +2559,218 @@
       updateStatsUI();
       renderLeaderboard();
       renderHistory();
-      closeSwitchAccountModal();
-      alert(`✅ Đã chuyển sang tài khoản: ${user.name} (${user.email})`);
+      
+      const switchModal = document.getElementById('switch-account-modal');
+      if (switchModal) switchModal.classList.add('hidden');
+
+      if (isFromAuth) {
+        alert(`🔓 Mở khóa thành công! Chào mừng ${user.name} (${user.email}) quay lại.`);
+      } else {
+        alert(`✅ Đã chọn tài khoản: ${user.name} (${user.email})!`);
+      }
+    }
+
+    function lockScreenNow() {
+      APP_STATE.isAuthenticated = false;
+      loadUsersDatabase();
+      const targetUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === (APP_STATE.userEmail || '').toLowerCase().trim()) || {
+        email: APP_STATE.userEmail,
+        name: APP_STATE.userName,
+        avatar: APP_STATE.userAvatar,
+        password: APP_STATE.userPassword
+      };
+      openAccountAuthModal(targetUser, true);
+    }
+
+    // ================= EXCEL (XLSX) IMPORT / EXPORT =================
+    function exportLeaderboardToExcel() {
+      try {
+        if (typeof XLSX === 'undefined') {
+          alert('⚠️ Thư viện Excel đang được tải, vui lòng thử lại sau 3 giây.');
+          return;
+        }
+
+        const leaderboard = getFullLeaderboard();
+        if (!leaderboard || leaderboard.length === 0) {
+          alert('⚠️ Chưa có dữ liệu học viên để xuất file Excel.');
+          return;
+        }
+
+        const excelData = leaderboard.map((u, idx) => ({
+          'Hạng': idx + 1,
+          'Họ Và Tên': (u.name || '').replace(/\s*\(Bạn\)$/i, '').trim(),
+          'Email (Tài khoản)': u.email || '',
+          'Trường / Đơn vị': u.school || 'Người học tích cực',
+          'Tổng Điểm': u.totalScore || 0,
+          'Điểm Xếp Hạng': u.rankPoints || 1000,
+          'Điểm Bài Test BFS': u.bfs || 0,
+          'Số Phiên Học Hoàn Thành': u.sessionsCount || 0,
+          'Điểm Phiên Học': u.sessionPoints || 0,
+          'Chuỗi Ngày (Streak)': u.streak || `${u.streakDays || 1} ngày`,
+          'Tổng Giờ Học (Giờ)': u.totalHours || 0
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        // Tối ưu độ rộng cột
+        ws['!cols'] = [
+          { wch: 6 },  // Hạng
+          { wch: 25 }, // Họ tên
+          { wch: 30 }, // Email
+          { wch: 25 }, // Trường
+          { wch: 12 }, // Tổng điểm
+          { wch: 15 }, // Điểm XH
+          { wch: 18 }, // Điểm BFS
+          { wch: 24 }, // Số phiên
+          { wch: 16 }, // Điểm phiên
+          { wch: 20 }, // Streak
+          { wch: 18 }  // Tổng giờ
+        ];
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "BangXepHang_BrainFocus");
+
+        const todayStr = getTodayDateString();
+        const fileName = `BrainFocus_DanhSachHocVien_${todayStr}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+        alert(`📥 Đã xuất file Excel thành công: ${fileName}\nTổng số học viên: ${excelData.length}`);
+      } catch (err) {
+        console.error('Export Excel error:', err);
+        alert('❌ Có lỗi khi xuất file Excel: ' + err.message);
+      }
+    }
+
+    function importLeaderboardFromExcel(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (typeof XLSX === 'undefined') {
+        alert('⚠️ Thư viện Excel đang được tải, vui lòng thử lại sau giây lát.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const rawRows = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+
+          if (!rawRows || rawRows.length === 0) {
+            alert('⚠️ File Excel không có dòng dữ liệu nào!');
+            return;
+          }
+
+          loadUsersDatabase();
+          let importedCount = 0;
+          let updatedCount = 0;
+
+          rawRows.forEach(row => {
+            // Linh hoạt nhận diện tên cột tiếng Việt hoặc tiếng Anh
+            const name = String(row['Họ Và Tên'] || row['Họ và Tên'] || row['Tên'] || row['Name'] || row['FullName'] || '').replace(/\s*\(Bạn\)$/i, '').trim();
+            let email = String(row['Email (Tài khoản)'] || row['Email'] || row['Mail'] || '').trim().toLowerCase();
+            const school = String(row['Trường / Đơn vị'] || row['Trường'] || row['School'] || 'Người học tích cực').trim();
+            const totalScore = Number(row['Tổng Điểm'] || row['TotalScore'] || row['Total']) || 0;
+            const rankPoints = Number(row['Điểm Xếp Hạng'] || row['RankPoints']) || 1000;
+            const bfs = Number(row['Điểm Bài Test BFS'] || row['Điểm BFS'] || row['BFS']) || 0;
+            const sessionsCount = Number(row['Số Phiên Học Hoàn Thành'] || row['Số Phiên'] || row['Sessions']) || 0;
+            const sessionPoints = Number(row['Điểm Phiên Học'] || row['SessionPoints']) || (sessionsCount * 90);
+            const totalHours = Number(row['Tổng Giờ Học (Giờ)'] || row['TotalHours']) || 0;
+            const streakDays = parseInt(String(row['Chuỗi Ngày (Streak)'] || row['Streak'] || '1').replace(/\D/g, '')) || 1;
+
+            if (!name && !email) return;
+            if (!email) {
+              email = `${name.toLowerCase().replace(/\s+/g, '')}@student.brainfocus`;
+            }
+
+            const existingIdx = REGISTERED_USERS_DB.findIndex(u => 
+              (u.email && u.email.toLowerCase().trim() === email)
+            );
+
+            const userObj = {
+              id: email,
+              email: email,
+              name: name || 'Học viên',
+              school: school,
+              avatar: '',
+              rankPoints: rankPoints,
+              bfs: bfs,
+              sessionsCount: sessionsCount,
+              sessionPoints: sessionPoints,
+              totalHours: totalHours,
+              streakDays: streakDays,
+              streak: `${streakDays} ngày`,
+              lastUpdated: Date.now()
+            };
+
+            if (existingIdx === -1) {
+              REGISTERED_USERS_DB.push(userObj);
+              importedCount++;
+            } else {
+              REGISTERED_USERS_DB[existingIdx] = {
+                ...REGISTERED_USERS_DB[existingIdx],
+                ...userObj,
+                avatar: REGISTERED_USERS_DB[existingIdx].avatar || ''
+              };
+              updatedCount++;
+            }
+          });
+
+          saveUsersDatabase(true); // Lưu và tự động đồng bộ lên Cloud
+          renderLeaderboard();
+          alert(`🎉 Nhập file Excel thành công!\n- Thêm mới: ${importedCount} học viên\n- Cập nhật: ${updatedCount} học viên\nBảng xếp hạng đã được làm mới!`);
+        } catch (err) {
+          console.error('Import Excel error:', err);
+          alert('❌ Đọc file Excel thất bại: ' + err.message);
+        } finally {
+          event.target.value = ''; // Reset input để có thể chọn lại cùng file
+        }
+      };
+      reader.readAsArrayBuffer(file);
     }
 
     // ================= INIT =================
     window.addEventListener('DOMContentLoaded', () => {
+      // ================= CLEAR TOÀN BỘ DỮ LIỆU CLONE ĐỂ KHỞI ĐỘNG LẠI WEB MỚI TINH 100% =================
+      const FRESH_START_FLAG = 'bf_fresh_start_reset_2026_v2';
+      if (!localStorage.getItem(FRESH_START_FLAG)) {
+        try {
+          localStorage.removeItem('bf_registered_users');
+          localStorage.removeItem('bf_user_profile');
+          localStorage.removeItem('bf_onboarded_completed');
+          localStorage.removeItem('bf_active_session');
+          localStorage.removeItem('bf_active_session_backup');
+          localStorage.removeItem('bf_daily_tracker');
+          localStorage.removeItem('bf_daily_gym_tracker');
+          localStorage.removeItem('bf_cooldown_until');
+          localStorage.removeItem('bf_cooldown_total_seconds');
+          localStorage.removeItem('bf_restored_user_test_sessions');
+          localStorage.setItem(FRESH_START_FLAG, 'true');
+        } catch (_) {}
+        REGISTERED_USERS_DB = [];
+        APP_STATE.userEmail = "";
+        APP_STATE.userName = "";
+        APP_STATE.userSchool = "";
+        APP_STATE.userAvatar = "";
+        APP_STATE.userPassword = "";
+        APP_STATE.isAuthenticated = false;
+        APP_STATE.isAuthModalStartupLock = false;
+        APP_STATE.rankPoints = 1000;
+        APP_STATE.bfsScore = 0;
+        APP_STATE.totalHours = 0;
+        APP_STATE.streakDays = 1;
+        APP_STATE.sessionsCompletedCount = 0;
+        APP_STATE.gymCompletedCount = 0;
+        APP_STATE.history = [];
+      }
+
       loadAppStateFromLocal();
       purgeCloneAccounts(false);
 
-      // Nếu APP_STATE rỗng nhưng thiết bị đã lưu tài khoản, tự động khôi phục tài khoản gần nhất
-      if ((!APP_STATE.userEmail || !APP_STATE.userName) && REGISTERED_USERS_DB.length > 0) {
-        switchToUserAccountSilently(REGISTERED_USERS_DB[0]);
-        saveAppStateToLocal();
-      }
+      // Nếu APP_STATE rỗng, KHÔNG tự động lấy tài khoản của người khác gán vào!
+      // Mỗi thiết bị mới phải có tài khoản riêng của chính mình.
+      const hasAccount = Boolean(APP_STATE.userEmail && APP_STATE.userName);
 
       syncProfileDOM();
       renderArticles();
@@ -2047,12 +2789,25 @@
       }
       updateDndUI();
 
-      // Khi mới vào web: nếu chưa có tài khoản Gmail thì hiện ngay form tạo tài khoản
-      const hasAccount = Boolean(APP_STATE.userEmail && APP_STATE.userName);
+      // ================= CHẮC CHẮN KHI VÀO WEB LÀ PHẢI NHẬP MẬT KHẨU =================
       if (!hasAccount) {
+        // Chưa có tài khoản: bắt buộc tạo tài khoản mới & thiết lập mật khẩu
         setTimeout(() => {
           openRegisterModal(true);
-        }, 350);
+        }, 300);
+      } else {
+        // Đã có tài khoản: BẮT BUỘC KHÓA MÀN HÌNH & NHẬP MẬT KHẨU ĐỂ VÀO WEB
+        APP_STATE.isAuthenticated = false;
+        setTimeout(() => {
+          loadUsersDatabase();
+          const targetUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === (APP_STATE.userEmail || '').toLowerCase().trim()) || {
+            email: APP_STATE.userEmail,
+            name: APP_STATE.userName,
+            avatar: APP_STATE.userAvatar,
+            password: APP_STATE.userPassword
+          };
+          openAccountAuthModal(targetUser, true /* isStartupLock */);
+        }, 200);
       }
 
       // Lắng nghe cập nhật đa tab (cross-tab) trong trình duyệt
@@ -2124,6 +2879,17 @@
             updateTimerDisplay();
             completeTimer();
           }
+        } else if (data && data.remaining !== undefined && data.remaining > 0 && data.remaining < (data.duration || 90 * 60)) {
+          // Phục hồi an toàn phiên học đang tạm dừng, bảo vệ 100% tiến độ của người học
+          APP_STATE.timerDuration = data.duration || 90 * 60;
+          APP_STATE.timerMode = data.mode || 'ultradian';
+          APP_STATE.distractionsCount = data.distractions || 0;
+          APP_STATE.timerRemaining = data.remaining;
+          APP_STATE.isTimerRunning = false;
+          APP_STATE.timerTargetEndTime = null;
+          updateTimerDisplay();
+          updateTimerButtonsUI(false);
+          updateModeButtonsUI();
         }
       } catch (e) {
         console.warn('Failed to restore active session backup', e);
@@ -2259,13 +3025,26 @@
 
     function saveSessionBackup() {
       try {
+        const hasProgress = APP_STATE.timerRemaining < APP_STATE.timerDuration;
         if (APP_STATE.isTimerRunning && APP_STATE.timerTargetEndTime) {
           localStorage.setItem('bf_active_session', JSON.stringify({
             isRunning: true,
             targetEndTime: APP_STATE.timerTargetEndTime,
             duration: APP_STATE.timerDuration,
+            remaining: APP_STATE.timerRemaining,
             mode: APP_STATE.timerMode,
-            distractions: APP_STATE.distractionsCount
+            distractions: APP_STATE.distractionsCount,
+            savedAt: Date.now()
+          }));
+        } else if (hasProgress) {
+          // Lưu trạng thái tạm dừng dở dang để bảo vệ phiên học không bị mất
+          localStorage.setItem('bf_active_session', JSON.stringify({
+            isRunning: false,
+            duration: APP_STATE.timerDuration,
+            remaining: APP_STATE.timerRemaining,
+            mode: APP_STATE.timerMode,
+            distractions: APP_STATE.distractionsCount,
+            savedAt: Date.now()
           }));
         } else {
           localStorage.removeItem('bf_active_session');
@@ -2621,12 +3400,38 @@
       mainBtn.className = 'px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all flex items-center gap-2 font-cyber tracking-wider';
     }
 
+    // ================= SAFE SESSION SWITCHING & PROGRESS SHIELD =================
+    let pendingTimerModeSwitch = null;
+
+    function getSessionModeName(mode) {
+      if (mode === 'ultradian') return 'Phiên Học Sâu Ultradian 90p';
+      if (mode === 'pomodoro') return 'Phiên Tập Trung Pomodoro 25p';
+      return 'Phiên Khởi Động Não 15p';
+    }
+
+    function updateModeButtonsUI() {
+      const current = APP_STATE.timerMode;
+      ['ultradian', 'pomodoro', 'sprint', 'break'].forEach(m => {
+        const btn = document.getElementById(`mode-btn-${m}`);
+        if (!btn) return;
+        if (m === current || (m === 'break' && current === 'sprint') || (m === 'sprint' && current === 'break')) {
+          btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md';
+        } else {
+          btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
+        }
+      });
+    }
+
     function setTimerMode(mode) {
-      if (APP_STATE.isTimerRunning) {
-        if (!confirm('Phiên học đang chạy. Bạn có muốn đổi chế độ?')) return;
-        resetTimer();
+      const normalizedMode = (mode === 'break') ? 'sprint' : mode;
+
+      // 1. Nếu bấm đúng vào chế độ đang chọn -> TUYỆT ĐỐI KHÔNG LÀM GÌ, giữ nguyên 100% tiến độ
+      if (normalizedMode === APP_STATE.timerMode) {
+        return;
       }
 
+      // 2. Kiểm tra điều kiện bắt đầu phiên mới TRƯỚC (Nghỉ ngơi cooldown hoặc Giới hạn 3 phiên/ngày)
+      // Tuyệt đối không được hủy phiên hiện tại nếu phiên mới không được phép bắt đầu!
       if (isRestCooldownActive()) {
         const remSec = getRestCooldownRemaining();
         const mm = Math.floor(remSec / 60);
@@ -2641,28 +3446,91 @@
         return;
       }
 
-      const normalizedMode = (mode === 'break') ? 'sprint' : mode;
-      APP_STATE.timerMode = normalizedMode;
-      
-      ['ultradian', 'pomodoro', 'sprint', 'break'].forEach(m => {
-        const btn = document.getElementById(`mode-btn-${m}`);
-        if (!btn) return;
-        if (m === normalizedMode || (m === 'break' && normalizedMode === 'sprint') || (m === 'sprint' && normalizedMode === 'break')) {
-          btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md';
-        } else {
-          btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
+      // 3. Kiểm tra xem phiên hiện tại có đang chạy hoặc có tiến độ dở dang không
+      const isSessionActive = APP_STATE.isTimerRunning || (APP_STATE.timerRemaining < APP_STATE.timerDuration);
+      if (isSessionActive) {
+        // Có phiên đang chạy hoặc tạm dừng dở dang: Mở modal xác nhận an toàn, không tự ý hủy!
+        pendingTimerModeSwitch = normalizedMode;
+        openSessionSwitchModal(normalizedMode);
+        return;
+      }
+
+      // 4. Nếu chưa chạy giây nào, chuyển chế độ an toàn ngay lập tức
+      applyTimerModeSwitch(normalizedMode);
+    }
+
+    function openSessionSwitchModal(targetMode) {
+      const modal = document.getElementById('session-switch-confirm-modal');
+      if (!modal) {
+        // Fallback an toàn nếu modal chưa gắn DOM
+        const curName = getSessionModeName(APP_STATE.timerMode);
+        const tarName = getSessionModeName(targetMode);
+        if (confirm(`Bạn đang có ${curName} chưa hoàn thành. Bạn có chắc muốn hủy phiên này để chuyển sang ${tarName}?`)) {
+          resetTimer();
+          applyTimerModeSwitch(targetMode);
         }
-      });
+        return;
+      }
+
+      const currentNameEl = document.getElementById('switch-modal-current-name');
+      const currentStatusEl = document.getElementById('switch-modal-current-status');
+      const targetNameEl = document.getElementById('switch-modal-target-name');
+
+      const elapsedSec = Math.max(0, APP_STATE.timerDuration - APP_STATE.timerRemaining);
+      const elapsedMin = Math.floor(elapsedSec / 60);
+      const elapsedRemainSec = elapsedSec % 60;
+      const remMin = Math.floor(APP_STATE.timerRemaining / 60);
+      const remSec = APP_STATE.timerRemaining % 60;
+
+      const currentModeName = getSessionModeName(APP_STATE.timerMode);
+      const targetModeName = getSessionModeName(targetMode);
+
+      if (currentNameEl) currentNameEl.innerText = currentModeName;
+      if (currentStatusEl) {
+        const stateStr = APP_STATE.isTimerRunning ? '🔥 Đang chạy' : '⏸️ Tạm dừng';
+        currentStatusEl.innerText = `${stateStr} • Đã học: ${elapsedMin}p ${elapsedRemainSec}s • Còn lại: ${remMin}p ${remSec}s`;
+      }
+      if (targetNameEl) targetNameEl.innerText = targetModeName;
+
+      modal.classList.remove('hidden');
+    }
+
+    function cancelSessionSwitch() {
+      pendingTimerModeSwitch = null;
+      const modal = document.getElementById('session-switch-confirm-modal');
+      if (modal) modal.classList.add('hidden');
+      // Không làm gì cả: Phiên hiện tại tiếp tục 100% nguyên vẹn an toàn!
+    }
+
+    function confirmSessionSwitch() {
+      const targetMode = pendingTimerModeSwitch;
+      pendingTimerModeSwitch = null;
+      const modal = document.getElementById('session-switch-confirm-modal');
+      if (modal) modal.classList.add('hidden');
+
+      if (targetMode) {
+        // Chỉ khi người dùng chủ động bấm xác nhận thì mới reset phiên cũ và chuyển
+        resetTimer();
+        applyTimerModeSwitch(targetMode);
+      }
+    }
+
+    function applyTimerModeSwitch(normalizedMode) {
+      APP_STATE.timerMode = normalizedMode;
+      updateModeButtonsUI();
 
       if (normalizedMode === 'ultradian') {
         APP_STATE.timerDuration = 90 * 60;
-        document.getElementById('timer-phase-label').innerText = 'Khởi động vỏ não (0-15p)';
+        const phaseEl = document.getElementById('timer-phase-label');
+        if (phaseEl) phaseEl.innerText = 'Khởi động vỏ não (0-15p)';
       } else if (normalizedMode === 'pomodoro') {
         APP_STATE.timerDuration = 25 * 60;
-        document.getElementById('timer-phase-label').innerText = 'Pomodoro Lock-In (25p)';
+        const phaseEl = document.getElementById('timer-phase-label');
+        if (phaseEl) phaseEl.innerText = 'Pomodoro Lock-In (25p)';
       } else {
         APP_STATE.timerDuration = 15 * 60;
-        document.getElementById('timer-phase-label').innerText = 'Sprint Khởi Động Não (15p)';
+        const phaseEl = document.getElementById('timer-phase-label');
+        if (phaseEl) phaseEl.innerText = 'Sprint Khởi Động Não (15p)';
       }
 
       APP_STATE.timerRemaining = APP_STATE.timerDuration;
@@ -3143,17 +4011,21 @@
     let stroopCurrentRound = 0;
     let stroopScore = 0;
     let stroopStreak = 0;
+    let stroopCorrectCount = 0;
+    let isStroopGameActive = false;
     let stroopRoundTimer = null;
-    let stroopTimeLeftMs = 2500;
+    let stroopFeedbackTimeout = null;
+    let isStroopHandlingAnswer = false;
+    let stroopTimeLeftMs = 3000;
     const STROOP_PALETTE = [
-      { name: "Đỏ", color: "#dc2626", bg: "bg-red-50 text-red-700 border-red-200" },
-      { name: "Xanh Dương", color: "#2563eb", bg: "bg-blue-50 text-blue-700 border-blue-200" },
-      { name: "Xanh Lá", color: "#059669", bg: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-      { name: "Vàng", color: "#d97706", bg: "bg-amber-50 text-amber-700 border-amber-200" },
-      { name: "Tím", color: "#7c3aed", bg: "bg-purple-50 text-purple-700 border-purple-200" },
-      { name: "Cam", color: "#ea580c", bg: "bg-orange-50 text-orange-700 border-orange-200" },
-      { name: "Hồng", color: "#db2777", bg: "bg-pink-50 text-pink-700 border-pink-200" },
-      { name: "Đen", color: "#0f172a", bg: "bg-slate-100 text-slate-800 border-slate-300" }
+      { name: "Đỏ", color: "#ef4444", dot: "#ef4444" },
+      { name: "Xanh Dương", color: "#3b82f6", dot: "#3b82f6" },
+      { name: "Xanh Lá", color: "#22c55e", dot: "#22c55e" },
+      { name: "Vàng", color: "#facc15", dot: "#eab308" },
+      { name: "Tím", color: "#c084fc", dot: "#a855f7" },
+      { name: "Cam", color: "#fb923c", dot: "#f97316" },
+      { name: "Hồng", color: "#f472b6", dot: "#ec4899" },
+      { name: "Trắng", color: "#f8fafc", dot: "#ffffff" }
     ];
 
     // ================= BRAIN FOCUS GYM LOGIC & DAILY LIMIT =================
@@ -3177,35 +4049,150 @@
       updateDailyGymUI();
     }
 
+    function getGymRemainingPlays() {
+      const todayCount = getTodayGymPlaysCount();
+      const freeRemaining = Math.max(0, MAX_GYM_PLAYS_PER_DAY - todayCount);
+      const bonusPlays = Math.max(0, Number(APP_STATE.purchasedGymPlays) || 0);
+      return {
+        todayCount,
+        freeRemaining,
+        bonusPlays,
+        totalAvailable: freeRemaining + bonusPlays
+      };
+    }
+
     function isGymDailyLimitReached() {
-      return getTodayGymPlaysCount() >= MAX_GYM_PLAYS_PER_DAY;
+      const { totalAvailable } = getGymRemainingPlays();
+      return totalAvailable <= 0;
+    }
+
+    function promptGymOutOfPlays() {
+      const wantsShop = confirm("🛑 BẠN ĐÃ HẾT LƯỢT TẬP GYM HÔM NAY!\n\nBạn đã dùng hết 5 lượt miễn phí.\n\nBạn có muốn mở CỬA HÀNG để đổi 35 điểm XH hoặc BFS lấy thêm lượt chơi không?");
+      if (wantsShop) {
+        openGymShopModal();
+      }
+    }
+
+    function consumeOneGymPlay() {
+      const todayCount = getTodayGymPlaysCount();
+      if (todayCount < MAX_GYM_PLAYS_PER_DAY) {
+        recordTodayGymPlay();
+      } else if ((APP_STATE.purchasedGymPlays || 0) > 0) {
+        APP_STATE.purchasedGymPlays--;
+        saveAppStateToLocal();
+        updateDailyGymUI();
+      }
+    }
+
+    // ================= CỬA HÀNG LƯỢT CHƠI GYM (35Đ/LƯỢT) =================
+    function openGymShopModal() {
+      const modal = document.getElementById('gym-shop-modal');
+      if (!modal) return;
+      const rankEl = document.getElementById('shop-rank-points');
+      const bfsEl = document.getElementById('shop-bfs-points');
+      const bonusEl = document.getElementById('shop-bonus-plays');
+      if (rankEl) rankEl.innerText = `${APP_STATE.rankPoints || 0}đ`;
+      if (bfsEl) bfsEl.innerText = `${APP_STATE.bfsScore || 0}đ`;
+      if (bonusEl) bonusEl.innerText = `${APP_STATE.purchasedGymPlays || 0} lượt`;
+      const alertEl = document.getElementById('shop-alert-msg');
+      if (alertEl) alertEl.classList.add('hidden');
+      modal.classList.remove('hidden');
+    }
+
+    function closeGymShopModal() {
+      const modal = document.getElementById('gym-shop-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function buyGymPlays(currency, amount = 1) {
+      const COST_PER_PLAY = 35;
+      const totalCost = COST_PER_PLAY * amount;
+      const alertEl = document.getElementById('shop-alert-msg');
+
+      if (currency === 'rank') {
+        if ((APP_STATE.rankPoints || 0) < totalCost) {
+          if (alertEl) {
+            alertEl.className = "p-2.5 rounded-xl text-xs font-bold text-center bg-rose-100 text-rose-800 border border-rose-300";
+            alertEl.innerText = `❌ Bạn không đủ Điểm XH! Cần ${totalCost}đ (hiện có ${APP_STATE.rankPoints || 0}đ).`;
+            alertEl.classList.remove('hidden');
+          }
+          return;
+        }
+        APP_STATE.rankPoints -= totalCost;
+      } else if (currency === 'bfs') {
+        if ((APP_STATE.bfsScore || 0) < totalCost) {
+          if (alertEl) {
+            alertEl.className = "p-2.5 rounded-xl text-xs font-bold text-center bg-rose-100 text-rose-800 border border-rose-300";
+            alertEl.innerText = `❌ Bạn không đủ Điểm BFS! Cần ${totalCost}đ (hiện có ${APP_STATE.bfsScore || 0}đ).`;
+            alertEl.classList.remove('hidden');
+          }
+          return;
+        }
+        APP_STATE.bfsScore -= totalCost;
+      }
+
+      APP_STATE.purchasedGymPlays = (APP_STATE.purchasedGymPlays || 0) + amount;
+      saveAppStateToLocal();
+      updateStatsUI();
+      updateDailyGymUI();
+      renderLeaderboard();
+
+      // Cập nhật số dư trong modal shop
+      const rankEl = document.getElementById('shop-rank-points');
+      const bfsEl = document.getElementById('shop-bfs-points');
+      const bonusEl = document.getElementById('shop-bonus-plays');
+      if (rankEl) rankEl.innerText = `${APP_STATE.rankPoints || 0}đ`;
+      if (bfsEl) bfsEl.innerText = `${APP_STATE.bfsScore || 0}đ`;
+      if (bonusEl) bonusEl.innerText = `${APP_STATE.purchasedGymPlays || 0} lượt`;
+
+      if (alertEl) {
+        alertEl.className = "p-2.5 rounded-xl text-xs font-bold text-center bg-emerald-100 text-emerald-800 border border-emerald-300 animate-bounce";
+        alertEl.innerText = `🎉 MUA THÀNH CÔNG +${amount} LƯỢT CHƠI! (-${totalCost}đ ${currency === 'rank' ? 'XH' : 'BFS'}).`;
+        alertEl.classList.remove('hidden');
+      }
     }
 
     function updateDailyGymUI() {
-      const todayCount = getTodayGymPlaysCount();
+      const { todayCount, freeRemaining, bonusPlays, totalAvailable } = getGymRemainingPlays();
       const badge = document.getElementById('daily-gym-counter-badge');
+      const bonusBadge = document.getElementById('daily-gym-bonus-badge');
       const subtext = document.getElementById('daily-gym-subtext');
       const banner = document.getElementById('daily-gym-limit-banner');
 
-      if (badge) {
-        badge.innerText = `${todayCount}/${MAX_GYM_PLAYS_PER_DAY} Lượt`;
-        if (todayCount >= MAX_GYM_PLAYS_PER_DAY) {
-          badge.className = "font-cyber font-black text-xs text-amber-900 bg-amber-200 border border-amber-400 px-2.5 py-0.5 rounded-full shadow-xs animate-pulse";
+      if (bonusBadge) {
+        if (bonusPlays > 0) {
+          bonusBadge.innerText = `+${bonusPlays} lượt mua`;
+          bonusBadge.classList.remove('hidden');
         } else {
+          bonusBadge.classList.add('hidden');
+        }
+      }
+
+      if (badge) {
+        if (bonusPlays > 0) {
+          badge.innerText = `${todayCount}/${MAX_GYM_PLAYS_PER_DAY} (Dự trữ: ${bonusPlays})`;
+          badge.className = "font-cyber font-black text-xs text-emerald-800 bg-emerald-100 border border-emerald-300 px-2.5 py-0.5 rounded-full shadow-xs";
+        } else if (todayCount >= MAX_GYM_PLAYS_PER_DAY) {
+          badge.innerText = `${todayCount}/${MAX_GYM_PLAYS_PER_DAY} Lượt 🔒`;
+          badge.className = "font-cyber font-black text-xs text-amber-900 bg-amber-200 border border-amber-400 px-2.5 py-0.5 rounded-full shadow-xs";
+        } else {
+          badge.innerText = `${todayCount}/${MAX_GYM_PLAYS_PER_DAY} Lượt`;
           badge.className = "font-cyber font-black text-xs text-indigo-700 bg-indigo-50 border border-indigo-300 px-2.5 py-0.5 rounded-full";
         }
       }
 
       if (subtext) {
-        if (todayCount >= MAX_GYM_PLAYS_PER_DAY) {
-          subtext.innerText = "Đã hoàn thành 5/5 lượt tập hôm nay. Các synap thần kinh cần nghỉ ngơi phục hồi.";
+        if (totalAvailable <= 0) {
+          subtext.innerText = "Đã dùng hết 5 lượt miễn phí hôm nay. Bạn có thể mua thêm lượt tại Cửa Hàng (35đ/lượt).";
+        } else if (bonusPlays > 0) {
+          subtext.innerText = `Còn ${freeRemaining} lượt miễn phí + ${bonusPlays} lượt mua dự trữ. Thua hay thắng đều tính 1 lượt (vẫn có điểm).`;
         } else {
-          subtext.innerText = `Còn lại ${MAX_GYM_PLAYS_PER_DAY - todayCount} lượt tập hôm nay. Khoa học thần kinh khuyến nghị tối đa 5 lượt/ngày.`;
+          subtext.innerText = `Còn lại ${freeRemaining} lượt miễn phí hôm nay. Chơi hoặc thua đều mất 1 lượt (vẫn nhận điểm theo vòng).`;
         }
       }
 
       if (banner) {
-        if (todayCount >= MAX_GYM_PLAYS_PER_DAY) {
+        if (totalAvailable <= 0) {
           banner.classList.remove('hidden');
         } else {
           banner.classList.add('hidden');
@@ -3230,44 +4217,51 @@
       }
 
       // Update game cards state
-      const isFull = todayCount >= MAX_GYM_PLAYS_PER_DAY;
+      const isMuted = totalAvailable <= 0;
       ['stroop', 'grid', 'math'].forEach(id => {
         const card = document.getElementById(`gym-card-${id}`);
         const badgeEl = document.getElementById(`gym-badge-${id}`);
         if (card) {
-          if (isFull) {
-            card.classList.add('opacity-75', 'bg-slate-50');
+          if (isMuted) {
+            card.classList.add('opacity-80', 'bg-slate-50');
           } else {
-            card.classList.remove('opacity-75', 'bg-slate-50');
+            card.classList.remove('opacity-80', 'bg-slate-50');
           }
         }
-        if (badgeEl && isFull) {
-          badgeEl.innerText = "Đã hết lượt (5/5) 🔒";
-          badgeEl.className = "text-amber-700 font-bold text-[11px]";
+        if (badgeEl && isMuted) {
+          badgeEl.innerText = "Mua lượt (35đ) 🛒";
+          badgeEl.className = "text-amber-700 font-black text-[11px]";
         } else if (badgeEl) {
-          badgeEl.innerText = (id === 'grid' ? '+50 BFS →' : '+40 BFS →');
+          badgeEl.innerText = '+50 BFS & XH →';
           badgeEl.className = "text-blue-700 font-black";
         }
       });
     }
 
-    // ---------------- GAME 1: STROOP TEST ----------------
+    // ---------------- GAME 1: STROOP TEST (CHỌN ĐÚNG MÀU MỰC) ----------------
     function startStroopGame() {
       if (isGymDailyLimitReached()) {
-        alert("🛑 ĐÃ ĐẠT GIỚI HẠN 5 LƯỢT GYM HÔM NAY!\n\nBạn đã hoàn thành trọn vẹn 5/5 lượt rèn luyện não bộ trong ngày hôm nay.\n\nKhoa học thần kinh khuyến cáo tập luyện ngắt quãng để các nơ-ron và synap thần kinh vỏ não trước trán củng cố tự nhiên mà không bị quá tải.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!");
+        promptGymOutOfPlays();
         return;
       }
 
       stroopCurrentRound = 0;
       stroopScore = 0;
       stroopStreak = 0;
+      stroopCorrectCount = 0;
+      isStroopGameActive = true;
+      isStroopHandlingAnswer = false;
       if (stroopRoundTimer) {
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
       }
+      if (stroopFeedbackTimeout) {
+        clearTimeout(stroopFeedbackTimeout);
+        stroopFeedbackTimeout = null;
+      }
       
       const titleEl = document.getElementById('active-game-title');
-      if (titleEl) titleEl.innerText = "STROOP SIÊU CẤP (ỨC CHẾ XUNG ĐỘNG)";
+      if (titleEl) titleEl.innerText = "STROOP TEST: CHỌN ĐÚNG MÀU MỰC CỦA CHỮ";
 
       const container = document.getElementById('active-game-container');
       container.classList.remove('hidden');
@@ -3280,6 +4274,11 @@
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
       }
+      if (stroopFeedbackTimeout) {
+        clearTimeout(stroopFeedbackTimeout);
+        stroopFeedbackTimeout = null;
+      }
+      isStroopHandlingAnswer = false;
 
       if (stroopCurrentRound >= 12) {
         finishStroopGame();
@@ -3287,95 +4286,187 @@
       }
       stroopCurrentRound++;
 
-      // Pick text item and mismatch color item
+      // Chọn chữ và màu mực hiển thị lệch nhau để tạo hiệu ứng Stroop kinh điển
       const textItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
       let colorItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
       while (colorItem.name === textItem.name) {
         colorItem = STROOP_PALETTE[Math.floor(Math.random() * STROOP_PALETTE.length)];
       }
 
-      // 60% chance: ask for visual COLOR, 40% chance: ask for TEXT meaning
-      const askForColor = Math.random() > 0.4;
-      const targetAnswer = askForColor ? colorItem.name : textItem.name;
+      // ĐÁP ÁN ĐÚNG 100% LUÔN LÀ MÀU MỰC MÀ MẮT ĐANG NHÌN THẤY
+      const targetAnswer = colorItem.name;
+      // Đáp án bẫy tâm lý (tên chữ viết ra) luôn luôn có mặt để kích hoạt vỏ não ức chế
+      const trickDistractor = textItem.name;
 
-      // Select 6 distractor options including the target
-      const pool = STROOP_PALETTE.map(p => p.name);
-      const shuffledOptions = [targetAnswer];
-      const otherOptions = pool.filter(n => n !== targetAnswer).sort(() => 0.5 - Math.random());
-      while (shuffledOptions.length < 6 && otherOptions.length > 0) {
-        shuffledOptions.push(otherOptions.pop());
+      // Chọn thêm 2 màu gây nhiễu khác trong danh sách màu còn lại
+      const remaining = STROOP_PALETTE.filter(p => p.name !== targetAnswer && p.name !== trickDistractor);
+      for (let i = remaining.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
       }
-      shuffledOptions.sort(() => 0.5 - Math.random());
+      const distractor1 = remaining[0].name;
+      const distractor2 = remaining[1].name;
 
-      const promptHtml = askForColor 
-        ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 border border-rose-300 shadow-xs">🎯 CHỌN MÀU CỦA CHỮ (Bỏ qua nghĩa từ)</span>`
-        : `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-xs animate-pulse">⚡ CHỌN NGHĨA CỦA TỪ (Bỏ qua màu sắc)</span>`;
+      // 4 lựa chọn đảm bảo 100% CÓ ĐÁP ÁN ĐÚNG và không bao giờ trùng lặp
+      const options = [targetAnswer, trickDistractor, distractor1, distractor2];
+      for (let i = options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [options[i], options[j]] = [options[j], options[i]];
+      }
 
       const html = `
-        <div class="space-y-3.5 text-center">
+        <div class="space-y-3 text-center">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-black text-blue-700">Lượt ${stroopCurrentRound}/12</span>
-            <span class="text-xs font-black text-amber-600">Điểm: ${stroopScore} ${stroopStreak > 1 ? `(🔥x${stroopStreak})` : ''}</span>
-            <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1">
+            <span class="text-xs font-black text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-lg">Lượt ${stroopCurrentRound}/12</span>
+            <span class="text-xs font-black text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg">Điểm: ${stroopScore} ${stroopStreak > 1 ? `(🔥x${stroopStreak})` : ''}</span>
+            <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1 active:scale-95 transition-all">
               <span>✕</span> <span>Thoát</span>
             </button>
           </div>
 
-          <!-- Speed countdown bar -->
-          <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-            <div id="stroop-time-bar" class="h-full bg-gradient-to-r from-blue-600 to-rose-500 transition-all duration-100" style="width: 100%;"></div>
+          <!-- Thanh đếm ngược thời gian (3.0 giây) -->
+          <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden shadow-inner">
+            <div id="stroop-time-bar" class="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-rose-500 transition-all duration-75" style="width: 100%;"></div>
           </div>
 
-          <div class="py-1">${promptHtml}</div>
+          <!-- Hướng dẫn câu hỏi rõ ràng -->
+          <div class="py-1">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black bg-rose-50 text-rose-700 border border-rose-200 shadow-xs">
+              <span>🎯</span> <span>CHỌN ĐÚNG MÀU MỰC CỦA CHỮ</span>
+            </span>
+            <p class="text-[11px] text-slate-500 mt-1">Đừng đọc nghĩa của chữ! Hãy nhìn xem chữ bên dưới đang mang <strong>màu gì</strong>:</p>
+          </div>
 
-          <div class="py-5 my-1 bg-white border border-slate-200 rounded-2xl shadow-sm flex items-center justify-center">
-            <span class="text-4xl sm:text-5xl font-black font-cyber tracking-wider select-none animate-bounce" style="color: ${colorItem.color}">
+          <!-- Bảng chữ tương phản cao, hiển thị màu sắc sống động rực rỡ -->
+          <div class="py-6 my-1 bg-slate-950 border-2 border-slate-800 rounded-2xl shadow-md flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-radial from-slate-900 to-slate-950 opacity-70 pointer-events-none"></div>
+            <span class="text-4xl sm:text-5xl font-black font-cyber tracking-wider select-none relative z-10 transition-transform" style="color: ${colorItem.color}; text-shadow: 0 0 20px ${colorItem.color}40;">
               ${textItem.name.toUpperCase()}
             </span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
-            ${shuffledOptions.map(opt => `
-              <button onclick="checkStroopAnswer('${opt}', '${targetAnswer}')" class="py-3 px-3 rounded-xl bg-white hover:bg-blue-50 text-slate-800 font-extrabold text-xs border border-slate-300 active:scale-95 transition-all shadow-xs hover:border-blue-400">
-                ${opt}
-              </button>
-            `).join('')}
+          <!-- Phản hồi trạng thái tức thì -->
+          <div id="stroop-feedback-banner" class="min-h-[26px] flex items-center justify-center text-xs font-bold text-slate-600">
+            <span>👇 Nhấn chọn 1 trong 4 màu bên dưới:</span>
+          </div>
+
+          <!-- 4 Nút đáp án trực quan, to bản, có chấm màu rõ ràng -->
+          <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+            ${options.map((opt, idx) => {
+              const pal = STROOP_PALETTE.find(p => p.name === opt) || { dot: '#94a3b8' };
+              return `
+                <button 
+                  id="stroop-opt-btn-${idx}" 
+                  data-opt="${opt}"
+                  onclick="checkStroopAnswer('${opt}', '${targetAnswer}', ${idx})" 
+                  class="py-3.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-extrabold text-xs sm:text-sm border-2 border-slate-200 active:scale-95 transition-all shadow-xs hover:border-blue-400 flex items-center justify-center gap-2.5"
+                >
+                  <span class="w-4 h-4 rounded-full shrink-0 shadow-xs border border-slate-300" style="background-color: ${pal.dot}"></span>
+                  <span>${opt}</span>
+                </button>
+              `;
+            }).join('')}
           </div>
         </div>
       `;
       document.getElementById('game-dynamic-area').innerHTML = html;
 
-      // 2.5s timer per question
-      stroopTimeLeftMs = 2500;
+      // Bộ đếm 3.0s cho mỗi câu
+      stroopTimeLeftMs = 3000;
       const stepMs = 50;
       stroopRoundTimer = setInterval(() => {
         stroopTimeLeftMs -= stepMs;
-        const pct = Math.max(0, (stroopTimeLeftMs / 2500) * 100);
+        const pct = Math.max(0, (stroopTimeLeftMs / 3000) * 100);
         const bar = document.getElementById('stroop-time-bar');
         if (bar) bar.style.width = `${pct}%`;
 
         if (stroopTimeLeftMs <= 0) {
           clearInterval(stroopRoundTimer);
           stroopRoundTimer = null;
-          stroopStreak = 0;
-          renderNextStroopRound();
+          handleStroopTimeout(targetAnswer);
         }
       }, stepMs);
     }
 
-    function checkStroopAnswer(chosen, correct) {
+    // Xử lý khi hết thời gian 3.0s
+    function handleStroopTimeout(correct) {
+      if (isStroopHandlingAnswer) return;
+      isStroopHandlingAnswer = true;
+      stroopStreak = 0;
+
+      const feedbackBanner = document.getElementById('stroop-feedback-banner');
+      if (feedbackBanner) {
+        feedbackBanner.className = "min-h-[26px] py-1 px-3 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black flex items-center justify-center gap-1.5 animate-pulse";
+        feedbackBanner.innerHTML = `<span>⏰ HẾT GIỜ! Màu đúng của chữ là: <strong>${correct}</strong></span>`;
+      }
+
+      // Làm sáng nút đáp án đúng
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`stroop-opt-btn-${i}`);
+        if (btn && btn.getAttribute('data-opt') === correct) {
+          btn.className = "py-3.5 px-4 rounded-xl bg-emerald-50 text-emerald-800 font-black text-xs sm:text-sm border-2 border-emerald-500 shadow-md flex items-center justify-center gap-2.5 scale-[1.02] transition-all";
+        }
+      }
+
+      stroopFeedbackTimeout = setTimeout(() => {
+        renderNextStroopRound();
+      }, 700);
+    }
+
+    // Xử lý khi người chơi bấm chọn đáp án
+    function checkStroopAnswer(chosen, correct, clickedIdx) {
+      if (isStroopHandlingAnswer) return;
+      isStroopHandlingAnswer = true;
+
       if (stroopRoundTimer) {
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
       }
+
+      const clickedBtn = document.getElementById(`stroop-opt-btn-${clickedIdx}`);
+      const feedbackBanner = document.getElementById('stroop-feedback-banner');
+
       if (chosen === correct) {
         stroopStreak++;
+        stroopCorrectCount++;
         const bonus = (stroopStreak >= 3) ? 15 : 10;
         stroopScore += bonus;
+
+        if (clickedBtn) {
+          clickedBtn.className = "py-3.5 px-4 rounded-xl bg-emerald-50 text-emerald-800 font-black text-xs sm:text-sm border-2 border-emerald-500 shadow-md flex items-center justify-center gap-2.5 scale-[1.02] transition-all";
+        }
+        if (feedbackBanner) {
+          feedbackBanner.className = "min-h-[26px] py-1 px-3 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-black flex items-center justify-center gap-1.5 animate-bounce";
+          feedbackBanner.innerHTML = `<span>✅ CHÍNH XÁC! +${bonus} Điểm ${stroopStreak > 1 ? `(Combo x${stroopStreak} 🔥)` : ''}</span>`;
+        }
+
+        stroopFeedbackTimeout = setTimeout(() => {
+          renderNextStroopRound();
+        }, 400);
       } else {
         stroopStreak = 0;
+
+        if (clickedBtn) {
+          clickedBtn.className = "py-3.5 px-4 rounded-xl bg-rose-50 text-rose-800 font-black text-xs sm:text-sm border-2 border-rose-500 shadow-md flex items-center justify-center gap-2.5 transition-all";
+        }
+
+        // Hiện rõ đáp án đúng để người chơi thấy ngay
+        for (let i = 0; i < 4; i++) {
+          const btn = document.getElementById(`stroop-opt-btn-${i}`);
+          if (btn && btn.getAttribute('data-opt') === correct) {
+            btn.className = "py-3.5 px-4 rounded-xl bg-emerald-50 text-emerald-800 font-black text-xs sm:text-sm border-2 border-emerald-500 shadow-md flex items-center justify-center gap-2.5 scale-[1.02] transition-all";
+          }
+        }
+
+        if (feedbackBanner) {
+          feedbackBanner.className = "min-h-[26px] py-1 px-3 rounded-lg bg-rose-100 text-rose-900 border border-rose-300 text-xs font-black flex items-center justify-center gap-1.5";
+          feedbackBanner.innerHTML = `<span>❌ CHƯA ĐÚNG! Chữ đang có màu: <strong>${correct}</strong></span>`;
+        }
+
+        stroopFeedbackTimeout = setTimeout(() => {
+          renderNextStroopRound();
+        }, 650);
       }
-      renderNextStroopRound();
     }
 
     function finishStroopGame() {
@@ -3383,22 +4474,67 @@
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
       }
-      APP_STATE.bfsScore += 40;
-      APP_STATE.rankPoints += 40;
+      if (stroopFeedbackTimeout) {
+        clearTimeout(stroopFeedbackTimeout);
+        stroopFeedbackTimeout = null;
+      }
+      isStroopHandlingAnswer = false;
+      isStroopGameActive = false;
+
+      // Tiêu hao 1 lượt chơi (Thắng hay thua đều mất 1 lượt)
+      consumeOneGymPlay();
+
+      // Cơ chế tính điểm công bằng:
+      // Tối đa 50 điểm (chuẩn hóa đồng bộ với 2 trò còn lại)
+      // <= 2 câu đúng: 0 điểm (thất bại sớm, bị phạt mất 1 lượt chơi)
+      // 3-4 câu đúng: 10 điểm
+      // 5-6 câu đúng: 20 điểm
+      // 7-8 câu đúng: 30 điểm
+      // 9-10 câu đúng: 40 điểm
+      // 11-12 câu đúng: 50 điểm
+      let earnedPoints = 0;
+      if (stroopCorrectCount <= 2) {
+        earnedPoints = 0;
+      } else if (stroopCorrectCount <= 4) {
+        earnedPoints = 10;
+      } else if (stroopCorrectCount <= 6) {
+        earnedPoints = 20;
+      } else if (stroopCorrectCount <= 8) {
+        earnedPoints = 30;
+      } else if (stroopCorrectCount <= 10) {
+        earnedPoints = 40;
+      } else {
+        earnedPoints = 50;
+      }
+
+      if (earnedPoints > 0) {
+        APP_STATE.bfsScore += earnedPoints;
+        APP_STATE.rankPoints += earnedPoints;
+      }
       APP_STATE.gymCompletedCount++;
-      recordTodayGymPlay();
       updateStatsUI();
       saveAppStateToLocal();
       renderLeaderboard();
+      updateDailyGymUI();
+
+      const { totalAvailable } = getGymRemainingPlays();
 
       document.getElementById('game-dynamic-area').innerHTML = `
         <div class="text-center space-y-3 py-4">
-          <span class="text-4xl">🏆</span>
-          <h3 class="text-lg font-black text-slate-900 font-cyber">HOÀN THÀNH STROOP SIÊU CẤP!</h3>
-          <p class="text-xs text-slate-600">Bạn đạt <strong>${stroopScore}/150 điểm</strong>. Vỏ não trước trán (Prefrontal Cortex) đã ức chế xung động phản xạ vượt bậc!</p>
-          <div class="text-sm font-black text-blue-600">+40 Điểm BFS & +40 Điểm XH đã cộng!</div>
-          <div class="pt-2">
-            <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">✕ Đóng / Về Phòng Gym</button>
+          <span class="text-4xl">${earnedPoints > 0 ? '🏆' : '⚠️'}</span>
+          <h3 class="text-lg font-black text-slate-900 font-cyber">KẾT THÚC BÀI TẬP CHỌN MÀU!</h3>
+          <p class="text-xs text-slate-600">
+            Chính xác: <strong>${stroopCorrectCount}/12 câu</strong> (${Math.round((stroopCorrectCount / 12) * 100)}%) • Điểm phản xạ: <strong>${stroopScore}đ</strong>
+          </p>
+          <div class="text-sm font-black ${earnedPoints > 0 ? 'text-blue-600 bg-blue-50 border border-blue-200' : 'text-slate-600 bg-slate-100 border border-slate-200'} py-2 px-4 rounded-xl inline-block">
+            ${earnedPoints > 0 ? `🎉 VẪN ĐƯỢC CỘNG: +${earnedPoints} Điểm BFS & +${earnedPoints} Điểm XH!` : `⚠️ Đúng dưới 3 câu: Chưa đủ điều kiện nhận điểm thưởng.`}
+          </div>
+          <div class="text-[11px] text-rose-600 font-bold">⚠️ Đã trừ 1 lượt chơi của bạn! (Còn lại: ${totalAvailable} lượt)</div>
+          <div class="pt-2 flex items-center justify-center gap-2.5">
+            ${totalAvailable > 0 
+              ? `<button onclick="startStroopGame()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">🔄 Chơi Lượt Mới (-1 Lượt)</button>` 
+              : `<button onclick="openGymShopModal()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">🛒 Mua Lượt (35đ)</button>`}
+            <button onclick="closeGameContainer()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-300 active:scale-95 transition-all">✕ Về Phòng Gym</button>
           </div>
         </div>
       `;
@@ -3417,7 +4553,7 @@
 
     function startMemoryGridGame() {
       if (isGymDailyLimitReached()) {
-        alert("🛑 ĐÃ ĐẠT GIỚI HẠN 5 LƯỢT GYM HÔM NAY!\n\nBạn đã hoàn thành trọn vẹn 5/5 lượt rèn luyện não bộ trong ngày hôm nay.\n\nKhoa học thần kinh khuyến cáo tập luyện ngắt quãng để các nơ-ron và synap thần kinh vỏ não trước trán củng cố tự nhiên mà không bị quá tải.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!");
+        promptGymOutOfPlays();
         return;
       }
 
@@ -3462,21 +4598,23 @@
       trapCells = [];
       userSelectedCells = [];
 
+      // Nâng cấp độ khó ma trận (tăng bẫy bom, tăng tốc độ chớp tắt, rút ngắn thời gian nhớ)
       let gridSize = 3;
       let numTargets = 4;
-      let numTraps = 0;
-      let flashTimeMs = 1400;
+      let numTraps = 1;
+      let flashTimeMs = 1100;
+      let recallDuration = 7;
 
       if (gridLevel === 2) {
-        gridSize = 4; numTargets = 5; numTraps = 0; flashTimeMs = 1200;
+        gridSize = 4; numTargets = 5; numTraps = 2; flashTimeMs = 950; recallDuration = 7;
       } else if (gridLevel === 3) {
-        gridSize = 4; numTargets = 6; numTraps = 1; flashTimeMs = 1100;
+        gridSize = 4; numTargets = 6; numTraps = 3; flashTimeMs = 850; recallDuration = 6;
       } else if (gridLevel === 4) {
-        gridSize = 5; numTargets = 7; numTraps = 2; flashTimeMs = 1000;
+        gridSize = 5; numTargets = 7; numTraps = 3; flashTimeMs = 750; recallDuration = 6;
       } else if (gridLevel === 5) {
-        gridSize = 5; numTargets = 8; numTraps = 3; flashTimeMs = 900;
+        gridSize = 5; numTargets = 8; numTraps = 4; flashTimeMs = 700; recallDuration = 6;
       } else if (gridLevel === 6) {
-        gridSize = 5; numTargets = 9; numTraps = 4; flashTimeMs = 800;
+        gridSize = 5; numTargets = 9; numTraps = 5; flashTimeMs = 650; recallDuration = 5;
       }
 
       const totalCells = gridSize * gridSize;
@@ -3538,8 +4676,7 @@
         const instr = document.getElementById('memory-grid-instruction');
         if (instr) instr.innerText = '⚡ CHẠM LẠI CÁC Ô XANH (Tuyệt đối tránh ô Bẫy Bom!):';
         
-        // Start 8s recall timer
-        gridRecallSeconds = 8;
+        gridRecallSeconds = recallDuration;
         const timerDisp = document.getElementById('grid-timer-display');
         if (timerDisp) timerDisp.innerText = `Còn: ${gridRecallSeconds}s`;
 
@@ -3557,7 +4694,6 @@
           if (gridRecallSeconds <= 0) {
             clearInterval(gridRecallTimer);
             gridRecallTimer = null;
-            // DỪNG LẠI và hiển thị bảng kết thúc ngay tại chỗ, TUYỆT ĐỐI KHÔNG ALERT LẶP và KHÔNG TỰ ĐỘNG CHẠY LẠI
             showMemoryGameOver('timeout');
           }
         }, 1000);
@@ -3605,22 +4741,30 @@
             gridRecallTimer = null;
           }
           if (gridLevel >= 6) {
+            // Thắng toàn bộ 6 vòng
+            consumeOneGymPlay();
             APP_STATE.bfsScore += 50;
             APP_STATE.rankPoints += 50;
             APP_STATE.gymCompletedCount++;
-            recordTodayGymPlay();
             updateStatsUI();
             saveAppStateToLocal();
             renderLeaderboard();
+            updateDailyGymUI();
+
+            const { totalAvailable } = getGymRemainingPlays();
 
             document.getElementById('game-dynamic-area').innerHTML = `
               <div class="text-center space-y-3 py-4">
                 <span class="text-4xl">👑</span>
                 <h3 class="text-lg font-black text-slate-900 font-cyber">CHIẾN THẦN TRÍ NHỚ VÔ ĐỊCH!</h3>
-                <p class="text-xs text-slate-600">Bạn đã chinh phục trọn vẹn 6 cấp độ ma trận 5x5 và vượt qua toàn bộ bẫy bom nơ-ron.</p>
-                <div class="text-sm font-black text-blue-600">+50 Điểm BFS & +50 Điểm XH đã cộng!</div>
-                <div class="pt-2">
-                  <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">✕ Về Phòng Gym</button>
+                <p class="text-xs text-slate-600">Bạn đã chinh phục xuất sắc toàn bộ 6 cấp độ ma trận và vô hiệu hóa tất cả bẫy bom.</p>
+                <div class="text-sm font-black text-blue-600 bg-blue-50 border border-blue-200 py-2 px-4 rounded-xl inline-block">+50 Điểm BFS & +50 Điểm XH đã cộng!</div>
+                <div class="text-[11px] text-rose-600 font-bold">⚠️ Đã trừ 1 lượt chơi của bạn! (Còn lại: ${totalAvailable} lượt)</div>
+                <div class="pt-2 flex items-center justify-center gap-2.5">
+                  ${totalAvailable > 0 
+                    ? `<button onclick="startMemoryGridGame()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">🔄 Chơi Lượt Mới (-1 Lượt)</button>` 
+                    : `<button onclick="openGymShopModal()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">🛒 Mua Lượt (35đ)</button>`}
+                  <button onclick="closeGameContainer()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-300 active:scale-95 transition-all">✕ Về Phòng Gym</button>
                 </div>
               </div>
             `;
@@ -3644,7 +4788,7 @@
       }
     }
 
-    // GIAO DIỆN DỪNG VÀ BÁO KẾT QUẢ RÕ RÀNG (KHÔNG DÙNG ALERT CHẶN TRÌNH DUYỆT)
+    // GIAO DIỆN DỪNG VÀ BÁO KẾT QUẢ: THUA MẤT 1 LƯỢT CHƠI NHƯNG VẪN ĐƯỢC CỘNG ĐIỂM THEO VÒNG ĐÃ THẮNG
     function showMemoryGameOver(reason) {
       if (gridRecallTimer) {
         clearInterval(gridRecallTimer);
@@ -3655,20 +4799,46 @@
         gridFlashTimeout = null;
       }
 
+      // 1. Phạt trừ 1 lượt chơi
+      consumeOneGymPlay();
+
+      // 2. Tính điểm cộng dựa theo số vòng đã vượt qua thành công:
+      // Thắng 0 vòng (thua ở vòng 1) -> 0đ
+      // Thắng 1 vòng (thua ở vòng 2) -> +5đ
+      // Thắng 2 vòng (thua ở vòng 3) -> +10đ
+      // Thắng 3 vòng (thua ở vòng 4) -> +20đ
+      // Thắng 4 vòng (thua ở vòng 5) -> +30đ (Theo đúng yêu cầu của người dùng!)
+      // Thắng 5 vòng (thua ở vòng 6) -> +40đ
+      const wonRounds = Math.max(0, gridLevel - 1);
+      const MEMORY_LEVEL_POINTS = [0, 5, 10, 20, 30, 40, 50];
+      const earnedPoints = MEMORY_LEVEL_POINTS[wonRounds] || 0;
+
+      if (earnedPoints > 0) {
+        APP_STATE.bfsScore += earnedPoints;
+        APP_STATE.rankPoints += earnedPoints;
+      }
+      APP_STATE.gymCompletedCount++;
+      saveAppStateToLocal();
+      updateStatsUI();
+      renderLeaderboard();
+      updateDailyGymUI();
+
+      const { totalAvailable } = getGymRemainingPlays();
+
       let icon = '⏰';
-      let title = 'HẾT 8 GIÂY SUY NGHĨ!';
-      let desc = 'Thời gian 8 giây ghi nhớ đã trôi qua. Vùng nhớ làm việc (Working Memory) tạm thời bị bão hòa. Hãy thư giãn một nhịp.';
+      let title = 'HẾT THỜI GIAN SUY NGHĨ!';
+      let desc = 'Thời gian ghi nhớ của cấp độ này đã kết thúc. Vùng nhớ làm việc (Working Memory) tạm thời bão hòa.';
       let bgBadge = 'bg-amber-100 text-amber-800 border-amber-300';
 
       if (reason === 'bomb') {
         icon = '💥';
         title = 'BÙM! CHẠM TRÚNG Ô BẪY BOM';
-        desc = 'Bạn đã kích hoạt trúng ô bẫy bom ẩn. Trong môi trường học tập, các kích thích xao nhãng đột ngột cũng nguy hiểm như vậy.';
+        desc = 'Bạn đã kích hoạt trúng ô bẫy bom nơ-ron. Các tác nhân xao nhãng đột ngột đã phá vỡ chuỗi ghi nhớ.';
         bgBadge = 'bg-rose-100 text-rose-800 border-rose-300';
       } else if (reason === 'wrong') {
         icon = '✕';
         title = 'CHƯA CHÍNH XÁC!';
-        desc = 'Bạn đã chạm nhầm ô không phát sáng. Hãy tập trung quan sát kỹ các nơ-ron liên kết ở lượt tiếp theo.';
+        desc = 'Bạn đã chạm nhầm ô không phát sáng. Hãy quan sát thật kỹ các vị trí kích hoạt ở lượt tiếp theo.';
         bgBadge = 'bg-rose-100 text-rose-800 border-rose-300';
       }
 
@@ -3686,12 +4856,40 @@
               ${desc}
             </p>
           </div>
-          <div class="flex items-center justify-center gap-3 pt-2">
-            <button onclick="startMemoryGridGame()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5">
-              <span>🔄</span> <span>Thử Lại (Cấp 1)</span>
-            </button>
+
+          <!-- Thông tin số vòng thắng và điểm cộng -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 max-w-sm mx-auto space-y-2 text-left">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+              <span>Tiến độ vượt ải:</span>
+              <span class="text-blue-600 font-cyber font-black">Thắng ${wonRounds}/6 vòng (Dừng ở vòng ${gridLevel})</span>
+            </div>
+            ${earnedPoints > 0 ? `
+              <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-black flex items-center gap-2">
+                <span class="text-base">🎁</span>
+                <span>VẪN ĐƯỢC CỘNG: +${earnedPoints} Điểm BFS & +${earnedPoints} Điểm XH!</span>
+              </div>
+            ` : `
+              <div class="p-2 rounded-xl bg-slate-100 text-slate-600 text-xs font-medium text-center">
+                Chưa vượt qua vòng 1: Chưa tích lũy được điểm cộng vòng này.
+              </div>
+            `}
+            <div class="text-[11px] text-rose-600 font-black text-center pt-1">
+              ⚠️ ĐÃ TRỪ 1 LƯỢT CHƠI GYM! (Còn lại: ${totalAvailable} lượt)
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center gap-2.5 pt-2">
+            ${totalAvailable > 0 ? `
+              <button onclick="startMemoryGridGame()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5">
+                <span>🔄</span> <span>Chơi Lượt Mới (-1 Lượt)</span>
+              </button>
+            ` : `
+              <button onclick="openGymShopModal()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-black rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5">
+                <span>🛒</span> <span>Mua Lượt (35đ)</span>
+              </button>
+            `}
             <button onclick="closeGameContainer()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-all active:scale-95 flex items-center gap-1.5">
-              <span>🛑</span> <span>Dừng Chơi / Thoát</span>
+              <span>✕</span> <span>Về Phòng Gym</span>
             </button>
           </div>
         </div>
@@ -3700,20 +4898,28 @@
 
     // ---------------- GAME 3: TÍNH NHẨM ĐA BIỂU THỨC (Complex Arithmetic & Dynamic Time) ----------------
     let mathScore = 0;
-    let mathTimeRemaining = 20;
+    let mathTimeRemaining = 20; // Khởi đầu 20s cho người chơi dễ tính hơn
     let mathInterval = null;
-    let currentMathAnswer = true;
     let mathStreak = 0;
+    let mathCorrectCount = 0;
+    let isMathGameActive = false;
+    let currentMathType = 'tf'; // 'tf' (đúng/sai) hoặc 'mc' (tự tính đáp án)
+    let currentMathAnswer = true;
+    let currentExactMathAnswer = 0;
+    let isMathHandlingAnswer = false;
 
     function startRapidMathGame() {
       if (isGymDailyLimitReached()) {
-        alert("🛑 ĐÃ ĐẠT GIỚI HẠN 5 LƯỢT GYM HÔM NAY!\n\nBạn đã hoàn thành trọn vẹn 5/5 lượt rèn luyện não bộ trong ngày hôm nay.\n\nKhoa học thần kinh khuyến cáo tập luyện ngắt quãng để các nơ-ron và synap thần kinh vỏ não trước trán củng cố tự nhiên mà không bị quá tải.\n\nHãy nghỉ ngơi và quay lại vào ngày mai bạn nhé!");
+        promptGymOutOfPlays();
         return;
       }
 
       mathScore = 0;
       mathStreak = 0;
-      mathTimeRemaining = 20;
+      mathCorrectCount = 0;
+      isMathGameActive = true;
+      mathTimeRemaining = 20; // 20s theo yêu cầu
+      isMathHandlingAnswer = false;
       if (mathInterval) {
         clearInterval(mathInterval);
         mathInterval = null;
@@ -3741,90 +4947,148 @@
     }
 
     function renderNextMathProblem() {
+      isMathHandlingAnswer = false;
       const templates = [
         () => {
-          const a = Math.floor(Math.random() * 15) + 6;
-          const b = Math.floor(Math.random() * 8) + 3;
-          const c = Math.floor(Math.random() * 40) + 10;
+          const a = Math.floor(Math.random() * 12) + 5;
+          const b = Math.floor(Math.random() * 7) + 3;
+          const c = Math.floor(Math.random() * 30) + 10;
           const exact = (a * b) - c;
-          const isCorrect = Math.random() > 0.5;
-          const delta = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 4) + 1);
-          const shown = isCorrect ? exact : exact + delta;
-          return { expr: `(${a} × ${b}) - ${c} = ${shown}`, answer: isCorrect };
+          return { exprStr: `(${a} × ${b}) - ${c}`, exact };
         },
         () => {
-          const b = Math.floor(Math.random() * 8) + 4;
-          const c = Math.floor(Math.random() * 9) + 4;
-          const a = (b * c) + Math.floor(Math.random() * 45) + 15;
-          const exact = a - (b * c);
-          const isCorrect = Math.random() > 0.5;
-          const delta = (Math.random() > 0.5 ? 2 : -2);
-          const shown = isCorrect ? exact : exact + delta;
-          return { expr: `${a} - (${b} × ${c}) = ${shown}`, answer: isCorrect };
-        },
-        () => {
-          const b = Math.floor(Math.random() * 6) + 4;
-          const quotient = Math.floor(Math.random() * 10) + 4;
-          const a = b * quotient;
+          const b = Math.floor(Math.random() * 7) + 3;
           const c = Math.floor(Math.random() * 7) + 3;
-          const d = Math.floor(Math.random() * 30) + 10;
-          const exact = (a / b) * c + d;
-          const isCorrect = Math.random() > 0.5;
-          const delta = (Math.random() > 0.5 ? 3 : -3);
-          const shown = isCorrect ? exact : exact + delta;
-          return { expr: `(${a} ÷ ${b}) × ${c} + ${d} = ${shown}`, answer: isCorrect };
+          const a = (b * c) + Math.floor(Math.random() * 35) + 10;
+          const exact = a - (b * c);
+          return { exprStr: `${a} - (${b} × ${c})`, exact };
         },
         () => {
-          const a = Math.floor(Math.random() * 20) + 10;
-          const b = Math.floor(Math.random() * 20) + 10;
+          const b = Math.floor(Math.random() * 5) + 3;
+          const quotient = Math.floor(Math.random() * 8) + 3;
+          const a = b * quotient;
+          const c = Math.floor(Math.random() * 5) + 3;
+          const d = Math.floor(Math.random() * 25) + 10;
+          const exact = (a / b) * c + d;
+          return { exprStr: `(${a} ÷ ${b}) × ${c} + ${d}`, exact };
+        },
+        () => {
+          const a = Math.floor(Math.random() * 15) + 8;
+          const b = Math.floor(Math.random() * 15) + 8;
           const mult = Math.floor(Math.random() * 3) + 2;
-          const c = Math.floor(Math.random() * 40) + 15;
+          const c = Math.floor(Math.random() * 30) + 10;
           const exact = (a + b) * mult - c;
-          const isCorrect = Math.random() > 0.5;
-          const delta = (Math.random() > 0.5 ? 4 : -4);
-          const shown = isCorrect ? exact : exact + delta;
-          return { expr: `(${a} + ${b}) × ${mult} - ${c} = ${shown}`, answer: isCorrect };
+          return { exprStr: `(${a} + ${b}) × ${mult} - ${c}`, exact };
         }
       ];
 
       const chosenGen = templates[Math.floor(Math.random() * templates.length)];
       const prob = chosenGen();
-      currentMathAnswer = prob.answer;
+      currentExactMathAnswer = prob.exact;
 
-      document.getElementById('game-dynamic-area').innerHTML = `
-        <div class="space-y-4 text-center">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-              <span class="text-xs font-black text-rose-500 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-lg" id="math-time-display">${mathTimeRemaining}s</span>
-              <span class="text-[10px] text-slate-500 font-bold">(Đúng +2s | Sai -3s)</span>
+      // Chèn ngẫu nhiên các câu hỏi tự tính đáp án (50% tỷ lệ)
+      const isSelfCalc = Math.random() > 0.45;
+      currentMathType = isSelfCalc ? 'mc' : 'tf';
+
+      if (currentMathType === 'tf') {
+        const isCorrect = Math.random() > 0.5;
+        const delta = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 4) + 1);
+        const shown = isCorrect ? prob.exact : prob.exact + delta;
+        currentMathAnswer = isCorrect;
+
+        document.getElementById('game-dynamic-area').innerHTML = `
+          <div class="space-y-4 text-center">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-black text-rose-500 bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded-lg" id="math-time-display">${mathTimeRemaining}s</span>
+                <span class="text-[10px] text-slate-500 font-bold">(Đúng +2s | Sai -3s)</span>
+              </div>
+              <span class="text-xs font-black text-amber-600">Điểm: ${mathScore} ${mathStreak > 1 ? `(🔥x${mathStreak})` : ''}</span>
+              <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1">
+                <span>✕</span> <span>Thoát</span>
+              </button>
             </div>
-            <span class="text-xs font-black text-amber-600">Điểm: ${mathScore} ${mathStreak > 1 ? `(🔥x${mathStreak})` : ''}</span>
-            <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1">
-              <span>✕</span> <span>Thoát</span>
-            </button>
-          </div>
 
-          <p class="text-xs text-slate-700 font-semibold">Phép tính phức hợp sau Đúng hay Sai?</p>
-          
-          <div class="py-6 my-2 bg-slate-50 border border-slate-200 rounded-2xl shadow-xs">
-            <span class="text-2xl sm:text-3xl font-black font-cyber text-slate-900 tracking-wide">${prob.expr}</span>
-          </div>
+            <div class="flex items-center justify-center">
+              <span class="text-[10px] uppercase font-bold tracking-wider bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full border border-slate-200">
+                Dạng 1: Kiểm Tra Đúng / Sai
+              </span>
+            </div>
 
-          <div class="flex gap-3 justify-center">
-            <button onclick="submitMathChoice(true)" class="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-base rounded-2xl active:scale-95 transition-all shadow-md">
-              ✓ ĐÚNG (+2s)
-            </button>
-            <button onclick="submitMathChoice(false)" class="flex-1 py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-black text-base rounded-2xl active:scale-95 transition-all shadow-md">
-              ✕ SAI (+2s)
-            </button>
+            <p class="text-xs text-slate-700 font-semibold">Phép tính phức hợp sau Đúng hay Sai?</p>
+            
+            <div class="py-5 my-1 bg-slate-50 border border-slate-200 rounded-2xl shadow-xs">
+              <span class="text-2xl sm:text-3xl font-black font-cyber text-slate-900 tracking-wide">${prob.exprStr} = ${shown}</span>
+            </div>
+
+            <div class="flex gap-3 justify-center">
+              <button onclick="submitMathChoice(true)" class="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-base rounded-2xl active:scale-95 transition-all shadow-md">
+                ✓ ĐÚNG (+2s)
+              </button>
+              <button onclick="submitMathChoice(false)" class="flex-1 py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-black text-base rounded-2xl active:scale-95 transition-all shadow-md">
+                ✕ SAI (+2s)
+              </button>
+            </div>
           </div>
-        </div>
-      `;
+        `;
+      } else {
+        // Dạng 2: Tự tính đáp án chính xác (chọn trong 4 phương án)
+        const deltas = [-4, -3, -2, -1, 1, 2, 3, 4, 5, -5];
+        deltas.sort(() => Math.random() - 0.5);
+        const choices = [prob.exact];
+        for (const d of deltas) {
+          const val = prob.exact + d;
+          if (!choices.includes(val)) {
+            choices.push(val);
+          }
+          if (choices.length === 4) break;
+        }
+        choices.sort(() => Math.random() - 0.5);
+
+        document.getElementById('game-dynamic-area').innerHTML = `
+          <div class="space-y-4 text-center">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-black text-rose-500 bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded-lg" id="math-time-display">${mathTimeRemaining}s</span>
+                <span class="text-[10px] text-slate-500 font-bold">(Đúng +2s | Sai -3s)</span>
+              </div>
+              <span class="text-xs font-black text-amber-600">Điểm: ${mathScore} ${mathStreak > 1 ? `(🔥x${mathStreak})` : ''}</span>
+              <button onclick="closeGameContainer()" class="px-2.5 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold border border-rose-200 flex items-center gap-1">
+                <span>✕</span> <span>Thoát</span>
+              </button>
+            </div>
+
+            <div class="flex items-center justify-center">
+              <span class="text-[10px] uppercase font-black tracking-wider bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-0.5 rounded-full shadow-xs animate-pulse">
+                ⚡ TỰ TÍNH ĐÁP ÁN
+              </span>
+            </div>
+
+            <p class="text-xs text-slate-700 font-semibold">Tự tính nhẩm và chọn kết quả chính xác của biểu thức:</p>
+            
+            <div class="py-5 my-1 bg-slate-50 border border-slate-200 rounded-2xl shadow-xs">
+              <span class="text-2xl sm:text-3xl font-black font-cyber text-slate-900 tracking-wide">${prob.exprStr} = <span class="text-blue-600 font-black">?</span></span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5 max-w-sm mx-auto">
+              ${choices.map(c => `
+                <button onclick="submitMathExactChoice(${c}, ${prob.exact})" id="math-choice-btn-${c}" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-50 text-slate-900 font-cyber font-black text-lg border-2 border-slate-200 active:scale-95 transition-all shadow-xs hover:border-blue-400">
+                  ${c}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
     }
 
     function submitMathChoice(userChoice) {
+      if (isMathHandlingAnswer) return;
+      isMathHandlingAnswer = true;
+
       if (userChoice === currentMathAnswer) {
         mathStreak++;
+        mathCorrectCount++;
         const pts = mathStreak >= 3 ? 20 : 15;
         mathScore += pts;
         mathTimeRemaining = Math.min(45, mathTimeRemaining + 2);
@@ -3843,7 +5107,48 @@
         }
         finishRapidMath();
       } else {
-        renderNextMathProblem();
+        setTimeout(renderNextMathProblem, 300);
+      }
+    }
+
+    function submitMathExactChoice(chosenVal, exactVal) {
+      if (isMathHandlingAnswer) return;
+      isMathHandlingAnswer = true;
+
+      const chosenBtn = document.getElementById(`math-choice-btn-${chosenVal}`);
+      const exactBtn = document.getElementById(`math-choice-btn-${exactVal}`);
+
+      if (chosenVal === exactVal) {
+        mathStreak++;
+        mathCorrectCount++;
+        const pts = mathStreak >= 3 ? 25 : 20;
+        mathScore += pts;
+        mathTimeRemaining = Math.min(45, mathTimeRemaining + 2);
+        if (chosenBtn) {
+          chosenBtn.className = "py-3 px-4 rounded-2xl bg-emerald-500 text-white font-cyber font-black text-lg border-2 border-emerald-600 shadow-md scale-105 transition-all";
+        }
+      } else {
+        mathStreak = 0;
+        mathTimeRemaining = Math.max(0, mathTimeRemaining - 3);
+        if (chosenBtn) {
+          chosenBtn.className = "py-3 px-4 rounded-2xl bg-rose-500 text-white font-cyber font-black text-lg border-2 border-rose-600 shadow-md";
+        }
+        if (exactBtn) {
+          exactBtn.className = "py-3 px-4 rounded-2xl bg-emerald-500 text-white font-cyber font-black text-lg border-2 border-emerald-600 shadow-md scale-105 transition-all";
+        }
+      }
+      
+      const timeEl = document.getElementById('math-time-display');
+      if (timeEl) timeEl.innerText = `${mathTimeRemaining}s`;
+
+      if (mathTimeRemaining <= 0) {
+        if (mathInterval) {
+          clearInterval(mathInterval);
+          mathInterval = null;
+        }
+        setTimeout(finishRapidMath, 450);
+      } else {
+        setTimeout(renderNextMathProblem, 400);
       }
     }
 
@@ -3852,22 +5157,63 @@
         clearInterval(mathInterval);
         mathInterval = null;
       }
-      APP_STATE.bfsScore += 40;
-      APP_STATE.rankPoints += 40;
+      isMathHandlingAnswer = false;
+      isMathGameActive = false;
+
+      // Tiêu hao 1 lượt chơi (Thắng hay thua đều mất 1 lượt)
+      consumeOneGymPlay();
+
+      // Cơ chế tính điểm công bằng:
+      // Tối đa 50 điểm (chuẩn hóa đồng bộ với 2 trò còn lại)
+      // Thua sớm/sai nhiều (<= 1 câu đúng hoặc mathScore < 30): 0 điểm, bị phạt mất 1 lượt chơi
+      // 2-3 câu đúng: 10 điểm
+      // 4-6 câu đúng: 20 điểm
+      // 7-9 câu đúng: 30 điểm
+      // 10-12 câu đúng: 40 điểm
+      // 13+ câu đúng: 50 điểm
+      let earnedPoints = 0;
+      if (mathCorrectCount <= 1 || mathScore < 30) {
+        earnedPoints = 0;
+      } else if (mathCorrectCount <= 3) {
+        earnedPoints = 10;
+      } else if (mathCorrectCount <= 6) {
+        earnedPoints = 20;
+      } else if (mathCorrectCount <= 9) {
+        earnedPoints = 30;
+      } else if (mathCorrectCount <= 12) {
+        earnedPoints = 40;
+      } else {
+        earnedPoints = 50;
+      }
+
+      if (earnedPoints > 0) {
+        APP_STATE.bfsScore += earnedPoints;
+        APP_STATE.rankPoints += earnedPoints;
+      }
       APP_STATE.gymCompletedCount++;
-      recordTodayGymPlay();
       updateStatsUI();
       saveAppStateToLocal();
       renderLeaderboard();
+      updateDailyGymUI();
+
+      const { totalAvailable } = getGymRemainingPlays();
 
       document.getElementById('game-dynamic-area').innerHTML = `
         <div class="text-center space-y-3 py-4">
-          <span class="text-4xl">⚡</span>
+          <span class="text-4xl">${earnedPoints > 0 ? '⚡' : '⚠️'}</span>
           <h3 class="text-lg font-black text-slate-900 font-cyber">KẾT THÚC TÍNH NHẨM PHẢN XẠ!</h3>
-          <p class="text-xs text-slate-600">Bạn ghi được <strong>${mathScore} điểm</strong> phản xạ tính nhẩm tổ hợp.</p>
-          <div class="text-sm font-black text-blue-600">+40 Điểm BFS & +40 Điểm XH đã cộng!</div>
-          <div class="pt-2">
-            <button onclick="closeGameContainer()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">✕ Đóng / Về Phòng Gym</button>
+          <p class="text-xs text-slate-600">
+            Chính xác: <strong>${mathCorrectCount} câu</strong> • Ghi được: <strong>${mathScore} điểm</strong> phản xạ.
+          </p>
+          <div class="text-sm font-black ${earnedPoints > 0 ? 'text-blue-600 bg-blue-50 border border-blue-200' : 'text-slate-600 bg-slate-100 border border-slate-200'} py-2 px-4 rounded-xl inline-block">
+            ${earnedPoints > 0 ? `🎉 VẪN ĐƯỢC CỘNG: +${earnedPoints} Điểm BFS & +${earnedPoints} Điểm XH!` : `⚠️ Trả lời đúng quá ít (${mathCorrectCount} câu): Chưa đủ điều kiện nhận điểm thưởng.`}
+          </div>
+          <div class="text-[11px] text-rose-600 font-bold">⚠️ Đã trừ 1 lượt chơi của bạn! (Còn lại: ${totalAvailable} lượt)</div>
+          <div class="pt-2 flex items-center justify-center gap-2.5">
+            ${totalAvailable > 0 
+              ? `<button onclick="startRapidMathGame()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">🔄 Chơi Lượt Mới (-1 Lượt)</button>` 
+              : `<button onclick="openGymShopModal()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-md active:scale-95 transition-all">🛒 Mua Lượt (35đ)</button>`}
+            <button onclick="closeGameContainer()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-300 active:scale-95 transition-all">✕ Về Phòng Gym</button>
           </div>
         </div>
       `;
@@ -3875,10 +5221,38 @@
 
     // DỪNG TOÀN DIỆN VÀ AN TOÀN MỌI TIẾN TRÌNH TRÒ CHƠI
     function closeGameContainer() {
+      // Nếu đang trong trò chơi dở dang mà người dùng bấm Dừng/Thoát, cảnh báo bảo vệ lượt chơi
+      const isAnyGameActive = isGridGameActive || isStroopGameActive || isMathGameActive;
+      if (isAnyGameActive) {
+        const confirmQuit = confirm("⚠️ BẠN ĐANG TRONG LƯỢT TẬP GYM!\n\nNếu dừng chơi lúc này, lượt chơi này sẽ bị tính là kết thúc và điểm sẽ chốt theo kết quả hiện tại.\n\nBạn có chắc chắn muốn dừng không?");
+        if (!confirmQuit) return;
+
+        if (isGridGameActive) {
+          showMemoryGameOver('wrong');
+          return;
+        }
+        if (isStroopGameActive) {
+          finishStroopGame();
+          return;
+        }
+        if (isMathGameActive) {
+          finishRapidMath();
+          return;
+        }
+      }
+
       isGridGameActive = false;
+      isStroopGameActive = false;
+      isMathGameActive = false;
+      isStroopHandlingAnswer = false;
+      isMathHandlingAnswer = false;
       if (stroopRoundTimer) {
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
+      }
+      if (stroopFeedbackTimeout) {
+        clearTimeout(stroopFeedbackTimeout);
+        stroopFeedbackTimeout = null;
       }
       if (gridRecallTimer) {
         clearInterval(gridRecallTimer);
@@ -4499,8 +5873,10 @@
           userName: APP_STATE.userName,
           userSchool: APP_STATE.userSchool,
           userAvatar: APP_STATE.userAvatar,
+          userPassword: APP_STATE.userPassword || '',
           rankPoints: APP_STATE.rankPoints,
           bfsScore: APP_STATE.bfsScore,
+          purchasedGymPlays: Math.max(0, Number(APP_STATE.purchasedGymPlays) || 0),
           totalHours: APP_STATE.totalHours,
           streakDays: APP_STATE.streakDays,
           sessionsCompletedCount: APP_STATE.sessionsCompletedCount || (Array.isArray(APP_STATE.history) ? APP_STATE.history.length : 0),
@@ -4529,8 +5905,10 @@
           if (data.userName) APP_STATE.userName = data.userName;
           if (data.userSchool) APP_STATE.userSchool = data.userSchool;
           if (data.userAvatar !== undefined) APP_STATE.userAvatar = data.userAvatar;
+          if (data.userPassword !== undefined) APP_STATE.userPassword = data.userPassword;
           if (data.rankPoints !== undefined) APP_STATE.rankPoints = Number(data.rankPoints) || 1000;
           if (data.bfsScore !== undefined) APP_STATE.bfsScore = Number(data.bfsScore) || 0;
+          if (data.purchasedGymPlays !== undefined) APP_STATE.purchasedGymPlays = Math.max(0, Number(data.purchasedGymPlays) || 0);
           if (data.totalHours !== undefined) APP_STATE.totalHours = Number(data.totalHours) || 0;
           if (data.streakDays !== undefined) APP_STATE.streakDays = Number(data.streakDays) || 1;
           if (data.sessionsCompletedCount !== undefined) APP_STATE.sessionsCompletedCount = Number(data.sessionsCompletedCount) || 0;
@@ -4619,34 +5997,78 @@
       const titleEl = document.getElementById('register-modal-title');
       const subtitleEl = document.getElementById('register-modal-subtitle');
 
-      if (closeBtn) closeBtn.classList.remove('hidden');
+      const isForced = !APP_STATE.userEmail || !APP_STATE.userName || !APP_STATE.isAuthenticated;
+
+      if (closeBtn) {
+        if (isForced && (!APP_STATE.userEmail || !APP_STATE.userName)) {
+          closeBtn.classList.add('hidden');
+        } else {
+          closeBtn.classList.remove('hidden');
+        }
+      }
       if (cancelBtn) {
-        cancelBtn.classList.remove('hidden');
-        cancelBtn.innerText = isOnboarding ? "Để sau" : "Huỷ";
+        if (isForced && (!APP_STATE.userEmail || !APP_STATE.userName)) {
+          cancelBtn.classList.add('hidden');
+        } else {
+          cancelBtn.classList.remove('hidden');
+          cancelBtn.innerText = "Huỷ";
+        }
       }
 
-      if (isOnboarding) {
+      if (isOnboarding || (!APP_STATE.userEmail || !APP_STATE.userName)) {
         if (titleEl) titleEl.innerText = "CHÀO MỪNG ĐẾN VỚI BRAIN FOCUS";
-        if (subtitleEl) subtitleEl.innerText = "Bước 1/2: Đăng ký Gmail & Nhận ngay 1000đ Xếp Hạng";
+        if (subtitleEl) subtitleEl.innerText = "Bước 1/2: Đăng ký & Đặt mật khẩu bảo vệ tài khoản";
       } else {
         if (titleEl) titleEl.innerText = "TẠO TÀI KHOẢN HỌC VIÊN";
         if (subtitleEl) subtitleEl.innerText = "Nhận ngay 1000 điểm xếp hạng gốc";
+      }
+
+      // Reset trường email và phản hồi trạng thái
+      const regEmailInput = document.getElementById('reg-input-email');
+      if (regEmailInput) {
+        if (!APP_STATE.userEmail) {
+          regEmailInput.value = '';
+          handleRegEmailInput('');
+        } else {
+          handleRegEmailInput(regEmailInput.value);
+        }
       }
 
       modal.classList.remove('hidden');
     }
 
     function closeRegisterModal() {
-      document.getElementById('register-modal').classList.add('hidden');
+      const modal = document.getElementById('register-modal');
+      if (modal) modal.classList.add('hidden');
       try {
         localStorage.setItem('bf_onboarded_completed', 'true');
       } catch (_) {}
+
+      // Nếu chưa được xác thực mật khẩu
+      if (!APP_STATE.isAuthenticated) {
+        if (!APP_STATE.userEmail || !APP_STATE.userName) {
+          openRegisterModal(true);
+        } else {
+          loadUsersDatabase();
+          const targetUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === (APP_STATE.userEmail || '').toLowerCase().trim()) || {
+            email: APP_STATE.userEmail,
+            name: APP_STATE.userName,
+            avatar: APP_STATE.userAvatar,
+            password: APP_STATE.userPassword
+          };
+          openAccountAuthModal(targetUser, true);
+        }
+      }
     }
 
     function openEditProfileModal() {
       document.getElementById('edit-input-name').value = APP_STATE.userName || '';
       document.getElementById('edit-input-school').value = APP_STATE.userSchool || '';
-      document.getElementById('edit-input-email').value = APP_STATE.userEmail || '';
+      const editEmailInput = document.getElementById('edit-input-email');
+      if (editEmailInput) {
+        editEmailInput.value = APP_STATE.userEmail || '';
+        handleEditEmailInput(editEmailInput.value);
+      }
       
       const prevImg = document.getElementById('edit-avatar-img');
       const prevInit = document.getElementById('edit-avatar-initial');
@@ -4721,30 +6143,226 @@
       }
     }
 
-    // Submission Handlers
-    function handleRegisterSubmit(e) {
-      e.preventDefault();
-      const email = document.getElementById('reg-input-email').value.trim();
-      const name = document.getElementById('reg-input-name').value.trim();
-      const school = document.getElementById('reg-input-school').value.trim() || 'Người học tập trung';
-      
-      if (!name && !email) {
-        alert('Vui lòng điền họ tên và email của bạn!');
+    // ================= XÁC THỰC ĐỊNH DẠNG GMAIL NGHIÊM NGẶT =================
+    function validateGmailAddress(rawEmail) {
+      const email = String(rawEmail || '').trim().toLowerCase();
+      if (!email) {
+        return { valid: false, message: 'Vui lòng nhập địa chỉ Gmail của bạn!' };
+      }
+
+      // 1. Tuyệt đối không chứa khoảng trắng
+      if (/\s/.test(email)) {
+        return { valid: false, message: '❌ Địa chỉ Gmail không được chứa khoảng cách (dấu cách)!' };
+      }
+
+      // 2. Kiểm tra phần đuôi @gmail.com
+      if (!email.endsWith('@gmail.com')) {
+        if (email.includes('@')) {
+          const parts = email.split('@');
+          const domain = parts[1] || '';
+          return {
+            valid: false,
+            message: `❌ Địa chỉ phải có đuôi "@gmail.com" (bạn đang nhập "@${domain}"). Ứng dụng chỉ chấp nhận tài khoản Google Gmail!`
+          };
+        } else {
+          return {
+            valid: false,
+            message: '❌ Bắt buộc phải có đuôi "@gmail.com" (Ví dụ: ' + (email || 'tentaikhoan') + '@gmail.com)!'
+          };
+        }
+      }
+
+      // 3. Đúng một ký tự '@' duy nhất
+      const atMatches = email.match(/@/g);
+      if (!atMatches || atMatches.length !== 1) {
+        return { valid: false, message: '❌ Địa chỉ Gmail chỉ được chứa đúng 1 ký tự "@"!' };
+      }
+
+      // 4. Lấy phần tên người dùng (trước @gmail.com)
+      const username = email.slice(0, -10); // cắt bỏ 10 ký tự '@gmail.com'
+
+      // 5. Kiểm tra độ dài chuẩn của Google (6 - 30 ký tự)
+      if (username.length < 6) {
+        return {
+          valid: false,
+          message: `❌ Tên tài khoản Gmail quá ngắn (${username.length}/6 ký tự). Tên trước @gmail.com phải từ 6 đến 30 ký tự!`
+        };
+      }
+      if (username.length > 30) {
+        return {
+          valid: false,
+          message: `❌ Tên tài khoản Gmail quá dài (${username.length}/30 ký tự). Tên trước @gmail.com tối đa 30 ký tự!`
+        };
+      }
+
+      // 6. Kiểm tra các quy tắc dấu chấm theo chuẩn Google
+      if (username.startsWith('.')) {
+        return { valid: false, message: '❌ Tên tài khoản Gmail không được bắt đầu bằng dấu chấm (.)!' };
+      }
+      if (username.endsWith('.')) {
+        return { valid: false, message: '❌ Tên tài khoản Gmail không được kết thúc bằng dấu chấm (.)!' };
+      }
+      if (username.includes('..')) {
+        return { valid: false, message: '❌ Tên tài khoản Gmail không được chứa hai dấu chấm liên tiếp (..)!' };
+      }
+
+      // 7. Chỉ cho phép chữ cái thường (a-z), chữ số (0-9) và dấu chấm (.)
+      const validGmailRegex = /^[a-z0-9]+(\.[a-z0-9]+)*$/;
+      if (!validGmailRegex.test(username)) {
+        return {
+          valid: false,
+          message: '❌ Tên Gmail chỉ được chứa chữ cái (a-z), số (0-9) và dấu chấm (.). Không dùng ký tự đặc biệt, dấu gạch dưới (_) hoặc tiếng Việt có dấu!'
+        };
+      }
+
+      return { valid: true, email: email, username: username };
+    }
+
+    // Phản hồi thời gian thực khi người dùng gõ email tại Modal Đăng Ký
+    function handleRegEmailInput(val) {
+      const trimmed = String(val || '').trim().toLowerCase();
+      const feedbackEl = document.getElementById('reg-email-feedback');
+      const inputEl = document.getElementById('reg-input-email');
+      const quickBtn = document.getElementById('reg-email-quick-suffix-btn');
+
+      if (!inputEl) return;
+
+      // Hiển thị nút bấm nhanh "+ @gmail.com" nếu người dùng gõ tên mà chưa có @
+      if (trimmed.length > 0 && !trimmed.includes('@')) {
+        if (quickBtn) quickBtn.classList.remove('hidden');
+      } else {
+        if (quickBtn) quickBtn.classList.add('hidden');
+      }
+
+      if (!trimmed) {
+        inputEl.className = 'w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-slate-500 flex items-start gap-1 leading-tight';
+          feedbackEl.innerHTML = '<span>💡</span> <span>Định dạng chuẩn: <strong>tentaikhoan@gmail.com</strong> (chỉ chữ thường, số, dấu chấm; từ 6 - 30 ký tự trước @)</span>';
+        }
         return;
       }
 
-      // 1. Lưu lại tài khoản hiện tại vào DB trước khi chuyển sang tài khoản mới
+      const res = validateGmailAddress(trimmed);
+      if (res.valid) {
+        inputEl.className = 'w-full text-xs bg-emerald-50/50 border-2 border-emerald-500 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-emerald-400 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-emerald-600 font-bold flex items-center gap-1 leading-tight';
+          feedbackEl.innerHTML = `<span>✅</span> <span>Địa chỉ Gmail hợp lệ (${res.username}@gmail.com)</span>`;
+        }
+      } else {
+        inputEl.className = 'w-full text-xs bg-rose-50/50 border-2 border-rose-400 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-rose-400 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-rose-600 font-bold flex items-start gap-1 leading-snug';
+          feedbackEl.innerHTML = `<span>⚠️</span> <span>${res.message}</span>`;
+        }
+      }
+    }
+
+    // Tự động gắn đuôi @gmail.com khi nhấn nút gợi ý
+    function appendRegGmailSuffix() {
+      const inputEl = document.getElementById('reg-input-email');
+      if (!inputEl) return;
+      let val = inputEl.value.trim();
+      if (!val.includes('@')) {
+        val = val.replace(/[^a-zA-Z0-9.]/g, '').toLowerCase() + '@gmail.com';
+        inputEl.value = val;
+        handleRegEmailInput(val);
+        inputEl.focus();
+      }
+    }
+
+    // Phản hồi thời gian thực khi chỉnh sửa email tại Modal Chỉnh Sửa Hồ Sơ
+    function handleEditEmailInput(val) {
+      const trimmed = String(val || '').trim().toLowerCase();
+      const feedbackEl = document.getElementById('edit-email-feedback');
+      const inputEl = document.getElementById('edit-input-email');
+      if (!inputEl) return;
+
+      if (!trimmed) {
+        inputEl.className = 'w-full text-xs bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-slate-500 flex items-start gap-1 leading-tight';
+          feedbackEl.innerHTML = '<span>💡</span> <span>Bắt buộc tài khoản Google có đuôi @gmail.com</span>';
+        }
+        return;
+      }
+
+      const res = validateGmailAddress(trimmed);
+      if (res.valid) {
+        inputEl.className = 'w-full text-xs bg-emerald-50/50 border-2 border-emerald-500 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-emerald-400 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-emerald-600 font-bold flex items-center gap-1 leading-tight';
+          feedbackEl.innerHTML = `<span>✅</span> <span>Gmail hợp lệ (${res.username}@gmail.com)</span>`;
+        }
+      } else {
+        inputEl.className = 'w-full text-xs bg-rose-50/50 border-2 border-rose-400 rounded-xl px-3.5 py-2.5 text-slate-900 focus:ring-2 focus:ring-rose-400 focus:outline-none transition-colors';
+        if (feedbackEl) {
+          feedbackEl.className = 'text-[11px] mt-1.5 transition-all text-rose-600 font-bold flex items-start gap-1 leading-snug';
+          feedbackEl.innerHTML = `<span>⚠️</span> <span>${res.message}</span>`;
+        }
+      }
+    }
+
+    // Submission Handlers
+    function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const emailInput = document.getElementById('reg-input-email');
+      const rawEmail = (emailInput ? emailInput.value : '').trim();
+      const nameInput = document.getElementById('reg-input-name');
+      const name = (nameInput ? nameInput.value : '').trim();
+      const school = (document.getElementById('reg-input-school')?.value || '').trim() || 'Người học tập trung';
+      const passwordInput = document.getElementById('reg-input-password');
+      const password = passwordInput ? passwordInput.value.trim() : '';
+      
+      // 1. Kiểm tra gắt gao chuẩn định dạng Gmail
+      const gmailCheck = validateGmailAddress(rawEmail);
+      if (!gmailCheck.valid) {
+        alert(gmailCheck.message);
+        if (emailInput) {
+          emailInput.focus();
+          emailInput.select();
+        }
+        handleRegEmailInput(rawEmail);
+        return;
+      }
+      const email = gmailCheck.email;
+
+      if (!name || name.length < 2) {
+        alert('Vui lòng điền họ và tên của bạn (tối thiểu 2 ký tự)!');
+        if (nameInput) nameInput.focus();
+        return;
+      }
+
+      if (!password || password.length < 4) {
+        alert('Vui lòng nhập mật khẩu tối thiểu 4 ký tự để bảo vệ tài khoản!');
+        if (passwordInput) passwordInput.focus();
+        return;
+      }
+
+      // 2. Lưu lại tài khoản hiện tại vào DB trước khi chuyển sang tài khoản mới
       syncCurrentUserToDatabase();
       loadUsersDatabase();
 
-      // 2. Kiểm tra xem email này đã từng được tạo trên thiết bị chưa
+      // 3. Kiểm tra xem email này đã từng được tạo trên thiết bị chưa
       const existingUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
       
       if (existingUser) {
+        // Nếu tài khoản cũ đã có mật khẩu và mật khẩu nhập vào không khớp
+        if (existingUser.password && String(existingUser.password).trim() !== password) {
+          alert('❌ Email Gmail này đã được đăng ký trên thiết bị nhưng mật khẩu bạn nhập không đúng!\nVui lòng nhập đúng mật khẩu để truy cập.');
+          if (passwordInput) {
+            passwordInput.focus();
+            passwordInput.select();
+          }
+          return;
+        }
+
         // Khôi phục tài khoản cũ với đầy đủ số điểm và tiến độ đã lưu
         APP_STATE.userEmail = existingUser.email;
         APP_STATE.userName = name || existingUser.name;
         APP_STATE.userSchool = school || existingUser.school;
+        APP_STATE.userPassword = password || existingUser.password || '';
         APP_STATE.rankPoints = Number(existingUser.rankPoints) || 1000;
         APP_STATE.bfsScore = Number(existingUser.bfs) || 0;
         APP_STATE.sessionsCompletedCount = existingUser.sessionsCount || 0;
@@ -4761,6 +6379,7 @@
         APP_STATE.userEmail = email;
         APP_STATE.userName = name;
         APP_STATE.userSchool = school;
+        APP_STATE.userPassword = password;
         APP_STATE.rankPoints = 1000;
         APP_STATE.bfsScore = 0;
         APP_STATE.sessionsCompletedCount = 0;
@@ -4774,7 +6393,9 @@
         }
       }
 
-      // 3. Lưu và đồng bộ ngay lập tức vào database & giao diện
+      // 4. Đánh dấu đã xác thực mật khẩu thành công & lưu vào DB
+      APP_STATE.isAuthenticated = true;
+      APP_STATE.isAuthModalStartupLock = false;
       saveAppStateToLocal();
       syncCurrentUserToDatabase();
       syncProfileDOM();
@@ -4789,24 +6410,46 @@
           openAssessmentModal(false, true);
         }, 250);
       } else {
-        alert(`🎉 Đã đăng nhập tài khoản: ${APP_STATE.userName}!\nTổng điểm xếp hạng hiện tại: ${(APP_STATE.rankPoints || 1000) + (APP_STATE.bfsScore || 0) + getSessionPointsTotal()}đ.`);
+        alert(`🎉 Đã đăng nhập tài khoản Gmail: ${APP_STATE.userEmail}!\nTổng điểm xếp hạng hiện tại: ${(APP_STATE.rankPoints || 1000) + (APP_STATE.bfsScore || 0) + getSessionPointsTotal()}đ.`);
       }
     }
 
     function handleEditProfileSubmit(e) {
       e.preventDefault();
-      const name = document.getElementById('edit-input-name').value.trim();
-      const school = document.getElementById('edit-input-school').value.trim();
-      const email = document.getElementById('edit-input-email').value.trim();
+      const nameInput = document.getElementById('edit-input-name');
+      const name = (nameInput ? nameInput.value : '').trim();
+      const school = (document.getElementById('edit-input-school')?.value || '').trim();
+      const emailInput = document.getElementById('edit-input-email');
+      const email = (emailInput ? emailInput.value : '').trim();
+      const newPasswordInput = document.getElementById('edit-input-password');
+      const newPassword = newPasswordInput ? newPasswordInput.value.trim() : '';
 
       if (!name) {
         alert('Vui lòng nhập họ và tên!');
+        if (nameInput) nameInput.focus();
         return;
+      }
+
+      // Kiểm tra định dạng Gmail nếu có nhập hoặc thay đổi
+      if (email) {
+        const gmailCheck = validateGmailAddress(email);
+        if (!gmailCheck.valid) {
+          alert('Cập nhật thất bại:\n' + gmailCheck.message);
+          if (emailInput) {
+            emailInput.focus();
+            emailInput.select();
+          }
+          handleEditEmailInput(email);
+          return;
+        }
+        APP_STATE.userEmail = gmailCheck.email;
       }
 
       APP_STATE.userName = name;
       if (school) APP_STATE.userSchool = school;
-      if (email) APP_STATE.userEmail = email;
+      if (newPassword && newPassword.length >= 4) {
+        APP_STATE.userPassword = newPassword;
+      }
       if (tempUploadedAvatarBase64 !== null) {
         APP_STATE.userAvatar = tempUploadedAvatarBase64;
       }
@@ -4818,7 +6461,7 @@
       renderLeaderboard();
       closeEditProfileModal();
 
-      alert('✅ Đã cập nhật thành công Họ tên & Avatar của bạn!');
+      alert('✅ Đã cập nhật thành công Họ tên & Thông tin hồ sơ của bạn!');
     }
 
     function handleGoogleLogin() {
