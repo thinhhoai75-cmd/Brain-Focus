@@ -1196,7 +1196,7 @@
         Chào mừng bạn đến với Brain Focus. Hãy tạo tài khoản với Gmail để bắt đầu với <strong>1000 Điểm Xếp Hạng</strong> và làm bài khảo sát BFS 10 câu.
       </div>
 
-      <form onsubmit="handleRegisterSubmit(event)" class="space-y-3">
+      <form id="register-form" onsubmit="handleRegisterSubmit(event)" class="space-y-3">
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="text-xs font-semibold text-slate-700">Địa chỉ Gmail của bạn:</label>
@@ -1255,14 +1255,19 @@
               <img id="reg-avatar-img" class="w-full h-full object-cover hidden" alt="Preview" />
             </div>
             <div class="flex-1 space-y-1">
-              <input type="file" id="reg-avatar-file" accept="image/*" onchange="handleAvatarFileUpload(event, 'reg')" class="text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200" />
+              <input type="file" id="reg-avatar-file" accept="image/*" onchange="handleAvatarFileUpload(event, 'reg')" class="text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer" />
             </div>
           </div>
         </div>
 
+        <!-- Inline error alert if any -->
+        <div id="reg-error-msg" class="hidden p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium flex items-start gap-1.5">
+          <span>⚠️</span> <span id="reg-error-text"></span>
+        </div>
+
         <div class="pt-2 flex items-center gap-2">
-          <button id="reg-cancel-btn" type="button" onclick="closeRegisterModal()" class="flex-1 py-2 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50">Huỷ</button>
-          <button type="submit" class="flex-1 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition-colors">
+          <button id="reg-cancel-btn" type="button" onclick="closeRegisterModal()" class="flex-1 py-2 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50 cursor-pointer">Huỷ</button>
+          <button id="reg-submit-btn" type="submit" onclick="handleRegisterSubmit(event)" class="flex-1 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
             <span>Tiếp tục test BFS</span> <span>➔</span>
           </button>
         </div>
@@ -6934,14 +6939,39 @@ function doPost(e) {
         if (subtitleEl) subtitleEl.innerText = "Nhận ngay 1000 điểm xếp hạng gốc";
       }
 
-      // Reset trường email và phản hồi trạng thái
+      // Reset các trường nhập liệu khi mở modal
       const regEmailInput = document.getElementById('reg-input-email');
-      if (regEmailInput) {
-        if (!APP_STATE.userEmail) {
+      const regNameInput = document.getElementById('reg-input-name');
+      const regSchoolInput = document.getElementById('reg-input-school');
+      const regPasswordInput = document.getElementById('reg-input-password');
+      const errorMsgBox = document.getElementById('reg-error-msg');
+      if (errorMsgBox) errorMsgBox.classList.add('hidden');
+
+      if (isOnboarding || (!APP_STATE.userEmail || !APP_STATE.userName)) {
+        if (regEmailInput) {
+          regEmailInput.value = APP_STATE.userEmail || '';
+          handleRegEmailInput(regEmailInput.value);
+        }
+        if (regNameInput) regNameInput.value = APP_STATE.userName || '';
+        if (regSchoolInput) regSchoolInput.value = APP_STATE.userSchool || '';
+        if (regPasswordInput) regPasswordInput.value = APP_STATE.userPassword || '';
+      } else {
+        // Mở từ nút tạo tài khoản mới: dọn sạch trường để nhập tài khoản mới
+        if (regEmailInput) {
           regEmailInput.value = '';
           handleRegEmailInput('');
-        } else {
-          handleRegEmailInput(regEmailInput.value);
+        }
+        if (regNameInput) regNameInput.value = '';
+        if (regSchoolInput) regSchoolInput.value = '';
+        if (regPasswordInput) regPasswordInput.value = '';
+        tempUploadedAvatarBase64 = null;
+        const imgEl = document.getElementById('reg-avatar-img');
+        const initEl = document.getElementById('reg-avatar-initial');
+        if (imgEl && initEl) {
+          imgEl.src = '';
+          imgEl.classList.add('hidden');
+          initEl.innerText = '👤';
+          initEl.classList.remove('hidden');
         }
       }
 
@@ -7054,75 +7084,68 @@ function doPost(e) {
       }
     }
 
-    // ================= XÁC THỰC ĐỊNH DẠNG GMAIL NGHIÊM NGẶT =================
+    // ================= XÁC THỰC ĐỊNH DẠNG GMAIL =================
     function validateGmailAddress(rawEmail) {
-      const email = String(rawEmail || '').trim().toLowerCase();
+      let email = String(rawEmail || '').trim().toLowerCase();
       if (!email) {
-        return { valid: false, message: 'Vui lòng nhập địa chỉ Gmail của bạn!' };
+        return { valid: false, message: 'Vui lòng nhập địa chỉ Gmail của bạn.' };
       }
 
       // 1. Tuyệt đối không chứa khoảng trắng
       if (/\s/.test(email)) {
-        return { valid: false, message: '❌ Địa chỉ Gmail không được chứa khoảng cách (dấu cách)!' };
+        return { valid: false, message: 'Địa chỉ Gmail không được chứa dấu cách (khoảng trống).' };
       }
 
-      // 2. Kiểm tra phần đuôi @gmail.com
-      if (!email.endsWith('@gmail.com')) {
-        if (email.includes('@')) {
-          const parts = email.split('@');
-          const domain = parts[1] || '';
-          return {
-            valid: false,
-            message: `❌ Địa chỉ phải có đuôi "@gmail.com" (bạn đang nhập "@${domain}"). Ứng dụng chỉ chấp nhận tài khoản Google Gmail!`
-          };
-        } else {
-          return {
-            valid: false,
-            message: '❌ Bắt buộc phải có đuôi "@gmail.com" (Ví dụ: ' + (email || 'tentaikhoan') + '@gmail.com)!'
-          };
-        }
-      }
-
-      // 3. Đúng một ký tự '@' duy nhất
-      const atMatches = email.match(/@/g);
-      if (!atMatches || atMatches.length !== 1) {
-        return { valid: false, message: '❌ Địa chỉ Gmail chỉ được chứa đúng 1 ký tự "@"!' };
-      }
-
-      // 4. Lấy phần tên người dùng (trước @gmail.com)
-      const username = email.slice(0, -10); // cắt bỏ 10 ký tự '@gmail.com'
-
-      // 5. Kiểm tra độ dài chuẩn của Google (6 - 30 ký tự)
-      if (username.length < 6) {
+      // Tự động gợi ý/yêu cầu @gmail.com
+      if (!email.includes('@')) {
         return {
           valid: false,
-          message: `❌ Tên tài khoản Gmail quá ngắn (${username.length}/6 ký tự). Tên trước @gmail.com phải từ 6 đến 30 ký tự!`
+          message: 'Vui lòng điền đầy đủ đuôi "@gmail.com" (Ví dụ: ' + email + '@gmail.com).'
+        };
+      }
+
+      const parts = email.split('@');
+      if (parts.length !== 2) {
+        return { valid: false, message: 'Địa chỉ email không hợp lệ (chỉ được có đúng 1 ký tự @).' };
+      }
+
+      const username = parts[0];
+      const domain = parts[1];
+
+      if (domain !== 'gmail.com') {
+        return {
+          valid: false,
+          message: `Ứng dụng yêu cầu tài khoản Gmail có đuôi "@gmail.com" (hiện tại là "@${domain}").`
+        };
+      }
+
+      // Độ dài username theo Google (ít nhất 3 ký tự, tối đa 30)
+      if (username.length < 3) {
+        return {
+          valid: false,
+          message: `Tên Gmail quá ngắn (${username.length} ký tự). Tối thiểu từ 3 ký tự trở lên.`
         };
       }
       if (username.length > 30) {
         return {
           valid: false,
-          message: `❌ Tên tài khoản Gmail quá dài (${username.length}/30 ký tự). Tên trước @gmail.com tối đa 30 ký tự!`
+          message: `Tên Gmail quá dài (${username.length} ký tự). Tối đa 30 ký tự.`
         };
       }
 
-      // 6. Kiểm tra các quy tắc dấu chấm theo chuẩn Google
-      if (username.startsWith('.')) {
-        return { valid: false, message: '❌ Tên tài khoản Gmail không được bắt đầu bằng dấu chấm (.)!' };
-      }
-      if (username.endsWith('.')) {
-        return { valid: false, message: '❌ Tên tài khoản Gmail không được kết thúc bằng dấu chấm (.)!' };
+      if (username.startsWith('.') || username.endsWith('.')) {
+        return { valid: false, message: 'Tên Gmail không được bắt đầu hoặc kết thúc bằng dấu chấm (.).' };
       }
       if (username.includes('..')) {
-        return { valid: false, message: '❌ Tên tài khoản Gmail không được chứa hai dấu chấm liên tiếp (..)!' };
+        return { valid: false, message: 'Tên Gmail không được chứa 2 dấu chấm liên tiếp (..).' };
       }
 
-      // 7. Chỉ cho phép chữ cái thường (a-z), chữ số (0-9) và dấu chấm (.)
-      const validGmailRegex = /^[a-z0-9]+(\.[a-z0-9]+)*$/;
-      if (!validGmailRegex.test(username)) {
+      // Ký tự hợp lệ cho username Gmail: a-z, 0-9, dấu chấm
+      const validCharsRegex = /^[a-z0-9.]+$/;
+      if (!validCharsRegex.test(username)) {
         return {
           valid: false,
-          message: '❌ Tên Gmail chỉ được chứa chữ cái (a-z), số (0-9) và dấu chấm (.). Không dùng ký tự đặc biệt, dấu gạch dưới (_) hoặc tiếng Việt có dấu!'
+          message: 'Tên Gmail chỉ chứa chữ cái không dấu (a-z), chữ số (0-9) và dấu chấm (.).'
         };
       }
 
@@ -7216,8 +7239,27 @@ function doPost(e) {
     }
 
     // Submission Handlers
+    function showRegisterError(msg) {
+      const errorBox = document.getElementById('reg-error-msg');
+      const errorText = document.getElementById('reg-error-text');
+      if (errorBox && errorText) {
+        errorText.innerText = msg;
+        errorBox.classList.remove('hidden');
+        errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        alert(msg);
+      }
+    }
+
     function handleRegisterSubmit(e) {
-      e.preventDefault();
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      const errorBox = document.getElementById('reg-error-msg');
+      if (errorBox) errorBox.classList.add('hidden');
+
       const emailInput = document.getElementById('reg-input-email');
       const rawEmail = (emailInput ? emailInput.value : '').trim();
       const nameInput = document.getElementById('reg-input-name');
@@ -7226,103 +7268,110 @@ function doPost(e) {
       const passwordInput = document.getElementById('reg-input-password');
       const password = passwordInput ? passwordInput.value.trim() : '';
       
-      // 1. Kiểm tra gắt gao chuẩn định dạng Gmail
+      // 1. Kiểm tra chuẩn định dạng Gmail
       const gmailCheck = validateGmailAddress(rawEmail);
       if (!gmailCheck.valid) {
-        alert(gmailCheck.message);
+        showRegisterError(gmailCheck.message);
         if (emailInput) {
           emailInput.focus();
           emailInput.select();
         }
         handleRegEmailInput(rawEmail);
-        return;
+        return false;
       }
       const email = gmailCheck.email;
 
       if (!name || name.length < 2) {
-        alert('Vui lòng điền họ và tên của bạn (tối thiểu 2 ký tự)!');
+        showRegisterError('Vui lòng điền họ và tên của bạn (tối thiểu 2 ký tự).');
         if (nameInput) nameInput.focus();
-        return;
+        return false;
       }
 
       if (!password || password.length < 4) {
-        alert('Vui lòng nhập mật khẩu tối thiểu 4 ký tự để bảo vệ tài khoản!');
+        showRegisterError('Vui lòng nhập mật khẩu tối thiểu 4 ký tự để bảo vệ tài khoản.');
         if (passwordInput) passwordInput.focus();
-        return;
+        return false;
       }
 
-      // 2. Lưu lại tài khoản hiện tại vào DB trước khi chuyển sang tài khoản mới
-      syncCurrentUserToDatabase();
-      loadUsersDatabase();
+      try {
+        // 2. Lưu lại tài khoản hiện tại vào DB trước khi chuyển sang tài khoản mới
+        syncCurrentUserToDatabase();
+        loadUsersDatabase();
 
-      // 3. Kiểm tra xem email này đã từng được tạo trên thiết bị chưa
-      const existingUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
-      
-      if (existingUser) {
-        // Nếu tài khoản cũ đã có mật khẩu và mật khẩu nhập vào không khớp
-        if (existingUser.password && String(existingUser.password).trim() !== password) {
-          alert('❌ Email Gmail này đã được đăng ký trên thiết bị nhưng mật khẩu bạn nhập không đúng!\nVui lòng nhập đúng mật khẩu để truy cập.');
-          if (passwordInput) {
-            passwordInput.focus();
-            passwordInput.select();
+        // 3. Kiểm tra xem email này đã từng được tạo trên thiết bị chưa
+        const existingUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim());
+        
+        if (existingUser) {
+          // Nếu tài khoản cũ đã có mật khẩu và mật khẩu nhập vào không khớp
+          if (existingUser.password && String(existingUser.password).trim() !== password) {
+            showRegisterError('Email Gmail này đã đăng ký nhưng mật khẩu không khớp. Vui lòng nhập đúng mật khẩu đã tạo!');
+            if (passwordInput) {
+              passwordInput.focus();
+              passwordInput.select();
+            }
+            return false;
           }
-          return;
-        }
 
-        // Khôi phục tài khoản cũ với đầy đủ số điểm và tiến độ đã lưu
-        APP_STATE.userEmail = existingUser.email;
-        APP_STATE.userName = name || existingUser.name;
-        APP_STATE.userSchool = school || existingUser.school;
-        APP_STATE.userPassword = password || existingUser.password || '';
-        APP_STATE.rankPoints = Number(existingUser.rankPoints) || 1000;
-        APP_STATE.bfsScore = Number(existingUser.bfs) || 0;
-        APP_STATE.sessionsCompletedCount = existingUser.sessionsCount || 0;
-        APP_STATE.totalHours = existingUser.totalHours || 0;
-        APP_STATE.streakDays = existingUser.streakDays || 1;
-        APP_STATE.history = Array.isArray(existingUser.history) ? existingUser.history : [];
-        if (tempUploadedAvatarBase64 !== null) {
-          APP_STATE.userAvatar = tempUploadedAvatarBase64;
-        } else if (existingUser.avatar) {
-          APP_STATE.userAvatar = existingUser.avatar;
-        }
-      } else {
-        // Tài khoản học viên mới: khởi tạo 1000 điểm Xếp Hạng gốc
-        APP_STATE.userEmail = email;
-        APP_STATE.userName = name;
-        APP_STATE.userSchool = school;
-        APP_STATE.userPassword = password;
-        APP_STATE.rankPoints = 1000;
-        APP_STATE.bfsScore = 0;
-        APP_STATE.sessionsCompletedCount = 0;
-        APP_STATE.totalHours = 0;
-        APP_STATE.streakDays = 1;
-        APP_STATE.history = [];
-        if (tempUploadedAvatarBase64 !== null) {
-          APP_STATE.userAvatar = tempUploadedAvatarBase64;
+          // Khôi phục tài khoản cũ với đầy đủ số điểm và tiến độ đã lưu
+          APP_STATE.userEmail = existingUser.email;
+          APP_STATE.userName = name || existingUser.name;
+          APP_STATE.userSchool = school || existingUser.school;
+          APP_STATE.userPassword = password || existingUser.password || '';
+          APP_STATE.rankPoints = Number(existingUser.rankPoints) || 1000;
+          APP_STATE.bfsScore = Number(existingUser.bfs) || 0;
+          APP_STATE.sessionsCompletedCount = existingUser.sessionsCount || 0;
+          APP_STATE.totalHours = existingUser.totalHours || 0;
+          APP_STATE.streakDays = existingUser.streakDays || 1;
+          APP_STATE.history = Array.isArray(existingUser.history) ? existingUser.history : [];
+          if (tempUploadedAvatarBase64 !== null) {
+            APP_STATE.userAvatar = tempUploadedAvatarBase64;
+          } else if (existingUser.avatar) {
+            APP_STATE.userAvatar = existingUser.avatar;
+          }
         } else {
-          APP_STATE.userAvatar = '';
+          // Tài khoản học viên mới: khởi tạo 1000 điểm Xếp Hạng gốc
+          APP_STATE.userEmail = email;
+          APP_STATE.userName = name;
+          APP_STATE.userSchool = school;
+          APP_STATE.userPassword = password;
+          APP_STATE.rankPoints = 1000;
+          APP_STATE.bfsScore = 0;
+          APP_STATE.sessionsCompletedCount = 0;
+          APP_STATE.totalHours = 0;
+          APP_STATE.streakDays = 1;
+          APP_STATE.history = [];
+          if (tempUploadedAvatarBase64 !== null) {
+            APP_STATE.userAvatar = tempUploadedAvatarBase64;
+          } else {
+            APP_STATE.userAvatar = '';
+          }
         }
-      }
 
-      // 4. Đánh dấu đã xác thực mật khẩu thành công & lưu vào DB
-      APP_STATE.isAuthenticated = true;
-      APP_STATE.isAuthModalStartupLock = false;
-      saveAppStateToLocal();
-      syncCurrentUserToDatabase();
-      syncProfileDOM();
-      updateStatsUI();
-      renderLeaderboard();
-      renderHistory();
-      closeRegisterModal();
-      
-      // Nếu chưa có điểm BFS (tài khoản mới tạo), tự động mở bài test 10 câu BFS để tính điểm
-      if (!APP_STATE.bfsScore) {
-        setTimeout(() => {
-          openAssessmentModal(false, true);
-        }, 250);
-      } else {
-        alert(`🎉 Đã đăng nhập tài khoản Gmail: ${APP_STATE.userEmail}!\nTổng điểm xếp hạng hiện tại: ${(APP_STATE.rankPoints || 1000) + (APP_STATE.bfsScore || 0) + getSessionPointsTotal()}đ.`);
+        // 4. Đánh dấu đã xác thực mật khẩu thành công & lưu vào DB
+        APP_STATE.isAuthenticated = true;
+        APP_STATE.isAuthModalStartupLock = false;
+        saveAppStateToLocal();
+        syncCurrentUserToDatabase();
+        syncProfileDOM();
+        updateStatsUI();
+        renderLeaderboard();
+        renderHistory();
+        closeRegisterModal();
+        
+        // Nếu chưa có điểm BFS (tài khoản mới tạo), tự động mở bài test 10 câu BFS để tính điểm
+        if (!APP_STATE.bfsScore) {
+          setTimeout(() => {
+            openAssessmentModal(false, true);
+          }, 250);
+        } else {
+          alert(`🎉 Đã đăng nhập tài khoản Gmail: ${APP_STATE.userEmail}!\nTổng điểm xếp hạng hiện tại: ${(APP_STATE.rankPoints || 1000) + (APP_STATE.bfsScore || 0) + getSessionPointsTotal()}đ.`);
+        }
+      } catch (err) {
+        console.error('Lỗi khi đăng ký tài khoản:', err);
+        showRegisterError('Có lỗi xảy ra khi lưu tài khoản. Vui lòng thử lại!');
+        return false;
       }
+      return false;
     }
 
     function handleEditProfileSubmit(e) {
