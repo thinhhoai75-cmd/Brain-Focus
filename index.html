@@ -1177,7 +1177,7 @@
   </div>
 
   <!-- ================= MODAL: TẠO TÀI KHOẢN GMAIL MỚI ================= -->
-  <div id="register-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+  <div id="register-modal" class="fixed inset-0 z-[70] bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="glass-card w-full max-w-md rounded-2xl shadow-xl border border-slate-200 overflow-hidden p-6 space-y-4 bg-white">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2.5">
@@ -1323,7 +1323,7 @@
           <button type="button" onclick="openSwitchAccountModal()" class="text-blue-600 hover:text-blue-800 font-semibold hover:underline flex items-center gap-1">
             <span>🔄 Chọn tài khoản khác</span>
           </button>
-          <button type="button" onclick="openRegisterModal(false)" class="text-slate-600 hover:text-slate-900 font-semibold hover:underline flex items-center gap-1">
+          <button type="button" onclick="createNewAccountFromSwitchModal()" class="text-slate-600 hover:text-slate-900 font-semibold hover:underline flex items-center gap-1 cursor-pointer">
             <span>➕ Tạo tài khoản mới</span>
           </button>
         </div>
@@ -1344,7 +1344,7 @@
             <p class="text-xs text-slate-500">Chuyển đổi hoặc đăng ký thêm tài khoản</p>
           </div>
         </div>
-        <button onclick="closeSwitchAccountModal()" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs">✕</button>
+        <button onclick="closeSwitchAccountModal()" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs cursor-pointer">✕</button>
       </div>
 
       <div class="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-[11px] text-slate-700">
@@ -1356,7 +1356,7 @@
       </div>
 
       <div class="pt-2">
-        <button onclick="closeSwitchAccountModal(); openRegisterModal(false);" class="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition-colors">
+        <button id="switch-create-new-account-btn" type="button" onclick="createNewAccountFromSwitchModal()" class="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 active:bg-black text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
           <span>+</span> <span>Tạo tài khoản mới</span>
         </button>
       </div>
@@ -2848,7 +2848,19 @@ function doPost(e) {
       APP_STATE.history = Array.isArray(user.history) ? user.history : [];
     }
 
+    function createNewAccountFromSwitchModal() {
+      const switchModal = document.getElementById('switch-account-modal');
+      if (switchModal) switchModal.classList.add('hidden');
+      const authModal = document.getElementById('account-auth-modal');
+      if (authModal) authModal.classList.add('hidden');
+      openRegisterModal(false);
+    }
+
     function openSwitchAccountModal() {
+      const authModal = document.getElementById('account-auth-modal');
+      if (authModal) authModal.classList.add('hidden');
+      const regModal = document.getElementById('register-modal');
+      if (regModal) regModal.classList.add('hidden');
       purgeCloneAccounts(false);
       const listEl = document.getElementById('switch-account-list');
       if (!listEl) return;
@@ -6907,6 +6919,19 @@ function doPost(e) {
     // Modal Triggers
     function openRegisterModal(isOnboarding = false) {
       APP_STATE.isOnboardingActive = isOnboarding;
+
+      // Đóng tất cả các modal khác để modal tạo tài khoản luôn hiển thị trên cùng và không bị che khuất
+      const authModal = document.getElementById('account-auth-modal');
+      if (authModal) authModal.classList.add('hidden');
+      const switchModal = document.getElementById('switch-account-modal');
+      if (switchModal) switchModal.classList.add('hidden');
+      const editModal = document.getElementById('edit-profile-modal');
+      if (editModal) editModal.classList.add('hidden');
+      const assessmentModal = document.getElementById('assessment-modal');
+      if (assessmentModal) assessmentModal.classList.add('hidden');
+      const reflectionModal = document.getElementById('reflection-modal');
+      if (reflectionModal) reflectionModal.classList.add('hidden');
+
       const modal = document.getElementById('register-modal');
       const closeBtn = document.getElementById('register-modal-close-btn');
       const cancelBtn = document.getElementById('reg-cancel-btn');
