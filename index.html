@@ -571,7 +571,7 @@
         <!-- 3 Game Selection Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
           <!-- Game 1: Stroop Test -->
-          <div id="gym-card-stroop" onclick="startStroopGame()" class="cursor-pointer glass-card p-4 rounded-xl hover:border-slate-300 transition-all flex flex-col justify-between group shadow-xs border-slate-200">
+          <div id="gym-card-stroop" onclick="handleGymCardClick('stroop')" class="cursor-pointer glass-card p-4 rounded-xl hover:border-slate-300 transition-all flex flex-col justify-between group shadow-xs border-slate-200">
             <div>
               <div class="w-9 h-9 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-center text-lg mb-3">
                 🎨
@@ -588,7 +588,7 @@
           </div>
 
           <!-- Game 2: Memory Matrix -->
-          <div id="gym-card-grid" onclick="startMemoryGridGame()" class="cursor-pointer glass-card p-4 rounded-xl hover:border-slate-300 transition-all flex flex-col justify-between group shadow-xs border-slate-200">
+          <div id="gym-card-grid" onclick="handleGymCardClick('grid')" class="cursor-pointer glass-card p-4 rounded-xl hover:border-slate-300 transition-all flex flex-col justify-between group shadow-xs border-slate-200">
             <div>
               <div class="w-9 h-9 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-lg mb-3">
                 🧩
@@ -605,7 +605,7 @@
           </div>
 
           <!-- Game 3: Rapid Math -->
-          <div id="gym-card-math" onclick="startRapidMathGame()" class="cursor-pointer glass-card p-4 rounded-xl hover:border-slate-300 transition-all flex flex-col justify-between group shadow-xs border-slate-200">
+          <div id="gym-card-math" onclick="handleGymCardClick('math')" class="cursor-pointer glass-card p-4 rounded-xl hover:border-slate-300 transition-all flex flex-col justify-between group shadow-xs border-slate-200">
             <div>
               <div class="w-9 h-9 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-lg mb-3">
                 ⚡
@@ -1807,6 +1807,7 @@ function doPost(e) {
 
   <!-- JAVASCRIPT APP LOGIC & AUDIO SYNTHESIZER -->
   <script>
+    var tempUploadedAvatarBase64 = null;
     // ================= STATE =================
     const APP_STATE = {
       userEmail: "",
@@ -2203,6 +2204,7 @@ function doPost(e) {
       
       return {
         email: email || `${name.toLowerCase().replace(/\s+/g, '')}@student.brainfocus`,
+        password: String(u.password || '').trim(),
         name: name,
         school: String(u.school || 'Học viên tích cực').trim().slice(0, 50),
         avatar: avatarClean,
@@ -2263,9 +2265,16 @@ function doPost(e) {
           const cleanCloud = sanitizeUserForCloud(cu);
           if (!cleanCloud) return;
 
-          const localIdx = REGISTERED_USERS_DB.findIndex(u => 
-            (u.email && cleanCloud.email && u.email.toLowerCase().trim() === cleanCloud.email.toLowerCase().trim())
-          );
+          const localIdx = REGISTERED_USERS_DB.findIndex(u => {
+            if (!u) return false;
+            if (u.email && cleanCloud.email && u.email.toLowerCase().trim() === cleanCloud.email.toLowerCase().trim()) {
+              return true;
+            }
+            if (u.name && cleanCloud.name && u.name.toLowerCase().trim() === cleanCloud.name.toLowerCase().trim()) {
+              return true;
+            }
+            return false;
+          });
 
           if (localIdx === -1) {
             REGISTERED_USERS_DB.push(cleanCloud);
@@ -2275,12 +2284,13 @@ function doPost(e) {
             const cloudTotal = cleanCloud.rankPoints + cleanCloud.bfs + cleanCloud.sessionPoints;
             const localTotal = (Number(lu.rankPoints) || 1000) + (Number(lu.bfs) || 0) + (Number(lu.sessionPoints) || 0);
 
-            // Giữ lại bản ghi có tổng điểm cao nhất, bảo tồn avatar của thiết bị nếu có
+            // Giữ lại bản ghi có tổng điểm cao nhất, bảo tồn mật khẩu và avatar của thiết bị
             if (!isLocalActiveUser || cloudTotal > localTotal) {
               REGISTERED_USERS_DB[localIdx] = {
                 ...lu,
                 ...cleanCloud,
-                avatar: lu.avatar || ''
+                password: lu.password || cleanCloud.password || '',
+                avatar: lu.avatar || cleanCloud.avatar || ''
               };
             }
           }
@@ -2333,31 +2343,43 @@ function doPost(e) {
             }
           } catch (_) {}
 
-          // Bước 2: Hợp nhất Cloud + Local (khử trùng theo email và name)
+          // Bước 2: Hợp nhất Cloud + Local (khử trùng theo email chính xác, fallback name)
           const mergedMap = new Map();
+
+          const getUserKey = (u) => {
+            if (u && u.email && typeof u.email === 'string') {
+              return 'email:' + u.email.toLowerCase().trim();
+            }
+            if (u && u.name && typeof u.name === 'string') {
+              return 'name:' + u.name.toLowerCase().trim();
+            }
+            return null;
+          };
 
           // Thêm các user trên Cloud trước
           currentCloudUsers.forEach(cu => {
             const s = sanitizeUserForCloud(cu);
-            if (s && (s.email || s.name)) {
-              const key = s.email || s.name.toLowerCase().trim();
-              mergedMap.set(key, s);
+            if (s) {
+              const key = getUserKey(s);
+              if (key) mergedMap.set(key, s);
             }
           });
 
           // Thêm hoặc cập nhật user của Local
           REGISTERED_USERS_DB.forEach(lu => {
             const s = sanitizeUserForCloud(lu);
-            if (s && (s.email || s.name)) {
-              const key = s.email || s.name.toLowerCase().trim();
-              const existing = mergedMap.get(key);
-              if (!existing) {
-                mergedMap.set(key, s);
-              } else {
-                const localTotal = (s.rankPoints || 1000) + (s.bfs || 0) + (s.sessionPoints || 0);
-                const cloudTotal = (existing.rankPoints || 1000) + (existing.bfs || 0) + (existing.sessionPoints || 0);
-                if (localTotal >= cloudTotal) {
-                  mergedMap.set(key, { ...existing, ...s });
+            if (s) {
+              const key = getUserKey(s);
+              if (key) {
+                const existing = mergedMap.get(key);
+                if (!existing) {
+                  mergedMap.set(key, s);
+                } else {
+                  const localTotal = (s.rankPoints || 1000) + (s.bfs || 0) + (s.sessionPoints || 0);
+                  const cloudTotal = (existing.rankPoints || 1000) + (existing.bfs || 0) + (existing.sessionPoints || 0);
+                  if (localTotal >= cloudTotal) {
+                    mergedMap.set(key, { ...existing, ...s });
+                  }
                 }
               }
             }
@@ -2604,10 +2626,11 @@ function doPost(e) {
       const name = String(u.name || '').trim();
       const email = String(u.email || '').trim().toLowerCase();
       if (!name || !email) return true;
-      if (email.includes('clone') || email.includes('testaccount') || email.includes('mock') || 
-          name.toLowerCase().includes('clone') || name.toLowerCase().includes('thử nghiệm') || name.toLowerCase().includes('test')) {
-        return true;
-      }
+      // Chỉ loại bỏ các email thử nghiệm mẫu cụ thể nếu người dùng không dùng
+      const blockedEmails = ['abc@gmail.com', 'test@gmail.com', 'example@gmail.com'];
+      if (blockedEmails.includes(email)) return true;
+      const blockedNames = ['tài khoản test', 'thử nghiệm clone'];
+      if (blockedNames.includes(name.toLowerCase())) return true;
       return false;
     }
 
@@ -2850,9 +2873,15 @@ function doPost(e) {
 
     function createNewAccountFromSwitchModal() {
       const switchModal = document.getElementById('switch-account-modal');
-      if (switchModal) switchModal.classList.add('hidden');
+      if (switchModal) {
+        switchModal.classList.add('hidden');
+        switchModal.style.display = 'none';
+      }
       const authModal = document.getElementById('account-auth-modal');
-      if (authModal) authModal.classList.add('hidden');
+      if (authModal) {
+        authModal.classList.add('hidden');
+        authModal.style.display = 'none';
+      }
       openRegisterModal(false);
     }
 
@@ -2861,7 +2890,8 @@ function doPost(e) {
       if (authModal) authModal.classList.add('hidden');
       const regModal = document.getElementById('register-modal');
       if (regModal) regModal.classList.add('hidden');
-      purgeCloneAccounts(false);
+      syncCurrentUserToDatabase();
+      loadUsersDatabase();
       const listEl = document.getElementById('switch-account-list');
       if (!listEl) return;
       
@@ -2913,12 +2943,19 @@ function doPost(e) {
           `;
         }).join('');
       }
-      document.getElementById('switch-account-modal').classList.remove('hidden');
+      const modal = document.getElementById('switch-account-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+      }
     }
 
     function closeSwitchAccountModal() {
       const modal = document.getElementById('switch-account-modal');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
       if (!APP_STATE.isAuthenticated) {
         loadUsersDatabase();
         const targetUser = REGISTERED_USERS_DB.find(u => u.email.toLowerCase().trim() === (APP_STATE.userEmail || '').toLowerCase().trim()) || {
@@ -4761,10 +4798,29 @@ function doPost(e) {
       return totalAvailable <= 0;
     }
 
-    function promptGymOutOfPlays() {
-      const wantsShop = confirm("🛑 BẠN ĐÃ HẾT LƯỢT TẬP GYM HÔM NAY!\n\nBạn đã dùng hết 5 lượt miễn phí.\n\nBạn có muốn mở CỬA HÀNG để đổi 35 điểm XH hoặc BFS lấy thêm lượt chơi không?");
-      if (wantsShop) {
+    function handleGymCardClick(gameType) {
+      if (isGymDailyLimitReached()) {
         openGymShopModal();
+        const alertEl = document.getElementById('shop-alert-msg');
+        if (alertEl) {
+          alertEl.className = "p-2.5 rounded-xl text-xs font-bold text-center bg-amber-50 text-amber-900 border border-amber-300";
+          alertEl.innerText = "🛑 Bạn đã dùng hết 5 lượt tập Gym miễn phí hôm nay! Hãy đổi 35đ (XH hoặc BFS) tại Cửa Hàng để nhận thêm lượt nhé.";
+          alertEl.classList.remove('hidden');
+        }
+        return;
+      }
+      if (gameType === 'stroop') startStroopGame();
+      else if (gameType === 'grid') startMemoryGridGame();
+      else if (gameType === 'math') startRapidMathGame();
+    }
+
+    function promptGymOutOfPlays() {
+      openGymShopModal();
+      const alertEl = document.getElementById('shop-alert-msg');
+      if (alertEl) {
+        alertEl.className = "p-2.5 rounded-xl text-xs font-bold text-center bg-amber-50 text-amber-900 border border-amber-300";
+        alertEl.innerText = "🛑 Bạn đã dùng hết 5 lượt tập Gym miễn phí hôm nay! Hãy đổi 35đ (XH hoặc BFS) tại Cửa Hàng để nhận thêm lượt nhé.";
+        alertEl.classList.remove('hidden');
       }
     }
 
@@ -4792,11 +4848,15 @@ function doPost(e) {
       const alertEl = document.getElementById('shop-alert-msg');
       if (alertEl) alertEl.classList.add('hidden');
       modal.classList.remove('hidden');
+      modal.style.display = 'flex';
     }
 
     function closeGymShopModal() {
       const modal = document.getElementById('gym-shop-modal');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
     }
 
     function buyGymPlays(currency, amount = 1) {
@@ -5165,6 +5225,8 @@ function doPost(e) {
     }
 
     function finishStroopGame() {
+      if (!isStroopGameActive) return;
+      isStroopGameActive = false;
       if (stroopRoundTimer) {
         clearInterval(stroopRoundTimer);
         stroopRoundTimer = null;
@@ -5174,7 +5236,6 @@ function doPost(e) {
         stroopFeedbackTimeout = null;
       }
       isStroopHandlingAnswer = false;
-      isStroopGameActive = false;
 
       // Tiêu hao 1 lượt chơi (Thắng hay thua đều mất 1 lượt)
       consumeOneGymPlay();
@@ -5474,6 +5535,7 @@ function doPost(e) {
           }
           if (gridLevel >= 6) {
             // Thắng toàn bộ 6 vòng
+            isGridGameActive = false;
             consumeOneGymPlay();
             APP_STATE.bfsScore += 35;
             APP_STATE.rankPoints += 15;
@@ -5540,6 +5602,8 @@ function doPost(e) {
 
     // GIAO DIỆN DỪNG VÀ BÁO KẾT QUẢ: CƠ CHẾ THƯỞNG PHẠT CÔNG BẰNG THEO VÒNG ĐÃ VƯỢT QUA
     function showMemoryGameOver(reason) {
+      if (!isGridGameActive) return;
+      isGridGameActive = false;
       if (gridRecallTimer) {
         clearInterval(gridRecallTimer);
         gridRecallTimer = null;
@@ -5916,12 +5980,13 @@ function doPost(e) {
     }
 
     function finishRapidMath() {
+      if (!isMathGameActive) return;
+      isMathGameActive = false;
       if (mathInterval) {
         clearInterval(mathInterval);
         mathInterval = null;
       }
       isMathHandlingAnswer = false;
-      isMathGameActive = false;
 
       // Tiêu hao 1 lượt chơi (Thắng hay thua đều mất 1 lượt)
       consumeOneGymPlay();
@@ -7001,11 +7066,18 @@ function doPost(e) {
       }
 
       modal.classList.remove('hidden');
+      modal.style.display = 'flex';
+      setTimeout(() => {
+        if (regEmailInput) regEmailInput.focus();
+      }, 150);
     }
 
     function closeRegisterModal() {
       const modal = document.getElementById('register-modal');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
       try {
         localStorage.setItem('bf_onboarded_completed', 'true');
       } catch (_) {}
@@ -7059,8 +7131,8 @@ function doPost(e) {
       openEditProfileModal();
     }
 
-    // Handle Image file upload via FileReader
-    let tempUploadedAvatarBase64 = null;
+    // Handle Image file upload via FileReader (tempUploadedAvatarBase64 hoisted at top of script)
+    // tempUploadedAvatarBase64 is declared globally
 
     function handleAvatarFileUpload(event, type) {
       const file = event.target.files[0];
